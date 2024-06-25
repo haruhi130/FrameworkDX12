@@ -1,0 +1,47 @@
+#pragma once
+//==============================================
+// プリコンパイル済みヘッダー
+//==============================================
+#pragma comment(lib,"winmm.lib")
+#define NOMINMAX
+
+#include <sdkddkver.h>
+#include <Windows.h>
+
+#include <wrl/client.h>
+
+// C Library
+#include <cassert>
+
+//==============================================
+// STL
+//==============================================
+#include <algorithm>
+#include <array>
+#include <atomic>
+#include <chrono>
+#include <filesystem>
+#include <fstream>
+#include <future>
+#include <functional>
+#include <iostream>
+#include <istream>
+#include <iterator>
+#include <list>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <queue>
+#include <random>
+#include <sstream>
+#include <stack>
+#include <string>
+#include <thread>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
+
+#define _USE_MATH_DEFINES
+#include <math.h>
+
+#include "System/System.h"
