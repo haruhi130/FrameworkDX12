@@ -167,6 +167,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Sources\System\Utility\Utility.cpp" />
     <ClCompile Include="Sources\System\Window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +175,7 @@
     <ClInclude Include="Sources\main.h" />
     <ClInclude Include="Sources\Pch.h" />
     <ClInclude Include="Sources\System\System.h" />
+    <ClInclude Include="Sources\System\Utility\Utility.h" />
     <ClInclude Include="Sources\System\Window\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
