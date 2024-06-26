@@ -9,6 +9,13 @@ void Application::Execute()
 		return;
 	}
 
+	// グラフィックスデバイス
+	if (!GraphicsDevice::GetInstance().Init())
+	{
+		assert(0 && "グラフィックスデバイス初期化失敗");
+		return;
+	}
+
 	// ゲームループ
 	while (true)
 	{

@@ -32,6 +32,9 @@
     <ClCompile Include="Sources\System\Utility\Utility.cpp">
       <Filter>System\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Framework\Graphics\GraphicsDevice.cpp">
+      <Filter>Framework\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\main.h" />
@@ -50,6 +53,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Framework.h">
       <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Graphics\GraphicsDevice.h">
+      <Filter>Framework\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
