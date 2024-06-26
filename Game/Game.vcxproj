@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Application\Application.h" />
+    <ClInclude Include="Sources\Framework\Framework.h" />
     <ClInclude Include="Sources\main.h" />
     <ClInclude Include="Sources\Pch.h" />
     <ClInclude Include="Sources\System\System.h" />

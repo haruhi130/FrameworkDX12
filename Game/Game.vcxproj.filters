@@ -4,9 +4,6 @@
     <Filter Include="Application">
       <UniqueIdentifier>{eed7ad77-f487-49d3-8eaa-51f6780e21fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics">
-      <UniqueIdentifier>{920f036a-c6a4-4ef5-ae8d-476db61db2b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="System">
       <UniqueIdentifier>{a9dda6f3-2578-43a0-88c1-fb43dedc329d}</UniqueIdentifier>
     </Filter>
@@ -15,6 +12,12 @@
     </Filter>
     <Filter Include="System\Utility">
       <UniqueIdentifier>{ac6339bd-7340-4b78-957c-a4a730696529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{8b774714-b24f-4f74-92b8-be55afe00b52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Graphics">
+      <UniqueIdentifier>{33dd4948-cd25-4766-8ed4-9f3ea4bba0a2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +47,9 @@
     </ClInclude>
     <ClInclude Include="Sources\System\Utility\Utility.h">
       <Filter>System\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Framework.h">
+      <Filter>Framework</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

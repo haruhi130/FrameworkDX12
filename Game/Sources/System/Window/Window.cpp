@@ -6,7 +6,7 @@ LRESULT WindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_DESTROY:
-		PostQuitMessage(0);
+		PostQuitMessage(0); // OSへ終了を伝える
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
@@ -16,13 +16,13 @@ LRESULT WindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-bool Window::Create(int width, int height, const std::wstring& titleName, const std::wstring& windowClassName)
+bool Window::Create(int windowWidth, int windowHeight, const std::wstring& titleName, const std::wstring& windowClassName)
 {
-	HINSTANCE hInst = GetModuleHandle(0);
-
 	//===========================================
 	// メインウィンドウ作成
 	//===========================================
+
+	HINSTANCE hInst = GetModuleHandle(0);
 
 	// ウィンドウ定義
 	WNDCLASSEX wc = {};
@@ -44,8 +44,8 @@ bool Window::Create(int width, int height, const std::wstring& titleName, const 
 		WS_OVERLAPPEDWINDOW - WS_THICKFRAME,
 		0,
 		0,
-		width,
-		height,
+		windowWidth,
+		windowHeight,
 		nullptr,
 		nullptr,
 		hInst,

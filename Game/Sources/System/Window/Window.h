@@ -3,7 +3,7 @@
 class Window
 {
 public:
-	bool Create(int width, int height, const std::wstring& titleName, const std::wstring& windowClassName);
+	bool Create(int windowWidth, int windowHeight, const std::wstring& titleName, const std::wstring& windowClassName);
 
 	bool ProcessMessage();
 
