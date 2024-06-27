@@ -7,12 +7,6 @@ public:
 	bool Init();
 
 private:
-	// ファクトリー作成
-	bool CreateFactory();
-
-	// デバイス作成
-	bool CreateDevice();
-
 	enum class GPUTier
 	{
 		NVIDIA,
@@ -23,8 +17,28 @@ private:
 		Kind,
 	};
 
-	ComPtr<ID3D12Device8> m_cpDevice = nullptr;
-	ComPtr<IDXGIFactory6> m_cpDxgiFactory = nullptr;
+	// ファクトリー作成
+	bool CreateFactory();
+
+	// デバイス作成
+	bool CreateDevice();
+
+	// コマンドアロケーター作成
+	bool CreateCommandAllocator();
+
+	// コマンドリスト作成
+	bool CreateCommandList();
+
+	// コマンドキュー作成
+	bool CreateCommandQueue();
+
+	ComPtr<IDXGIFactory7> m_cpDxgiFactory = nullptr;
+	ComPtr<ID3D12Device10> m_cpDevice = nullptr;
+
+	ComPtr<ID3D12CommandAllocator> m_cpCmdAllocator = nullptr;
+	ComPtr<ID3D12GraphicsCommandList7> m_cpCmdList = nullptr;
+	ComPtr<ID3D12CommandQueue> m_cpCmdQueue = nullptr;
+
 	ComPtr<IDXGISwapChain4> m_cpSwapChain = nullptr;
 
 	GraphicsDevice(){}

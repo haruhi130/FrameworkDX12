@@ -14,6 +14,24 @@ bool GraphicsDevice::Init()
 		return false;
 	}
 
+	if (!CreateCommandAllocator())
+	{
+		assert(0 && "コマンドアロケーター作成失敗");
+		return false;
+	}
+
+	if (!CreateCommandList())
+	{
+		assert(0 && "コマンドリスト作成失敗");
+		return false;
+	}
+
+	if (!CreateCommandQueue())
+	{
+		assert(0 && "コマンドキュー作成失敗");
+		return false;
+	}
+
 	return true;
 }
 
@@ -21,7 +39,7 @@ bool GraphicsDevice::CreateFactory()
 {
 	UINT dxgiFlags = 0;
 	dxgiFlags |= DXGI_CREATE_FACTORY_DEBUG;
-	
+
 	auto result = CreateDXGIFactory2(dxgiFlags, IID_PPV_ARGS(m_cpDxgiFactory.ReleaseAndGetAddressOf()));
 	if (FAILED(result))
 	{
@@ -44,7 +62,7 @@ bool GraphicsDevice::CreateDevice()
 	{
 		pAdapters.push_back(nullptr);
 		HRESULT hr = m_cpDxgiFactory->EnumAdapters(index, &pAdapters[index]);
-	
+
 		if (hr == DXGI_ERROR_NOT_FOUND) { break; }
 
 		descs.push_back({});
@@ -114,9 +132,53 @@ bool GraphicsDevice::CreateDevice()
 	D3D_FEATURE_LEVEL featureLevel;
 	for (auto lv : featureLevels)
 	{
-		if(D3D12CreateDevice(nullptr,lv , IID_PPV_ARGS(m_cpDevice.ReleaseAndGetAddressOf()))== S_OK)
-		featureLevel = lv;
-		break;
+		if (D3D12CreateDevice(nullptr, lv, IID_PPV_ARGS(m_cpDevice.ReleaseAndGetAddressOf())) == S_OK)
+		{
+			featureLevel = lv;
+			break;
+		}
+	}
+
+	return true;
+}
+
+bool GraphicsDevice::CreateCommandAllocator()
+{
+	// コマンドアロケーター生成
+	auto result = m_cpDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(m_cpCmdAllocator.ReleaseAndGetAddressOf()));
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool GraphicsDevice::CreateCommandList()
+{
+	// コマンドリスト生成
+	auto result = m_cpDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_cpCmdAllocator.Get(), nullptr, IID_PPV_ARGS(m_cpCmdList.ReleaseAndGetAddressOf()));
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool GraphicsDevice::CreateCommandQueue()
+{
+	D3D12_COMMAND_QUEUE_DESC cmdQueueDesc = {};
+	cmdQueueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE; // タイムアウト無し
+	cmdQueueDesc.NodeMask = 0;
+	cmdQueueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL; // プライオリティ指定無し
+	cmdQueueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT; // コマンドリストと合わせる
+
+	// キュー生成
+	auto result = m_cpDevice->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(m_cpCmdQueue.ReleaseAndGetAddressOf()));
+	if (FAILED(result))
+	{
+		return false;
 	}
 
 	return true;
