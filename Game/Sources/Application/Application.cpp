@@ -9,14 +9,14 @@ void Application::Execute()
 		return;
 	}
 
-	// グラフィックスデバイス
-	if (!GraphicsDevice::GetInstance().Init())
+	// グラフィックスデバイス初期化
+	if (!GraphicsDevice::GetInstance().Init(m_window.GetWndHandle(),1280,720))
 	{
 		assert(0 && "グラフィックスデバイス初期化失敗");
 		return;
 	}
 
-	// ゲームループ
+	// メインゲームループ
 	while (true)
 	{
 		if (!m_window.ProcessMessage())

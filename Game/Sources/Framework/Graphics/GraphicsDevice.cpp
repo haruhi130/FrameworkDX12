@@ -1,6 +1,6 @@
 #include "GraphicsDevice.h"
 
-bool GraphicsDevice::Init()
+bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 {
 	if (!CreateFactory())
 	{
@@ -32,6 +32,12 @@ bool GraphicsDevice::Init()
 		return false;
 	}
 
+	if (!CreateSwapChain(hWnd,width,height))
+	{
+		assert(0 && "スワップチェーン作成失敗");
+		return false;
+	}
+
 	return true;
 }
 
@@ -40,6 +46,7 @@ bool GraphicsDevice::CreateFactory()
 	UINT dxgiFlags = 0;
 	dxgiFlags |= DXGI_CREATE_FACTORY_DEBUG;
 
+	// ファクトリー作成
 	auto result = CreateDXGIFactory2(dxgiFlags, IID_PPV_ARGS(m_cpDxgiFactory.ReleaseAndGetAddressOf()));
 	if (FAILED(result))
 	{
@@ -52,9 +59,9 @@ bool GraphicsDevice::CreateFactory()
 bool GraphicsDevice::CreateDevice()
 {
 	// 使用するアダプター
-	IDXGIAdapter* pSelectAdapter = nullptr;
+	ComPtr<IDXGIAdapter> pSelectAdapter = nullptr;
 	// アダプター列挙
-	std::vector<IDXGIAdapter*> pAdapters;
+	std::vector<ComPtr<IDXGIAdapter>> pAdapters;
 	std::vector<DXGI_ADAPTER_DESC> descs;
 
 	// 使用中のPCのGPUドライバーを検索し格納する
@@ -144,7 +151,7 @@ bool GraphicsDevice::CreateDevice()
 
 bool GraphicsDevice::CreateCommandAllocator()
 {
-	// コマンドアロケーター生成
+	// コマンドアロケーター作成
 	auto result = m_cpDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(m_cpCmdAllocator.ReleaseAndGetAddressOf()));
 	if (FAILED(result))
 	{
@@ -156,7 +163,7 @@ bool GraphicsDevice::CreateCommandAllocator()
 
 bool GraphicsDevice::CreateCommandList()
 {
-	// コマンドリスト生成
+	// コマンドリスト作成
 	auto result = m_cpDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_cpCmdAllocator.Get(), nullptr, IID_PPV_ARGS(m_cpCmdList.ReleaseAndGetAddressOf()));
 	if (FAILED(result))
 	{
@@ -174,8 +181,41 @@ bool GraphicsDevice::CreateCommandQueue()
 	cmdQueueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL; // プライオリティ指定無し
 	cmdQueueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT; // コマンドリストと合わせる
 
-	// キュー生成
+	// コマンドキュー作成
 	auto result = m_cpDevice->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(m_cpCmdQueue.ReleaseAndGetAddressOf()));
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool GraphicsDevice::CreateSwapChain(HWND hWnd, int width, int height)
+{
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
+	swapChainDesc.Width = width;
+	swapChainDesc.Height = height;
+	swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	swapChainDesc.BufferUsage = DXGI_USAGE_BACK_BUFFER;
+	swapChainDesc.BufferCount = 2;
+	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+	swapChainDesc.SampleDesc.Count = 1;
+	swapChainDesc.SampleDesc.Quality = 0;
+
+	ComPtr<IDXGISwapChain1> pSwapChain = nullptr;
+	
+	// スワップチェーン作成
+	auto result = m_cpDxgiFactory->CreateSwapChainForHwnd(m_cpCmdQueue.Get(), hWnd, &swapChainDesc,
+		nullptr, nullptr, pSwapChain.ReleaseAndGetAddressOf());
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	// 型変換チェック
+	result = pSwapChain->QueryInterface(IID_PPV_ARGS(m_cpSwapChain.ReleaseAndGetAddressOf()));
 	if (FAILED(result))
 	{
 		return false;

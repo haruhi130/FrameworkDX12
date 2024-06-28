@@ -4,7 +4,7 @@ class GraphicsDevice
 {
 public:
 	// 初期化
-	bool Init();
+	bool Init(HWND hWnd, int width, int height);
 
 private:
 	enum class GPUTier
@@ -31,6 +31,9 @@ private:
 
 	// コマンドキュー作成
 	bool CreateCommandQueue();
+
+	// スワップチェーン作成
+	bool CreateSwapChain(HWND hWnd,int width,int height);
 
 	ComPtr<IDXGIFactory7> m_cpDxgiFactory = nullptr;
 	ComPtr<ID3D12Device10> m_cpDevice = nullptr;

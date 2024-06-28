@@ -5,7 +5,6 @@
 class Application
 {
 public:
-
 	// ƒQ[ƒ€Às—pŠÖ”
 	void Execute();
 
