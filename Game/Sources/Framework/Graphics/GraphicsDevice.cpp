@@ -7,6 +7,10 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 		assert(0 && "ファクトリー作成失敗");
 		return false;
 	}
+#ifdef _DEBUG
+	EnableDebugLayer();
+#endif // _DEBUG
+
 
 	if (!CreateDevice())
 	{
@@ -38,7 +42,82 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 		return false;
 	}
 
+	m_upRTVHeap = std::make_unique<RTVHeap>();
+	if (!m_upRTVHeap->Create())
+	{
+		assert(0 && "RTVヒープ作成失敗");
+		return false;
+	}
+
+	if (!CreateRTV())
+	{
+		assert(0 && "RTV作成失敗");
+		return false;
+	}
+
+	if (!CreateFence())
+	{
+		assert(0 && "フェンス作成失敗");
+		return false;
+	}
+	
 	return true;
+}
+
+void GraphicsDevice::ScreenFlip()
+{
+	auto bbIdx = m_cpSwapChain->GetCurrentBackBufferIndex();
+
+	SetResourceBarrier(m_cpBackBuffers[bbIdx],
+		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+
+	auto rtvH = m_upRTVHeap->GetCPUHandle();
+
+	rtvH.ptr += static_cast<ULONG_PTR>(bbIdx * m_cpDevice->GetDescriptorHandleIncrementSize
+	(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+	m_cpCmdList->OMSetRenderTargets(1, &rtvH, true, nullptr);
+
+	float clearCol[] = { 1.0f,0.0f,1.0f,1.0f };
+	m_cpCmdList->ClearRenderTargetView(rtvH, clearCol, 0, nullptr);
+
+	SetResourceBarrier(m_cpBackBuffers[bbIdx],
+		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+
+	auto result = m_cpCmdList->Close();
+	ID3D12CommandList* cmdLists[] = { m_cpCmdList.Get()};
+	m_cpCmdQueue->ExecuteCommandLists(1, cmdLists);
+
+	WaitForCommandQueue();
+
+	result = m_cpCmdAllocator->Reset();
+	result = m_cpCmdList->Reset(m_cpCmdAllocator.Get(), nullptr);
+
+	m_cpSwapChain->Present(1, 0);
+}
+
+void GraphicsDevice::WaitForCommandQueue()
+{
+	m_cpCmdQueue->Signal(m_cpFence.Get(), ++m_fenceVal);
+
+	if (m_cpFence->GetCompletedValue() != m_fenceVal)
+	{
+		auto event = CreateEvent(nullptr, false, false, nullptr);
+		if (!event)
+		{
+			assert(0 && "イベントエラー");
+		}
+		m_cpFence->SetEventOnCompletion(m_fenceVal, event);
+		WaitForSingleObject(event, INFINITE);
+		CloseHandle(event);
+	}
+}
+
+void GraphicsDevice::EnableDebugLayer()
+{
+	ComPtr<ID3D12Debug> debugLayer = nullptr;
+
+	D3D12GetDebugInterface(IID_PPV_ARGS(debugLayer.GetAddressOf()));
+	debugLayer->EnableDebugLayer();
 }
 
 bool GraphicsDevice::CreateFactory()
@@ -139,7 +218,7 @@ bool GraphicsDevice::CreateDevice()
 	D3D_FEATURE_LEVEL featureLevel;
 	for (auto lv : featureLevels)
 	{
-		if (D3D12CreateDevice(nullptr, lv, IID_PPV_ARGS(m_cpDevice.ReleaseAndGetAddressOf())) == S_OK)
+		if (D3D12CreateDevice(pSelectAdapter.Get(), lv, IID_PPV_ARGS(m_cpDevice.ReleaseAndGetAddressOf())) == S_OK)
 		{
 			featureLevel = lv;
 			break;
@@ -222,4 +301,49 @@ bool GraphicsDevice::CreateSwapChain(HWND hWnd, int width, int height)
 	}
 
 	return true;
+}
+
+bool GraphicsDevice::CreateRTV()
+{
+	DXGI_SWAP_CHAIN_DESC scDesc = {};
+	auto result = m_cpSwapChain->GetDesc(&scDesc);
+
+	auto handle = m_upRTVHeap->GetCPUHandle();
+
+	m_cpBackBuffers.resize(scDesc.BufferCount);
+
+	for (UINT idx =	0; idx < scDesc.BufferCount; ++idx)
+	{
+		result = m_cpSwapChain->GetBuffer(idx, IID_PPV_ARGS(&m_cpBackBuffers[idx]));
+	
+		m_cpDevice->CreateRenderTargetView(m_cpBackBuffers[idx], nullptr, handle);
+	
+		handle.ptr += m_cpDevice->GetDescriptorHandleIncrementSize
+		(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	}
+
+	return true;
+}
+
+bool GraphicsDevice::CreateFence()
+{
+	// フェンス作成
+	auto result = m_cpDevice->CreateFence(m_fenceVal,
+		D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(m_cpFence.ReleaseAndGetAddressOf()));
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void GraphicsDevice::SetResourceBarrier(ID3D12Resource* pResource, D3D12_RESOURCE_STATES before,
+	D3D12_RESOURCE_STATES after)
+{
+	D3D12_RESOURCE_BARRIER barrier = {};
+	barrier.Transition.pResource = pResource;
+	barrier.Transition.StateBefore = before;
+	barrier.Transition.StateAfter = after;
+	m_cpCmdList->ResourceBarrier(1, &barrier);
 }

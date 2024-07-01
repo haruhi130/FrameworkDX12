@@ -19,6 +19,12 @@
     <Filter Include="Framework\Graphics">
       <UniqueIdentifier>{33dd4948-cd25-4766-8ed4-9f3ea4bba0a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Heaps">
+      <UniqueIdentifier>{74cfa76a-2900-4ba1-a2f0-7fd6270b0cb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Heaps\RTVHeap">
+      <UniqueIdentifier>{a615b152-bb62-43d1-b25c-59a163933fed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -34,6 +40,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Framework\Graphics\GraphicsDevice.cpp">
       <Filter>Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Heaps\RTVHeap\RTVHeap.cpp">
+      <Filter>Framework\Heaps\RTVHeap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +65,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Graphics\GraphicsDevice.h">
       <Filter>Framework\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Heaps\RTVHeap\RTVHeap.h">
+      <Filter>Framework\Heaps\RTVHeap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

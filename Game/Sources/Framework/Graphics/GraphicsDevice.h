@@ -1,10 +1,24 @@
 #pragma once
 
+class RTVHeap;
+
 class GraphicsDevice
 {
 public:
 	// 初期化
 	bool Init(HWND hWnd, int width, int height);
+
+	// 画面描画
+	void ScreenFlip();
+
+	// コマンドキュー待機
+	void WaitForCommandQueue();
+
+	// デバッグ用
+	void EnableDebugLayer();
+
+	inline ID3D12Device* GetDevice() const
+	{ return m_cpDevice.Get(); }
 
 private:
 	enum class GPUTier
@@ -35,6 +49,16 @@ private:
 	// スワップチェーン作成
 	bool CreateSwapChain(HWND hWnd,int width,int height);
 
+	// レンダーターゲットビュー作成
+	bool CreateRTV();
+
+	// フェンス作成
+	bool CreateFence();
+
+	// リソースバリア切り替え
+	void SetResourceBarrier(ID3D12Resource* pResource,D3D12_RESOURCE_STATES before,
+		D3D12_RESOURCE_STATES after);
+
 	ComPtr<IDXGIFactory7> m_cpDxgiFactory = nullptr;
 	ComPtr<ID3D12Device10> m_cpDevice = nullptr;
 
@@ -43,6 +67,13 @@ private:
 	ComPtr<ID3D12CommandQueue> m_cpCmdQueue = nullptr;
 
 	ComPtr<IDXGISwapChain4> m_cpSwapChain = nullptr;
+
+	std::unique_ptr<RTVHeap> m_upRTVHeap = nullptr;
+
+	std::vector<ID3D12Resource*> m_cpBackBuffers;
+
+	ComPtr<ID3D12Fence1> m_cpFence = nullptr;
+	UINT64 m_fenceVal = 0;
 
 	GraphicsDevice(){}
 	~GraphicsDevice(){}

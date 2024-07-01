@@ -23,5 +23,7 @@ void Application::Execute()
 		{
 			break;
 		}
+
+		GraphicsDevice::GetInstance().ScreenFlip();
 	}
 }
