@@ -5,7 +5,10 @@
 class Application
 {
 public:
-	// ゲーム実行用関数
+	// 初期化
+	bool Init(int width = 1280,int height = 720);
+
+	// ゲーム実行
 	void Execute();
 
 private:
