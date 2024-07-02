@@ -16,6 +16,18 @@ void Application::Execute()
 		return;
 	}
 
+	Mesh mesh;
+	mesh.Create();
+
+	RenderingSetting rs = {};
+	rs.InputLayouts = { InputLayout::POSITION };
+	rs.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
+	rs.IsDepth = false;
+	rs.IsDepthMask = false;
+
+	Shader shader;
+	shader.Create(L"SimpleShader", rs, {});
+
 	// メインゲームループ
 	while (true)
 	{
@@ -23,6 +35,11 @@ void Application::Execute()
 		{
 			break;
 		}
+
+		GraphicsDevice::GetInstance().Prepare();
+
+		shader.Begin(1280, 720);
+		shader.DrawMesh(mesh);
 
 		GraphicsDevice::GetInstance().ScreenFlip();
 	}

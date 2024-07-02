@@ -9,7 +9,10 @@ public:
 	// 初期化
 	bool Init(HWND hWnd, int width, int height);
 
-	// 画面描画
+	// 描画前準備
+	void Prepare();
+
+	// スワップチェーン切り替え
 	void ScreenFlip();
 
 	// コマンドキュー待機
@@ -18,8 +21,11 @@ public:
 	// デバッグ用
 	void EnableDebugLayer();
 
-	inline ID3D12Device* GetDevice() const
+	inline ID3D12Device14* GetDevice() const
 	{ return m_cpDevice.Get(); }
+
+	inline ID3D12GraphicsCommandList10* GetCmdList()const
+	{ return m_cpCmdList.Get(); }
 
 private:
 	enum class GPUTier
@@ -61,10 +67,10 @@ private:
 		D3D12_RESOURCE_STATES after);
 
 	ComPtr<IDXGIFactory7> m_cpDxgiFactory = nullptr;
-	ComPtr<ID3D12Device10> m_cpDevice = nullptr;
+	ComPtr<ID3D12Device14> m_cpDevice = nullptr;
 
 	ComPtr<ID3D12CommandAllocator> m_cpCmdAllocator = nullptr;
-	ComPtr<ID3D12GraphicsCommandList7> m_cpCmdList = nullptr;
+	ComPtr<ID3D12GraphicsCommandList10> m_cpCmdList = nullptr;
 	ComPtr<ID3D12CommandQueue> m_cpCmdQueue = nullptr;
 
 	ComPtr<IDXGISwapChain4> m_cpSwapChain = nullptr;

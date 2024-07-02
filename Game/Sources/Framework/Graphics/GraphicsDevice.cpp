@@ -64,7 +64,7 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 	return true;
 }
 
-void GraphicsDevice::ScreenFlip()
+void GraphicsDevice::Prepare()
 {
 	auto bbIdx = m_cpSwapChain->GetCurrentBackBufferIndex();
 
@@ -79,18 +79,23 @@ void GraphicsDevice::ScreenFlip()
 
 	float clearCol[] = { 1.0f,0.0f,1.0f,1.0f };
 	m_cpCmdList->ClearRenderTargetView(rtvH, clearCol, 0, nullptr);
+}
+
+void GraphicsDevice::ScreenFlip()
+{
+	auto bbIdx = m_cpSwapChain->GetCurrentBackBufferIndex();
 
 	SetResourceBarrier(m_cpBackBuffers[bbIdx],
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 
-	auto result = m_cpCmdList->Close();
+	m_cpCmdList->Close();
 	ID3D12CommandList* cmdLists[] = { m_cpCmdList.Get()};
 	m_cpCmdQueue->ExecuteCommandLists(1, cmdLists);
 
 	WaitForCommandQueue();
 
-	result = m_cpCmdAllocator->Reset();
-	result = m_cpCmdList->Reset(m_cpCmdAllocator.Get(), nullptr);
+	m_cpCmdAllocator->Reset();
+	m_cpCmdList->Reset(m_cpCmdAllocator.Get(), nullptr);
 
 	m_cpSwapChain->Present(1, 0);
 }
