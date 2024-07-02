@@ -60,7 +60,7 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 		assert(0 && "フェンス作成失敗");
 		return false;
 	}
-	
+
 	return true;
 }
 
@@ -215,12 +215,10 @@ bool GraphicsDevice::CreateDevice()
 	};
 
 	// Direct3Dデバイス初期化
-	D3D_FEATURE_LEVEL featureLevel;
-	for (auto lv : featureLevels)
+	for (auto level : featureLevels)
 	{
-		if (D3D12CreateDevice(pSelectAdapter.Get(), lv, IID_PPV_ARGS(m_cpDevice.ReleaseAndGetAddressOf())) == S_OK)
+		if (D3D12CreateDevice(pSelectAdapter.Get(), level, IID_PPV_ARGS(m_cpDevice.ReleaseAndGetAddressOf())) == S_OK)
 		{
-			featureLevel = lv;
 			break;
 		}
 	}
@@ -294,7 +292,7 @@ bool GraphicsDevice::CreateSwapChain(HWND hWnd, int width, int height)
 	}
 
 	// 型変換チェック
-	result = pSwapChain->QueryInterface(IID_PPV_ARGS(m_cpSwapChain.ReleaseAndGetAddressOf()));
+	result = pSwapChain->QueryInterface(IID_PPV_ARGS(m_cpSwapChain.GetAddressOf()));
 	if (FAILED(result))
 	{
 		return false;

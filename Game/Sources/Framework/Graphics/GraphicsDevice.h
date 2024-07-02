@@ -5,6 +5,7 @@ class RTVHeap;
 class GraphicsDevice
 {
 public:
+
 	// èâä˙âª
 	bool Init(HWND hWnd, int width, int height);
 
@@ -75,8 +76,8 @@ private:
 	ComPtr<ID3D12Fence1> m_cpFence = nullptr;
 	UINT64 m_fenceVal = 0;
 
-	GraphicsDevice(){}
-	~GraphicsDevice(){}
+	GraphicsDevice() {}
+	~GraphicsDevice() {}
 public:
 	static GraphicsDevice& GetInstance()
 	{
