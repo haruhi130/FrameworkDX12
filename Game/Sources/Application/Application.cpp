@@ -31,7 +31,7 @@ void Application::Execute()
 	mesh.Create();
 
 	RenderingSetting rs = {};
-	rs.InputLayouts = { InputLayout::POSITION };
+	rs.InputLayouts = { InputLayout::POSITION,InputLayout::TEXCOORD };
 	rs.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
 	rs.IsDepth = false;
 	rs.IsDepthMask = false;

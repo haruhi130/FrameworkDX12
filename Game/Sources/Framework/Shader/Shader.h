@@ -20,7 +20,6 @@ struct RenderingSetting
 class Shader
 {
 public:
-
 	// シェーダー作成
 	void Create(const std::wstring& filePath,
 		const RenderingSetting& renderingSetting, const std::vector<RangeType>& rangeTypes);
@@ -32,7 +31,6 @@ public:
 	void DrawMesh(const Mesh& mesh);
 
 private:
-
 	// シェーダーファイル読込
 	void LoadShaderFile(const std::wstring& filePath);
 

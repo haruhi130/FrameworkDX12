@@ -22,7 +22,6 @@ enum class D3D12Filter
 class RootSignature
 {
 public:
-
 	// ルートシグネチャ作成
 	void Create(const std::vector<RangeType>& rangeTypes, UINT& cbvCount);
 
@@ -31,7 +30,6 @@ public:
 	{ return m_cpRootSignature.Get(); }
 
 private:
-
 	// レンジ作成
 	void CreateRange(D3D12_DESCRIPTOR_RANGE& pRange, RangeType type, int count);
 

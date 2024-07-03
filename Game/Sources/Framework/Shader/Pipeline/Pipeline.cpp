@@ -11,7 +11,8 @@ void Pipeline::SetRenderSettings(RootSignature* pRootSignature, const std::vecto
 	m_topologyType = topologyType;
 }
 
-void Pipeline::Create(std::vector<ID3DBlob*> pBlobs, const std::vector<DXGI_FORMAT> formats, bool bDepth, bool bDepthMask, int rtvCount, bool bWireFrame)
+void Pipeline::Create(std::vector<ID3DBlob*> pBlobs, const std::vector<DXGI_FORMAT> formats, bool isDepth,
+	bool isDepthMask,int rtvCount, bool isWireFrame)
 {
 	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayouts;
 	SetInputLayout(inputLayouts, m_inputLayouts);
@@ -54,7 +55,7 @@ void Pipeline::Create(std::vector<ID3DBlob*> pBlobs, const std::vector<DXGI_FORM
 	graphicsPipelineState.RasterizerState.CullMode = static_cast<D3D12_CULL_MODE>(m_cullMode);
 
 	// フィルターモードをセット
-	if (bWireFrame)
+	if (isWireFrame)
 	{
 		graphicsPipelineState.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;		// 中身を塗りつぶさない
 	}
@@ -64,12 +65,12 @@ void Pipeline::Create(std::vector<ID3DBlob*> pBlobs, const std::vector<DXGI_FORM
 	}
 
 	// 深度設定をセット
-	if (bDepth)
+	if (isDepth)
 	{
 		graphicsPipelineState.RasterizerState.DepthClipEnable = true;
 		graphicsPipelineState.DepthStencilState.DepthEnable = true;
 
-		if (bDepthMask)
+		if (isDepthMask)
 		{
 			graphicsPipelineState.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
 		}

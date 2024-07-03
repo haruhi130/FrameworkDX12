@@ -5,7 +5,6 @@ class RTVHeap;
 class GraphicsDevice
 {
 public:
-
 	// 初期化
 	bool Init(HWND hWnd, int width, int height);
 
@@ -21,9 +20,11 @@ public:
 	// デバッグ用
 	void EnableDebugLayer();
 
+	// デバイス取得
 	inline ID3D12Device14* GetDevice() const
 	{ return m_cpDevice.Get(); }
 
+	// コマンドリスト取得
 	inline ID3D12GraphicsCommandList10* GetCmdList()const
 	{ return m_cpCmdList.Get(); }
 

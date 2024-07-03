@@ -111,6 +111,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Sources\Framework\Shader\HLSL\inc_SimpleShader.hlsli">
+      <Filter>Framework\Shader\HLSL</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Sources\Framework\Shader\HLSL\SimpleShader_PS.hlsl">

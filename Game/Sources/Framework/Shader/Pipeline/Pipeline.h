@@ -38,7 +38,6 @@ class RootSignature;
 class Pipeline
 {
 public:
-
 	// 描画関係設定
 	void SetRenderSettings(RootSignature* pRootSignature,
 		const std::vector<InputLayout>& inputLayouts, CullMode cullMode, BlendMode blendMode,
@@ -57,7 +56,7 @@ public:
 	{ return m_topologyType; }
 
 private:
-
+	// レイアウト設定
 	void SetInputLayout(std::vector<D3D12_INPUT_ELEMENT_DESC>& inputElements,
 		const std::vector<InputLayout>& inputLayouts);
 
