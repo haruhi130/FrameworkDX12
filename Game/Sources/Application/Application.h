@@ -11,6 +11,8 @@ public:
 	// ƒQ[ƒ€Às
 	void Execute();
 
+	void Terminate();
+
 private:
 	Window m_window;
 

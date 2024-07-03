@@ -55,3 +55,10 @@ void Application::Execute()
 		GraphicsDevice::GetInstance().ScreenFlip();
 	}
 }
+
+void Application::Terminate()
+{
+	// COM‰ð•ú
+	CoUninitialize();
+	m_window.Terminate();
+}

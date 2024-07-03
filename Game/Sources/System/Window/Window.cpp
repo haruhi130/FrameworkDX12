@@ -25,14 +25,13 @@ bool Window::Create(int windowWidth, int windowHeight, const std::wstring& title
 	HINSTANCE hInst = GetModuleHandle(0);
 
 	// ウィンドウ定義
-	WNDCLASSEX wc = {};
-	wc.cbSize = sizeof(WNDCLASSEX);
-	wc.lpfnWndProc = (WNDPROC)WindowProcedure;
-	wc.lpszClassName = windowClassName.c_str();
-	wc.hInstance = hInst;
+	m_wndClass.cbSize = sizeof(WNDCLASSEX);
+	m_wndClass.lpfnWndProc = (WNDPROC)WindowProcedure;
+	m_wndClass.lpszClassName = windowClassName.c_str();
+	m_wndClass.hInstance = hInst;
 
 	// ウィンドウ登録
-	if (!RegisterClassEx(&wc))
+	if (!RegisterClassEx(&m_wndClass))
 	{
 		return false;
 	}
@@ -82,4 +81,9 @@ bool Window::ProcessMessage()
 	}
 
 	return true;
+}
+
+void Window::Terminate()const
+{
+	UnregisterClass(m_wndClass.lpszClassName, m_wndClass.hInstance);
 }

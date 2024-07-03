@@ -11,6 +11,9 @@ public:
 
 	bool ProcessMessage();
 
+	void Terminate()const;
+
 private:
 	HWND m_hWnd = {};
+	WNDCLASSEX m_wndClass = {};
 };

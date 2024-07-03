@@ -11,8 +11,7 @@ int WINAPI WinMain(_In_ HINSTANCE,_In_opt_ HINSTANCE,_In_ LPSTR,_In_ int)
 	// アプリケーション実行
 	Application::GetInstance().Execute();
 	
-	// COM解放
-	CoUninitialize();
+	Application::GetInstance().Terminate();
 	
 	return 0;
 }
