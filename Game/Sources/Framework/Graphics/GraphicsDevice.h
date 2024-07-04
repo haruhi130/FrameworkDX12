@@ -81,7 +81,7 @@ private:
 
 	ComPtr<IDXGISwapChain4> m_cpSwapChain = nullptr;
 
-	std::array<ID3D12Resource*,2> m_pBackBuffers;
+	std::array<ID3D12Resource*, 2> m_pBackBuffers = {};
 
 	std::unique_ptr<RTVHeap> m_upRTVHeap = nullptr;
 	std::unique_ptr<CBVSRVUAVHeap> m_upCBVSRVUAVHeap = nullptr;

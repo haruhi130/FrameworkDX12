@@ -176,6 +176,7 @@
     <ClCompile Include="Sources\Framework\Shader\Pipeline\Pipeline.cpp" />
     <ClCompile Include="Sources\Framework\Shader\RootSignature\RootSignature.cpp" />
     <ClCompile Include="Sources\Framework\Shader\Shader.cpp" />
+    <ClCompile Include="Sources\Framework\Texture\Texture.cpp" />
     <ClCompile Include="Sources\main.cpp" />
     <ClCompile Include="Sources\Pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -201,6 +202,7 @@
     <ClInclude Include="Sources\Framework\Shader\Pipeline\Pipeline.h" />
     <ClInclude Include="Sources\Framework\Shader\RootSignature\RootSignature.h" />
     <ClInclude Include="Sources\Framework\Shader\Shader.h" />
+    <ClInclude Include="Sources\Framework\Texture\Texture.h" />
     <ClInclude Include="Sources\main.h" />
     <ClInclude Include="Sources\Pch.h" />
     <ClInclude Include="Sources\System\System.h" />

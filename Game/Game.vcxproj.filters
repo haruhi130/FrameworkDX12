@@ -43,6 +43,9 @@
     <Filter Include="Framework\Heap\CBVSRVUAVHeap">
       <UniqueIdentifier>{a87ba798-4be4-4823-a4f0-43aa728fa7aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Texture">
+      <UniqueIdentifier>{2b34f367-2bd9-42a5-ae4c-2cc3d9a9866e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -76,6 +79,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.cpp">
       <Filter>Framework\Heap\CBVSRVUAVHeap</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Texture\Texture.cpp">
+      <Filter>Framework\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +125,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.h">
       <Filter>Framework\Heap\CBVSRVUAVHeap</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Texture\Texture.h">
+      <Filter>Framework\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

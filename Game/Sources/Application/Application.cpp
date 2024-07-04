@@ -43,7 +43,10 @@ void Application::Execute()
 	rs.IsDepthMask = false;
 
 	Shader shader;
-	shader.Create(L"SimpleShader", rs, {});
+	shader.Create(L"SimpleShader", rs, {RangeType::SRV});
+
+	Texture sampleTex;
+	sampleTex.Load("Assets/Textures/IMG_0566.JPG");
 
 	// メインゲームループ
 	while (true)
@@ -60,7 +63,12 @@ void Application::Execute()
 
 		GraphicsDevice::GetInstance().Prepare();
 
+		GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
+
 		shader.Begin(1280, 720);
+
+		sampleTex.Set(sampleTex.GetSRVNumber());
+
 		shader.DrawMesh(mesh);
 
 		GraphicsDevice::GetInstance().ScreenFlip();

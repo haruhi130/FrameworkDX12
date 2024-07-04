@@ -20,10 +20,10 @@ public:
 
 private:
 	ComPtr<ID3D12Resource> m_cpVBuffer = nullptr;
-	D3D12_VERTEX_BUFFER_VIEW m_vbView;
+	D3D12_VERTEX_BUFFER_VIEW m_vbView = {};
 
 	ComPtr<ID3D12Resource> m_cpIBuffer = nullptr;
-	D3D12_INDEX_BUFFER_VIEW m_ibView;
+	D3D12_INDEX_BUFFER_VIEW m_ibView = {};
 
 	std::vector<Vertex> m_vertices;
 
