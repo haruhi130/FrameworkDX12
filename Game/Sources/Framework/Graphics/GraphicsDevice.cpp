@@ -43,9 +43,16 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 	}
 
 	m_upRTVHeap = std::make_unique<RTVHeap>();
-	if (!m_upRTVHeap->Create())
+	if (!m_upRTVHeap->Create(HeapType::RTV,100))
 	{
 		assert(0 && "RTVÉqÅ[ÉvçÏê¨é∏îs");
+		return false;
+	}
+
+	m_upCBVSRVUAVHeap = std::make_unique<CBVSRVUAVHeap>();
+	if (!m_upCBVSRVUAVHeap->Create(HeapType::CBVSRVUAV, Math::Vector3(100,100,100)))
+	{
+		assert(0 && "CBVSRVUAVÉqÅ[ÉvçÏê¨é∏îs");
 		return false;
 	}
 
@@ -68,13 +75,11 @@ void GraphicsDevice::Prepare()
 {
 	auto bbIdx = m_cpSwapChain->GetCurrentBackBufferIndex();
 
-	SetResourceBarrier(m_cpBackBuffers[bbIdx],
+	SetResourceBarrier(m_pBackBuffers[bbIdx],
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
-	auto rtvH = m_upRTVHeap->GetCPUHandle();
+	auto rtvH = m_upRTVHeap->GetCPUHandle(bbIdx);
 
-	rtvH.ptr += static_cast<ULONG_PTR>(bbIdx * m_cpDevice->GetDescriptorHandleIncrementSize
-	(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
 	m_cpCmdList->OMSetRenderTargets(1, &rtvH, true, nullptr);
 
 	float clearCol[] = { 1.0f,0.0f,1.0f,1.0f };
@@ -85,7 +90,7 @@ void GraphicsDevice::ScreenFlip()
 {
 	auto bbIdx = m_cpSwapChain->GetCurrentBackBufferIndex();
 
-	SetResourceBarrier(m_cpBackBuffers[bbIdx],
+	SetResourceBarrier(m_pBackBuffers[bbIdx],
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 
 	m_cpCmdList->Close();
@@ -308,21 +313,15 @@ bool GraphicsDevice::CreateSwapChain(HWND hWnd, int width, int height)
 
 bool GraphicsDevice::CreateRTV()
 {
-	DXGI_SWAP_CHAIN_DESC scDesc = {};
-	auto result = m_cpSwapChain->GetDesc(&scDesc);
-
-	auto handle = m_upRTVHeap->GetCPUHandle();
-
-	m_cpBackBuffers.resize(scDesc.BufferCount);
-
-	for (UINT idx =	0; idx < scDesc.BufferCount; ++idx)
+	for (int idx = 0; idx < (int)m_pBackBuffers.size(); ++idx)
 	{
-		result = m_cpSwapChain->GetBuffer(idx, IID_PPV_ARGS(&m_cpBackBuffers[idx]));
-	
-		m_cpDevice->CreateRenderTargetView(m_cpBackBuffers[idx], nullptr, handle);
-	
-		handle.ptr += m_cpDevice->GetDescriptorHandleIncrementSize
-		(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+		auto result = m_cpSwapChain->GetBuffer(idx, IID_PPV_ARGS(&m_pBackBuffers[idx]));
+		if (FAILED(result))
+		{
+			return false;
+		}
+
+		m_upRTVHeap->CreateRTV(m_pBackBuffers[idx]);
 	}
 
 	return true;

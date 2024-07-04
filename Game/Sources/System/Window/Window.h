@@ -11,7 +11,7 @@ public:
 
 	bool ProcessMessage();
 
-	void Terminate()const;
+	void Terminate() const;
 
 private:
 	HWND m_hWnd = {};

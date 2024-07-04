@@ -2,6 +2,12 @@
 
 bool Application::Init(int width, int height)
 {
+	// メモリリーク検知
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+	// COM初期化
+	HRESULT result = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+
 	// ウィンドウ作成
 	if (!m_window.Create(width, height, L"FrameworkDX12", L"Window"))
 	{
@@ -47,6 +53,11 @@ void Application::Execute()
 			break;
 		}
 
+		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+		{
+			break;
+		}
+
 		GraphicsDevice::GetInstance().Prepare();
 
 		shader.Begin(1280, 720);
@@ -60,5 +71,6 @@ void Application::Terminate()
 {
 	// COM解放
 	CoUninitialize();
+	// ウィンドウ登録解除
 	m_window.Terminate();
 }

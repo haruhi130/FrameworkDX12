@@ -83,7 +83,8 @@ bool Window::ProcessMessage()
 	return true;
 }
 
-void Window::Terminate()const
+void Window::Terminate() const
 {
+	// ウィンドウ登録解除
 	UnregisterClass(m_wndClass.lpszClassName, m_wndClass.hInstance);
 }

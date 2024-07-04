@@ -170,7 +170,8 @@
   <ItemGroup>
     <ClCompile Include="Sources\Application\Application.cpp" />
     <ClCompile Include="Sources\Framework\Graphics\GraphicsDevice.cpp" />
-    <ClCompile Include="Sources\Framework\Heaps\RTVHeap\RTVHeap.cpp" />
+    <ClCompile Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.cpp" />
+    <ClCompile Include="Sources\Framework\Heap\RTVHeap\RTVHeap.cpp" />
     <ClCompile Include="Sources\Framework\Mesh\Mesh.cpp" />
     <ClCompile Include="Sources\Framework\Shader\Pipeline\Pipeline.cpp" />
     <ClCompile Include="Sources\Framework\Shader\RootSignature\RootSignature.cpp" />
@@ -193,7 +194,9 @@
     <ClInclude Include="Sources\Application\Application.h" />
     <ClInclude Include="Sources\Framework\Framework.h" />
     <ClInclude Include="Sources\Framework\Graphics\GraphicsDevice.h" />
-    <ClInclude Include="Sources\Framework\Heaps\RTVHeap\RTVHeap.h" />
+    <ClInclude Include="Sources\Framework\Heap\BaseHeap.h" />
+    <ClInclude Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.h" />
+    <ClInclude Include="Sources\Framework\Heap\RTVHeap\RTVHeap.h" />
     <ClInclude Include="Sources\Framework\Mesh\Mesh.h" />
     <ClInclude Include="Sources\Framework\Shader\Pipeline\Pipeline.h" />
     <ClInclude Include="Sources\Framework\Shader\RootSignature\RootSignature.h" />

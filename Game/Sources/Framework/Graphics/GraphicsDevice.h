@@ -1,6 +1,7 @@
 #pragma once
 
 class RTVHeap;
+class CBVSRVUAVHeap;
 
 class GraphicsDevice
 {
@@ -27,6 +28,10 @@ public:
 	// コマンドリスト取得
 	inline ID3D12GraphicsCommandList10* GetCmdList()const
 	{ return m_cpCmdList.Get(); }
+
+	// CBVSRVUAVヒープ取得
+	inline CBVSRVUAVHeap* GetCBVSRVUAVHeap()const 
+	{ return m_upCBVSRVUAVHeap.get(); }
 
 private:
 	enum class GPUTier
@@ -76,9 +81,10 @@ private:
 
 	ComPtr<IDXGISwapChain4> m_cpSwapChain = nullptr;
 
-	std::unique_ptr<RTVHeap> m_upRTVHeap = nullptr;
+	std::array<ID3D12Resource*,2> m_pBackBuffers;
 
-	std::vector<ID3D12Resource*> m_cpBackBuffers;
+	std::unique_ptr<RTVHeap> m_upRTVHeap = nullptr;
+	std::unique_ptr<CBVSRVUAVHeap> m_upCBVSRVUAVHeap = nullptr;
 
 	ComPtr<ID3D12Fence1> m_cpFence = nullptr;
 	UINT64 m_fenceVal = 0;

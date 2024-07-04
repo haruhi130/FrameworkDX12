@@ -4,7 +4,9 @@
 //==============================================
 #include "Graphics/GraphicsDevice.h"
 
-#include "Heaps/RTVHeap/RTVHeap.h"
+#include "Heap/BaseHeap.h"
+#include "Heap/RTVHeap/RTVHeap.h"
+#include "Heap/CBVSRVUAVHeap/CBVSRVUAVHeap.h"
 
 #include "Mesh/Mesh.h"
 
