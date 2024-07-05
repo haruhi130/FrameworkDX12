@@ -2,6 +2,7 @@
 
 class RTVHeap;
 class CBVSRVUAVHeap;
+class ConstantBufferAllocator;
 
 class GraphicsDevice
 {
@@ -32,6 +33,10 @@ public:
 	// CBVSRVUAVヒープ取得
 	inline CBVSRVUAVHeap* GetCBVSRVUAVHeap()const 
 	{ return m_upCBVSRVUAVHeap.get(); }
+
+	// 定数バッファアロケーター取得
+	inline ConstantBufferAllocator* GetConstantBufferAllocator()const
+	{ return m_upCBufferAllocator.get(); }
 
 private:
 	enum class GPUTier
@@ -88,6 +93,8 @@ private:
 
 	ComPtr<ID3D12Fence1> m_cpFence = nullptr;
 	UINT64 m_fenceVal = 0;
+
+	std::unique_ptr<ConstantBufferAllocator> m_upCBufferAllocator = nullptr;
 
 	GraphicsDevice() {}
 	~GraphicsDevice() {}

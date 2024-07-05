@@ -43,10 +43,19 @@ void Application::Execute()
 	rs.IsDepthMask = false;
 
 	Shader shader;
-	shader.Create(L"SimpleShader", rs, {RangeType::SRV});
+	shader.Create(L"SimpleShader", rs, {RangeType::CBV,RangeType::SRV});
 
 	Texture sampleTex;
-	sampleTex.Load("Assets/Textures/IMG_0566.JPG");
+	sampleTex.Load("Assets/Textures/back.png");
+
+	Math::Matrix mView = Math::Matrix::CreateTranslation(0, 0, 3);
+
+	Math::Matrix mProj = DirectX::XMMatrixPerspectiveFovLH
+	(DirectX::XMConvertToRadians(60.0f), 1280.0f / 720.0f, 0.01f, 1000.0f);
+
+	ConstantBufferData::Camera cbCamera;
+	cbCamera.mView = mView;
+	cbCamera.mProj = mProj;
 
 	// メインゲームループ
 	while (true)
@@ -65,9 +74,14 @@ void Application::Execute()
 
 		GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
 
+		GraphicsDevice::GetInstance().GetConstantBufferAllocator()->ResetCurrentUseNumber();
+
 		shader.Begin(1280, 720);
 
-		sampleTex.Set(sampleTex.GetSRVNumber());
+		sampleTex.Set(shader.GetCBVCount() + sampleTex.GetSRVNumber());
+
+		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
+			->BindAndAttachData(0, cbCamera);
 
 		shader.DrawMesh(mesh);
 

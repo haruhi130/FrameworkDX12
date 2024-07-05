@@ -56,6 +56,10 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 		return false;
 	}
 
+	m_upCBufferAllocator = std::make_unique<ConstantBufferAllocator>();
+	m_upCBufferAllocator->Create(m_upCBVSRVUAVHeap.get());
+
+
 	if (!CreateRTV())
 	{
 		assert(0 && "RTVçÏê¨é∏îs");

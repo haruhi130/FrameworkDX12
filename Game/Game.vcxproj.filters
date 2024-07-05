@@ -46,6 +46,18 @@
     <Filter Include="Framework\Texture">
       <UniqueIdentifier>{2b34f367-2bd9-42a5-ae4c-2cc3d9a9866e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\ConstantBufferAllocator">
+      <UniqueIdentifier>{ce449f54-fc11-4d8b-8899-153e255d4dd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\ConstantBufferAllocator\ConstantBufferData">
+      <UniqueIdentifier>{7eb7cf38-3484-4123-ac4b-acd0d1860da3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Mesh\MeshData">
+      <UniqueIdentifier>{24a29244-05dd-4999-ac95-5656f3de8543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Model">
+      <UniqueIdentifier>{9d7212a1-07c6-44e7-92a9-8e0f150deb96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -82,6 +94,12 @@
     </ClCompile>
     <ClCompile Include="Sources\Framework\Texture\Texture.cpp">
       <Filter>Framework\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\ConstantBufferAllocator\ConstantBufferAllocator.cpp">
+      <Filter>Framework\ConstantBufferAllocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Model\Model.cpp">
+      <Filter>Framework\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +146,18 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Texture\Texture.h">
       <Filter>Framework\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\ConstantBufferAllocator\ConstantBufferAllocator.h">
+      <Filter>Framework\ConstantBufferAllocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\ConstantBufferAllocator\ConstantBufferData\ConstantBufferData.h">
+      <Filter>Framework\ConstantBufferAllocator\ConstantBufferData</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Mesh\MeshData\MeshData.h">
+      <Filter>Framework\Mesh\MeshData</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Model\Model.h">
+      <Filter>Framework\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

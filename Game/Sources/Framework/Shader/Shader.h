@@ -30,6 +30,10 @@ public:
 	// メッシュ描画
 	void DrawMesh(const Mesh& mesh);
 
+	// CBVカウント取得
+	inline UINT GetCBVCount()const 
+	{ return m_cbvCount; }
+
 private:
 	// シェーダーファイル読込
 	void LoadShaderFile(const std::wstring& filePath);

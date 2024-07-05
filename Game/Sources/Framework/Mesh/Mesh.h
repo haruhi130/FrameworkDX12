@@ -1,22 +1,41 @@
 #pragma once
 
-struct Vertex
-{
-	Vertex(Math::Vector3 position,Math::Vector2 uv):Position(position),UV(uv)
-	{}
+#include "MeshData/MeshData.h"
 
-	Math::Vector3 Position;
-	Math::Vector2 UV;
+struct MeshFace
+{
+	UINT Idx[3];
+};
+
+struct Material
+{
+	std::string Name; // マテリアル名
+
+	std::shared_ptr<Texture> spBaseColorTex; // 基本色テクスチャ
+	Math::Vector4 BaseColor = { 1,1,1,1 }; // 基本色スケーリング係数
+
+	std::shared_ptr<Texture> spMetallicRoughnessTex; // 金属製 粗さ
+	float Metallic = 0.0f; // 金属製のスケーリング係数
+	float Roughness = 1.0f; // 粗さのスケーリング係数
+
+	std::shared_ptr<Texture> spEmissiveTex; // 自己発光テクスチャ
+	Math::Vector3 Emissive = { 0,0,0 }; // 自己発光のスケーリング係数
+
+	std::shared_ptr<Texture> spNormalTex; // 法線テクスチャ
 };
 
 class Mesh
 {
 public:
 	// メッシュ作成
-	void Create();
+	void Create(const std::vector<MeshVertex>& vertices,
+		const std::vector<MeshFace>& faces,const Material& material);
 
-	// メッシュ描画
-	void DrawInstanced() const;
+	// インスタンス描画
+	void DrawInstanced(UINT vertexCount) const;
+
+	inline const Material& GetMaterial()const 
+	{ return m_material; }
 
 private:
 	ComPtr<ID3D12Resource> m_cpVBuffer = nullptr;
@@ -25,7 +44,5 @@ private:
 	ComPtr<ID3D12Resource> m_cpIBuffer = nullptr;
 	D3D12_INDEX_BUFFER_VIEW m_ibView = {};
 
-	std::vector<Vertex> m_vertices;
-
-	std::vector<UINT> m_indices;
+	Material m_material;
 };

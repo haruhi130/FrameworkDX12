@@ -28,17 +28,17 @@ int CBVSRVUAVHeap::CreateSRV(ID3D12Resource* pBuffer)
 	return m_nextRegistNumber++;
 }
 
+void CBVSRVUAVHeap::SetHeap()
+{
+	ID3D12DescriptorHeap* ppHeaps[] = { m_cpHeap.Get() };
+	GraphicsDevice::GetInstance().GetCmdList()->SetDescriptorHeaps(1, ppHeaps);
+}
+
 const D3D12_GPU_DESCRIPTOR_HANDLE CBVSRVUAVHeap::GetGPUHandle(int number)
 {
 	D3D12_GPU_DESCRIPTOR_HANDLE handle = m_cpHeap->GetGPUDescriptorHandleForHeapStart();
 	handle.ptr += (UINT64)m_incrementSize * ((UINT64)m_useCount.x + 1);
 	handle.ptr += (UINT64)m_incrementSize * number;
-	
-	return handle;
-}
 
-void CBVSRVUAVHeap::SetHeap()
-{
-	ID3D12DescriptorHeap* ppHeaps[] = { m_cpHeap.Get() };
-	GraphicsDevice::GetInstance().GetCmdList()->SetDescriptorHeaps(1, ppHeaps);
+	return handle;
 }
