@@ -72,16 +72,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>.\Sources;$(IncludePath)</IncludePath>
+    <IncludePath>.\Sources</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>.\Sources;$(IncludePath)</IncludePath>
+    <IncludePath>.\Sources</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>.\Sources;$(IncludePath)</IncludePath>
+    <IncludePath>.\Sources</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>.\Sources;$(IncludePath)</IncludePath>
+    <IncludePath>.\Sources</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -93,10 +93,13 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Pch.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>..\Libraries\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\Libraries\assimp\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DelayLoadDLLs>assimp-vc143-mtd.dll</DelayLoadDLLs>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -114,12 +117,15 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Pch.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>..\Libraries\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\Libraries\assimp\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DelayLoadDLLs>assimp-vc143-mt.dll</DelayLoadDLLs>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -135,10 +141,13 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Pch.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>..\Libraries\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\Libraries\assimp\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DelayLoadDLLs>assimp-vc143-mtd.dll</DelayLoadDLLs>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -156,12 +165,15 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Pch.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>..\Libraries\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\Libraries\assimp\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DelayLoadDLLs>assimp-vc143-mt.dll</DelayLoadDLLs>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -175,6 +187,7 @@
     <ClCompile Include="Sources\Framework\Heap\RTVHeap\RTVHeap.cpp" />
     <ClCompile Include="Sources\Framework\Mesh\Mesh.cpp" />
     <ClCompile Include="Sources\Framework\Model\Model.cpp" />
+    <ClCompile Include="Sources\Framework\Model\ModelLoader.cpp" />
     <ClCompile Include="Sources\Framework\Shader\Pipeline\Pipeline.cpp" />
     <ClCompile Include="Sources\Framework\Shader\RootSignature\RootSignature.cpp" />
     <ClCompile Include="Sources\Framework\Shader\Shader.cpp" />
@@ -205,6 +218,7 @@
     <ClInclude Include="Sources\Framework\Mesh\Mesh.h" />
     <ClInclude Include="Sources\Framework\Mesh\MeshData\MeshData.h" />
     <ClInclude Include="Sources\Framework\Model\Model.h" />
+    <ClInclude Include="Sources\Framework\Model\ModelLoader.h" />
     <ClInclude Include="Sources\Framework\Shader\Pipeline\Pipeline.h" />
     <ClInclude Include="Sources\Framework\Shader\RootSignature\RootSignature.h" />
     <ClInclude Include="Sources\Framework\Shader\Shader.h" />
@@ -278,8 +292,6 @@
     <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.714.0-preview\build\native\Microsoft.Direct3D.D3D12.targets" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.714.0-preview\build\native\Microsoft.Direct3D.D3D12.targets')" />
     <Import Project="..\packages\directxtk12_uwp.2024.6.5.1\build\native\directxtk12_uwp.targets" Condition="Exists('..\packages\directxtk12_uwp.2024.6.5.1\build\native\directxtk12_uwp.targets')" />
     <Import Project="..\packages\directxtex_uwp.2024.6.5.1\build\native\directxtex_uwp.targets" Condition="Exists('..\packages\directxtex_uwp.2024.6.5.1\build\native\directxtex_uwp.targets')" />
-    <Import Project="..\packages\assimp_native.redist.4.0.1\build\native\assimp_native.redist.targets" Condition="Exists('..\packages\assimp_native.redist.4.0.1\build\native\assimp_native.redist.targets')" />
-    <Import Project="..\packages\assimp_native.4.0.1\build\native\assimp_native.targets" Condition="Exists('..\packages\assimp_native.4.0.1\build\native\assimp_native.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -289,7 +301,5 @@
     <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.714.0-preview\build\native\Microsoft.Direct3D.D3D12.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.714.0-preview\build\native\Microsoft.Direct3D.D3D12.targets'))" />
     <Error Condition="!Exists('..\packages\directxtk12_uwp.2024.6.5.1\build\native\directxtk12_uwp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk12_uwp.2024.6.5.1\build\native\directxtk12_uwp.targets'))" />
     <Error Condition="!Exists('..\packages\directxtex_uwp.2024.6.5.1\build\native\directxtex_uwp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtex_uwp.2024.6.5.1\build\native\directxtex_uwp.targets'))" />
-    <Error Condition="!Exists('..\packages\assimp_native.redist.4.0.1\build\native\assimp_native.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\assimp_native.redist.4.0.1\build\native\assimp_native.redist.targets'))" />
-    <Error Condition="!Exists('..\packages\assimp_native.4.0.1\build\native\assimp_native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\assimp_native.4.0.1\build\native\assimp_native.targets'))" />
   </Target>
 </Project>

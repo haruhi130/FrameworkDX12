@@ -30,6 +30,9 @@ public:
 	// メッシュ描画
 	void DrawMesh(const Mesh& mesh);
 
+	// モデル描画
+	void DrawModel(const ModelData& modelData);
+
 	// CBVカウント取得
 	inline UINT GetCBVCount()const 
 	{ return m_cbvCount; }
@@ -37,6 +40,9 @@ public:
 private:
 	// シェーダーファイル読込
 	void LoadShaderFile(const std::wstring& filePath);
+
+	// マテリアルセット
+	void SetMaterial(const Material& material);
 
 	std::unique_ptr<Pipeline>		m_upPipeline = nullptr;
 	std::unique_ptr<RootSignature>	m_upRootSignature = nullptr;

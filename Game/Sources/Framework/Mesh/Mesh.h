@@ -2,6 +2,8 @@
 
 #include "MeshData/MeshData.h"
 
+class Texture;
+
 struct MeshFace
 {
 	UINT Idx[3];
@@ -34,8 +36,13 @@ public:
 	// インスタンス描画
 	void DrawInstanced(UINT vertexCount) const;
 
+	// マテリアル取得
 	inline const Material& GetMaterial()const 
 	{ return m_material; }
+
+	// インスタンス数取得
+	inline UINT GetInstanceCount()const 
+	{ return m_instanceCount; }
 
 private:
 	ComPtr<ID3D12Resource> m_cpVBuffer = nullptr;
@@ -44,5 +51,6 @@ private:
 	ComPtr<ID3D12Resource> m_cpIBuffer = nullptr;
 	D3D12_INDEX_BUFFER_VIEW m_ibView = {};
 
+	UINT m_instanceCount;
 	Material m_material;
 };

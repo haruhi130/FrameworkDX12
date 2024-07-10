@@ -63,4 +63,15 @@
 #pragma comment(lib,"DirectXTex.lib")
 #include <DirectXTex.h>
 
+// assimp
+#ifdef _DEBUG
+#pragma comment(lib,"assimp-vc143-mtd.lib")
+#else
+#pragma comment(lib,"assimp-vc143-mt.lib")
+#endif
+
+#include "assimp/scene.h"
+#include "assimp/Importer.hpp"
+#include "assimp/postprocess.h"
+
 #include "System/System.h"

@@ -14,6 +14,9 @@ public:
 	void Terminate();
 
 private:
+	// DLLディレクトリのセットとロード
+	void SetDirectoryAndLoadDll();
+
 	Window m_window;
 
 	Application(){}

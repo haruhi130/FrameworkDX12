@@ -11,6 +11,8 @@ void Mesh::Create(const std::vector<MeshVertex>& vertices,
 		return;
 	}
 
+	m_instanceCount = static_cast<UINT>(faces.size() * 3);
+
 	D3D12_HEAP_PROPERTIES heapProp = {};
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
 	heapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
@@ -68,7 +70,7 @@ void Mesh::Create(const std::vector<MeshVertex>& vertices,
 	}
 
 	// インデックス情報コピー
-	UINT* ibMap = nullptr;
+	MeshFace* ibMap = nullptr;
 	{
 		m_cpIBuffer->Map(0, nullptr, (void**)&ibMap);
 		std::copy(std::begin(faces), std::end(faces), ibMap);

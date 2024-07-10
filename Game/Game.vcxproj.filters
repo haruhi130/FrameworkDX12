@@ -101,6 +101,9 @@
     <ClCompile Include="Sources\Framework\Model\Model.cpp">
       <Filter>Framework\Model</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Framework\Model\ModelLoader.cpp">
+      <Filter>Framework\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\main.h" />
@@ -157,6 +160,9 @@
       <Filter>Framework\Mesh\MeshData</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Framework\Model\Model.h">
+      <Filter>Framework\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Model\ModelLoader.h">
       <Filter>Framework\Model</Filter>
     </ClInclude>
   </ItemGroup>

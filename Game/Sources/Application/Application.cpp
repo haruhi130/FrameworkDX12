@@ -8,6 +8,8 @@ bool Application::Init(int width, int height)
 	// COM初期化
 	HRESULT result = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 
+	SetDirectoryAndLoadDll();
+
 	// ウィンドウ作成
 	if (!m_window.Create(width, height, L"FrameworkDX12", L"Window"))
 	{
@@ -33,20 +35,21 @@ void Application::Execute()
 		return;
 	}
 
-	Mesh mesh;
-	mesh.Create();
+	ModelData model;
+	model.Load("Assets/Models/Cube/Cube.gltf");
+
+	Math::Matrix mWorld;
 
 	RenderingSetting rs = {};
-	rs.InputLayouts = { InputLayout::POSITION,InputLayout::TEXCOORD };
+	rs.InputLayouts = 
+	{ InputLayout::POSITION,InputLayout::TEXCOORD ,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT};
 	rs.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
 	rs.IsDepth = false;
 	rs.IsDepthMask = false;
 
 	Shader shader;
-	shader.Create(L"SimpleShader", rs, {RangeType::CBV,RangeType::SRV});
-
-	Texture sampleTex;
-	sampleTex.Load("Assets/Textures/back.png");
+	shader.Create(L"SimpleShader", rs, 
+		{ RangeType::CBV,RangeType::CBV,RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
 
 	Math::Matrix mView = Math::Matrix::CreateTranslation(0, 0, 3);
 
@@ -78,12 +81,14 @@ void Application::Execute()
 
 		shader.Begin(1280, 720);
 
-		sampleTex.Set(shader.GetCBVCount() + sampleTex.GetSRVNumber());
-
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
 			->BindAndAttachData(0, cbCamera);
 
-		shader.DrawMesh(mesh);
+		mWorld *= Math::Matrix::CreateRotationY(0.01f);
+		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
+			->BindAndAttachData(1, mWorld);
+
+		shader.DrawModel(model);
 
 		GraphicsDevice::GetInstance().ScreenFlip();
 	}
@@ -95,4 +100,15 @@ void Application::Terminate()
 	CoUninitialize();
 	// ウィンドウ登録解除
 	m_window.Terminate();
+}
+
+void Application::SetDirectoryAndLoadDll()
+{
+#ifdef _DEBUG
+	SetDllDirectoryA("../Libraries/assimp/bin/Debug");
+	LoadLibraryExA("assimp-vc143-mtd.dll", NULL, NULL);
+#else
+	SetDllDirectoryA("../Libraries/assimp/bin/Release");
+	LoadLibraryExA("assimp-vc143-mt.dll", NULL, NULL);
+#endif 
 }

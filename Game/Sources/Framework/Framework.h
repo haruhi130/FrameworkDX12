@@ -12,8 +12,10 @@
 #include "ConstantBufferAllocator/ConstantBufferAllocator.h"
 #include "ConstantBufferAllocator/ConstantBufferData/ConstantBufferData.h"
 
+#include "Texture/Texture.h"
+
 #include "Mesh/Mesh.h"
 
-#include "Shader/Shader.h"
+#include "Model/Model.h"
 
-#include "Texture/Texture.h"
+#include "Shader/Shader.h"
