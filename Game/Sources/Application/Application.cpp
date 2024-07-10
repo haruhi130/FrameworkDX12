@@ -40,12 +40,12 @@ void Application::Execute()
 
 	Math::Matrix mWorld;
 
+	Math::Matrix mTempWorld = Math::Matrix::CreateTranslation(0, 0, 1);
+
 	RenderingSetting rs = {};
 	rs.InputLayouts = 
 	{ InputLayout::POSITION,InputLayout::TEXCOORD ,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT};
 	rs.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
-	rs.IsDepth = false;
-	rs.IsDepthMask = false;
 
 	Shader shader;
 	shader.Create(L"SimpleShader", rs, 
@@ -87,6 +87,11 @@ void Application::Execute()
 		mWorld *= Math::Matrix::CreateRotationY(0.01f);
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
 			->BindAndAttachData(1, mWorld);
+
+		shader.DrawModel(model);
+
+		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
+			->BindAndAttachData(1, mTempWorld);
 
 		shader.DrawModel(model);
 

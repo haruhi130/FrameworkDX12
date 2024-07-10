@@ -59,6 +59,19 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 	m_upCBufferAllocator = std::make_unique<ConstantBufferAllocator>();
 	m_upCBufferAllocator->Create(m_upCBVSRVUAVHeap.get());
 
+	m_upDSVHeap = std::make_unique<DSVHeap>();
+	if (!m_upDSVHeap->Create(HeapType::DSV, 100))
+	{
+		assert(0 && "DSVÉqÅ[ÉvçÏê¨é∏îs");
+		return false;
+	}
+
+	m_upDepthStencil = std::make_unique<DepthStencil>();
+	if (!m_upDepthStencil->Create(Math::Vector2(width, height)))
+	{
+		assert(0 && "DepthStencilçÏê¨é∏îs");
+		return false;
+	}
 
 	if (!CreateRTV())
 	{
@@ -84,10 +97,14 @@ void GraphicsDevice::Prepare()
 
 	auto rtvH = m_upRTVHeap->GetCPUHandle(bbIdx);
 
-	m_cpCmdList->OMSetRenderTargets(1, &rtvH, true, nullptr);
+	auto dsvH = m_upDSVHeap->GetCPUHandle(m_upDepthStencil->GetDSVNumber());
 
-	float clearCol[] = { 1.0f,0.0f,1.0f,1.0f };
+	m_cpCmdList->OMSetRenderTargets(1, &rtvH, true, &dsvH);
+
+	float clearCol[] = { 1.0f,1.0f,0.0f,1.0f };
 	m_cpCmdList->ClearRenderTargetView(rtvH, clearCol, 0, nullptr);
+
+	m_upDepthStencil->ClearBuffer();
 }
 
 void GraphicsDevice::ScreenFlip()

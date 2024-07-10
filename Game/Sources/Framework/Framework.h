@@ -8,11 +8,13 @@
 #include "Heap/BaseHeap.h"
 #include "Heap/RTVHeap/RTVHeap.h"
 #include "Heap/CBVSRVUAVHeap/CBVSRVUAVHeap.h"
+#include "Heap/DSVHeap/DSVHeap.h"
 
-#include "ConstantBufferAllocator/ConstantBufferAllocator.h"
-#include "ConstantBufferAllocator/ConstantBufferData/ConstantBufferData.h"
-
-#include "Texture/Texture.h"
+#include "Buffer/Buffer.h"
+#include "Buffer/ConstantBufferAllocator/ConstantBufferAllocator.h"
+#include "Buffer/ConstantBufferAllocator/ConstantBufferData/ConstantBufferData.h"
+#include "Buffer/DepthStencil/DepthStencil.h"
+#include "Buffer/Texture/Texture.h"
 
 #include "Mesh/Mesh.h"
 

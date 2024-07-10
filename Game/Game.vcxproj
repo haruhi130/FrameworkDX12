@@ -181,9 +181,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Application\Application.cpp" />
-    <ClCompile Include="Sources\Framework\ConstantBufferAllocator\ConstantBufferAllocator.cpp" />
+    <ClCompile Include="Sources\Framework\Buffer\ConstantBufferAllocator\ConstantBufferAllocator.cpp" />
+    <ClCompile Include="Sources\Framework\Buffer\DepthStencil\DepthStencil.cpp" />
+    <ClCompile Include="Sources\Framework\Buffer\Texture\Texture.cpp" />
     <ClCompile Include="Sources\Framework\Graphics\GraphicsDevice.cpp" />
     <ClCompile Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.cpp" />
+    <ClCompile Include="Sources\Framework\Heap\DSVHeap\DSVHeap.cpp" />
     <ClCompile Include="Sources\Framework\Heap\RTVHeap\RTVHeap.cpp" />
     <ClCompile Include="Sources\Framework\Mesh\Mesh.cpp" />
     <ClCompile Include="Sources\Framework\Model\Model.cpp" />
@@ -191,7 +194,6 @@
     <ClCompile Include="Sources\Framework\Shader\Pipeline\Pipeline.cpp" />
     <ClCompile Include="Sources\Framework\Shader\RootSignature\RootSignature.cpp" />
     <ClCompile Include="Sources\Framework\Shader\Shader.cpp" />
-    <ClCompile Include="Sources\Framework\Texture\Texture.cpp" />
     <ClCompile Include="Sources\main.cpp" />
     <ClCompile Include="Sources\Pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -208,12 +210,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Application\Application.h" />
-    <ClInclude Include="Sources\Framework\ConstantBufferAllocator\ConstantBufferAllocator.h" />
-    <ClInclude Include="Sources\Framework\ConstantBufferAllocator\ConstantBufferData\ConstantBufferData.h" />
+    <ClInclude Include="Sources\Framework\Buffer\Buffer.h" />
+    <ClInclude Include="Sources\Framework\Buffer\ConstantBufferAllocator\ConstantBufferAllocator.h" />
+    <ClInclude Include="Sources\Framework\Buffer\ConstantBufferAllocator\ConstantBufferData\ConstantBufferData.h" />
+    <ClInclude Include="Sources\Framework\Buffer\DepthStencil\DepthStencil.h" />
+    <ClInclude Include="Sources\Framework\Buffer\Texture\Texture.h" />
     <ClInclude Include="Sources\Framework\Framework.h" />
     <ClInclude Include="Sources\Framework\Graphics\GraphicsDevice.h" />
     <ClInclude Include="Sources\Framework\Heap\BaseHeap.h" />
     <ClInclude Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.h" />
+    <ClInclude Include="Sources\Framework\Heap\DSVHeap\DSVHeap.h" />
     <ClInclude Include="Sources\Framework\Heap\RTVHeap\RTVHeap.h" />
     <ClInclude Include="Sources\Framework\Mesh\Mesh.h" />
     <ClInclude Include="Sources\Framework\Mesh\MeshData\MeshData.h" />
@@ -222,7 +228,6 @@
     <ClInclude Include="Sources\Framework\Shader\Pipeline\Pipeline.h" />
     <ClInclude Include="Sources\Framework\Shader\RootSignature\RootSignature.h" />
     <ClInclude Include="Sources\Framework\Shader\Shader.h" />
-    <ClInclude Include="Sources\Framework\Texture\Texture.h" />
     <ClInclude Include="Sources\main.h" />
     <ClInclude Include="Sources\Pch.h" />
     <ClInclude Include="Sources\System\System.h" />

@@ -3,6 +3,9 @@
 class RTVHeap;
 class CBVSRVUAVHeap;
 class ConstantBufferAllocator;
+class DSVHeap;
+
+class DepthStencil;
 
 class GraphicsDevice
 {
@@ -37,6 +40,9 @@ public:
 	// 定数バッファアロケーター取得
 	inline ConstantBufferAllocator* GetConstantBufferAllocator()const
 	{ return m_upCBufferAllocator.get(); }
+
+	inline DSVHeap* GetDSVHeap()const
+	{ return m_upDSVHeap.get(); }
 
 private:
 	enum class GPUTier
@@ -95,6 +101,9 @@ private:
 	UINT64 m_fenceVal = 0;
 
 	std::unique_ptr<ConstantBufferAllocator> m_upCBufferAllocator = nullptr;
+
+	std::unique_ptr<DSVHeap> m_upDSVHeap = nullptr;
+	std::unique_ptr<DepthStencil> m_upDepthStencil = nullptr;
 
 	GraphicsDevice() {}
 	~GraphicsDevice() {}

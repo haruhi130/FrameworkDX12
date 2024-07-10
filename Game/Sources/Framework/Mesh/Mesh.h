@@ -51,6 +51,6 @@ private:
 	ComPtr<ID3D12Resource> m_cpIBuffer = nullptr;
 	D3D12_INDEX_BUFFER_VIEW m_ibView = {};
 
-	UINT m_instanceCount;
+	UINT m_instanceCount = 0;
 	Material m_material;
 };

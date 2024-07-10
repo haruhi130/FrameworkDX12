@@ -5,13 +5,13 @@ bool ModelLoader::Load(std::string filePath, std::vector<ModelData::Node>& nodes
 	Assimp::Importer importer;
 
 	int flag = 0;
-	flag |= aiProcess_CalcTangentSpace;
+	// flag |= aiProcess_CalcTangentSpace;
 	flag |= aiProcess_Triangulate;
 	flag |= aiProcess_GenSmoothNormals;
-	flag |= aiProcess_PreTransformVertices;
-	flag |= aiProcess_RemoveRedundantMaterials;
-	flag |= aiProcess_GenUVCoords;
-	flag |= aiProcess_OptimizeMeshes;
+	// flag |= aiProcess_PreTransformVertices;
+	// flag |= aiProcess_RemoveRedundantMaterials;
+	// flag |= aiProcess_GenUVCoords;
+	// flag |= aiProcess_OptimizeMeshes;
 
 	const aiScene* pScene = importer.ReadFile(filePath, flag);
 	if (pScene == nullptr)

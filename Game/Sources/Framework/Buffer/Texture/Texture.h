@@ -1,8 +1,10 @@
 #pragma once
 
-class Texture
+class Texture:public Buffer
 {
 public:
+	~Texture()override{}
+
 	// テクスチャロード
 	bool Load(const std::string& filePath);
 
@@ -13,7 +15,6 @@ public:
 	inline int GetSRVNumber() const { return m_SRVNumber; }
 
 private:
-	ComPtr<ID3D12Resource> m_cpBuffer = nullptr;
 	int m_SRVNumber = 0;
 
 };

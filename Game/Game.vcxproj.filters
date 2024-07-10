@@ -43,20 +43,29 @@
     <Filter Include="Framework\Heap\CBVSRVUAVHeap">
       <UniqueIdentifier>{a87ba798-4be4-4823-a4f0-43aa728fa7aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\Texture">
-      <UniqueIdentifier>{2b34f367-2bd9-42a5-ae4c-2cc3d9a9866e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\ConstantBufferAllocator">
-      <UniqueIdentifier>{ce449f54-fc11-4d8b-8899-153e255d4dd1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\ConstantBufferAllocator\ConstantBufferData">
-      <UniqueIdentifier>{7eb7cf38-3484-4123-ac4b-acd0d1860da3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Mesh\MeshData">
       <UniqueIdentifier>{24a29244-05dd-4999-ac95-5656f3de8543}</UniqueIdentifier>
     </Filter>
     <Filter Include="Framework\Model">
       <UniqueIdentifier>{9d7212a1-07c6-44e7-92a9-8e0f150deb96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Heap\DSVHeap">
+      <UniqueIdentifier>{9f045236-1d20-4944-ae81-172a5cda856f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Buffer">
+      <UniqueIdentifier>{3551bb01-34b7-4f8d-9d88-def78a843a3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Buffer\ConstantBufferAllocator">
+      <UniqueIdentifier>{4eaf9e8d-fc73-4776-b306-75787a1e64fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Buffer\Texture">
+      <UniqueIdentifier>{cb79c03c-e939-4afb-9977-a06a036298f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Buffer\ConstantBufferAllocator\ConstantBufferData">
+      <UniqueIdentifier>{dada24c8-ae4a-4c23-8cfc-fc151ca0bbae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Buffer\DepthStencil">
+      <UniqueIdentifier>{bda07fbc-0d37-46c6-9f68-4f33f077bb04}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -92,17 +101,23 @@
     <ClCompile Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.cpp">
       <Filter>Framework\Heap\CBVSRVUAVHeap</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Framework\Texture\Texture.cpp">
-      <Filter>Framework\Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Framework\ConstantBufferAllocator\ConstantBufferAllocator.cpp">
-      <Filter>Framework\ConstantBufferAllocator</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Framework\Model\Model.cpp">
       <Filter>Framework\Model</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Framework\Model\ModelLoader.cpp">
       <Filter>Framework\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Heap\DSVHeap\DSVHeap.cpp">
+      <Filter>Framework\Heap\DSVHeap</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Buffer\ConstantBufferAllocator\ConstantBufferAllocator.cpp">
+      <Filter>Framework\Buffer\ConstantBufferAllocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Buffer\Texture\Texture.cpp">
+      <Filter>Framework\Buffer\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Buffer\DepthStencil\DepthStencil.cpp">
+      <Filter>Framework\Buffer\DepthStencil</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,15 +162,6 @@
     <ClInclude Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.h">
       <Filter>Framework\Heap\CBVSRVUAVHeap</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Framework\Texture\Texture.h">
-      <Filter>Framework\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Framework\ConstantBufferAllocator\ConstantBufferAllocator.h">
-      <Filter>Framework\ConstantBufferAllocator</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Framework\ConstantBufferAllocator\ConstantBufferData\ConstantBufferData.h">
-      <Filter>Framework\ConstantBufferAllocator\ConstantBufferData</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Framework\Mesh\MeshData\MeshData.h">
       <Filter>Framework\Mesh\MeshData</Filter>
     </ClInclude>
@@ -164,6 +170,24 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Model\ModelLoader.h">
       <Filter>Framework\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Heap\DSVHeap\DSVHeap.h">
+      <Filter>Framework\Heap\DSVHeap</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Buffer\Buffer.h">
+      <Filter>Framework\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Buffer\ConstantBufferAllocator\ConstantBufferData\ConstantBufferData.h">
+      <Filter>Framework\Buffer\ConstantBufferAllocator\ConstantBufferData</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Buffer\ConstantBufferAllocator\ConstantBufferAllocator.h">
+      <Filter>Framework\Buffer\ConstantBufferAllocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Buffer\Texture\Texture.h">
+      <Filter>Framework\Buffer\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Buffer\DepthStencil\DepthStencil.h">
+      <Filter>Framework\Buffer\DepthStencil</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

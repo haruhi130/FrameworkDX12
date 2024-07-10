@@ -1,8 +1,10 @@
 #pragma once
 
-class ConstantBufferAllocator
+class ConstantBufferAllocator:public Buffer
 {
 public:
+	~ConstantBufferAllocator()override{}
+
 	// 定数バッファアロケーター作成
 	void Create(CBVSRVUAVHeap* pHeap);
 
@@ -15,10 +17,9 @@ public:
 
 private:
 	CBVSRVUAVHeap* m_pHeap = nullptr;
-	ComPtr<ID3D12Resource> m_cpBuffer = nullptr;
 	struct { char buf[256]; }*m_pMappedBuffer = nullptr;
 	int m_currentNumber = 0;
-	
+
 };
 
 template<typename type>
