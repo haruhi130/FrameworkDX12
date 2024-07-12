@@ -146,10 +146,6 @@ const Material ModelLoader::ParseMaterial(const aiMaterial* pMaterial, const std
 				return Material();
 			}
 		}
-		else
-		{
-			material.spMetallicRoughnessTex = std::make_shared<Texture>();
-		}
 	}
 
 	// MetallicColor取得
@@ -184,10 +180,6 @@ const Material ModelLoader::ParseMaterial(const aiMaterial* pMaterial, const std
 				return Material();
 			}
 		}
-		else
-		{
-			material.spEmissiveTex = std::make_shared<Texture>();
-		}
 	}
 
 	// EmissiveColor取得
@@ -214,10 +206,6 @@ const Material ModelLoader::ParseMaterial(const aiMaterial* pMaterial, const std
 				assert(0 && "Normalテクスチャロード失敗");
 				return Material();
 			}
-		}
-		else
-		{
-			material.spNormalTex = std::make_shared<Texture>();
 		}
 	}
 

@@ -40,7 +40,7 @@ void Application::Execute()
 
 	Math::Matrix mWorld;
 
-	Math::Matrix mTempWorld = Math::Matrix::CreateTranslation(0, 0, 1);
+	Math::Matrix mTempWorld = Math::Matrix::CreateTranslation(1, 1, 1);
 
 	RenderingSetting rs = {};
 	rs.InputLayouts = 
@@ -51,7 +51,9 @@ void Application::Execute()
 	shader.Create(L"SimpleShader", rs, 
 		{ RangeType::CBV,RangeType::CBV,RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
 
-	Math::Matrix mView = Math::Matrix::CreateTranslation(0, 0, 3);
+	Math::Vector3 cam = {0,0,3};
+
+	Math::Matrix mView = Math::Matrix::CreateTranslation(cam);
 
 	Math::Matrix mProj = DirectX::XMMatrixPerspectiveFovLH
 	(DirectX::XMConvertToRadians(60.0f), 1280.0f / 720.0f, 0.01f, 1000.0f);
@@ -83,6 +85,35 @@ void Application::Execute()
 
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
 			->BindAndAttachData(0, cbCamera);
+
+		if (GetAsyncKeyState('W') & 0x8000)
+		{
+			cam.y += 0.1f;
+		}
+		if (GetAsyncKeyState('S') & 0x8000)
+		{
+			cam.y -= 0.1f;
+		}
+		if (GetAsyncKeyState('D') & 0x8000)
+		{
+			cam.x += 0.1f;
+		}
+		if (GetAsyncKeyState('A') & 0x8000)
+		{
+			cam.x -= 0.1f;
+		}
+		if (GetAsyncKeyState('X') & 0x8000)
+		{
+			cam.z += 0.1f;
+		}
+		if (GetAsyncKeyState('Z') & 0x8000)
+		{
+			cam.z -= 0.1f;
+		}
+
+		mView = Math::Matrix::CreateTranslation(cam);
+		cbCamera.mView = mView;
+
 
 		mWorld *= Math::Matrix::CreateRotationY(0.01f);
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()

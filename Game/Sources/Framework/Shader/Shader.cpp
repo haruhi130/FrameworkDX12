@@ -17,11 +17,13 @@ void Shader::Create(const std::wstring& filePath,
 
 void Shader::Begin(int w, int h)
 {
+	// パイプラインセット
 	GraphicsDevice::GetInstance().GetCmdList()->SetPipelineState(m_upPipeline->GetPipeline());
 
-	// ルートシグネチャのセット
+	// ルートシグネチャセット
 	GraphicsDevice::GetInstance().GetCmdList()->SetGraphicsRootSignature(m_upRootSignature->GetRootSignature());
 
+	// トポロジー設定
 	D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType =
 		static_cast<D3D12_PRIMITIVE_TOPOLOGY_TYPE>(m_upPipeline->GetTopologyType());
 
@@ -41,18 +43,18 @@ void Shader::Begin(int w, int h)
 		break;
 	}
 
+	// ビューポート設定
 	D3D12_VIEWPORT viewport = {};
-	D3D12_RECT rect = {};
-
 	viewport.Width = static_cast<float>(w);
 	viewport.Height = static_cast<float>(h);
 	viewport.MinDepth = 0.0f;
 	viewport.MaxDepth = 1.0f;
-
+	GraphicsDevice::GetInstance().GetCmdList()->RSSetViewports(1, &viewport);
+	
+	// レクト設定
+	D3D12_RECT rect = {};
 	rect.right = w;
 	rect.bottom = h;
-
-	GraphicsDevice::GetInstance().GetCmdList()->RSSetViewports(1, &viewport);
 	GraphicsDevice::GetInstance().GetCmdList()->RSSetScissorRects(1, &rect);
 }
 
