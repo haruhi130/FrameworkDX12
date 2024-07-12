@@ -5,12 +5,13 @@
 class Application
 {
 public:
-	// 初期化
+	// ゲーム初期化
 	bool Init(int width = 1280,int height = 720);
 
 	// ゲーム実行
 	void Execute();
 
+	// ゲーム終了
 	void Terminate();
 
 private:

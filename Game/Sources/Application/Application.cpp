@@ -6,7 +6,7 @@ bool Application::Init(int width, int height)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	// COMèâä˙âª
-	HRESULT result = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+	HRESULT result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 
 	SetDirectoryAndLoadDll();
 

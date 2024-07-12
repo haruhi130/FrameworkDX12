@@ -128,7 +128,7 @@ void Shader::LoadShaderFile(const std::wstring& filePath)
 	}
 }
 
-void Shader::SetMaterial(const Material& material)
+void Shader::SetMaterial(const Material& material) const
 {
 	material.spBaseColorTex->Set(m_cbvCount);
 	material.spNormalTex->Set(m_cbvCount + 1);

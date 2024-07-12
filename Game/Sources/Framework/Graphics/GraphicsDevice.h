@@ -16,10 +16,10 @@ public:
 	// 描画前準備
 	void Prepare();
 
-	// スワップチェーン切り替え
+	// スワップチェーン入れ替え
 	void ScreenFlip();
 
-	// コマンドキュー待機
+	// GPU処理の完了を確認
 	void WaitForCommandQueue();
 
 	// デバッグ用
@@ -41,6 +41,7 @@ public:
 	inline ConstantBufferAllocator* GetConstantBufferAllocator()const
 	{ return m_upCBufferAllocator.get(); }
 
+	// DSVヒープ取得
 	inline DSVHeap* GetDSVHeap()const
 	{ return m_upDSVHeap.get(); }
 
@@ -92,7 +93,7 @@ private:
 
 	ComPtr<IDXGISwapChain4> m_cpSwapChain = nullptr;
 
-	std::array<ID3D12Resource*, 2> m_pBackBuffers = {};
+	std::vector<ComPtr<ID3D12Resource>> m_pBackBuffers = {};
 
 	std::unique_ptr<RTVHeap> m_upRTVHeap = nullptr;
 	std::unique_ptr<CBVSRVUAVHeap> m_upCBVSRVUAVHeap = nullptr;

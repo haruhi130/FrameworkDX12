@@ -42,7 +42,7 @@ private:
 	void LoadShaderFile(const std::wstring& filePath);
 
 	// マテリアルセット
-	void SetMaterial(const Material& material);
+	void SetMaterial(const Material& material) const;
 
 	std::unique_ptr<Pipeline>		m_upPipeline = nullptr;
 	std::unique_ptr<RootSignature>	m_upRootSignature = nullptr;

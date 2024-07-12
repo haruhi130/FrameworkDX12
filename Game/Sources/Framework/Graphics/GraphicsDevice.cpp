@@ -67,7 +67,7 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 	}
 
 	m_upDepthStencil = std::make_unique<DepthStencil>();
-	if (!m_upDepthStencil->Create(Math::Vector2(width, height)))
+	if (!m_upDepthStencil->Create(Math::Vector2(float(width), float(height))))
 	{
 		assert(0 && "DepthStencil作成失敗");
 		return false;
@@ -92,7 +92,7 @@ void GraphicsDevice::Prepare()
 {
 	auto bbIdx = m_cpSwapChain->GetCurrentBackBufferIndex();
 
-	SetResourceBarrier(m_pBackBuffers[bbIdx],
+	SetResourceBarrier(m_pBackBuffers[bbIdx].Get(),
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	auto rtvH = m_upRTVHeap->GetCPUHandle(bbIdx);
@@ -111,7 +111,7 @@ void GraphicsDevice::ScreenFlip()
 {
 	auto bbIdx = m_cpSwapChain->GetCurrentBackBufferIndex();
 
-	SetResourceBarrier(m_pBackBuffers[bbIdx],
+	SetResourceBarrier(m_pBackBuffers[bbIdx].Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 
 	m_cpCmdList->Close();
@@ -147,6 +147,7 @@ void GraphicsDevice::EnableDebugLayer()
 {
 	ComPtr<ID3D12Debug> debugLayer = nullptr;
 
+	// デバッグレイヤー有効化
 	D3D12GetDebugInterface(IID_PPV_ARGS(debugLayer.GetAddressOf()));
 	debugLayer->EnableDebugLayer();
 }
@@ -174,7 +175,7 @@ bool GraphicsDevice::CreateDevice()
 	std::vector<ComPtr<IDXGIAdapter>> pAdapters;
 	std::vector<DXGI_ADAPTER_DESC> descs;
 
-	// 使用中のPCのGPUドライバーを検索し格納する
+	// 使用中のPCのGPUドライバーを検索し格納
 	for (UINT index = 0; 1; ++index)
 	{
 		pAdapters.push_back(nullptr);
@@ -188,7 +189,7 @@ bool GraphicsDevice::CreateDevice()
 
 	GPUTier gpuTier = GPUTier::Kind;
 
-	// 優先度の高いGPUドライバーを使用する
+	// 優先度の高いGPUドライバーを使用
 	for (int i = 0; i < descs.size(); ++i)
 	{
 		if (std::wstring(descs[i].Description).find(L"NVIDIA") != std::wstring::npos)
@@ -329,20 +330,24 @@ bool GraphicsDevice::CreateSwapChain(HWND hWnd, int width, int height)
 		return false;
 	}
 
+	// 使用するバッファ数でresize
+	m_pBackBuffers.resize(swapChainDesc.BufferCount);
+
 	return true;
 }
 
 bool GraphicsDevice::CreateRTV()
 {
-	for (int idx = 0; idx < (int)m_pBackBuffers.size(); ++idx)
+	for (int idx = 0; idx < m_pBackBuffers.size(); ++idx)
 	{
-		auto result = m_cpSwapChain->GetBuffer(idx, IID_PPV_ARGS(&m_pBackBuffers[idx]));
+		auto result = m_cpSwapChain->GetBuffer(idx, IID_PPV_ARGS(m_pBackBuffers[idx].GetAddressOf()));
 		if (FAILED(result))
 		{
 			return false;
 		}
 
-		m_upRTVHeap->CreateRTV(m_pBackBuffers[idx]);
+		// レンダーターゲットビュー作成
+		m_upRTVHeap->CreateRTV(m_pBackBuffers[idx].Get());
 	}
 
 	return true;
