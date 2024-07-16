@@ -3,7 +3,7 @@
 class ConstantBufferAllocator:public Buffer
 {
 public:
-	~ConstantBufferAllocator()override{}
+	~ConstantBufferAllocator(){}
 
 	// 定数バッファアロケーター作成
 	void Create(CBVSRVUAVHeap* pHeap);

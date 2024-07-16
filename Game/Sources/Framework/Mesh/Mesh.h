@@ -11,19 +11,19 @@ struct MeshFace
 
 struct Material
 {
-	std::string Name; // マテリアル名
+	std::string Name = ""; // マテリアル名
 
-	std::shared_ptr<Texture> spBaseColorTex; // 基本色テクスチャ
+	std::shared_ptr<Texture> spBaseColorTex = nullptr; // 基本色テクスチャ
 	Math::Vector4 BaseColor = { 1,1,1,1 }; // 基本色スケーリング係数
 
-	std::shared_ptr<Texture> spMetallicRoughnessTex; // 金属製 粗さ
+	std::shared_ptr<Texture> spMetallicRoughnessTex = nullptr; // 金属製 粗さ
 	float Metallic = 0.0f; // 金属製のスケーリング係数
 	float Roughness = 1.0f; // 粗さのスケーリング係数
 
-	std::shared_ptr<Texture> spEmissiveTex; // 自己発光テクスチャ
+	std::shared_ptr<Texture> spEmissiveTex = nullptr; // 自己発光テクスチャ
 	Math::Vector3 Emissive = { 0,0,0 }; // 自己発光のスケーリング係数
 
-	std::shared_ptr<Texture> spNormalTex; // 法線テクスチャ
+	std::shared_ptr<Texture> spNormalTex = nullptr; // 法線テクスチャ
 };
 
 class Mesh

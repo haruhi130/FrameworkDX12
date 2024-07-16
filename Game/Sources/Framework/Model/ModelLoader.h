@@ -4,7 +4,7 @@ class ModelLoader
 {
 public:
 	// モデルロード
-	bool Load(std::string filePath, std::vector<ModelData::Node>& nodes);
+	bool Load(std::string filePath, ModelData& model);
 
 private:
 	// モデル解析

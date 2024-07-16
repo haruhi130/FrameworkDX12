@@ -67,6 +67,9 @@
     <Filter Include="Framework\Buffer\DepthStencil">
       <UniqueIdentifier>{bda07fbc-0d37-46c6-9f68-4f33f077bb04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="System\Animation">
+      <UniqueIdentifier>{ee9ac1d5-e79a-4637-b0b2-47fd2edcac22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -118,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Framework\Buffer\DepthStencil\DepthStencil.cpp">
       <Filter>Framework\Buffer\DepthStencil</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\System\Animation\Animation.cpp">
+      <Filter>System\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +194,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Buffer\DepthStencil\DepthStencil.h">
       <Filter>Framework\Buffer\DepthStencil</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\System\Animation\Animation.h">
+      <Filter>System\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

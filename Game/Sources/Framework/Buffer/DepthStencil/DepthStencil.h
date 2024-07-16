@@ -10,6 +10,8 @@ enum class DepthStencilFormat
 class DepthStencil :public Buffer
 {
 public:
+	~DepthStencil(){}
+
 	// 深度テクスチャ作成
 	bool Create(const Math::Vector2& resolution, DepthStencilFormat format = DepthStencilFormat::DepthHighQuality);
 

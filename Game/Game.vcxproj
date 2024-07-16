@@ -205,6 +205,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Sources\System\Animation\Animation.cpp" />
     <ClCompile Include="Sources\System\Utility\Utility.cpp" />
     <ClCompile Include="Sources\System\Window\Window.cpp" />
   </ItemGroup>
@@ -230,6 +231,7 @@
     <ClInclude Include="Sources\Framework\Shader\Shader.h" />
     <ClInclude Include="Sources\main.h" />
     <ClInclude Include="Sources\Pch.h" />
+    <ClInclude Include="Sources\System\Animation\Animation.h" />
     <ClInclude Include="Sources\System\System.h" />
     <ClInclude Include="Sources\System\Utility\Utility.h" />
     <ClInclude Include="Sources\System\Window\Window.h" />

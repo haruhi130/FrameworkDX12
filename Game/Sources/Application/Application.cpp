@@ -62,6 +62,9 @@ void Application::Execute()
 	cbCamera.mView = mView;
 	cbCamera.mProj = mProj;
 
+	Animator animator;
+	animator.SetAnimation(model.GetAnimation(0));
+
 	// メインゲームループ
 	while (true)
 	{
@@ -74,6 +77,8 @@ void Application::Execute()
 		{
 			break;
 		}
+
+		animator.ProgressTime(model.WorkNodes(), 5.0f);
 
 		GraphicsDevice::GetInstance().Prepare();
 
@@ -114,10 +119,8 @@ void Application::Execute()
 		mView = Math::Matrix::CreateTranslation(cam);
 		cbCamera.mView = mView;
 
-
-		mWorld *= Math::Matrix::CreateRotationY(0.01f);
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-			->BindAndAttachData(1, mWorld);
+			->BindAndAttachData(1, model.GetNodes()[0].m_mLocal * mWorld);
 
 		shader.DrawModel(model);
 

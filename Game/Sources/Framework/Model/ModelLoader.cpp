@@ -1,13 +1,14 @@
 #include "ModelLoader.h"
 
-bool ModelLoader::Load(std::string filePath, std::vector<ModelData::Node>& nodes)
+bool ModelLoader::Load(std::string filePath, ModelData& model)
 {
 	Assimp::Importer importer;
 
 	int flag = 0;
 	// flag |= aiProcess_CalcTangentSpace;
 	flag |= aiProcess_Triangulate;
-	flag |= aiProcess_GenSmoothNormals;
+	flag |= aiProcess_ConvertToLeftHanded;
+	// flag |= aiProcess_GenSmoothNormals;
 	// flag |= aiProcess_PreTransformVertices;
 	// flag |= aiProcess_RemoveRedundantMaterials;
 	// flag |= aiProcess_GenUVCoords;
@@ -20,16 +21,80 @@ bool ModelLoader::Load(std::string filePath, std::vector<ModelData::Node>& nodes
 		return false;
 	}
 
+	auto& nodes = model.WorkNodes();
 	nodes.resize(pScene->mNumMeshes);
-	
+
 	std::string dirPath = GetDirFromPath(filePath);
 
-	for (UINT i = 0; i < pScene->mNumMeshes; i++)
+	for (size_t i = 0; i < nodes.size(); ++i)
 	{
-		aiMesh* pMesh = pScene->mMeshes[i];
-		aiMaterial* pMaterial = pScene->mMaterials[i];
+		const auto pMesh = pScene->mMeshes[i];
+		const auto pMaterial = pScene->mMaterials[i];
 		nodes[i].spMesh = Parse(pScene, pMesh, pMaterial, dirPath);
 	}
+
+	auto& spAnimationDatas = model.WorkAnimation();
+	
+	for (size_t i = 0; i < pScene->mNumAnimations; ++i)
+	{
+		aiAnimation* pAnimation = pScene->mAnimations[i];
+
+		std::shared_ptr<AnimationData> spAnimationData = std::make_shared<AnimationData>();
+		if (spAnimationData)
+		{
+			spAnimationData->m_name = pAnimation->mName.C_Str();
+			spAnimationData->m_maxTime = (float)pAnimation->mDuration;
+			
+			spAnimationData->m_channels.resize(pAnimation->mNumChannels);
+
+			for (UINT j = 0; j < pAnimation->mNumChannels; ++j)
+			{
+				auto& srcChannel = spAnimationData->m_channels[j];
+				auto dstChannel = pAnimation->mChannels[j];
+
+				for (UINT k = 0; k < dstChannel->mNumPositionKeys; ++k)
+				{
+					AnimeKeyVector3 translation;
+					translation.m_time = (float)dstChannel->mPositionKeys[k].mTime;
+					
+					translation.m_vec.x = dstChannel->mPositionKeys[k].mValue.x;
+					translation.m_vec.y = dstChannel->mPositionKeys[k].mValue.y;
+					translation.m_vec.z = dstChannel->mPositionKeys[k].mValue.z;
+				
+					srcChannel.m_translations.emplace_back(translation);
+				}
+
+				for (UINT k = 0; k < dstChannel->mNumRotationKeys; ++k)
+				{
+					AnimeKeyQuaternion rotation;
+					rotation.m_time = (float)dstChannel->mRotationKeys[k].mTime;
+
+					rotation.m_quat.x = dstChannel->mRotationKeys[k].mValue.x;
+					rotation.m_quat.y = dstChannel->mRotationKeys[k].mValue.y;
+					rotation.m_quat.z = dstChannel->mRotationKeys[k].mValue.z;
+					rotation.m_quat.w = dstChannel->mRotationKeys[k].mValue.w;
+
+					srcChannel.m_rotations.emplace_back(rotation);
+				}
+
+				for (UINT k = 0; k < dstChannel->mNumScalingKeys; ++k)
+				{
+					AnimeKeyVector3 scale;
+					scale.m_time = (float)dstChannel->mScalingKeys[k].mTime;
+
+					scale.m_vec.x = dstChannel->mScalingKeys[k].mValue.x;
+					scale.m_vec.y = dstChannel->mScalingKeys[k].mValue.y;
+					scale.m_vec.z = dstChannel->mScalingKeys[k].mValue.z;
+
+					srcChannel.m_scales.emplace_back(scale);
+				}
+			}
+
+			spAnimationDatas.emplace_back(spAnimationData);
+		}
+	}
+
+	pScene = nullptr;
 
 	return true;
 }
@@ -68,6 +133,7 @@ std::shared_ptr<Mesh> ModelLoader::Parse(const aiScene* pScene, const aiMesh* pM
 			color.x = pMesh->mColors[0][i].r;
 			color.y = pMesh->mColors[0][i].g;
 			color.z = pMesh->mColors[0][i].b;
+			color.w = pMesh->mColors[0][i].a;
 
 			vertices[i].Color = color.RGBA().v;
 		}
@@ -93,7 +159,7 @@ const Material ModelLoader::ParseMaterial(const aiMaterial* pMaterial, const std
 {
 	if (pMaterial == nullptr) { return Material(); }
 
-	Material material;
+	Material material = {};
 
 	// マテリアル名取得
 	{
@@ -101,6 +167,10 @@ const Material ModelLoader::ParseMaterial(const aiMaterial* pMaterial, const std
 		if (pMaterial->Get(AI_MATKEY_NAME, name) == AI_SUCCESS)
 		{
 			material.Name = name.C_Str();
+		}
+		else
+		{
+			return Material();
 		}
 	}
 
@@ -135,7 +205,8 @@ const Material ModelLoader::ParseMaterial(const aiMaterial* pMaterial, const std
 	// MetallicRoughnessテクスチャ取得
 	{
 		aiString path;
-		if (pMaterial->GetTexture(AI_MATKEY_ROUGHNESS_TEXTURE,&path) == AI_SUCCESS)
+		if (pMaterial->GetTexture(AI_MATKEY_METALLIC_TEXTURE,&path)==AI_SUCCESS ||
+			pMaterial->GetTexture(AI_MATKEY_ROUGHNESS_TEXTURE,&path) == AI_SUCCESS)
 		{
 			auto filePath = std::string(path.C_Str());
 

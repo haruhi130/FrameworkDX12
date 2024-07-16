@@ -8,3 +8,6 @@
 
 // Framework
 #include "../Framework/Framework.h"
+
+// Animation
+#include "Animation/Animation.h"

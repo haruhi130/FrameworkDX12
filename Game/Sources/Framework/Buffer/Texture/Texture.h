@@ -3,7 +3,7 @@
 class Texture:public Buffer
 {
 public:
-	~Texture()override{}
+	~Texture(){}
 
 	// テクスチャロード
 	bool Load(const std::string& filePath);

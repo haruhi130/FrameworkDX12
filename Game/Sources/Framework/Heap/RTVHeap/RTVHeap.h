@@ -4,7 +4,7 @@ class RTVHeap : public BaseHeap<int>
 {
 public: 
 	RTVHeap(){}
-	~RTVHeap()override{}
+	~RTVHeap(){}
 
 	// RTVì¬
 	int CreateRTV(ID3D12Resource* pBuffer);
