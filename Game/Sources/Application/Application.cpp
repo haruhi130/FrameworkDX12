@@ -120,12 +120,12 @@ void Application::Execute()
 		cbCamera.mView = mView;
 
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-			->BindAndAttachData(1, model.GetNodes()[0].m_mLocal * mWorld);
+			->BindAndAttachData(1, model.GetNodes()[0].mLocal * mWorld);
 
 		shader.DrawModel(model);
 
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-			->BindAndAttachData(1, mTempWorld);
+			->BindAndAttachData(1, model.GetNodes()[0].mLocal * mTempWorld);
 
 		shader.DrawModel(model);
 

@@ -25,6 +25,10 @@ public:
 	// デバッグ用
 	void EnableDebugLayer();
 
+	// バックバッファ色変更
+	inline void SetBackBufferColor(const DirectX::SimpleMath::Color& col) 
+	{ m_clearColor = col; }
+
 	// デバイス取得
 	inline ID3D12Device14* GetDevice() const
 	{ return m_cpDevice.Get(); }
@@ -105,6 +109,8 @@ private:
 
 	std::unique_ptr<DSVHeap> m_upDSVHeap = nullptr;
 	std::unique_ptr<DepthStencil> m_upDepthStencil = nullptr;
+
+	Math::Color m_clearColor = {0.5f,0.5f,0.5f,1.0f};
 
 	GraphicsDevice() {}
 	~GraphicsDevice() {}

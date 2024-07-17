@@ -205,7 +205,7 @@ const Material ModelLoader::ParseMaterial(const aiMaterial* pMaterial, const std
 	// MetallicRoughnessテクスチャ取得
 	{
 		aiString path;
-		if (pMaterial->GetTexture(AI_MATKEY_METALLIC_TEXTURE,&path)==AI_SUCCESS ||
+		if (pMaterial->GetTexture(AI_MATKEY_METALLIC_TEXTURE,&path) == AI_SUCCESS ||
 			pMaterial->GetTexture(AI_MATKEY_ROUGHNESS_TEXTURE,&path) == AI_SUCCESS)
 		{
 			auto filePath = std::string(path.C_Str());

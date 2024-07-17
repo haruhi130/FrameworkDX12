@@ -8,7 +8,7 @@ public:
 	struct Node
 	{
 		std::shared_ptr<Mesh> spMesh = nullptr;
-		Math::Matrix m_mLocal;
+		Math::Matrix mLocal;
 	};
 
 	// ƒ‚ƒfƒ‹ƒ[ƒh

@@ -101,8 +101,7 @@ void GraphicsDevice::Prepare()
 
 	m_cpCmdList->OMSetRenderTargets(1, &rtvH, true, &dsvH);
 
-	float clearCol[] = { 1.0f,1.0f,0.0f,1.0f };
-	m_cpCmdList->ClearRenderTargetView(rtvH, clearCol, 0, nullptr);
+	m_cpCmdList->ClearRenderTargetView(rtvH, m_clearColor, 0, nullptr);
 
 	m_upDepthStencil->ClearBuffer();
 }

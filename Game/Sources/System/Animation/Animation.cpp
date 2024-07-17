@@ -26,12 +26,12 @@ void Animator::ProgressTime(std::vector<ModelData::Node>& rNodes, float speed)
 	// 全てのアニメーションノード（モデルの行列を補間する情報）の行列補間を実行する
 	for (auto& channel : m_spAnimation->m_channels)
 	{
-		auto prev = rNodes[idx].m_mLocal;
+		auto prev = rNodes[idx].mLocal;
 
 		// アニメーションデータによる行列補間
-		channel.Interpolate(rNodes[idx].m_mLocal, m_time);
+		channel.Interpolate(rNodes[idx].mLocal, m_time);
 
-		prev = rNodes[idx].m_mLocal;
+		prev = rNodes[idx].mLocal;
 
 		++idx;
 	}
