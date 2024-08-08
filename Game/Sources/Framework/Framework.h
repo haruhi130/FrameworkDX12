@@ -4,6 +4,8 @@
 //==============================================
 #include "Graphics/GraphicsDevice.h"
 
+#include "Audio/Audio.h"
+
 #include "Heap/BaseHeap.h"
 #include "Heap/RTVHeap/RTVHeap.h"
 #include "Heap/CBVSRVUAVHeap/CBVSRVUAVHeap.h"

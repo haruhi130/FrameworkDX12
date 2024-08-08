@@ -24,6 +24,12 @@ bool Application::Init(int width, int height)
 		return false;
 	}
 
+	// オーディオ初期化
+	if (!Audio::GetInstance().Init())
+	{
+		return false;
+	}
+
 	return true;
 }
 
@@ -35,13 +41,16 @@ void Application::Execute()
 		return;
 	}
 
-	ModelData model;
-	model.Load("Assets/Models/Cube/Cube.gltf");
+	// モデル読み込み
+	std::shared_ptr<ModelData> model1 = std::make_shared<ModelData>();
+	std::shared_ptr<ModelData> model2 = std::make_shared<ModelData>();
+	model1->Load("Assets/Models/Cube/Cube.gltf");
+	model2->Load("Assets/Models/ShortSword/Tanto.gltf");
 
 	Math::Matrix mWorld;
-
 	Math::Matrix mTempWorld = Math::Matrix::CreateTranslation(1, 1, 1);
 
+	// シェーダーセット
 	RenderingSetting rs = {};
 	rs.InputLayouts = 
 	{ InputLayout::POSITION,InputLayout::TEXCOORD ,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT};
@@ -51,6 +60,7 @@ void Application::Execute()
 	shader.Create(L"SimpleShader", rs, 
 		{ RangeType::CBV,RangeType::CBV,RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
 
+	// カメラ処理
 	Math::Vector3 cam = {0,0,3};
 
 	Math::Matrix mView = Math::Matrix::CreateTranslation(cam);
@@ -62,8 +72,14 @@ void Application::Execute()
 	cbCamera.mView = mView;
 	cbCamera.mProj = mProj;
 
+	// アニメーション処理
 	Animator animator;
-	animator.SetAnimation(model.GetAnimation(0));
+	animator.SetAnimation(model1->GetAnimation(0));
+	int count = 100;
+
+	// 音再生
+	WaveData waveData;
+	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", &waveData, true);
 
 	// メインゲームループ
 	while (true)
@@ -78,7 +94,7 @@ void Application::Execute()
 			break;
 		}
 
-		animator.ProgressTime(model.WorkNodes(), 5.0f);
+		animator.ProgressTime(model1->WorkNodes(), 5.0f);
 
 		GraphicsDevice::GetInstance().Prepare();
 
@@ -116,20 +132,49 @@ void Application::Execute()
 			cam.z -= 0.1f;
 		}
 
+		if (GetAsyncKeyState('O') & 0x8000)
+		{
+			Audio::GetInstance().Stop();
+		}
+		if (GetAsyncKeyState('P') & 0x8000)
+		{
+			Audio::GetInstance().Pause();
+		}
+		if (GetAsyncKeyState('I') & 0x8000)
+		{
+			Audio::GetInstance().Resume();
+		}
+		if (GetAsyncKeyState('U') & 0x8000)
+		{
+			Audio::GetInstance().ExitLoop();
+		}
+
+
 		mView = Math::Matrix::CreateTranslation(cam);
 		cbCamera.mView = mView;
 
+		if (GetAsyncKeyState('R') & 0x8000)
+		{
+			if (count < 0)
+			{
+				count = 100;
+				model1.swap(model2);
+			}
+		}
+
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-			->BindAndAttachData(1, model.GetNodes()[0].mLocal * mWorld);
+			->BindAndAttachData(1, model1->GetNodes()[0].mLocal * mWorld);
 
-		shader.DrawModel(model);
+		shader.DrawModel(*model1);
 
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-			->BindAndAttachData(1, model.GetNodes()[0].mLocal * mTempWorld);
+			->BindAndAttachData(1, model2->GetNodes()[0].mLocal * mTempWorld);
 
-		shader.DrawModel(model);
+		shader.DrawModel(*model2);
 
 		GraphicsDevice::GetInstance().ScreenFlip();
+
+		--count;
 	}
 }
 

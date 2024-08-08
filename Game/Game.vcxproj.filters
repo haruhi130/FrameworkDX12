@@ -70,6 +70,9 @@
     <Filter Include="System\Animation">
       <UniqueIdentifier>{ee9ac1d5-e79a-4637-b0b2-47fd2edcac22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Audio">
+      <UniqueIdentifier>{a4f112c4-6f17-44b2-a2fb-c228e527cbb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -124,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="Sources\System\Animation\Animation.cpp">
       <Filter>System\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Audio\Audio.cpp">
+      <Filter>Framework\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="Sources\System\Animation\Animation.h">
       <Filter>System\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Audio\Audio.h">
+      <Filter>Framework\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

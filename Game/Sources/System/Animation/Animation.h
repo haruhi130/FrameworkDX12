@@ -3,31 +3,31 @@
 // アニメーションキー
 struct AnimeKeyQuaternion
 {
-	float				m_time = 0;			// 時間
-	Math::Quaternion	m_quat;				// クォータニオン
+	float				m_time = 0;		// 時間
+	Math::Quaternion	m_quat;			// クォータニオン
 };
 
 // アニメーションキー
 struct AnimeKeyVector3
 {
-	float				m_time = 0;			// 時間
-	Math::Vector3		m_vec;				// 3Dベクトルデータ
+	float			m_time = 0;			// 時間
+	Math::Vector3	m_vec;				// 3Dベクトルデータ
 };
 
 // アニメーションデータ
 struct AnimationData
 {
-	std::string			m_name;				// アニメーション名
-	float				m_maxTime = 0;		// アニメーション最大時間
+	std::string		m_name;				// アニメーション名
+	float			m_maxTime = 0;		// アニメーション最大時間
 
 	struct Channel
 	{
-		int			m_nodeOffset = -1;	// 対象モデルノードのOffset値
+		int	m_nodeOffset = -1;	// 対象モデルノードのOffset値
 
 		// 各チャンネル
-		std::vector<AnimeKeyVector3>		m_translations;	// 位置キーリスト
+		std::vector<AnimeKeyVector3>	m_translations;	// 位置キーリスト
 		std::vector<AnimeKeyQuaternion>	m_rotations;	// 回転キーリスト
-		std::vector<AnimeKeyVector3>		m_scales;		// 拡縮キーリスト
+		std::vector<AnimeKeyVector3>	m_scales;		// 拡縮キーリスト
 
 		void Interpolate(Math::Matrix& rDst, float time);
 		bool InterpolateTranslations(Math::Vector3& result, float time);
@@ -83,9 +83,8 @@ public:
 	{ return m_spAnimation->m_maxTime; }
 
 private:
-
 	std::shared_ptr<AnimationData>	m_spAnimation = nullptr; // 再生するアニメーションデータ
 
-	bool m_isLoop;
+	bool m_isLoop = false;
 	float m_time = 0.0f;
 };

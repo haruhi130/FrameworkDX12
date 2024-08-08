@@ -181,6 +181,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Application\Application.cpp" />
+    <ClCompile Include="Sources\Framework\Audio\Audio.cpp" />
     <ClCompile Include="Sources\Framework\Buffer\ConstantBufferAllocator\ConstantBufferAllocator.cpp" />
     <ClCompile Include="Sources\Framework\Buffer\DepthStencil\DepthStencil.cpp" />
     <ClCompile Include="Sources\Framework\Buffer\Texture\Texture.cpp" />
@@ -211,6 +212,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Application\Application.h" />
+    <ClInclude Include="Sources\Framework\Audio\Audio.h" />
     <ClInclude Include="Sources\Framework\Buffer\Buffer.h" />
     <ClInclude Include="Sources\Framework\Buffer\ConstantBufferAllocator\ConstantBufferAllocator.h" />
     <ClInclude Include="Sources\Framework\Buffer\ConstantBufferAllocator\ConstantBufferData\ConstantBufferData.h" />

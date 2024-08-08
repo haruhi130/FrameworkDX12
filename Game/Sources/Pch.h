@@ -74,4 +74,11 @@
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
 
+// XAudio2
+#pragma comment(lib,"xaudio2.lib")
+#include <xaudio2.h>
+
+// multimedia
+#include <mmsystem.h>
+
 #include "System/System.h"
