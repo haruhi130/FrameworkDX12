@@ -52,16 +52,16 @@ void Application::Execute()
 
 	// シェーダーセット
 	RenderingSetting rs = {};
-	rs.InputLayouts = 
-	{ InputLayout::POSITION,InputLayout::TEXCOORD ,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT};
+	rs.InputLayouts =
+	{ InputLayout::POSITION,InputLayout::TEXCOORD ,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT };
 	rs.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
 
 	Shader shader;
-	shader.Create(L"SimpleShader", rs, 
+	shader.Create(L"SimpleShader", rs,
 		{ RangeType::CBV,RangeType::CBV,RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
 
 	// カメラ処理
-	Math::Vector3 cam = {0,0,3};
+	Math::Vector3 cam = { 0,0,3 };
 
 	Math::Matrix mView = Math::Matrix::CreateTranslation(cam);
 
@@ -78,8 +78,8 @@ void Application::Execute()
 	int count = 100;
 
 	// 音再生
-	WaveData waveData;
-	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", &waveData, true);
+	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);
+	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/KurataGorilla.wav", true);
 
 	// メインゲームループ
 	while (true)

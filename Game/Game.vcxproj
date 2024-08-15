@@ -185,6 +185,7 @@
     <ClCompile Include="Sources\Framework\Buffer\ConstantBufferAllocator\ConstantBufferAllocator.cpp" />
     <ClCompile Include="Sources\Framework\Buffer\DepthStencil\DepthStencil.cpp" />
     <ClCompile Include="Sources\Framework\Buffer\Texture\Texture.cpp" />
+    <ClCompile Include="Sources\Framework\Collider\Collider.cpp" />
     <ClCompile Include="Sources\Framework\Graphics\GraphicsDevice.cpp" />
     <ClCompile Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.cpp" />
     <ClCompile Include="Sources\Framework\Heap\DSVHeap\DSVHeap.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="Sources\Framework\Buffer\ConstantBufferAllocator\ConstantBufferData\ConstantBufferData.h" />
     <ClInclude Include="Sources\Framework\Buffer\DepthStencil\DepthStencil.h" />
     <ClInclude Include="Sources\Framework\Buffer\Texture\Texture.h" />
+    <ClInclude Include="Sources\Framework\Collider\Collider.h" />
     <ClInclude Include="Sources\Framework\Framework.h" />
     <ClInclude Include="Sources\Framework\Graphics\GraphicsDevice.h" />
     <ClInclude Include="Sources\Framework\Heap\BaseHeap.h" />

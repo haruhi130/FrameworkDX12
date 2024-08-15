@@ -31,10 +31,10 @@ bool Audio::LoadWaveFile(const std::wstring& wFilePath, WaveData* outData)
 	HMMIO mmioHandle = nullptr;
 
 	// チャンク情報
-	MMCKINFO chunkInfo{};
+	MMCKINFO chunkInfo = {};
 
 	// RIFFチャンク用
-	MMCKINFO riffChunkInfo{};
+	MMCKINFO riffChunkInfo = {};
 
 	// WAVファイルを開く
 	mmioHandle = mmioOpen(
@@ -135,7 +135,8 @@ bool Audio::LoadWaveFile(const std::wstring& wFilePath, WaveData* outData)
 	readSize = mmioRead(
 		mmioHandle,
 		(HPSTR)outData->soundBuffer,
-		chunkInfo.cksize);
+		chunkInfo.cksize
+	);
 	if (readSize != chunkInfo.cksize)
 	{
 		assert(0 && "dataチャンク読み込み失敗");
@@ -149,9 +150,11 @@ bool Audio::LoadWaveFile(const std::wstring& wFilePath, WaveData* outData)
 	return true;
 }
 
-bool Audio::PlayWaveSound(const std::wstring& fileName, WaveData* outData, bool isLoop)
+bool Audio::PlayWaveSound(const std::wstring& fileName, bool isLoop)
 {
-	if (!LoadWaveFile(fileName, outData))
+	waveData = {};
+
+	if (!LoadWaveFile(fileName,&waveData))
 	{
 		assert(0 && "Waveファイル読み込み失敗");
 		return false;
@@ -161,13 +164,13 @@ bool Audio::PlayWaveSound(const std::wstring& fileName, WaveData* outData, bool 
 	// SourceVoiceの作成
 	//===================
 
-	WAVEFORMATEX waveFormat{};
+	WAVEFORMATEX waveFormat = {};
 
 	// 波形フォーマット設定
-	memcpy(&waveFormat, &outData->wavFormat, sizeof(outData->wavFormat));
+	memcpy(&waveFormat, &waveData.wavFormat, sizeof(waveData.wavFormat));
 
 	// 1サンプルあたりのバッファサイズ算出
-	waveFormat.wBitsPerSample = outData->wavFormat.nBlockAlign * 8 / outData->wavFormat.nChannels;
+	waveFormat.wBitsPerSample = waveData.wavFormat.nBlockAlign * 8 / waveData.wavFormat.nChannels;
 
 	// SourceVoice作成(フォーマットのみ)
 	auto result = m_cpXAudio2->CreateSourceVoice(&m_pSourceVoice, (WAVEFORMATEX*)&waveFormat);
@@ -180,9 +183,9 @@ bool Audio::PlayWaveSound(const std::wstring& fileName, WaveData* outData, bool 
 	// 波形データをSourceVoiceに渡す
 	XAUDIO2_BUFFER xAudio2Buffer = {};
 	memset(&xAudio2Buffer, 0, sizeof(XAUDIO2_BUFFER));
-	xAudio2Buffer.pAudioData = (BYTE*)outData->soundBuffer;
+	xAudio2Buffer.pAudioData = (BYTE*)waveData.soundBuffer;
 	xAudio2Buffer.Flags = XAUDIO2_END_OF_STREAM;
-	xAudio2Buffer.AudioBytes = outData->size;
+	xAudio2Buffer.AudioBytes = waveData.size;
 
 	// ループ設定
 	xAudio2Buffer.LoopCount = isLoop ? XAUDIO2_LOOP_INFINITE : 0;

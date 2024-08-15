@@ -73,6 +73,9 @@
     <Filter Include="Framework\Audio">
       <UniqueIdentifier>{a4f112c4-6f17-44b2-a2fb-c228e527cbb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Collider">
+      <UniqueIdentifier>{4b0c8cef-1c80-40bd-93f9-4443aaa806dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Framework\Audio\Audio.cpp">
       <Filter>Framework\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Collider\Collider.cpp">
+      <Filter>Framework\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Audio\Audio.h">
       <Filter>Framework\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Collider\Collider.h">
+      <Filter>Framework\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

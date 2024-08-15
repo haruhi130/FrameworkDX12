@@ -55,6 +55,8 @@
 #include <dxgi1_6.h>
 #include <d3dcompiler.h>
 
+#include <DirectXCollision.h>
+
 // DirectX Tool Kit
 #pragma comment(lib,"DirectXTK12.lib")
 #include <SimpleMath.h>

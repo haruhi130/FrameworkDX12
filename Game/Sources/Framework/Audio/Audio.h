@@ -15,9 +15,9 @@ public:
 
 	bool Init();
 
-	bool LoadWaveFile(const std::wstring& wFilePath, WaveData* outData);
+	bool LoadWaveFile(const std::wstring& wFilePath,WaveData* outData);
 
-	bool PlayWaveSound(const std::wstring& fileName, WaveData* outData, bool isLoop = false);
+	bool PlayWaveSound(const std::wstring& fileName, bool isLoop = false);
 
 	// ループ再生を終了
 	bool ExitLoop();
@@ -49,6 +49,8 @@ private:
 	
 	// ソースボイス(音の起点)
 	IXAudio2SourceVoice* m_pSourceVoice = nullptr;
+
+	WaveData waveData;
 
 	Audio(){}
 	~Audio() { Release(); }
