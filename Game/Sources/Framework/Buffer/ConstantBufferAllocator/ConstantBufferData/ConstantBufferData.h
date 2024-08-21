@@ -6,5 +6,9 @@ namespace ConstantBufferData
 	{
 		Math::Matrix mView;
 		Math::Matrix mProj;
+		Math::Matrix mProjInv;
+
+		Math::Vector3 CamPos;
+		int blank = 0;
 	};
 }

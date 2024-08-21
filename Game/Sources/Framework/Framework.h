@@ -17,6 +17,8 @@
 #include "Buffer/DepthStencil/DepthStencil.h"
 #include "Buffer/Texture/Texture.h"
 
+#include "Camera/Camera.h"
+
 #include "Mesh/Mesh.h"
 
 #include "Model/Model.h"

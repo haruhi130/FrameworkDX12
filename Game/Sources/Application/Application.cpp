@@ -68,22 +68,17 @@ void Application::Execute()
 	// カメラ処理
 	Math::Vector3 cam = { 0,0,5 };
 
-	Math::Matrix mView = Math::Matrix::CreateTranslation(cam);
-
-	Math::Matrix mProj = DirectX::XMMatrixPerspectiveFovLH
-	(DirectX::XMConvertToRadians(60.0f), 1280.0f / 720.0f, 0.01f, 1000.0f);
-
-	ConstantBufferData::Camera cbCamera;
-	cbCamera.mView = mView;
-	cbCamera.mProj = mProj;
+	Camera camera;
+	camera.SetCamPos(cam);
+	
 
 	// アニメーション処理
 	Animator animator;
 	animator.SetAnimation(model1->GetAnimation(0));
 
 	// 音再生
-	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);
-	//Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/KurataGorilla.wav", true);
+	//Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);
+	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/KurataGorilla.wav", true);
 
 	// メインゲームループ
 	while (true)
@@ -107,9 +102,6 @@ void Application::Execute()
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()->ResetCurrentUseNumber();
 
 		shader.Begin(1280, 720);
-
-		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-			->BindAndAttachData(0, cbCamera);
 
 		if (GetAsyncKeyState('W') & 0x8000)
 		{
@@ -136,6 +128,11 @@ void Application::Execute()
 			cam.z -= 0.1f;
 		}
 
+		// カメラ設定
+		camera.SetCamPos(cam);
+		camera.Set();
+
+
 		if (GetAsyncKeyState('O') & 0x8000)
 		{
 			Audio::GetInstance().Stop();
@@ -152,10 +149,6 @@ void Application::Execute()
 		{
 			Audio::GetInstance().ExitLoop();
 		}
-
-
-		mView = Math::Matrix::CreateTranslation(cam);
-		cbCamera.mView = mView;
 
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
 			->BindAndAttachData(1, model1->GetNodes()[0].mLocal * mWorld);
