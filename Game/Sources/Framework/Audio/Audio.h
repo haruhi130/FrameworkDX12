@@ -50,7 +50,7 @@ private:
 	// ソースボイス(音の起点)
 	IXAudio2SourceVoice* m_pSourceVoice = nullptr;
 
-	WaveData waveData;
+	WaveData m_waveData;
 
 	Audio(){}
 	~Audio() { Release(); }

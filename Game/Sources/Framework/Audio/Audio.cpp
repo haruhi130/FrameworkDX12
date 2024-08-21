@@ -152,9 +152,9 @@ bool Audio::LoadWaveFile(const std::wstring& wFilePath, WaveData* outData)
 
 bool Audio::PlayWaveSound(const std::wstring& fileName, bool isLoop)
 {
-	waveData = {};
+	m_waveData = {};
 
-	if (!LoadWaveFile(fileName,&waveData))
+	if (!LoadWaveFile(fileName,&m_waveData))
 	{
 		assert(0 && "Waveファイル読み込み失敗");
 		return false;
@@ -167,10 +167,10 @@ bool Audio::PlayWaveSound(const std::wstring& fileName, bool isLoop)
 	WAVEFORMATEX waveFormat = {};
 
 	// 波形フォーマット設定
-	memcpy(&waveFormat, &waveData.wavFormat, sizeof(waveData.wavFormat));
+	memcpy(&waveFormat, &m_waveData.wavFormat, sizeof(m_waveData.wavFormat));
 
 	// 1サンプルあたりのバッファサイズ算出
-	waveFormat.wBitsPerSample = waveData.wavFormat.nBlockAlign * 8 / waveData.wavFormat.nChannels;
+	waveFormat.wBitsPerSample = m_waveData.wavFormat.nBlockAlign * 8 / m_waveData.wavFormat.nChannels;
 
 	// SourceVoice作成(フォーマットのみ)
 	auto result = m_cpXAudio2->CreateSourceVoice(&m_pSourceVoice, (WAVEFORMATEX*)&waveFormat);
@@ -183,9 +183,9 @@ bool Audio::PlayWaveSound(const std::wstring& fileName, bool isLoop)
 	// 波形データをSourceVoiceに渡す
 	XAUDIO2_BUFFER xAudio2Buffer = {};
 	memset(&xAudio2Buffer, 0, sizeof(XAUDIO2_BUFFER));
-	xAudio2Buffer.pAudioData = (BYTE*)waveData.soundBuffer;
+	xAudio2Buffer.pAudioData = (BYTE*)m_waveData.soundBuffer;
 	xAudio2Buffer.Flags = XAUDIO2_END_OF_STREAM;
-	xAudio2Buffer.AudioBytes = waveData.size;
+	xAudio2Buffer.AudioBytes = m_waveData.size;
 
 	// ループ設定
 	xAudio2Buffer.LoopCount = isLoop ? XAUDIO2_LOOP_INFINITE : 0;

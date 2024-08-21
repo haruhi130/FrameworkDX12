@@ -4,7 +4,7 @@ class CBVSRVUAVHeap : public BaseHeap<Math::Vector3>
 {
 public:
 	CBVSRVUAVHeap(){}
-	~CBVSRVUAVHeap(){}
+	~CBVSRVUAVHeap()override{}
 
 	// SRVçÏê¨
 	int CreateSRV(ID3D12Resource* pBuffer);

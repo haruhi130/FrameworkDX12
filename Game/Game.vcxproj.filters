@@ -76,6 +76,9 @@
     <Filter Include="Framework\Collider">
       <UniqueIdentifier>{4b0c8cef-1c80-40bd-93f9-4443aaa806dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="System\DataStorage">
+      <UniqueIdentifier>{32e7e8e2-6a4c-45aa-be2b-1052b00597d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -135,6 +138,9 @@
       <Filter>Framework\Audio</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Framework\Collider\Collider.cpp">
+      <Filter>Framework\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Collider\Collision.cpp">
       <Filter>Framework\Collider</Filter>
     </ClCompile>
   </ItemGroup>
@@ -216,10 +222,19 @@
     <ClInclude Include="Sources\Framework\Collider\Collider.h">
       <Filter>Framework\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\System\DataStorage\DataStorage.h">
+      <Filter>System\DataStorage</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Collider\Collision.h">
+      <Filter>Framework\Collider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Sources\Framework\Shader\HLSL\inc_SimpleShader.hlsli">
+      <Filter>Framework\Shader\HLSL</Filter>
+    </None>
+    <None Include="Sources\Framework\Shader\HLSL\inc_Common.hlsli">
       <Filter>Framework\Shader\HLSL</Filter>
     </None>
   </ItemGroup>

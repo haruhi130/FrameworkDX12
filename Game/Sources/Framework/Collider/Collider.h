@@ -47,7 +47,7 @@ public:
 
 		// 開始地点と終了地点からレイの情報を作成
 		RayInfo(UINT type, const Math::Vector3& start, const Math::Vector3& end)
-			:m_type(type),m_pos(start)
+			:m_type(type), m_pos(start)
 		{
 			m_dir = end - start;
 			m_range = m_dir.Length();
@@ -69,8 +69,17 @@ public:
 		float m_overlapDistance = 0.0f; // 重なった量
 	};
 
-	Collider(){}
-	~Collider(){}
+	Collider() {}
+	~Collider() {}
+
+	// 衝突判定形状登録
+	void RegisterCollisionShape(std::string_view name, std::unique_ptr<CollisionShape> spShape);
+	void RegisterCollisionShape(std::string_view name, const DirectX::BoundingSphere& sphere, UINT type);
+	void RegisterCollisionShape(std::string_view name, const Math::Vector3& localPos, float radius, UINT type);
+	void RegisterCollisionShape(std::string_view name, const std::shared_ptr<ModelData>& model, UINT type);
+	void RegisterCollisionShape(std::string_view name, ModelData* model, UINT type);
+	void RegisterCollisionShape(std::string_view name, const std::shared_ptr<ModelWork>& model, UINT type);
+	void RegisterCollisionShape(std::string_view name, ModelWork* model, UINT type);
 
 	// 衝突判定実行
 	bool Intersects(const SphereInfo& targetShape, const Math::Matrix& ownerMat, std::list<Collider::CollisionResult>* pResults)const;
@@ -92,7 +101,7 @@ class CollisionShape
 public:
 	CollisionShape(UINT type) { m_type = type; }
 
-	virtual ~CollisionShape(){}
+	virtual ~CollisionShape() {}
 
 	UINT GetType()const { return m_type; }
 
@@ -111,16 +120,35 @@ private:
 class SphereCollision : public CollisionShape
 {
 public:
-	SphereCollision(const DirectX::BoundingSphere& sphere,UINT type)
-		:CollisionShape(type),m_shape(sphere){}
-	SphereCollision(const Math::Vector3& localPos,float radius,UINT type)
-		:CollisionShape(type) { m_shape.Center = localPos; m_shape.Radius = radius; }
+	SphereCollision(const DirectX::BoundingSphere& sphere, UINT type)
+		:CollisionShape(type), m_shape(sphere) {}
+	SphereCollision(const Math::Vector3& localPos, float radius, UINT type)
+		:CollisionShape(type) {
+		m_shape.Center = localPos; m_shape.Radius = radius;
+	}
 
-	~SphereCollision()override{}
+	~SphereCollision()override {}
 
 	bool Intersects(const DirectX::BoundingSphere& target, const Math::Matrix& world, Collider::CollisionResult* pRes)override;
 	bool Intersects(const Collider::RayInfo& target, const Math::Matrix& world, Collider::CollisionResult* pRes)override;
 
 private:
 	DirectX::BoundingSphere m_shape;
+};
+
+class ModelCollision :public CollisionShape
+{
+public:
+	ModelCollision(const std::shared_ptr<ModelData>& model, UINT type)
+		:CollisionShape(type), m_shape(std::make_shared<ModelWork>(model)) {}
+	ModelCollision(const std::shared_ptr<ModelWork>& model, UINT type)
+		:CollisionShape(type), m_shape(model) {}
+
+	~ModelCollision()override{}
+	
+	bool Intersects(const DirectX::BoundingSphere& target, const Math::Matrix& world, Collider::CollisionResult* pRes)override;
+	bool Intersects(const Collider::RayInfo& target, const Math::Matrix& world, Collider::CollisionResult* pRes)override;
+
+private:
+	std::shared_ptr<ModelWork> m_shape;
 };

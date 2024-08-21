@@ -44,6 +44,19 @@ public:
 	inline UINT GetInstanceCount()const 
 	{ return m_instanceCount; }
 
+	// 軸平行境界ボックス取得
+	inline const DirectX::BoundingBox& GetBoundingBox() const
+	{ return m_aabb; }
+	// 境界球取得
+	inline const DirectX::BoundingSphere& GetBoundingSphere() const 
+	{ return m_bs; }
+
+	inline const std::vector<Math::Vector3>& GetPositions()const
+	{ return m_positions; }
+
+	inline const std::vector<MeshFace>& GetFaces()const 
+	{ return m_faces; }
+
 private:
 	ComPtr<ID3D12Resource> m_cpVBuffer = nullptr;
 	D3D12_VERTEX_BUFFER_VIEW m_vbView = {};
@@ -53,4 +66,13 @@ private:
 
 	UINT m_instanceCount = 0;
 	Material m_material;
+
+	// 境界データ
+	DirectX::BoundingBox m_aabb;
+	DirectX::BoundingSphere m_bs;
+
+	// 座標のみの配列
+	std::vector<Math::Vector3> m_positions;
+	std::vector<MeshFace> m_faces;
+
 };

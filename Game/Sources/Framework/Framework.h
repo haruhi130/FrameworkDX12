@@ -21,6 +21,7 @@
 
 #include "Model/Model.h"
 
+#include "Collider/Collision.h"
 #include "Collider/Collider.h"
 
 #include "Shader/Shader.h"

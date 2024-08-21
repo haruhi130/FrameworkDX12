@@ -26,7 +26,7 @@ public:
 	void EnableDebugLayer();
 
 	// バックバッファ色変更
-	inline void SetBackBufferColor(const DirectX::SimpleMath::Color& col) 
+	inline void SetBackBufferColor(const Math::Color& col) 
 	{ m_clearColor = col; }
 
 	// デバイス取得

@@ -1,4 +1,5 @@
 #include "inc_SimpleShader.hlsli"
+#include "inc_Common.hlsli"
 
 Texture2D g_diffuseTex : register(t0); // Diffuseテクスチャ
 Texture2D g_normalTex : register(t1); // Normalテクスチャ

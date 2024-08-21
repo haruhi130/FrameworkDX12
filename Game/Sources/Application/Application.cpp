@@ -8,8 +8,6 @@ bool Application::Init(int width, int height)
 	// COM初期化
 	HRESULT result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 
-	SetDirectoryAndLoadDll();
-
 	// ウィンドウ作成
 	if (!m_window.Create(width, height, L"FrameworkDX12", L"Window"))
 	{
@@ -30,6 +28,9 @@ bool Application::Init(int width, int height)
 		return false;
 	}
 
+	// DLL設定(Assimp用)
+	SetDirectoryAndLoadDll();
+
 	return true;
 }
 
@@ -43,25 +44,29 @@ void Application::Execute()
 
 	// モデル読み込み
 	std::shared_ptr<ModelData> model1 = std::make_shared<ModelData>();
-	std::shared_ptr<ModelData> model2 = std::make_shared<ModelData>();
+	std::shared_ptr<ModelWork> model2 = std::make_shared<ModelWork>();
 	model1->Load("Assets/Models/Cube/Cube.gltf");
-	model2->Load("Assets/Models/ShortSword/Tanto.gltf");
+	model2->SetModelData("Assets/Models/ShortSword/Tanto.gltf");
+
+	// 当たり判定
+	std::shared_ptr<Collider> col = std::make_shared<Collider>();
+	col->RegisterCollisionShape("Tanto",model2, Collider::Type::Bump);
 
 	Math::Matrix mWorld;
 	Math::Matrix mTempWorld = Math::Matrix::CreateTranslation(1, 1, 1);
-
+ 
 	// シェーダーセット
-	RenderingSetting rs = {};
-	rs.InputLayouts =
-	{ InputLayout::POSITION,InputLayout::TEXCOORD ,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT };
-	rs.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
+	RenderingSetting renderingSetting = {};
+	renderingSetting.InputLayouts =
+	{ InputLayout::POSITION,InputLayout::TEXCOORD,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT };
+	renderingSetting.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
 
 	Shader shader;
-	shader.Create(L"SimpleShader", rs,
+	shader.Create(L"SimpleShader", renderingSetting,
 		{ RangeType::CBV,RangeType::CBV,RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
 
 	// カメラ処理
-	Math::Vector3 cam = { 0,0,3 };
+	Math::Vector3 cam = { 0,0,5 };
 
 	Math::Matrix mView = Math::Matrix::CreateTranslation(cam);
 
@@ -75,11 +80,10 @@ void Application::Execute()
 	// アニメーション処理
 	Animator animator;
 	animator.SetAnimation(model1->GetAnimation(0));
-	int count = 100;
 
 	// 音再生
 	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);
-	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/KurataGorilla.wav", true);
+	//Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/KurataGorilla.wav", true);
 
 	// メインゲームループ
 	while (true)
@@ -153,28 +157,17 @@ void Application::Execute()
 		mView = Math::Matrix::CreateTranslation(cam);
 		cbCamera.mView = mView;
 
-		if (GetAsyncKeyState('R') & 0x8000)
-		{
-			if (count < 0)
-			{
-				count = 100;
-				model1.swap(model2);
-			}
-		}
-
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
 			->BindAndAttachData(1, model1->GetNodes()[0].mLocal * mWorld);
 
 		shader.DrawModel(*model1);
 
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-			->BindAndAttachData(1, model2->GetNodes()[0].mLocal * mTempWorld);
+			->BindAndAttachData(1, model2->GetModelData()->GetNodes()[0].mLocal * mTempWorld);
 
 		shader.DrawModel(*model2);
 
 		GraphicsDevice::GetInstance().ScreenFlip();
-
-		--count;
 	}
 }
 
@@ -182,6 +175,7 @@ void Application::Terminate()
 {
 	// COM解放
 	CoUninitialize();
+
 	// ウィンドウ登録解除
 	m_window.Terminate();
 }

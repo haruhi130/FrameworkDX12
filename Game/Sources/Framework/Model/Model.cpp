@@ -32,3 +32,22 @@ const std::shared_ptr<AnimationData> ModelData::GetAnimation(UINT index) const
 {
 	return index >= m_spAnimations.size() ? nullptr : m_spAnimations[index];
 }
+
+void ModelWork::SetModelData(const std::shared_ptr<ModelData>& spModelData)
+{
+	if (!spModelData) { return; }
+	m_spModelData = spModelData;
+
+	auto nodeSize = spModelData->GetNodes().size();
+
+	m_coppiedNodes.resize(nodeSize);
+	for (auto i = 0; i < nodeSize; ++i)
+	{
+		m_coppiedNodes[i].copy(spModelData->GetNodes()[i]);
+	}
+}
+
+void ModelWork::SetModelData(std::string_view fileName)
+{
+	SetModelData(Assets::GetInstance().m_modelDatas.LoadData(fileName));
+}

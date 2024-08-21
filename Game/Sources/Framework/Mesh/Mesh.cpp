@@ -39,6 +39,15 @@ void Mesh::Create(const std::vector<MeshVertex>& vertices,
 		assert(0 && "頂点バッファ作成失敗");
 	}
 
+	m_positions.resize(vertices.size());
+	for (UINT i = 0; i < m_positions.size(); i++)
+	{
+		m_positions[i] = vertices[i].Position;
+	}
+
+	DirectX::BoundingBox::CreateFromPoints(m_aabb, m_positions.size(), &m_positions[0], sizeof(Math::Vector3));
+	DirectX::BoundingSphere::CreateFromPoints(m_bs, m_positions.size(), &m_positions[0], sizeof(Math::Vector3));
+
 	// 頂点バッファデータをビューに書き込み
 	m_vbView.BufferLocation = m_cpVBuffer->GetGPUVirtualAddress();
 	m_vbView.SizeInBytes = (UINT)resDesc.Width;
@@ -55,6 +64,8 @@ void Mesh::Create(const std::vector<MeshVertex>& vertices,
 	{
 		assert(0 && "インデックスバッファ作成失敗");
 	}
+
+	m_faces = faces;
 
 	// インデックスバッファデータをビューに書き込み
 	m_ibView.BufferLocation = m_cpIBuffer->GetGPUVirtualAddress();

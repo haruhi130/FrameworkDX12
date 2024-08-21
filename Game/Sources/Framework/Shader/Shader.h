@@ -32,6 +32,7 @@ public:
 
 	// モデル描画
 	void DrawModel(const ModelData& modelData);
+	void DrawModel(ModelWork& modelWork);
 
 	// CBVカウント取得
 	inline UINT GetCBVCount()const 

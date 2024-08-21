@@ -73,6 +73,14 @@ void Shader::DrawModel(const ModelData& modelData)
 	}
 }
 
+void Shader::DrawModel(ModelWork& modelWork)
+{
+	for (auto& node : modelWork.GetModelData()->WorkNodes())
+	{
+		DrawMesh(*node.spMesh);
+	}
+}
+
 void Shader::LoadShaderFile(const std::wstring& filePath)
 {
 	ID3DInclude* include = D3D_COMPILE_STANDARD_FILE_INCLUDE;
