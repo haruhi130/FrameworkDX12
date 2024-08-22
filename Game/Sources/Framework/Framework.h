@@ -4,6 +4,8 @@
 //==============================================
 #include "Graphics/GraphicsDevice.h"
 
+#include "Time/Time.h"
+
 #include "Audio/Audio.h"
 
 #include "Heap/BaseHeap.h"

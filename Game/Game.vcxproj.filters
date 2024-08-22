@@ -82,6 +82,12 @@
     <Filter Include="Framework\Camera">
       <UniqueIdentifier>{b2b375b7-c4a9-4270-a67f-217aac250e50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="System\Service">
+      <UniqueIdentifier>{d607e9f4-96c2-48ce-873e-b43e8ec4926f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Time">
+      <UniqueIdentifier>{c99dae8d-6fe2-4596-9d85-171390da8b36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -236,6 +242,12 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Camera\Camera.h">
       <Filter>Framework\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\System\Service\Service.h">
+      <Filter>System\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Time\Time.h">
+      <Filter>Framework\Time</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

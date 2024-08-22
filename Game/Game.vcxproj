@@ -237,10 +237,12 @@
     <ClInclude Include="Sources\Framework\Shader\Pipeline\Pipeline.h" />
     <ClInclude Include="Sources\Framework\Shader\RootSignature\RootSignature.h" />
     <ClInclude Include="Sources\Framework\Shader\Shader.h" />
+    <ClInclude Include="Sources\Framework\Time\Time.h" />
     <ClInclude Include="Sources\main.h" />
     <ClInclude Include="Sources\Pch.h" />
     <ClInclude Include="Sources\System\Animation\Animation.h" />
     <ClInclude Include="Sources\System\DataStorage\DataStorage.h" />
+    <ClInclude Include="Sources\System\Service\Service.h" />
     <ClInclude Include="Sources\System\System.h" />
     <ClInclude Include="Sources\System\Utility\Utility.h" />
     <ClInclude Include="Sources\System\Window\Window.h" />
