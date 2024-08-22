@@ -69,8 +69,7 @@ void Application::Execute()
 	Math::Vector3 cam = { 0,0,5 };
 
 	Camera camera;
-	camera.SetCamPos(cam);
-	
+	camera.SetCameraMatrix(Math::Matrix::CreateTranslation(cam));
 
 	// アニメーション処理
 	Animator animator;
@@ -129,7 +128,7 @@ void Application::Execute()
 		}
 
 		// カメラ設定
-		camera.SetCamPos(cam);
+		camera.SetCameraMatrix(Math::Matrix::CreateTranslation(cam));
 		camera.Set();
 
 

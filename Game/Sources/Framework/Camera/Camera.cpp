@@ -2,13 +2,11 @@
 
 void Camera::Set()
 {
-	m_mView = Math::Matrix::CreateTranslation(m_camPos);
-
 	ConstantBufferData::Camera cbCamera;
 	cbCamera.mView = m_mView;
 	cbCamera.mProj = m_mProj;
 	cbCamera.mProjInv = m_mProj.Invert();
-	cbCamera.CamPos = m_camPos;
+	cbCamera.CamPos = m_mView.Translation();
 
 	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
 		->BindAndAttachData(0, cbCamera);
@@ -22,9 +20,10 @@ void Camera::SetProjectionMatrix(float fov, float minRange, float maxRange, floa
 	// アスペクト比が不正だった場合
 	if (aspect <= 0)
 	{
-		return;
+		// デフォルトのアスペクト比を使用
+		aspect = 1280.0f / 720.0f;
 	}
-
+	
 	m_mProj = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(fov), aspect, minRange, maxRange);
 
 	SetProjectionMatrix(m_mProj);
