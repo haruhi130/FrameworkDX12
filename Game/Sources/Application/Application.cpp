@@ -46,7 +46,7 @@ void Application::Execute()
 	std::shared_ptr<ModelData> model1 = std::make_shared<ModelData>();
 	std::shared_ptr<ModelWork> model2 = std::make_shared<ModelWork>();
 	model1->Load("Assets/Models/Cube/Cube.gltf");
-	model2->SetModelData("Assets/Models/ShortSword/Tanto.gltf");
+	model2->SetModelData("Assets/Models/Character/3DChara.gltf");
 
 	// “–‚½‚è”»’è
 	std::shared_ptr<Collider> col = std::make_shared<Collider>();

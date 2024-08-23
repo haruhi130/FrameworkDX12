@@ -26,16 +26,16 @@ bool ModelLoader::Load(std::string filePath, ModelData& model)
 
 	std::string dirPath = GetDirFromPath(filePath);
 
-	for (size_t i = 0; i < nodes.size(); ++i)
+	for (UINT i = 0; i < pScene->mNumMeshes; i++)
 	{
-		const auto pMesh = pScene->mMeshes[i];
-		const auto pMaterial = pScene->mMaterials[i];
+		auto pMesh = pScene->mMeshes[i];
+		auto pMaterial = pScene->mMaterials[i];
 		nodes[i].spMesh = Parse(pScene, pMesh, pMaterial, dirPath);
 	}
 
 	auto& spAnimationDatas = model.WorkAnimation();
 	
-	for (size_t i = 0; i < pScene->mNumAnimations; ++i)
+	for (UINT i = 0; i < pScene->mNumAnimations; ++i)
 	{
 		aiAnimation* pAnimation = pScene->mAnimations[i];
 
