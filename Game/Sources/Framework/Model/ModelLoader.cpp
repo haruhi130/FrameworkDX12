@@ -25,7 +25,7 @@ bool ModelLoader::Load(std::string filePath, ModelData& model)
 	nodes.resize(pScene->mNumMeshes);
 
 	std::string dirPath = GetDirFromPath(filePath);
-
+	
 	for (UINT i = 0; i < pScene->mNumMeshes; i++)
 	{
 		auto pMesh = pScene->mMeshes[i];
@@ -34,7 +34,7 @@ bool ModelLoader::Load(std::string filePath, ModelData& model)
 	}
 
 	auto& spAnimationDatas = model.WorkAnimation();
-	
+
 	for (UINT i = 0; i < pScene->mNumAnimations; ++i)
 	{
 		aiAnimation* pAnimation = pScene->mAnimations[i];
@@ -44,7 +44,7 @@ bool ModelLoader::Load(std::string filePath, ModelData& model)
 		{
 			spAnimationData->m_name = pAnimation->mName.C_Str();
 			spAnimationData->m_maxTime = (float)pAnimation->mDuration;
-			
+
 			spAnimationData->m_channels.resize(pAnimation->mNumChannels);
 
 			for (UINT j = 0; j < pAnimation->mNumChannels; ++j)
@@ -56,11 +56,11 @@ bool ModelLoader::Load(std::string filePath, ModelData& model)
 				{
 					AnimeKeyVector3 translation;
 					translation.m_time = (float)dstChannel->mPositionKeys[k].mTime;
-					
+
 					translation.m_vec.x = dstChannel->mPositionKeys[k].mValue.x;
 					translation.m_vec.y = dstChannel->mPositionKeys[k].mValue.y;
 					translation.m_vec.z = dstChannel->mPositionKeys[k].mValue.z;
-				
+
 					srcChannel.m_translations.emplace_back(translation);
 				}
 
@@ -109,7 +109,7 @@ std::shared_ptr<Mesh> ModelLoader::Parse(const aiScene* pScene, const aiMesh* pM
 		vertices[i].Position.x = pMesh->mVertices[i].x;
 		vertices[i].Position.y = pMesh->mVertices[i].y;
 		vertices[i].Position.z = pMesh->mVertices[i].z;
-	
+
 		if (pMesh->HasTextureCoords(0))
 		{
 			vertices[i].UV.x = static_cast<float>(pMesh->mTextureCoords[0][i].x);
@@ -150,7 +150,7 @@ std::shared_ptr<Mesh> ModelLoader::Parse(const aiScene* pScene, const aiMesh* pM
 	}
 
 	std::shared_ptr<Mesh> spMesh = std::make_shared<Mesh>();
-	spMesh->Create(vertices, faces, ParseMaterial(pMaterial,dirPath));
+	spMesh->Create(vertices, faces, ParseMaterial(pMaterial, dirPath));
 
 	return spMesh;
 }
@@ -205,8 +205,8 @@ const Material ModelLoader::ParseMaterial(const aiMaterial* pMaterial, const std
 	// MetallicRoughnessテクスチャ取得
 	{
 		aiString path;
-		if (pMaterial->GetTexture(AI_MATKEY_METALLIC_TEXTURE,&path) == AI_SUCCESS ||
-			pMaterial->GetTexture(AI_MATKEY_ROUGHNESS_TEXTURE,&path) == AI_SUCCESS)
+		if (pMaterial->GetTexture(AI_MATKEY_METALLIC_TEXTURE, &path) == AI_SUCCESS ||
+			pMaterial->GetTexture(AI_MATKEY_ROUGHNESS_TEXTURE, &path) == AI_SUCCESS)
 		{
 			auto filePath = std::string(path.C_Str());
 
@@ -267,7 +267,7 @@ const Material ModelLoader::ParseMaterial(const aiMaterial* pMaterial, const std
 	// Normalテクスチャ取得
 	{
 		aiString path;
-		if(pMaterial->GetTexture(AI_MATKEY_NORMAL_TEXTURE, &path) == AI_SUCCESS)
+		if (pMaterial->GetTexture(AI_MATKEY_NORMAL_TEXTURE, &path) == AI_SUCCESS)
 		{
 			auto filePath = std::string(path.C_Str());
 

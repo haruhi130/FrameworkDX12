@@ -53,7 +53,11 @@ void Application::Execute()
 	col->RegisterCollisionShape("Tanto",model2, Collider::Type::Bump);
 
 	Math::Matrix mWorld;
-	Math::Matrix mTempWorld = Math::Matrix::CreateTranslation(1, 1, 1);
+
+	// モデル2用
+	Math::Matrix mTrans = Math::Matrix::CreateTranslation(1, 1, 1);
+	Math::Matrix mRot = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0)) * Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180));
+	Math::Matrix mTempWorld = mRot * mTrans;
  
 	// シェーダーセット
 	RenderingSetting renderingSetting = {};
@@ -73,11 +77,17 @@ void Application::Execute()
 
 	// アニメーション処理
 	Animator animator;
-	animator.SetAnimation(model1->GetAnimation(0));
+	animator.SetAnimation(model1->GetAnimation("CubeAction"));
+	
+	float animationSpeed = 5.0f;
 
 	// 音再生
-	//Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);
 	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/KurataGorilla.wav", true);
+
+	// 可変フレームレート
+	ServiceLocator::Add(std::make_shared<Time>());
+	auto time = ServiceLocator::Get<Time>();
+	if (time!=nullptr) { time->Start(); }
 
 	// メインゲームループ
 	while (true)
@@ -92,14 +102,17 @@ void Application::Execute()
 			break;
 		}
 
-		animator.ProgressTime(model1->WorkNodes(), 5.0f);
-
+		animator.ProgressTime(model1->WorkNodes(), animationSpeed);
+	
 		GraphicsDevice::GetInstance().Prepare();
 
+		// 画像用にヒープを指定
 		GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
 
+		// コンスタントバッファ初期化
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()->ResetCurrentUseNumber();
 
+		// Shader処理
 		shader.Begin(1280, 720);
 
 		if (GetAsyncKeyState('W') & 0x8000)
@@ -160,6 +173,8 @@ void Application::Execute()
 		shader.DrawModel(*model2);
 
 		GraphicsDevice::GetInstance().ScreenFlip();
+
+		time->Update();
 	}
 }
 

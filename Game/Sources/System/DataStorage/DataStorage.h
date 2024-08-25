@@ -75,6 +75,7 @@ private:
 class Assets
 {
 public:
+	DataStorage<Texture> m_textures;
 	DataStorage<ModelData> m_modelDatas;
 
 	static Assets& GetInstance()
@@ -85,6 +86,7 @@ public:
 
 	void ClearData(bool force)
 	{
+		m_textures.ClearData(force);
 		m_modelDatas.ClearData(force);
 	}
 

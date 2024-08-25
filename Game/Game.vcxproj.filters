@@ -88,6 +88,9 @@
     <Filter Include="Framework\Time">
       <UniqueIdentifier>{c99dae8d-6fe2-4596-9d85-171390da8b36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\GameObject">
+      <UniqueIdentifier>{7cf6c937-a759-4bbb-8a28-7787955155ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -154,6 +157,12 @@
     </ClCompile>
     <ClCompile Include="Sources\Framework\Camera\Camera.cpp">
       <Filter>Framework\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\GameObject\GameObject.cpp">
+      <Filter>Framework\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\GameObject\Component.cpp">
+      <Filter>Framework\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,6 +257,12 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Time\Time.h">
       <Filter>Framework\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\GameObject\GameObject.h">
+      <Filter>Framework\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\GameObject\Component.h">
+      <Filter>Framework\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

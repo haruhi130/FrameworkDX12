@@ -27,6 +27,9 @@ public:
 		m_prevTime = now;
 	}
 
+	// ŒW”æ“¾
+	virtual float DeltaTime() { return m_deltaTime; }
+
 private:
 	// ˆê•bŠÔŠu‚É•ÏŠ·‚·‚é
 	float m_deltaTime = 0.0f;
@@ -38,5 +41,5 @@ private:
 class TimeFFR : public Time
 {
 public:
-	float DeltaTime() { return 0.016f; }
+	float DeltaTime()override { return 0.016f; }
 };

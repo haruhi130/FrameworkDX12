@@ -93,7 +93,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>..\Libraries\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\tinygltf;..\Libraries\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -117,7 +117,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>..\Libraries\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\tinygltf;..\Libraries\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,7 +141,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>..\Libraries\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\tinygltf;..\Libraries\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -165,7 +165,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>..\Libraries\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\tinygltf;..\Libraries\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -188,6 +188,8 @@
     <ClCompile Include="Sources\Framework\Camera\Camera.cpp" />
     <ClCompile Include="Sources\Framework\Collider\Collider.cpp" />
     <ClCompile Include="Sources\Framework\Collider\Collision.cpp" />
+    <ClCompile Include="Sources\Framework\GameObject\Component.cpp" />
+    <ClCompile Include="Sources\Framework\GameObject\GameObject.cpp" />
     <ClCompile Include="Sources\Framework\Graphics\GraphicsDevice.cpp" />
     <ClCompile Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.cpp" />
     <ClCompile Include="Sources\Framework\Heap\DSVHeap\DSVHeap.cpp" />
@@ -225,6 +227,8 @@
     <ClInclude Include="Sources\Framework\Collider\Collider.h" />
     <ClInclude Include="Sources\Framework\Collider\Collision.h" />
     <ClInclude Include="Sources\Framework\Framework.h" />
+    <ClInclude Include="Sources\Framework\GameObject\Component.h" />
+    <ClInclude Include="Sources\Framework\GameObject\GameObject.h" />
     <ClInclude Include="Sources\Framework\Graphics\GraphicsDevice.h" />
     <ClInclude Include="Sources\Framework\Heap\BaseHeap.h" />
     <ClInclude Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.h" />

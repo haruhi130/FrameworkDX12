@@ -13,5 +13,4 @@ private:
 
 	// ƒ}ƒeƒŠƒAƒ‹‰ğÍ
 	const Material ParseMaterial(const aiMaterial* pMaterial, const std::string& dirPath);
-
 };

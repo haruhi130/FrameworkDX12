@@ -7,6 +7,7 @@
 
 #include <sdkddkver.h>
 #include <Windows.h>
+#include <stdio.h>
 
 #include <wrl/client.h>
 
