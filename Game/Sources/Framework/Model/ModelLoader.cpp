@@ -14,6 +14,7 @@ bool ModelLoader::Load(std::string filePath, ModelData& model)
 	// flag |= aiProcess_GenUVCoords;
 	// flag |= aiProcess_OptimizeMeshes;
 
+	// ÉÇÉfÉãì«Ç›çûÇ›
 	const aiScene* pScene = importer.ReadFile(filePath, flag);
 	if (pScene == nullptr)
 	{
@@ -25,7 +26,8 @@ bool ModelLoader::Load(std::string filePath, ModelData& model)
 	nodes.resize(pScene->mNumMeshes);
 
 	std::string dirPath = GetDirFromPath(filePath);
-	
+
+	// ÉÇÉfÉãâêÕ
 	for (UINT i = 0; i < pScene->mNumMeshes; i++)
 	{
 		auto pMesh = pScene->mMeshes[i];
@@ -37,7 +39,7 @@ bool ModelLoader::Load(std::string filePath, ModelData& model)
 
 	for (UINT i = 0; i < pScene->mNumAnimations; ++i)
 	{
-		aiAnimation* pAnimation = pScene->mAnimations[i];
+		auto pAnimation = pScene->mAnimations[i];
 
 		std::shared_ptr<AnimationData> spAnimationData = std::make_shared<AnimationData>();
 		if (spAnimationData)
@@ -89,12 +91,9 @@ bool ModelLoader::Load(std::string filePath, ModelData& model)
 					srcChannel.m_scales.emplace_back(scale);
 				}
 			}
-
 			spAnimationDatas.emplace_back(spAnimationData);
 		}
 	}
-
-	pScene = nullptr;
 
 	return true;
 }
@@ -281,4 +280,31 @@ const Material ModelLoader::ParseMaterial(const aiMaterial* pMaterial, const std
 	}
 
 	return material;
+}
+
+Math::Matrix ModelLoader::ConvertToSimpleMathMatrixFromAiMatrix(const aiMatrix4x4& assimpMat)
+{
+	Math::Matrix mat;
+
+	mat._11 = assimpMat.a1;
+	mat._12 = assimpMat.a2;
+	mat._13 = assimpMat.a3;
+	mat._14 = assimpMat.a4;
+
+	mat._21 = assimpMat.b1;
+	mat._22 = assimpMat.b2;
+	mat._23 = assimpMat.b3;
+	mat._24 = assimpMat.b4;
+
+	mat._31 = assimpMat.c1;
+	mat._32 = assimpMat.c2;
+	mat._33 = assimpMat.c3;
+	mat._34 = assimpMat.c4;
+
+	mat._41 = assimpMat.d1;
+	mat._42 = assimpMat.d2;
+	mat._43 = assimpMat.d3;
+	mat._44 = assimpMat.d4;
+
+	return mat;
 }

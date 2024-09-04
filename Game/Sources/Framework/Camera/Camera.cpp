@@ -21,7 +21,7 @@ void Camera::SetProjectionMatrix(float fov, float minRange, float maxRange, floa
 	if (aspect <= 0)
 	{
 		// デフォルトのアスペクト比を使用
-		aspect = 1280.0f / 720.0f;
+		aspect = 16.0f / 9.0f;
 	}
 	
 	m_mProj = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(fov), aspect, minRange, maxRange);

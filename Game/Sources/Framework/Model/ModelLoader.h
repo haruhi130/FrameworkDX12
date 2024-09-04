@@ -13,4 +13,6 @@ private:
 
 	// ƒ}ƒeƒŠƒAƒ‹‰ğÍ
 	const Material ParseMaterial(const aiMaterial* pMaterial, const std::string& dirPath);
+
+	Math::Matrix ConvertToSimpleMathMatrixFromAiMatrix(const aiMatrix4x4& assimpMat);
 };

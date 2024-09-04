@@ -91,6 +91,9 @@
     <Filter Include="Framework\GameObject">
       <UniqueIdentifier>{7cf6c937-a759-4bbb-8a28-7787955155ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Scene">
+      <UniqueIdentifier>{baa0b237-ded2-421e-ad67-d224411fdf8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />

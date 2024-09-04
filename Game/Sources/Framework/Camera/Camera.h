@@ -4,7 +4,7 @@ class Camera
 {
 public:
 	Camera() { SetProjectionMatrix(60.0f); }
-	~Camera(){}
+	~Camera() {}
 
 	void Set();
 
@@ -12,9 +12,9 @@ public:
 	{ m_mView = mCam; }
 
 	// éÀâeçsóÒÇÃê›íË
-	void SetProjectionMatrix(float fov, float minRange = 0.01f,float maxRange = 1000.0f, float aspectRatio = 1280.0f/720.0f);
+	void SetProjectionMatrix(float fov, float minRange = 0.01f, float maxRange = 1000.0f, float aspectRatio = 16.0f / 9.0f);
 	void SetProjectionMatrix(const DirectX::SimpleMath::Matrix& rProj);
-	
+
 private:
 	Math::Matrix m_mView;
 

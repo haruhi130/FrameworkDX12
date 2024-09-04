@@ -68,12 +68,20 @@ public:
 	inline const std::shared_ptr<ModelData> GetModelData()const 
 	{ return m_spModelData; }
 
-	const std::vector<Node>& GetNodes() const { return m_coppiedNodes; }
-	std::vector<Node>& WorkNodes() { return m_coppiedNodes; }
+	// アニメーションデータ取得
+	const std::shared_ptr<AnimationData> GetAnimation(std::string animName) const { return !m_spModelData ? nullptr : m_spModelData->GetAnimation(animName); }
+	const std::shared_ptr<AnimationData> GetAnimation(int index) const { return !m_spModelData ? nullptr : m_spModelData->GetAnimation(index); }
+
+	inline const std::vector<ModelData::Node>& GetDataNodes() const
+	{ return m_spModelData->GetNodes(); }
+
+	inline const std::vector<Node>& GetNodes() const
+	{ return m_coppiedNodes; }
+	inline std::vector<Node>& WorkNodes() 
+	{ return m_coppiedNodes; }
 
 private:
 	std::shared_ptr<ModelData> m_spModelData = nullptr;
 
 	std::vector<Node> m_coppiedNodes;
-
 };

@@ -43,9 +43,9 @@ void Application::Execute()
 	}
 
 	// モデル読み込み
-	std::shared_ptr<ModelData> model1 = std::make_shared<ModelData>();
+	std::shared_ptr<ModelWork> model1 = std::make_shared<ModelWork>();
 	std::shared_ptr<ModelWork> model2 = std::make_shared<ModelWork>();
-	model1->Load("Assets/Models/Cube/Cube.gltf");
+	model1->SetModelData("Assets/Models/Cube/Cube.gltf");
 	model2->SetModelData("Assets/Models/Character/3DChara.gltf");
 
 	// 当たり判定
@@ -56,9 +56,7 @@ void Application::Execute()
 
 	// モデル2用
 	Math::Matrix mTrans = Math::Matrix::CreateTranslation(1, 1, 1);
-	Math::Matrix mRot = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0)) * Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180));
-	Math::Matrix mTempWorld = mRot * mTrans;
- 
+	
 	// シェーダーセット
 	RenderingSetting renderingSetting = {};
 	renderingSetting.InputLayouts =
@@ -70,7 +68,7 @@ void Application::Execute()
 		{ RangeType::CBV,RangeType::CBV,RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
 
 	// カメラ処理
-	Math::Vector3 cam = { 0,0,5 };
+	Math::Vector3 cam = { 0,0,10 };
 
 	Camera camera;
 	camera.SetCameraMatrix(Math::Matrix::CreateTranslation(cam));
@@ -78,16 +76,18 @@ void Application::Execute()
 	// アニメーション処理
 	Animator animator;
 	animator.SetAnimation(model1->GetAnimation("CubeAction"));
-	
+	//Animator anime;
+	//anime.SetAnimation(model2->GetAnimation("Walk"));
+
 	float animationSpeed = 5.0f;
 
 	// 音再生
-	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/KurataGorilla.wav", true);
+	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);
 
 	// 可変フレームレート
 	ServiceLocator::Add(std::make_shared<Time>());
 	auto time = ServiceLocator::Get<Time>();
-	if (time!=nullptr) { time->Start(); }
+	if (time != nullptr) { time->Start(); }
 
 	// メインゲームループ
 	while (true)
@@ -103,7 +103,8 @@ void Application::Execute()
 		}
 
 		animator.ProgressTime(model1->WorkNodes(), animationSpeed);
-	
+		//anime.ProgressTime(model2->WorkNodes(), animationSpeed);
+
 		GraphicsDevice::GetInstance().Prepare();
 
 		// 画像用にヒープを指定
@@ -168,7 +169,7 @@ void Application::Execute()
 		shader.DrawModel(*model1);
 
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-			->BindAndAttachData(1, model2->GetModelData()->GetNodes()[0].mLocal * mTempWorld);
+			->BindAndAttachData(1, model2->GetNodes()[0].mLocal * mTrans);
 
 		shader.DrawModel(*model2);
 

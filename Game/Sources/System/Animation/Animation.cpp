@@ -17,7 +17,7 @@ int BinarySearchNextAnimKey(const std::vector<T>& list, float time)
 	return low;
 }
 
-void Animator::ProgressTime(std::vector<ModelData::Node>& rNodes, float speed)
+void Animator::ProgressTime(std::vector<ModelWork::Node>& rNodes, float speed)
 {
 	if (!m_spAnimation) { return; }
 
