@@ -15,8 +15,13 @@ public:
 	void Terminate();
 
 private:
-	// DLLディレクトリのセットとロード
-	void SetDirectoryAndLoadDll();
+
+	void PreUpdate();
+	void Update();
+	void PostUpdate();
+
+	void PreDraw();
+	void Draw();
 
 	Window m_window;
 

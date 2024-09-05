@@ -94,6 +94,15 @@
     <Filter Include="Application\Scene">
       <UniqueIdentifier>{baa0b237-ded2-421e-ad67-d224411fdf8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Scene\BaseScene">
+      <UniqueIdentifier>{9067539b-f990-41d1-a684-630a8378414f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\TitleScene">
+      <UniqueIdentifier>{dc376263-15d4-480a-8c76-f583989fce4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\GameScene">
+      <UniqueIdentifier>{986a66be-54f6-4a45-b88e-9f8b2a72c856}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -131,9 +140,6 @@
     <ClCompile Include="Sources\Framework\Model\Model.cpp">
       <Filter>Framework\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Framework\Model\ModelLoader.cpp">
-      <Filter>Framework\Model</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Framework\Heap\DSVHeap\DSVHeap.cpp">
       <Filter>Framework\Heap\DSVHeap</Filter>
     </ClCompile>
@@ -166,6 +172,21 @@
     </ClCompile>
     <ClCompile Include="Sources\Framework\GameObject\Component.cpp">
       <Filter>Framework\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\Scene\SceneManager.cpp">
+      <Filter>Application\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\Scene\BaseScene\BaseScene.cpp">
+      <Filter>Application\Scene\BaseScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\Scene\GameScene\GameScene.cpp">
+      <Filter>Application\Scene\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\Scene\TitleScene\TitleScene.cpp">
+      <Filter>Application\Scene\TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Model\KdGLTFLoader.cpp">
+      <Filter>Framework\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -216,9 +237,6 @@
     <ClInclude Include="Sources\Framework\Model\Model.h">
       <Filter>Framework\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Framework\Model\ModelLoader.h">
-      <Filter>Framework\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Framework\Heap\DSVHeap\DSVHeap.h">
       <Filter>Framework\Heap\DSVHeap</Filter>
     </ClInclude>
@@ -266,6 +284,21 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\GameObject\Component.h">
       <Filter>Framework\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\Scene\SceneManager.h">
+      <Filter>Application\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\Scene\BaseScene\BaseScene.h">
+      <Filter>Application\Scene\BaseScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\Scene\GameScene\GameScene.h">
+      <Filter>Application\Scene\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\Scene\TitleScene\TitleScene.h">
+      <Filter>Application\Scene\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Model\KdGLTFLoader.h">
+      <Filter>Framework\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include "Scene/SceneManager.h"
+
 bool Application::Init(int width, int height)
 {
 	// メモリリーク検知
@@ -28,19 +30,23 @@ bool Application::Init(int width, int height)
 		return false;
 	}
 
-	// DLL設定(Assimp用)
-	SetDirectoryAndLoadDll();
+	// シーン初期化
+	SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Game);
 
 	return true;
 }
 
 void Application::Execute()
 {
+	// ゲーム初期化
 	if (!Init())
 	{
 		assert(0 && "ゲーム初期化失敗");
 		return;
 	}
+
+	//===============================================
+	// 仮実装
 
 	// モデル読み込み
 	std::shared_ptr<ModelWork> model1 = std::make_shared<ModelWork>();
@@ -52,34 +58,41 @@ void Application::Execute()
 	std::shared_ptr<Collider> col = std::make_shared<Collider>();
 	col->RegisterCollisionShape("Tanto",model2, Collider::Type::Bump);
 
+	// モデル1用
+	Math::Vector3 playerVec = {};
 	Math::Matrix mWorld;
 
 	// モデル2用
+	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180));
 	Math::Matrix mTrans = Math::Matrix::CreateTranslation(1, 1, 1);
-	
-	// シェーダーセット
+
+	Math::Matrix mTWorld = mRot * mTrans;
+
+	// シェーダーに渡す情報設定
 	RenderingSetting renderingSetting = {};
 	renderingSetting.InputLayouts =
 	{ InputLayout::POSITION,InputLayout::TEXCOORD,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT };
 	renderingSetting.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
 
+	// シェーダー作成(どのシェーダーを使用するか)
 	Shader shader;
 	shader.Create(L"SimpleShader", renderingSetting,
 		{ RangeType::CBV,RangeType::CBV,RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
 
-	// カメラ処理
+	// カメラ行列
 	Math::Vector3 cam = { 0,0,10 };
 
+	// カメラ本体
 	Camera camera;
-	camera.SetCameraMatrix(Math::Matrix::CreateTranslation(cam));
-
-	// アニメーション処理
+	
+	// アニメーション
 	Animator animator;
 	animator.SetAnimation(model1->GetAnimation("CubeAction"));
-	//Animator anime;
-	//anime.SetAnimation(model2->GetAnimation("Walk"));
+	Animator anime;
+	anime.SetAnimation(model2->GetAnimation("Walk"));
 
-	float animationSpeed = 5.0f;
+	// アニメーション速度
+	float animationSpeed = 1.0f;
 
 	// 音再生
 	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);
@@ -89,33 +102,77 @@ void Application::Execute()
 	auto time = ServiceLocator::Get<Time>();
 	if (time != nullptr) { time->Start(); }
 
+	//===============================================
+
 	// メインゲームループ
 	while (true)
 	{
+		// ウィンドウメッセージ処理
 		if (!m_window.ProcessMessage())
 		{
 			break;
 		}
 
+		// 終了
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
 		{
 			break;
 		}
 
-		animator.ProgressTime(model1->WorkNodes(), animationSpeed);
-		//anime.ProgressTime(model2->WorkNodes(), animationSpeed);
+		//=============================================
+		// 
+		// アプリケーション更新
+		// 
+		//=============================================
+		PreUpdate();
 
-		GraphicsDevice::GetInstance().Prepare();
+		Update();
+		if (GetAsyncKeyState('O') & 0x8000)
+		{
+			Audio::GetInstance().Stop();
+		}
+		if (GetAsyncKeyState('P') & 0x8000)
+		{
+			Audio::GetInstance().Pause();
+		}
+		if (GetAsyncKeyState('I') & 0x8000)
+		{
+			Audio::GetInstance().Resume();
+		}
+		if (GetAsyncKeyState('U') & 0x8000)
+		{
+			Audio::GetInstance().ExitLoop();
+		}
 
-		// 画像用にヒープを指定
-		GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
+		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+		{
+			playerVec.x += 0.1f;
+		}
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+		{
+			playerVec.x -= 0.1f;
+		}
+		if (GetAsyncKeyState(VK_UP) & 0x8000)
+		{
+			playerVec.y += 0.1f;
+		}
+		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+		{
+			playerVec.y -= 0.1f;
+		}
 
-		// コンスタントバッファ初期化
-		GraphicsDevice::GetInstance().GetConstantBufferAllocator()->ResetCurrentUseNumber();
+		if (GetAsyncKeyState('M') & 0x8000)
+		{
+			playerVec.z += 0.1f;
+		}
+		if (GetAsyncKeyState('N') & 0x8000)
+		{
+			playerVec.z -= 0.1f;
+		}
 
-		// Shader処理
-		shader.Begin(1280, 720);
+		mWorld.Translation(playerVec);
 
+		PostUpdate();
 		if (GetAsyncKeyState('W') & 0x8000)
 		{
 			cam.y += 0.1f;
@@ -141,38 +198,37 @@ void Application::Execute()
 			cam.z -= 0.1f;
 		}
 
+		animator.ProgressTime(model1->WorkNodes(), animationSpeed);
+		anime.ProgressTime(model2->WorkNodes(), animationSpeed);
+
+		//=============================================
+		// 
+		// アプリケーション描画
+		// 
+		//=============================================
+		GraphicsDevice::GetInstance().Prepare();
+
+		// 画像用にヒープを指定
+		GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
+
+		// コンスタントバッファ初期化
+		GraphicsDevice::GetInstance().GetConstantBufferAllocator()->ResetCurrentUseNumber();
+
+		// Shader処理
+		shader.Begin(1280, 720);
+
+		PreDraw();
 		// カメラ設定
 		camera.SetCameraMatrix(Math::Matrix::CreateTranslation(cam));
 		camera.Set();
 
+		Draw();
 
-		if (GetAsyncKeyState('O') & 0x8000)
-		{
-			Audio::GetInstance().Stop();
-		}
-		if (GetAsyncKeyState('P') & 0x8000)
-		{
-			Audio::GetInstance().Pause();
-		}
-		if (GetAsyncKeyState('I') & 0x8000)
-		{
-			Audio::GetInstance().Resume();
-		}
-		if (GetAsyncKeyState('U') & 0x8000)
-		{
-			Audio::GetInstance().ExitLoop();
-		}
+		shader.DrawModel(*model1,mWorld);
 
-		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-			->BindAndAttachData(1, model1->GetNodes()[0].mLocal * mWorld);
+		shader.DrawModel(*model2, mTWorld);
 
-		shader.DrawModel(*model1);
-
-		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-			->BindAndAttachData(1, model2->GetNodes()[0].mLocal * mTrans);
-
-		shader.DrawModel(*model2);
-
+		//=============================================
 		GraphicsDevice::GetInstance().ScreenFlip();
 
 		time->Update();
@@ -188,13 +244,27 @@ void Application::Terminate()
 	m_window.Terminate();
 }
 
-void Application::SetDirectoryAndLoadDll()
+void Application::PreUpdate()
 {
-#ifdef _DEBUG
-	SetDllDirectoryA("../Libraries/assimp/bin/Debug");
-	LoadLibraryExA("assimp-vc143-mtd.dll", NULL, NULL);
-#else
-	SetDllDirectoryA("../Libraries/assimp/bin/Release");
-	LoadLibraryExA("assimp-vc143-mt.dll", NULL, NULL);
-#endif 
+	SceneManager::GetInstance().PreUpdate();
+}
+
+void Application::Update()
+{
+	SceneManager::GetInstance().Update();
+}
+
+void Application::PostUpdate()
+{
+	SceneManager::GetInstance().PostUpdate();
+}
+
+void Application::PreDraw()
+{
+	SceneManager::GetInstance().PreDraw();
+}
+
+void Application::Draw()
+{
+	SceneManager::GetInstance().Draw();
 }

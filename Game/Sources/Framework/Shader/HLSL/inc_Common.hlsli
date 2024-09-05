@@ -4,6 +4,7 @@
 //
 //=====================================================
 
+// カメラ用レジスター
 cbuffer cbCamera : register(b0)
 {
     row_major matrix g_mView;

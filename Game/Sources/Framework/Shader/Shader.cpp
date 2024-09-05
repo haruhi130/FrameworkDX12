@@ -11,7 +11,7 @@ void Shader::Create(const std::wstring& filePath,
 	m_upPipeline = std::make_unique<Pipeline>();
 	m_upPipeline->SetRenderSettings(m_upRootSignature.get(), renderingSetting.InputLayouts,
 		renderingSetting.CullMode, renderingSetting.BlendMode, renderingSetting.PrimitiveTopologyType);
-	m_upPipeline->Create({ m_pVSBlob.Get() ,m_pHSBlob.Get() ,m_pDSBlob.Get() ,m_pGSBlob.Get() ,m_pPSBlob.Get()}, renderingSetting.Formats,
+	m_upPipeline->Create({ m_pVSBlob.Get() ,m_pHSBlob.Get() ,m_pDSBlob.Get() ,m_pGSBlob.Get() ,m_pPSBlob.Get() }, renderingSetting.Formats,
 		renderingSetting.IsDepth, renderingSetting.IsDepthMask, renderingSetting.RTVCount, renderingSetting.IsWireFrame);
 }
 
@@ -50,7 +50,7 @@ void Shader::Begin(int w, int h)
 	viewport.MinDepth = 0.0f;
 	viewport.MaxDepth = 1.0f;
 	GraphicsDevice::GetInstance().GetCmdList()->RSSetViewports(1, &viewport);
-	
+
 	// レクト設定
 	D3D12_RECT rect = {};
 	rect.right = w;
@@ -58,26 +58,55 @@ void Shader::Begin(int w, int h)
 	GraphicsDevice::GetInstance().GetCmdList()->RSSetScissorRects(1, &rect);
 }
 
-void Shader::DrawMesh(const Mesh& mesh)
+void Shader::DrawMesh(const Mesh* mesh, const Math::Matrix& mWorld, const std::vector<Material>& materials)
 {
-	SetMaterial(mesh.GetMaterial());
+	if (mesh == nullptr) { return; }
 
-	mesh.DrawInstanced(mesh.GetInstanceCount());
-}
+	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
+		->BindAndAttachData(1,mWorld);
 
-void Shader::DrawModel(const ModelData& modelData)
-{
-	for (auto& node : modelData.GetNodes())
+	mesh->SetToDevice();
+
+	// サブセット
+	for (UINT subi = 0; subi < mesh->GetSubsets().size(); subi++)
 	{
-		DrawMesh(*node.spMesh);
+		if (mesh->GetSubsets()[subi].FaceCount == 0)continue;
+
+		const Material& material = materials[mesh->GetSubsets()[subi].MaterialNo];
+
+		SetMaterial(material);
+
+		mesh->DrawSubset(subi);
 	}
 }
 
-void Shader::DrawModel(ModelWork& modelWork)
+void Shader::DrawModel(const ModelData& modelData, const Math::Matrix& mWorld)
 {
-	for (auto& node : modelWork.GetModelData()->WorkNodes())
+	auto& nodes = modelData.GetNodes();
+
+	for (auto& nodeIdx : modelData.GetDrawMeshNodeIndices())
 	{
-		DrawMesh(*node.spMesh);
+		DrawMesh(nodes[nodeIdx].spMesh.get(), nodes[nodeIdx].mLocal * mWorld, modelData.GetMaterials());
+	}
+}
+
+void Shader::DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld)
+{
+	const std::shared_ptr<ModelData>& data = modelWork.GetModelData();
+
+	if (data == nullptr) { return; }
+
+	if (modelWork.IsNeedCalcNodeMatrices())
+	{
+		modelWork.CalcNodeMatrices();
+	}
+
+	auto& workNodes = modelWork.GetNodes();
+	auto& dataNodes = data->GetNodes();
+
+	for (auto& nodeIdx : data->GetDrawMeshNodeIndices())
+	{
+		DrawMesh(dataNodes[nodeIdx].spMesh.get(), workNodes[nodeIdx].mLocal * mWorld, data->GetMaterials());
 	}
 }
 

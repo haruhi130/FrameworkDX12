@@ -4,11 +4,13 @@
 
 class Texture;
 
+// メッシュ面情報
 struct MeshFace
 {
 	UINT Idx[3];
 };
 
+// メッシュマテリアル情報
 struct Material
 {
 	std::string Name = ""; // マテリアル名
@@ -26,23 +28,32 @@ struct Material
 	std::shared_ptr<Texture> spNormalTex = nullptr; // 法線テクスチャ
 };
 
+// メッシュサブセット情報
+struct MeshSubset
+{
+	UINT MaterialNo = 0;
+	UINT FaceStart = 0;
+	UINT FaceCount = 0;
+};
+
 class Mesh
 {
 public:
+	void SetToDevice() const;
+
 	// メッシュ作成
 	void Create(const std::vector<MeshVertex>& vertices,
-		const std::vector<MeshFace>& faces,const Material& material);
+		const std::vector<MeshFace>& faces, const std::vector<MeshSubset>& subsets, bool isSkinMesh);
+
+	// サブセット描画
+	void DrawSubset(int subsetNo)const;
 
 	// インスタンス描画
 	void DrawInstanced(UINT vertexCount) const;
 
-	// マテリアル取得
-	inline const Material& GetMaterial()const 
-	{ return m_material; }
-
-	// インスタンス数取得
-	inline UINT GetInstanceCount()const 
-	{ return m_instanceCount; }
+	// サブセット取得
+	inline const std::vector<MeshSubset>& GetSubsets()const 
+	{ return m_subsets; }
 
 	// 軸平行境界ボックス取得
 	inline const DirectX::BoundingBox& GetBoundingBox() const
@@ -64,8 +75,8 @@ private:
 	ComPtr<ID3D12Resource> m_cpIBuffer = nullptr;
 	D3D12_INDEX_BUFFER_VIEW m_ibView = {};
 
-	UINT m_instanceCount = 0;
-	Material m_material;
+	// サブセット情報
+	std::vector<MeshSubset> m_subsets;
 
 	// 境界データ
 	DirectX::BoundingBox m_aabb;
@@ -75,4 +86,5 @@ private:
 	std::vector<Math::Vector3> m_positions;
 	std::vector<MeshFace> m_faces;
 
+	bool m_isSkinMesh = false;
 };

@@ -28,11 +28,11 @@ public:
 	void Begin(int w, int h);
 
 	// メッシュ描画
-	void DrawMesh(const Mesh& mesh);
+	void DrawMesh(const Mesh* mesh,const Math::Matrix& mWorld,const std::vector<Material>& materials);
 
 	// モデル描画
-	void DrawModel(const ModelData& modelData);
-	void DrawModel(ModelWork& modelWork);
+	void DrawModel(const ModelData& modelData, const Math::Matrix& mWorld = Math::Matrix::Identity);
+	void DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld = Math::Matrix::Identity);
 
 	// CBVカウント取得
 	inline UINT GetCBVCount()const 

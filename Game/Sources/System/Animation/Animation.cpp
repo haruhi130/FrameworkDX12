@@ -21,19 +21,17 @@ void Animator::ProgressTime(std::vector<ModelWork::Node>& rNodes, float speed)
 {
 	if (!m_spAnimation) { return; }
 
-	UINT idx = 0;
-
 	// 全てのアニメーションノード（モデルの行列を補間する情報）の行列補間を実行する
 	for (auto& channel : m_spAnimation->m_channels)
 	{
+		UINT idx = channel.m_nodeOffset;
+
 		auto prev = rNodes[idx].mLocal;
 
 		// アニメーションデータによる行列補間
 		channel.Interpolate(rNodes[idx].mLocal, m_time);
 
 		prev = rNodes[idx].mLocal;
-
-		++idx;
 	}
 
 	// アニメーションのフレームを進める

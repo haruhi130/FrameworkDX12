@@ -1,17 +1,21 @@
 #include "Mesh.h"
 
-void Mesh::Create(const std::vector<MeshVertex>& vertices,
-	const std::vector<MeshFace>& faces, const Material& material)
+void Mesh::SetToDevice() const
 {
-	m_material = material;
+	GraphicsDevice::GetInstance().GetCmdList()->IASetVertexBuffers(0, 1, &m_vbView);
+	GraphicsDevice::GetInstance().GetCmdList()->IASetIndexBuffer(&m_ibView);
+}
+
+void Mesh::Create(const std::vector<MeshVertex>& vertices,
+	const std::vector<MeshFace>& faces, const std::vector<MeshSubset>& subsets, bool isSkinMesh)
+{
+	m_subsets = subsets;
 
 	if (static_cast<int>(vertices.size()) == 0)
 	{
 		assert(0 && "頂点が存在しません");
 		return;
 	}
-
-	m_instanceCount = static_cast<UINT>(faces.size() * 3);
 
 	D3D12_HEAP_PROPERTIES heapProp = {};
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
@@ -65,8 +69,6 @@ void Mesh::Create(const std::vector<MeshVertex>& vertices,
 		assert(0 && "インデックスバッファ作成失敗");
 	}
 
-	m_faces = faces;
-
 	// インデックスバッファデータをビューに書き込み
 	m_ibView.BufferLocation = m_cpIBuffer->GetGPUVirtualAddress();
 	m_ibView.SizeInBytes = (UINT)resDesc.Width;
@@ -87,6 +89,23 @@ void Mesh::Create(const std::vector<MeshVertex>& vertices,
 		std::copy(std::begin(faces), std::end(faces), ibMap);
 		m_cpIBuffer->Unmap(0, nullptr);
 	}
+
+	m_faces = faces;
+	m_isSkinMesh = isSkinMesh;
+}
+
+void Mesh::DrawSubset(int subsetNo) const
+{
+	if (subsetNo >= (int)m_subsets.size())return;
+	if (m_subsets[subsetNo].FaceCount == 0)return;
+
+	GraphicsDevice::GetInstance().GetCmdList()->DrawIndexedInstanced(
+		m_subsets[subsetNo].FaceCount * 3,
+		1,
+		m_subsets[subsetNo].FaceStart * 3,
+		0,
+		0
+	);
 }
 
 void Mesh::DrawInstanced(UINT vertexCount) const
