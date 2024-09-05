@@ -52,7 +52,7 @@ void Application::Execute()
 	std::shared_ptr<ModelWork> model1 = std::make_shared<ModelWork>();
 	std::shared_ptr<ModelWork> model2 = std::make_shared<ModelWork>();
 	model1->SetModelData("Assets/Models/Cube/Cube.gltf");
-	model2->SetModelData("Assets/Models/Character/3DChara.gltf");
+	model2->SetModelData("Assets/Models/SkinMeshMan/SkinMeshMan.gltf");
 
 	// 当たり判定
 	std::shared_ptr<Collider> col = std::make_shared<Collider>();
@@ -63,10 +63,10 @@ void Application::Execute()
 	Math::Matrix mWorld;
 
 	// モデル2用
-	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180));
+	Math::Matrix mRot = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
+	Math::Matrix mScale = Math::Matrix::CreateScale(1.0f);
 	Math::Matrix mTrans = Math::Matrix::CreateTranslation(1, 1, 1);
-
-	Math::Matrix mTWorld = mRot * mTrans;
+	Math::Matrix mTWorld = mRot * mScale * mTrans;
 
 	// シェーダーに渡す情報設定
 	RenderingSetting renderingSetting = {};
