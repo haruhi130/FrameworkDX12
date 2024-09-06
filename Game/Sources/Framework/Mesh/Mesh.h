@@ -39,6 +39,7 @@ struct MeshSubset
 class Mesh
 {
 public:
+	// バッファセット
 	void SetToDevice() const;
 
 	// メッシュ作成
@@ -62,16 +63,20 @@ public:
 	inline const DirectX::BoundingSphere& GetBoundingSphere() const 
 	{ return m_bs; }
 
+	// 座標配列取得
 	inline const std::vector<Math::Vector3>& GetPositions()const
 	{ return m_positions; }
 
+	// 面配列取得
 	inline const std::vector<MeshFace>& GetFaces()const 
 	{ return m_faces; }
 
 private:
+	// 頂点バッファ
 	ComPtr<ID3D12Resource> m_cpVBuffer = nullptr;
 	D3D12_VERTEX_BUFFER_VIEW m_vbView = {};
 
+	// インデックスバッファ
 	ComPtr<ID3D12Resource> m_cpIBuffer = nullptr;
 	D3D12_INDEX_BUFFER_VIEW m_ibView = {};
 
@@ -84,7 +89,9 @@ private:
 
 	// 座標のみの配列
 	std::vector<Math::Vector3> m_positions;
+	// 面情報のみの配列
 	std::vector<MeshFace> m_faces;
 
+	// スキンメッシュ判別
 	bool m_isSkinMesh = false;
 };

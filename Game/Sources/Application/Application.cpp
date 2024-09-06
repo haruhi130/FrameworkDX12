@@ -52,7 +52,7 @@ void Application::Execute()
 	std::shared_ptr<ModelWork> model1 = std::make_shared<ModelWork>();
 	std::shared_ptr<ModelWork> model2 = std::make_shared<ModelWork>();
 	model1->SetModelData("Assets/Models/Cube/Cube.gltf");
-	model2->SetModelData("Assets/Models/SkinMeshMan/SkinMeshMan.gltf");
+	model2->SetModelData("Assets/Models/Mouse/Mouse.gltf");
 
 	// 当たり判定
 	std::shared_ptr<Collider> col = std::make_shared<Collider>();
@@ -63,21 +63,21 @@ void Application::Execute()
 	Math::Matrix mWorld;
 
 	// モデル2用
-	Math::Matrix mRot = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
-	Math::Matrix mScale = Math::Matrix::CreateScale(1.0f);
+	Math::Matrix mRot = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(90));
+	Math::Matrix mScale = Math::Matrix::CreateScale(5000.0f);
 	Math::Matrix mTrans = Math::Matrix::CreateTranslation(1, 1, 1);
 	Math::Matrix mTWorld = mRot * mScale * mTrans;
 
 	// シェーダーに渡す情報設定
 	RenderingSetting renderingSetting = {};
 	renderingSetting.InputLayouts =
-	{ InputLayout::POSITION,InputLayout::TEXCOORD,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT };
+	{ InputLayout::POSITION,InputLayout::TEXCOORD,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT,InputLayout::SKININDEX,InputLayout::SKINWEIGHT };
 	renderingSetting.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
 
 	// シェーダー作成(どのシェーダーを使用するか)
 	Shader shader;
 	shader.Create(L"SimpleShader", renderingSetting,
-		{ RangeType::CBV,RangeType::CBV,RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
+		{ RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
 
 	// カメラ行列
 	Math::Vector3 cam = { 0,0,10 };
@@ -89,10 +89,7 @@ void Application::Execute()
 	Animator animator;
 	animator.SetAnimation(model1->GetAnimation("CubeAction"));
 	Animator anime;
-	anime.SetAnimation(model2->GetAnimation("Walk"));
-
-	// アニメーション速度
-	float animationSpeed = 1.0f;
+	anime.SetAnimation(model2->GetAnimation("Idle"));
 
 	// 音再生
 	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);
@@ -124,8 +121,13 @@ void Application::Execute()
 		// アプリケーション更新
 		// 
 		//=============================================
+		
+		// 通常の更新前に行う処理
+		// シーン切り替えやイテレータ処理等
 		PreUpdate();
 
+		// 通常の更新
+		// キャラの移動や判定等
 		Update();
 		if (GetAsyncKeyState('O') & 0x8000)
 		{
@@ -172,6 +174,8 @@ void Application::Execute()
 
 		mWorld.Translation(playerVec);
 
+		// 通常の更新終了後に行う処理
+		// カメラの移動やアニメーション等
 		PostUpdate();
 		if (GetAsyncKeyState('W') & 0x8000)
 		{
@@ -198,14 +202,21 @@ void Application::Execute()
 			cam.z -= 0.1f;
 		}
 
-		animator.ProgressTime(model1->WorkNodes(), animationSpeed);
-		anime.ProgressTime(model2->WorkNodes(), animationSpeed);
+		// アニメーション実行
+		animator.ProgressTime(model1->WorkNodes());
+		// 行列再計算で実際に移動させる
+		model1->CalcNodeMatrices();
+
+		anime.ProgressTime(model2->WorkNodes());
+		model2->CalcNodeMatrices();
 
 		//=============================================
 		// 
 		// アプリケーション描画
 		// 
 		//=============================================
+		
+		// 描画準備開始
 		GraphicsDevice::GetInstance().Prepare();
 
 		// 画像用にヒープを指定
@@ -217,20 +228,26 @@ void Application::Execute()
 		// Shader処理
 		shader.Begin(1280, 720);
 
+		// 事前描画
+		// カメラ等
 		PreDraw();
 		// カメラ設定
 		camera.SetCameraMatrix(Math::Matrix::CreateTranslation(cam));
 		camera.Set();
 
+		// 通常の描画
+		// モデル等
 		Draw();
-
 		shader.DrawModel(*model1,mWorld);
-
 		shader.DrawModel(*model2, mTWorld);
 
 		//=============================================
+		
+		// 描画終了
+		// ダブルバッファリングを行う
 		GraphicsDevice::GetInstance().ScreenFlip();
 
+		// 時間管理
 		time->Update();
 	}
 }

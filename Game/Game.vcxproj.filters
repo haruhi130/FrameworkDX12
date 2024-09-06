@@ -103,6 +103,9 @@
     <Filter Include="Application\Scene\GameScene">
       <UniqueIdentifier>{986a66be-54f6-4a45-b88e-9f8b2a72c856}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\GameObject">
+      <UniqueIdentifier>{24b3db43-bb32-45d8-8743-fff0e405995a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />

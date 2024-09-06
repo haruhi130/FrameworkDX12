@@ -20,6 +20,9 @@ struct RenderingSetting
 class Shader
 {
 public:
+	// ボーン最大数
+	static const int maxBoneBufferSize = 300;
+
 	// シェーダー作成
 	void Create(const std::wstring& filePath,
 		const RenderingSetting& renderingSetting, const std::vector<RangeType>& rangeTypes);

@@ -45,7 +45,6 @@ void ModelData::CreateNodes(const std::shared_ptr<GLTFModel>& spGltfModel)
 
 			// メッシュノードリストにインデックス登録
 			m_meshNodeIndices.push_back(i);
-
 		}
 
 		// ノード情報セット

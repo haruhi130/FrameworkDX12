@@ -11,3 +11,13 @@ cbuffer cbWorld : register(b1)
 {
     row_major matrix g_mWorld;
 }
+
+cbuffer cbObject : register(b2)
+{
+    int g_isSkinMeshObj;
+}
+
+cbuffer cbBones : register(b3)
+{
+    row_major float4x4 g_mBones[300];
+}

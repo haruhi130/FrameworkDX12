@@ -62,12 +62,14 @@ void Shader::DrawMesh(const Mesh* mesh, const Math::Matrix& mWorld, const std::v
 {
 	if (mesh == nullptr) { return; }
 
+	// シェーダーへ行列を設定
 	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-		->BindAndAttachData(1,mWorld);
+		->BindAndAttachData(1, mWorld);
 
+	// 頂点バッファとインデックスバッファをセット
 	mesh->SetToDevice();
 
-	// サブセット
+	// サブセット描画
 	for (UINT subi = 0; subi < mesh->GetSubsets().size(); subi++)
 	{
 		if (mesh->GetSubsets()[subi].FaceCount == 0)continue;
@@ -84,9 +86,10 @@ void Shader::DrawModel(const ModelData& modelData, const Math::Matrix& mWorld)
 {
 	auto& nodes = modelData.GetNodes();
 
+	// メッシュ描画
 	for (auto& nodeIdx : modelData.GetDrawMeshNodeIndices())
 	{
-		DrawMesh(nodes[nodeIdx].spMesh.get(), nodes[nodeIdx].mLocal * mWorld, modelData.GetMaterials());
+		DrawMesh(nodes[nodeIdx].spMesh.get(), nodes[nodeIdx].mWorld * mWorld, modelData.GetMaterials());
 	}
 }
 
@@ -96,17 +99,51 @@ void Shader::DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld)
 
 	if (data == nullptr) { return; }
 
+	// 再帰処理
 	if (modelWork.IsNeedCalcNodeMatrices())
 	{
 		modelWork.CalcNodeMatrices();
 	}
 
+	// スキンメッシュか判別
+	if (data->IsSkinMesh())
+	{
+		ConstantBufferData::Object obj;
+
+		obj.isSkinMesh = data->IsSkinMesh();
+		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
+			->BindAndAttachData(2, obj);
+	}
+
 	auto& workNodes = modelWork.GetNodes();
 	auto& dataNodes = data->GetNodes();
 
+	// スキンメッシュ描画
+	if (data->IsSkinMesh())
+	{
+		ConstantBufferData::Bone bone;
+		for (auto& nodeIdx : data->GetBoneNodeIndices())
+		{
+			if (nodeIdx >= Shader::maxBoneBufferSize)
+			{
+				assert(0 && "転送できるボーン上限数をオーバー");
+				return;
+			}
+
+			auto& dataNode = dataNodes[nodeIdx];
+			auto& workNode = workNodes[nodeIdx];
+
+			bone.mBones[dataNode.BoneIdx] = dataNode.mBoneInverseWorld * workNode.mWorld;
+		}
+		// シェーダーへ計算したボーンを設定
+		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
+			->BindAndAttachData(3, bone);
+	}
+
+	// メッシュ描画
 	for (auto& nodeIdx : data->GetDrawMeshNodeIndices())
 	{
-		DrawMesh(dataNodes[nodeIdx].spMesh.get(), workNodes[nodeIdx].mLocal * mWorld, data->GetMaterials());
+		DrawMesh(dataNodes[nodeIdx].spMesh.get(), workNodes[nodeIdx].mWorld * mWorld, data->GetMaterials());
 	}
 }
 
