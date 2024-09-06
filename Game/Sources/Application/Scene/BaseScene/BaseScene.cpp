@@ -2,22 +2,58 @@
 
 void BaseScene::PreUpdate()
 {
+	auto it = m_objList.begin();
+
+	while (it != m_objList.end())
+	{
+		if ((*it)->IsExpired())
+		{
+			it = m_objList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+
+	for (auto& obj : m_objList)
+	{
+		obj->PreUpdate();
+	}
 }
 
 void BaseScene::Update()
 {
+	for (auto& obj : m_objList)
+	{
+		obj->Update();
+	}
+
+	Event();
 }
 
 void BaseScene::PostUpdate()
 {
+	for (auto& obj : m_objList)
+	{
+		obj->PostUpdate();
+	}
 }
 
 void BaseScene::PreDraw()
 {
+	for (auto& obj : m_objList)
+	{
+		obj->PreDraw();
+	}
 }
 
 void BaseScene::Draw()
 {
+	for (auto& obj : m_objList)
+	{
+		obj->Draw();
+	}
 }
 
 void BaseScene::Event()

@@ -24,6 +24,9 @@ public:
 		m_nextSceneType = nextScene;
 	}
 
+	const std::list<std::shared_ptr<BaseObject>>& GetObjList();
+	void AddObject(const std::shared_ptr<BaseObject>& obj);
+
 private:
 
 	void Init() { ChangeScene(m_currentSceneType); }

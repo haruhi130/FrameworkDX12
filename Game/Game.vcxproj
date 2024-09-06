@@ -185,6 +185,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Application\Application.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\Camera\GameCamera.cpp" />
     <ClCompile Include="Sources\Application\Scene\BaseScene\BaseScene.cpp" />
     <ClCompile Include="Sources\Application\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="Sources\Application\Scene\SceneManager.cpp" />
@@ -196,6 +197,7 @@
     <ClCompile Include="Sources\Framework\Camera\Camera.cpp" />
     <ClCompile Include="Sources\Framework\Collider\Collider.cpp" />
     <ClCompile Include="Sources\Framework\Collider\Collision.cpp" />
+    <ClCompile Include="Sources\Framework\GameObject\BaseObject.cpp" />
     <ClCompile Include="Sources\Framework\GameObject\Component.cpp" />
     <ClCompile Include="Sources\Framework\GameObject\GameObject.cpp" />
     <ClCompile Include="Sources\Framework\Graphics\GraphicsDevice.cpp" />
@@ -225,6 +227,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Application\Application.h" />
+    <ClInclude Include="Sources\Application\GameObject\Camera\GameCamera.h" />
     <ClInclude Include="Sources\Application\Scene\BaseScene\BaseScene.h" />
     <ClInclude Include="Sources\Application\Scene\GameScene\GameScene.h" />
     <ClInclude Include="Sources\Application\Scene\SceneManager.h" />
@@ -239,6 +242,7 @@
     <ClInclude Include="Sources\Framework\Collider\Collider.h" />
     <ClInclude Include="Sources\Framework\Collider\Collision.h" />
     <ClInclude Include="Sources\Framework\Framework.h" />
+    <ClInclude Include="Sources\Framework\GameObject\BaseObject.h" />
     <ClInclude Include="Sources\Framework\GameObject\Component.h" />
     <ClInclude Include="Sources\Framework\GameObject\GameObject.h" />
     <ClInclude Include="Sources\Framework\Graphics\GraphicsDevice.h" />

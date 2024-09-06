@@ -106,6 +106,9 @@
     <Filter Include="Application\GameObject">
       <UniqueIdentifier>{24b3db43-bb32-45d8-8743-fff0e405995a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\GameObject\Camera">
+      <UniqueIdentifier>{6de25e56-a0c1-4477-808d-4ac59cf98a43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -190,6 +193,12 @@
     </ClCompile>
     <ClCompile Include="Sources\Framework\Model\KdGLTFLoader.cpp">
       <Filter>Framework\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\GameObject\BaseObject.cpp">
+      <Filter>Framework\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\Camera\GameCamera.cpp">
+      <Filter>Application\GameObject\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -302,6 +311,12 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Model\KdGLTFLoader.h">
       <Filter>Framework\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\GameObject\BaseObject.h">
+      <Filter>Framework\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\Camera\GameCamera.h">
+      <Filter>Application\GameObject\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

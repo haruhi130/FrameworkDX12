@@ -28,7 +28,7 @@ public:
 		const RenderingSetting& renderingSetting, const std::vector<RangeType>& rangeTypes);
 
 	// 描画開始
-	void Begin(int w, int h);
+	void Begin(int w = 1280, int h = 720);
 
 	// メッシュ描画
 	void DrawMesh(const Mesh* mesh,const Math::Matrix& mWorld,const std::vector<Material>& materials);

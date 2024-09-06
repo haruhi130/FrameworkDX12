@@ -79,12 +79,6 @@ void Application::Execute()
 	shader.Create(L"SimpleShader", renderingSetting,
 		{ RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
 
-	// カメラ行列
-	Math::Vector3 cam = { 0,0,10 };
-
-	// カメラ本体
-	Camera camera;
-	
 	// アニメーション
 	Animator animator;
 	animator.SetAnimation(model1->GetAnimation("CubeAction"));
@@ -177,34 +171,10 @@ void Application::Execute()
 		// 通常の更新終了後に行う処理
 		// カメラの移動やアニメーション等
 		PostUpdate();
-		if (GetAsyncKeyState('W') & 0x8000)
-		{
-			cam.y += 0.1f;
-		}
-		if (GetAsyncKeyState('S') & 0x8000)
-		{
-			cam.y -= 0.1f;
-		}
-		if (GetAsyncKeyState('D') & 0x8000)
-		{
-			cam.x += 0.1f;
-		}
-		if (GetAsyncKeyState('A') & 0x8000)
-		{
-			cam.x -= 0.1f;
-		}
-		if (GetAsyncKeyState('X') & 0x8000)
-		{
-			cam.z += 0.1f;
-		}
-		if (GetAsyncKeyState('Z') & 0x8000)
-		{
-			cam.z -= 0.1f;
-		}
-
+		
 		// アニメーション実行
 		animator.ProgressTime(model1->WorkNodes());
-		// 行列再計算で実際に移動させる
+		// 行列計算で実際に移動させる
 		model1->CalcNodeMatrices();
 
 		anime.ProgressTime(model2->WorkNodes());
@@ -226,14 +196,11 @@ void Application::Execute()
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()->ResetCurrentUseNumber();
 
 		// Shader処理
-		shader.Begin(1280, 720);
+		shader.Begin();
 
 		// 事前描画
 		// カメラ等
 		PreDraw();
-		// カメラ設定
-		camera.SetCameraMatrix(Math::Matrix::CreateTranslation(cam));
-		camera.Set();
 
 		// 通常の描画
 		// モデル等
@@ -263,25 +230,25 @@ void Application::Terminate()
 
 void Application::PreUpdate()
 {
-	SceneManager::GetInstance().PreUpdate();
+	//SceneManager::GetInstance().PreUpdate();
 }
 
 void Application::Update()
 {
-	SceneManager::GetInstance().Update();
+	//SceneManager::GetInstance().Update();
 }
 
 void Application::PostUpdate()
 {
-	SceneManager::GetInstance().PostUpdate();
+	//SceneManager::GetInstance().PostUpdate();
 }
 
 void Application::PreDraw()
 {
-	SceneManager::GetInstance().PreDraw();
+	//SceneManager::GetInstance().PreDraw();
 }
 
 void Application::Draw()
 {
-	SceneManager::GetInstance().Draw();
+	//SceneManager::GetInstance().Draw();
 }

@@ -33,6 +33,16 @@ void SceneManager::Draw()
 	m_currentScene->Draw();
 }
 
+const std::list<std::shared_ptr<BaseObject>>& SceneManager::GetObjList()
+{
+	return m_currentScene->GetObjList();
+}
+
+void SceneManager::AddObject(const std::shared_ptr<BaseObject>& obj)
+{
+	m_currentScene->AddObject(obj);
+}
+
 void SceneManager::ChangeScene(SceneType type)
 {
 	switch (type)

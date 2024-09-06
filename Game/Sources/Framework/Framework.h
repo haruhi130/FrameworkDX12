@@ -28,4 +28,6 @@
 #include "Collider/Collision.h"
 #include "Collider/Collider.h"
 
+#include "GameObject/BaseObject.h"
+
 #include "Shader/Shader.h"
