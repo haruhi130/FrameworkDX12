@@ -7,6 +7,9 @@ Texture2D g_MetallicRoughnessTex : register(t2); // MetallicRoughnessテクスチャ
 Texture2D g_EmissiveTex : register(t3); // Emissiveテクスチャ
 
 SamplerState g_ss : register(s0);
+SamplerState g_ssCP : register(s1);
+SamplerState g_ssWL : register(s2);
+SamplerState g_ssCL : register(s3);
 
 float4 main(VSOutput In) : SV_TARGET
 {

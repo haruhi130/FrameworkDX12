@@ -5,6 +5,7 @@ VSOutput main(
 float4 pos : POSITION,float2 uv : TEXCOORD,float3 normal : NORMAL,
 float4 color : COLOR,float3 tangent :TANGENT,uint4 skinIndex : SKININDEX,float4 skinWeight : SKINWEIGHT)
 {
+    // スキンメッシュ処理
     if(g_isSkinMeshObj)
     {
         row_major float4x4 mBones = 0;

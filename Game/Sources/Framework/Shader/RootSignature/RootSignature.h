@@ -26,7 +26,7 @@ public:
 	void Create(const std::vector<RangeType>& rangeTypes, UINT& cbvCount);
 
 	// ルートシグネチャ取得
-	inline ID3D12RootSignature* GetRootSignature() const
+	inline ID3D12RootSignature* GetRootSignature()
 	{ return m_cpRootSignature.Get(); }
 
 private:

@@ -37,7 +37,7 @@ private:
 	SceneType m_currentSceneType = SceneType::Game;
 	SceneType m_nextSceneType = m_currentSceneType;
 
-	SceneManager(){}
+	SceneManager() { Init(); }
 	~SceneManager(){}
 
 public:

@@ -2,32 +2,23 @@
 
 void GameCamera::PostUpdate()
 {
-	if (GetAsyncKeyState('W') & 0x8000)
+	if (!m_spCamera) return;
+
+	Math::Matrix target = Math::Matrix::Identity;
+	if (!m_wpTarget.expired())
 	{
-		m_vec.y += 0.1f;
+		target = Math::Matrix::CreateTranslation(m_wpTarget.lock()->GetPos());
 	}
-	if (GetAsyncKeyState('S') & 0x8000)
-	{
-		m_vec.y -= 0.1f;
-	}
-	if (GetAsyncKeyState('D') & 0x8000)
-	{
-		m_vec.x += 0.1f;
-	}
-	if (GetAsyncKeyState('A') & 0x8000)
-	{
-		m_vec.x -= 0.1f;
-	}
-	if (GetAsyncKeyState('X') & 0x8000)
-	{
-		m_vec.z += 0.1f;
-	}
-	if (GetAsyncKeyState('Z') & 0x8000)
-	{
-		m_vec.z -= 0.1f;
-	}
-	m_spCamera->SetCameraMatrix
-	(Math::Matrix::CreateTranslation(m_vec));
+
+	UpdateRotateByMouse();
+
+	m_mRot = GetRotationMatrix();
+
+	m_localPos = Math::Matrix::CreateTranslation(m_local);
+
+	m_mWorld = m_localPos * m_mRot * target;
+
+	m_spCamera->SetCameraMatrix(m_mWorld);
 }
 
 void GameCamera::PreDraw()
@@ -37,6 +28,8 @@ void GameCamera::PreDraw()
 
 void GameCamera::SetTarget(const std::shared_ptr<BaseObject>& target)
 {
+	if (!target) return;
+	m_wpTarget = target;
 }
 
 void GameCamera::Init()
@@ -48,6 +41,27 @@ void GameCamera::Init()
 
 	m_mWorld = Math::Matrix::Identity;
 
-	m_vec = {0,0,10};
+	m_vec = {};
+	m_local = { 0,3,-5 };
 
+	m_localPos = Math::Matrix::CreateTranslation(m_local);
+
+	m_mousePos = { 640,360 };
+}
+
+void GameCamera::UpdateRotateByMouse()
+{
+	POINT nowPos = {};
+	GetCursorPos(&nowPos);
+
+	POINT move = {};
+	move.x = nowPos.x - m_mousePos.x;
+	move.y = nowPos.y - m_mousePos.y;
+
+	SetCursorPos(m_mousePos.x, m_mousePos.y);
+
+	m_vec.x += move.y * 0.15f;
+	m_vec.y += move.x * 0.15f;
+
+	m_vec.x = std::clamp(m_vec.x, -FLT_MAX, FLT_MAX);
 }

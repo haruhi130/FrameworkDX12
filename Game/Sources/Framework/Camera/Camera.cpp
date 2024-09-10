@@ -3,7 +3,7 @@
 void Camera::Set()
 {
 	ConstantBufferData::Camera cbCamera;
-	cbCamera.mView = m_mView;
+	cbCamera.mView = m_mView.Invert();
 	cbCamera.mProj = m_mProj;
 	cbCamera.mProjInv = m_mProj.Invert();
 	cbCamera.CamPos = m_mView.Translation();

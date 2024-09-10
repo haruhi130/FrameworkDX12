@@ -27,6 +27,8 @@ public:
 	void Create(const std::wstring& filePath,
 		const RenderingSetting& renderingSetting, const std::vector<RangeType>& rangeTypes);
 
+	std::shared_ptr<Shader> CreateSimpleShader();
+
 	// 描画開始
 	void Begin(int w = 1280, int h = 720);
 
@@ -40,6 +42,8 @@ public:
 	// CBVカウント取得
 	inline UINT GetCBVCount()const 
 	{ return m_cbvCount; }
+
+	bool ChangeSampler(D3D12Filter filter, TextureAddressMode mode);
 
 private:
 	// シェーダーファイル読込

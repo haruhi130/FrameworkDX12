@@ -15,6 +15,23 @@ void Shader::Create(const std::wstring& filePath,
 		renderingSetting.IsDepth, renderingSetting.IsDepthMask, renderingSetting.RTVCount, renderingSetting.IsWireFrame);
 }
 
+std::shared_ptr<Shader> Shader::CreateSimpleShader()
+{
+	std::shared_ptr<Shader> shader = std::make_shared<Shader>();
+
+	// シェーダーに渡す情報設定
+	RenderingSetting renderingSetting = {};
+	renderingSetting.InputLayouts =
+	{ InputLayout::POSITION,InputLayout::TEXCOORD,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT,InputLayout::SKININDEX,InputLayout::SKINWEIGHT };
+	renderingSetting.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
+
+	shader->Create(L"SimpleShader", renderingSetting,
+		{ RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::CBV,
+		RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
+
+	return shader;
+}
+
 void Shader::Begin(int w, int h)
 {
 	// パイプラインセット
@@ -106,7 +123,6 @@ void Shader::DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld)
 	}
 
 	// スキンメッシュか判別
-	if (data->IsSkinMesh())
 	{
 		ConstantBufferData::Object obj;
 
@@ -122,7 +138,7 @@ void Shader::DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld)
 	if (data->IsSkinMesh())
 	{
 		ConstantBufferData::Bone bone;
-		for (auto& nodeIdx : data->GetBoneNodeIndices())
+		for (auto&& nodeIdx : data->GetBoneNodeIndices())
 		{
 			if (nodeIdx >= Shader::maxBoneBufferSize)
 			{
@@ -141,10 +157,15 @@ void Shader::DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld)
 	}
 
 	// メッシュ描画
-	for (auto& nodeIdx : data->GetDrawMeshNodeIndices())
+	for (auto&& nodeIdx : data->GetDrawMeshNodeIndices())
 	{
 		DrawMesh(dataNodes[nodeIdx].spMesh.get(), workNodes[nodeIdx].mWorld * mWorld, data->GetMaterials());
 	}
+}
+
+bool Shader::ChangeSampler(D3D12Filter filter, TextureAddressMode mode)
+{
+	return false;
 }
 
 void Shader::LoadShaderFile(const std::wstring& filePath)

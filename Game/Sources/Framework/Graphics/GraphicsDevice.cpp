@@ -43,14 +43,14 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 	}
 
 	m_upRTVHeap = std::make_unique<RTVHeap>();
-	if (!m_upRTVHeap->Create(HeapType::RTV,100))
+	if (!m_upRTVHeap->Create(HeapType::RTV,300))
 	{
 		assert(0 && "RTVƒq[ƒvì¬¸”s");
 		return false;
 	}
 
 	m_upCBVSRVUAVHeap = std::make_unique<CBVSRVUAVHeap>();
-	if (!m_upCBVSRVUAVHeap->Create(HeapType::CBVSRVUAV, Math::Vector3(100)))
+	if (!m_upCBVSRVUAVHeap->Create(HeapType::CBVSRVUAV, Math::Vector3(300)))
 	{
 		assert(0 && "CBVSRVUAVƒq[ƒvì¬¸”s");
 		return false;
@@ -60,7 +60,7 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 	m_upCBufferAllocator->Create(m_upCBVSRVUAVHeap.get());
 
 	m_upDSVHeap = std::make_unique<DSVHeap>();
-	if (!m_upDSVHeap->Create(HeapType::DSV, 100))
+	if (!m_upDSVHeap->Create(HeapType::DSV, 300))
 	{
 		assert(0 && "DSVƒq[ƒvì¬¸”s");
 		return false;

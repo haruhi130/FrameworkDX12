@@ -1,4 +1,5 @@
 #include "BaseScene.h"
+#include "../../Application.h"
 
 void BaseScene::PreUpdate()
 {

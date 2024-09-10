@@ -109,6 +109,12 @@
     <Filter Include="Application\GameObject\Camera">
       <UniqueIdentifier>{6de25e56-a0c1-4477-808d-4ac59cf98a43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\GameObject\Mouse">
+      <UniqueIdentifier>{dc894cb8-7212-4ed1-9693-92e91a21c24d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\Ground">
+      <UniqueIdentifier>{2f243d8f-cb9e-4c13-ad3f-35fb1abff775}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -199,6 +205,12 @@
     </ClCompile>
     <ClCompile Include="Sources\Application\GameObject\Camera\GameCamera.cpp">
       <Filter>Application\GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\Mouse\Mouse.cpp">
+      <Filter>Application\GameObject\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\Ground\Ground.cpp">
+      <Filter>Application\GameObject\Ground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -317,6 +329,12 @@
     </ClInclude>
     <ClInclude Include="Sources\Application\GameObject\Camera\GameCamera.h">
       <Filter>Application\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\Mouse\Mouse.h">
+      <Filter>Application\GameObject\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\Ground\Ground.h">
+      <Filter>Application\GameObject\Ground</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
