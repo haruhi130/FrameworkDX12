@@ -13,11 +13,14 @@ public:
 
 	void Draw()override;
 
+	// アニメーション速度(仮)
 	void SetAnimeTime(float time) { animeTime = time; }
 
+	// カメラ取得
 	void SetCamera(const std::shared_ptr<GameCamera>& camera)
 	{ m_wpCamera = camera; }
 
+	// 衝突対象を登録
 	void RegistHitObjList(const std::shared_ptr<BaseObject>& obj)
 	{
 		m_wpHitObjList.push_back(obj);
@@ -26,7 +29,12 @@ public:
 private:
 	void Init()override;
 
+	// 行列更新
+	void UpdateMatrix();
+
+	// 回転更新
 	void UpdateRotate(Math::Vector3& moveVec);
+	// 衝突判定更新
 	void UpdateCollision();
 
 	std::shared_ptr<ModelWork> m_spModel = nullptr;
@@ -35,12 +43,19 @@ private:
 	Math::Vector3 m_vec = {};
 	Math::Vector3 m_rot = {};
 
+	// 重力
 	float m_gravity = 0.0f;
+	
+	// 接地判定
 	bool m_isGround = false;
+
+	// 衝突対象リスト
 	std::list<std::weak_ptr<BaseObject>> m_wpHitObjList;
 
+	// アニメーション速度(仮)
 	float animeTime = 1.0f;
 
+	// カメラ
 	std::weak_ptr<GameCamera> m_wpCamera;
 
 	/////////////////////////////////////////////////

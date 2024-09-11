@@ -31,7 +31,6 @@ public:
 	bool Intersects(const Collider::RayInfo& target, std::list<Collider::CollisionResult>* pResults);
 
 protected:
-
 	// ƒJƒƒ‰‚©‚ç‚Ì‹——£
 	float m_distCamera = 0.0f;
 
@@ -43,5 +42,4 @@ protected:
 
 	// “–‚½‚è”»’èƒNƒ‰ƒX
 	std::unique_ptr<Collider> m_upCollider = nullptr;
-
 };

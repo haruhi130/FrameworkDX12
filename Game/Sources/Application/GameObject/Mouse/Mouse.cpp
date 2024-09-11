@@ -6,8 +6,7 @@
 
 void Mouse::Update()
 {
-
-	m_gravity += 0.01f;
+	m_gravity += 0.005f;
 	m_mWorld._42 -= m_gravity;
 
 	m_vec = m_mWorld.Translation();
@@ -17,11 +16,7 @@ void Mouse::Update()
 		m_currentAction->Update(*this);
 	}
 
-	Math::Matrix scale = Math::Matrix::CreateScale(10000.0f);
-	Math::Matrix rot = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(90))
-		* Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180)) * Math::Matrix::CreateRotationY(
-		DirectX::XMConvertToRadians(m_rot.y));
-	m_mWorld = scale * rot * Math::Matrix::CreateTranslation(m_vec);
+	UpdateMatrix();
 	UpdateCollision();
 
 }
@@ -48,14 +43,11 @@ void Mouse::Init()
 		m_spModel->SetModelData("Assets/Models/Mouse/Mouse.gltf");
 	}
 
-	m_gravity = 0.0f;
-	m_isGround = false;
-
 	// 初期計算
 	Math::Matrix mScale = Math::Matrix::CreateScale(10000.0f);
 	Math::Matrix mRot = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(90))
 		* Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180));
-	Math::Matrix mTrans = Math::Matrix::CreateTranslation(0, 30, 0);
+	Math::Matrix mTrans = Math::Matrix::CreateTranslation(0, 20, 0);
 	m_mWorld = mScale * mRot * mTrans;
 
 	// アニメーション設定
@@ -67,6 +59,15 @@ void Mouse::Init()
 
 	// ステート設定「待機」
 	ChangeActionState(std::make_shared<ActionIdle>());
+}
+
+void Mouse::UpdateMatrix()
+{
+	Math::Matrix scale = Math::Matrix::CreateScale(10000.0f);
+	Math::Matrix rot = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(90))
+		* Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180)) * Math::Matrix::CreateRotationY(
+			DirectX::XMConvertToRadians(m_rot.y));
+	m_mWorld = scale * rot * Math::Matrix::CreateTranslation(m_vec);
 }
 
 void Mouse::UpdateRotate(Math::Vector3& moveVec)
@@ -100,46 +101,70 @@ void Mouse::UpdateRotate(Math::Vector3& moveVec)
 
 void Mouse::UpdateCollision()
 {
-	Collider::RayInfo rayInfo;
-	rayInfo.m_pos = GetPos();
-	rayInfo.m_pos.y += 0.2f;
-
-	rayInfo.m_dir = Math::Vector3::Down;
-	rayInfo.m_range = m_gravity + 0.2f;
-
-	rayInfo.m_type = Collider::Type::Bump;
-
-	for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
 	{
-		std::shared_ptr<BaseObject> spObj = wpObj.lock();
-		if (spObj)
+		Collider::RayInfo rayInfo;
+		rayInfo.m_pos = GetPos();
+		rayInfo.m_pos.y += 0.2f;
+
+		rayInfo.m_dir = Math::Vector3::Down;
+		rayInfo.m_range = m_gravity + 0.2f;
+
+		rayInfo.m_type = Collider::Type::Bump;
+
+		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
 		{
-			std::list<Collider::CollisionResult> retRayList;
-			spObj->Intersects(rayInfo, &retRayList);
-
-			float lap = 0.0f;
-			Math::Vector3 hit = Math::Vector3::Zero;
-			bool isHit = false;
-
-			for (auto& ret : retRayList)
+			std::shared_ptr<BaseObject> spObj = wpObj.lock();
+			if (spObj)
 			{
-				if (lap < ret.m_overlapDistance)
+				std::list<Collider::CollisionResult> retRayList;
+				spObj->Intersects(rayInfo, &retRayList);
+
+				float lap = 0.0f;
+				Math::Vector3 hit = Math::Vector3::Zero;
+				bool isHit = false;
+
+				for (auto& ret : retRayList)
 				{
-					lap = ret.m_overlapDistance;
-					hit = ret.m_hitPos;
-					isHit = true;
+					if (lap < ret.m_overlapDistance)
+					{
+						lap = ret.m_overlapDistance;
+						hit = ret.m_hitPos;
+						isHit = true;
+					}
 				}
-			}
 
-			if (isHit)
-			{
-				SetPos(hit);
-				m_gravity = 0.0f;
-				m_isGround = true;
+				if (isHit)
+				{
+					SetPos(hit);
+					m_gravity = 0.0f;
+					m_isGround = true;
+				}
 			}
 		}
 	}
 
+	{
+		Collider::SphereInfo sphereInfo;
+		sphereInfo.m_sphere.Center = GetPos() + Math::Vector3(0, 0.5f, 0);
+		sphereInfo.m_sphere.Radius = 0.3f;
+		sphereInfo.m_type = Collider::Type::Bump;
+
+		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
+		{
+			std::shared_ptr<BaseObject> spObj = wpObj.lock();
+			if (spObj)
+			{
+				std::list<Collider::CollisionResult> retBumpList;
+				spObj->Intersects(sphereInfo, &retBumpList);
+
+				for (auto& ret : retBumpList)
+				{
+					Math::Vector3 newPos = GetPos() + (ret.m_hitDir * ret.m_overlapDistance);
+					SetPos(newPos);
+				}
+			}
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////
