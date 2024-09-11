@@ -47,11 +47,7 @@ void Application::Execute()
 
 	//===============================================
 	// 仮実装
-
-	// 当たり判定
-	//std::shared_ptr<Collider> col = std::make_shared<Collider>();
-	//col->RegisterCollisionShape("Tanto",model2, Collider::Type::Bump);
-
+	
 	// シェーダー作成(どのシェーダーを使用するか)
 	m_spShader = m_spShader->CreateSimpleShader();
 
@@ -64,7 +60,6 @@ void Application::Execute()
 	if (time != nullptr) { time->Start(); }
 
 	//===============================================
-
 	// メインゲームループ
 	while (true)
 	{

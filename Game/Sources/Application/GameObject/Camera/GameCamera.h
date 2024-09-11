@@ -19,7 +19,7 @@ public:
 		);
 	}
 
-	const Math::Matrix GetRotationYMat()const
+	const Math::Matrix GetRotationYMatrix()const
 	{
 		return Math::Matrix::CreateRotationY(
 			DirectX::XMConvertToRadians(m_vec.y));
@@ -37,10 +37,16 @@ public:
 
 	void SetTarget(const std::shared_ptr<BaseObject>& target);
 
+	void RegistHitObjList(const std::shared_ptr<BaseObject>& obj)
+	{
+		m_wpHitObjList.push_back(obj);
+	}
+
 private:
 	void Init()override;
 
 	void UpdateRotateByMouse();
+	void UpdateCollision();
 
 	std::shared_ptr<Camera> m_spCamera = nullptr;
 
@@ -53,4 +59,8 @@ private:
 	Math::Matrix m_localPos;
 
 	POINT m_mousePos = {};
+
+	bool m_isValid = true;
+
+	std::list<std::weak_ptr<BaseObject>> m_wpHitObjList;
 };

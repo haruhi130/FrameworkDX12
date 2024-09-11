@@ -1,5 +1,7 @@
 #pragma once
 
+class GameCamera;
+
 class Mouse : public BaseObject
 {
 public:
@@ -13,15 +15,33 @@ public:
 
 	void SetAnimeTime(float time) { animeTime = time; }
 
+	void SetCamera(const std::shared_ptr<GameCamera>& camera)
+	{ m_wpCamera = camera; }
+
+	void RegistHitObjList(const std::shared_ptr<BaseObject>& obj)
+	{
+		m_wpHitObjList.push_back(obj);
+	}
+
 private:
 	void Init()override;
+
+	void UpdateRotate(Math::Vector3& moveVec);
+	void UpdateCollision();
 
 	std::shared_ptr<ModelWork> m_spModel = nullptr;
 	std::shared_ptr<Animator> m_spAnimator = nullptr;
 
 	Math::Vector3 m_vec = {};
+	Math::Vector3 m_rot = {};
+
+	float m_gravity = 0.0f;
+	bool m_isGround = false;
+	std::list<std::weak_ptr<BaseObject>> m_wpHitObjList;
 
 	float animeTime = 1.0f;
+
+	std::weak_ptr<GameCamera> m_wpCamera;
 
 	/////////////////////////////////////////////////
 	// ステートパターン管理

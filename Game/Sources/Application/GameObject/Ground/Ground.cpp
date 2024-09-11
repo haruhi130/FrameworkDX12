@@ -12,6 +12,10 @@ void Ground::Init()
 	{
 		m_spModel = std::make_shared<ModelWork>();
 		m_spModel->SetModelData("Assets/Models/Ground/Ground.gltf");
+	
+		m_upCollider = std::make_unique<Collider>();
+		m_upCollider->RegisterCollisionShape(
+			"Ground", m_spModel, Collider::Type::Bump | Collider::Type::Ground);
 	}
 
 	Math::Matrix mScale = Math::Matrix::CreateScale(100, 1, 100);
