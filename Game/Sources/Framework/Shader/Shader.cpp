@@ -163,11 +163,6 @@ void Shader::DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld)
 	}
 }
 
-bool Shader::ChangeSampler(D3D12Filter filter, TextureAddressMode mode)
-{
-	return false;
-}
-
 void Shader::LoadShaderFile(const std::wstring& filePath)
 {
 	ID3DInclude* include = D3D_COMPILE_STANDARD_FILE_INCLUDE;

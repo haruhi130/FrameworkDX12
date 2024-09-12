@@ -153,27 +153,27 @@ void Application::Execute()
 		// ’Êí‚Ì•`‰æ
 		Draw();
 
-		////IMGUI—pˆ—
-		//ImGui_ImplDX12_NewFrame();
-		//ImGui_ImplWin32_NewFrame();
-		//ImGui::NewFrame();
+		//IMGUI—pˆ—
+		/*ImGui_ImplDX12_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
 
-		//ImGui::Begin("RenderTest");
-		//ImGui::SetWindowSize(ImVec2(400, 500),
-		//	ImGuiCond_::ImGuiCond_FirstUseEver);
-		//ImGui::End();
+		ImGui::Begin("RenderTest");
+		ImGui::SetWindowSize(ImVec2(400, 500),
+			ImGuiCond_::ImGuiCond_FirstUseEver);
+		ImGui::End();
 
-		//ImGui::Render();
+		ImGui::Render();
 
-		//GraphicsDevice::GetInstance().GetCmdList()->
-		//	SetDescriptorHeaps(
-		//		1,
-		//		GraphicsDevice::GetInstance().GetImGuiHeap()
-		//		->GetHeap().GetAddressOf());
+		GraphicsDevice::GetInstance().GetCmdList()->
+			SetDescriptorHeaps(
+				1,
+				GraphicsDevice::GetInstance().GetImGuiHeap()
+				->GetHeap().GetAddressOf());
 
-		//ImGui_ImplDX12_RenderDrawData(
-		//	ImGui::GetDrawData(),
-		//	GraphicsDevice::GetInstance().GetCmdList());
+		ImGui_ImplDX12_RenderDrawData(
+			ImGui::GetDrawData(),
+			GraphicsDevice::GetInstance().GetCmdList());*/
 
 		//=============================================
 
@@ -182,7 +182,7 @@ void Application::Execute()
 		GraphicsDevice::GetInstance().ScreenFlip();
 
 		// ŽžŠÔŠÇ—
-		time->Update();
+		ServiceLocator::Update();
 	}
 }
 

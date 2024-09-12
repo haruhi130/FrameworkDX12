@@ -121,6 +121,9 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{743ec147-c21b-445a-96bd-8aa9ac56157b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\GameObject\Wolf">
+      <UniqueIdentifier>{e809706b-29d1-4af2-b480-456695c28c35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -244,6 +247,9 @@
     </ClCompile>
     <ClCompile Include="..\Libraries\imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\Wolf\Wolf.cpp">
+      <Filter>Application\GameObject\Wolf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -398,6 +404,9 @@
     </ClInclude>
     <ClInclude Include="..\Libraries\imgui\imconfig.h">
       <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\Wolf\Wolf.h">
+      <Filter>Application\GameObject\Wolf</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -43,8 +43,6 @@ public:
 	inline UINT GetCBVCount()const 
 	{ return m_cbvCount; }
 
-	bool ChangeSampler(D3D12Filter filter, TextureAddressMode mode);
-
 private:
 	// シェーダーファイル読込
 	void LoadShaderFile(const std::wstring& filePath);

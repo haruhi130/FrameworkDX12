@@ -22,6 +22,7 @@ void Mouse::Update()
 
 void Mouse::PostUpdate()
 {
+	auto time = ServiceLocator::Get<Time>();
 	// アニメーション処理
 	m_spAnimator->ProgressTime(m_spModel->WorkNodes(),animeTime);
 	m_spModel->CalcNodeMatrices();
@@ -58,6 +59,9 @@ void Mouse::Init()
 
 	// ステート設定「待機」
 	ChangeActionState(std::make_shared<ActionIdle>());
+
+	m_upCollider = std::make_unique<Collider>();
+	m_upCollider->RegisterCollisionShape("Mouse", m_spModel, Collider::Type::Sight | Collider::Type::Bump);
 }
 
 void Mouse::UpdateMatrix()
