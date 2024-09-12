@@ -184,6 +184,14 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Libraries\imgui\imgui.cpp" />
+    <ClCompile Include="..\Libraries\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\Libraries\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\Libraries\imgui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="..\Libraries\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\Libraries\imgui\imgui_stdlib.cpp" />
+    <ClCompile Include="..\Libraries\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\Libraries\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Sources\Application\Application.cpp" />
     <ClCompile Include="Sources\Application\GameObject\Camera\GameCamera.cpp" />
     <ClCompile Include="Sources\Application\GameObject\Ground\Ground.cpp" />
@@ -205,6 +213,7 @@
     <ClCompile Include="Sources\Framework\Graphics\GraphicsDevice.cpp" />
     <ClCompile Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.cpp" />
     <ClCompile Include="Sources\Framework\Heap\DSVHeap\DSVHeap.cpp" />
+    <ClCompile Include="Sources\Framework\Heap\ImGuiHeap\ImGuiHeap.cpp" />
     <ClCompile Include="Sources\Framework\Heap\RTVHeap\RTVHeap.cpp" />
     <ClCompile Include="Sources\Framework\Mesh\Mesh.cpp" />
     <ClCompile Include="Sources\Framework\Model\KdGLTFLoader.cpp" />
@@ -228,6 +237,15 @@
     <ClCompile Include="Sources\System\Window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Libraries\imgui\imconfig.h" />
+    <ClInclude Include="..\Libraries\imgui\imgui.h" />
+    <ClInclude Include="..\Libraries\imgui\imgui_impl_dx12.h" />
+    <ClInclude Include="..\Libraries\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="..\Libraries\imgui\imgui_internal.h" />
+    <ClInclude Include="..\Libraries\imgui\imgui_stdlib.h" />
+    <ClInclude Include="..\Libraries\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\Libraries\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\Libraries\imgui\imstb_truetype.h" />
     <ClInclude Include="Sources\Application\Application.h" />
     <ClInclude Include="Sources\Application\GameObject\Camera\GameCamera.h" />
     <ClInclude Include="Sources\Application\GameObject\Ground\Ground.h" />
@@ -253,6 +271,7 @@
     <ClInclude Include="Sources\Framework\Heap\BaseHeap.h" />
     <ClInclude Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.h" />
     <ClInclude Include="Sources\Framework\Heap\DSVHeap\DSVHeap.h" />
+    <ClInclude Include="Sources\Framework\Heap\ImGuiHeap\ImGuiHeap.h" />
     <ClInclude Include="Sources\Framework\Heap\RTVHeap\RTVHeap.h" />
     <ClInclude Include="Sources\Framework\Mesh\Mesh.h" />
     <ClInclude Include="Sources\Framework\Mesh\MeshData\MeshData.h" />

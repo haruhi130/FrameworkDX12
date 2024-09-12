@@ -115,6 +115,12 @@
     <Filter Include="Application\GameObject\Ground">
       <UniqueIdentifier>{2f243d8f-cb9e-4c13-ad3f-35fb1abff775}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Heap\ImGuiHeap">
+      <UniqueIdentifier>{ce952f73-dfd2-402a-981e-6029f498e5f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{743ec147-c21b-445a-96bd-8aa9ac56157b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -211,6 +217,33 @@
     </ClCompile>
     <ClCompile Include="Sources\Application\GameObject\Ground\Ground.cpp">
       <Filter>Application\GameObject\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Heap\ImGuiHeap\ImGuiHeap.cpp">
+      <Filter>Framework\Heap\ImGuiHeap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_impl_dx12.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_impl_win32.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_stdlib.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_tables.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -335,6 +368,36 @@
     </ClInclude>
     <ClInclude Include="Sources\Application\GameObject\Ground\Ground.h">
       <Filter>Application\GameObject\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Heap\ImGuiHeap\ImGuiHeap.h">
+      <Filter>Framework\Heap\ImGuiHeap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imgui_impl_dx12.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imgui_impl_win32.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imgui_stdlib.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imstb_rectpack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imstb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imstb_truetype.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imconfig.h">
+      <Filter>imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

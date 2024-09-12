@@ -73,4 +73,11 @@
 // multimedia
 #include <mmsystem.h>
 
+#define IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_PLACEMENT_NEW
+#include "../../Libraries/imgui/imgui.h"
+#include "../../Libraries/imgui/imgui_impl_win32.h"
+#include "../../Libraries/imgui/imgui_impl_dx12.h"
+#include "../../Libraries/imgui/imgui_stdlib.h"
+
 #include "System/System.h"

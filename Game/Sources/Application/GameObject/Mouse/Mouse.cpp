@@ -18,7 +18,6 @@ void Mouse::Update()
 
 	UpdateMatrix();
 	UpdateCollision();
-
 }
 
 void Mouse::PostUpdate()

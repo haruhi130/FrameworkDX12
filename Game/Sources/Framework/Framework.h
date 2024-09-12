@@ -12,6 +12,7 @@
 #include "Heap/RTVHeap/RTVHeap.h"
 #include "Heap/CBVSRVUAVHeap/CBVSRVUAVHeap.h"
 #include "Heap/DSVHeap/DSVHeap.h"
+#include "Heap/ImGuiHeap/ImGuiHeap.h"
 
 #include "Buffer/Buffer.h"
 #include "Buffer/ConstantBufferAllocator/ConstantBufferAllocator.h"

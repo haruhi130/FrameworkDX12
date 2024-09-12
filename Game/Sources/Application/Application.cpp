@@ -24,6 +24,30 @@ bool Application::Init(int width, int height)
 		return false;
 	}
 
+	// ImGui
+	/*IMGUI_CHECKVERSION();
+	if (ImGui::CreateContext() == nullptr)
+	{
+		assert(0 && "ImGui初期化失敗");
+		return false;
+	}
+
+	bool blnResult = ImGui_ImplWin32_Init(m_window.GetWndHandle());
+	if (!blnResult)
+	{
+		assert(0 && "ImGuiのWindows初期化失敗");
+		return false;
+	}
+	blnResult = ImGui_ImplDX12_Init(
+		GraphicsDevice::GetInstance().GetDevice(),
+		3,
+		DXGI_FORMAT_R8G8B8A8_UNORM,
+		GraphicsDevice::GetInstance().GetImGuiHeap()->GetHeap().Get(),
+		GraphicsDevice::GetInstance().GetImGuiHeap()->GetHeap()->GetCPUDescriptorHandleForHeapStart(),
+		GraphicsDevice::GetInstance().GetImGuiHeap()->GetHeap()->GetGPUDescriptorHandleForHeapStart()
+	);*/
+
+
 	// オーディオ初期化
 	if (!Audio::GetInstance().Init())
 	{
@@ -47,7 +71,7 @@ void Application::Execute()
 
 	//===============================================
 	// 仮実装
-	
+
 	// シェーダー作成(どのシェーダーを使用するか)
 	m_spShader = m_spShader->CreateSimpleShader();
 
@@ -128,6 +152,28 @@ void Application::Execute()
 
 		// 通常の描画
 		Draw();
+
+		////IMGUI用処理
+		//ImGui_ImplDX12_NewFrame();
+		//ImGui_ImplWin32_NewFrame();
+		//ImGui::NewFrame();
+
+		//ImGui::Begin("RenderTest");
+		//ImGui::SetWindowSize(ImVec2(400, 500),
+		//	ImGuiCond_::ImGuiCond_FirstUseEver);
+		//ImGui::End();
+
+		//ImGui::Render();
+
+		//GraphicsDevice::GetInstance().GetCmdList()->
+		//	SetDescriptorHeaps(
+		//		1,
+		//		GraphicsDevice::GetInstance().GetImGuiHeap()
+		//		->GetHeap().GetAddressOf());
+
+		//ImGui_ImplDX12_RenderDrawData(
+		//	ImGui::GetDrawData(),
+		//	GraphicsDevice::GetInstance().GetCmdList());
 
 		//=============================================
 

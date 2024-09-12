@@ -1,5 +1,7 @@
 #include "Window.h"
 
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
+
 LRESULT WindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	// メッセージ毎に処理を選択
@@ -9,12 +11,14 @@ LRESULT WindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0); // OSへ終了を伝える
 		break;
 	default:
+		ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam);
 		return DefWindowProc(hWnd, message, wParam, lParam);
 		break;
 	}
 
 	return 0;
 }
+
 
 bool Window::Create(int windowWidth, int windowHeight, const std::wstring& titleName, const std::wstring& windowClassName)
 {
