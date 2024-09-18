@@ -19,8 +19,8 @@ void GameScene::Init()
 	m_objList.push_back(wolf);
 
 	std::shared_ptr<Mouse> mouse = std::make_shared<Mouse>();
-	mouse->RegistHitObjList(ground);
 	wolf->RegistHitObjList(mouse);
+	mouse->RegistHitObjList(ground);
 	m_objList.push_back(mouse);
 
 	std::shared_ptr<GameCamera> camera = std::make_shared<GameCamera>();

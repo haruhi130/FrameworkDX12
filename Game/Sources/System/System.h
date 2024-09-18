@@ -10,7 +10,7 @@
 #include "Service/Service.h"
 
 // Framework
-#include "../Framework/Framework.h"
+#include "Framework/Framework.h"
 
 // Animation
 #include "Animation/Animation.h"

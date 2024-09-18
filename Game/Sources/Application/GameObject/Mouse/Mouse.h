@@ -77,8 +77,8 @@ private:
 	public:
 		~ActionIdle()override {}
 
-		void Enter(Mouse& owner)	override;
-		void Update(Mouse& owner)	override;
+		void Enter(Mouse& owner) override;
+		void Update(Mouse& owner) override;
 		void Exit(Mouse& owner)	override;
 	};
 
@@ -88,8 +88,8 @@ private:
 	public:
 		~ActionWalk()override {}
 
-		void Enter(Mouse& owner)	override;
-		void Update(Mouse& owner)	override;
+		void Enter(Mouse& owner) override;
+		void Update(Mouse& owner) override;
 		void Exit(Mouse& owner)	override;
 	};
 

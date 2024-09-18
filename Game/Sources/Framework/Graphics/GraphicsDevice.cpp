@@ -85,11 +85,9 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 		return false;
 	}
 
-	// ImGuiƒq[ƒvì¬
 	m_upImGuiHeap = std::make_unique<ImGuiHeap>();
-	if (!m_upImGuiHeap->Create(HeapType::CBVSRVUAV,1))
+	if (!m_upImGuiHeap->Create(HeapType::CBVSRVUAV, 1))
 	{
-		assert(0 && "ImGuiì¬¸”s");
 		return false;
 	}
 

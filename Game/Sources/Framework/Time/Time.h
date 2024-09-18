@@ -5,8 +5,8 @@ class Time:public Service
 public:
 	void Start()override
 	{
-		m_prevTime = std::chrono::system_clock::now();
 		m_deltaTime = 0.0f;
+		m_prevTime = std::chrono::system_clock::now();
 	}
 
 	void Update()override

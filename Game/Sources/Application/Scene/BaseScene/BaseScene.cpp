@@ -57,6 +57,14 @@ void BaseScene::Draw()
 	}
 }
 
+void BaseScene::ImGuiUpdate()
+{
+	for (auto& obj : m_objList)
+	{
+		obj->ImGuiUpdate();
+	}
+}
+
 void BaseScene::Event()
 {
 }

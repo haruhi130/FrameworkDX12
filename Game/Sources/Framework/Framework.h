@@ -6,6 +6,8 @@
 
 #include "Time/Time.h"
 
+#include "Polygon/Polygon.h"
+
 #include "Audio/Audio.h"
 
 #include "Heap/BaseHeap.h"

@@ -22,7 +22,6 @@ void Mouse::Update()
 
 void Mouse::PostUpdate()
 {
-	auto time = ServiceLocator::Get<Time>();
 	// アニメーション処理
 	m_spAnimator->ProgressTime(m_spModel->WorkNodes(),animeTime);
 	m_spModel->CalcNodeMatrices();
@@ -44,33 +43,29 @@ void Mouse::Init()
 	}
 
 	// 初期計算
-	Math::Matrix mScale = Math::Matrix::CreateScale(10000.0f);
-	Math::Matrix mRot = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(90))
-		* Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180));
-	Math::Matrix mTrans = Math::Matrix::CreateTranslation(0, 20, 0);
-	m_mWorld = mScale * mRot * mTrans;
+	Math::Matrix mScale = Math::Matrix::CreateScale(0.5f);
+	Math::Matrix mTrans = Math::Matrix::CreateTranslation(0, 0, -20);
+	m_mWorld = mScale * mTrans;
 
 	// アニメーション設定
 	if (!m_spAnimator)
 	{
 		m_spAnimator = std::make_shared<Animator>();
-		m_spAnimator->SetAnimation(m_spModel->GetAnimation("Idle"));
 	}
 
 	// ステート設定「待機」
 	ChangeActionState(std::make_shared<ActionIdle>());
 
 	m_upCollider = std::make_unique<Collider>();
-	m_upCollider->RegisterCollisionShape("Mouse", m_spModel, Collider::Type::Sight | Collider::Type::Bump);
+	m_upCollider->RegisterCollisionShape("Mouse", m_spModel, Collider::Type::Sight);
 }
 
 void Mouse::UpdateMatrix()
 {
-	Math::Matrix scale = Math::Matrix::CreateScale(10000.0f);
-	Math::Matrix rot = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(90))
-		* Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180)) * Math::Matrix::CreateRotationY(
-			DirectX::XMConvertToRadians(m_rot.y));
-	m_mWorld = scale * rot * Math::Matrix::CreateTranslation(m_vec);
+	Math::Matrix mScale = Math::Matrix::CreateScale(0.5f);
+	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_rot.y));
+	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_vec);
+	m_mWorld = mScale * mRot * mTrans;
 }
 
 void Mouse::UpdateRotate(Math::Vector3& moveVec)
@@ -104,15 +99,16 @@ void Mouse::UpdateRotate(Math::Vector3& moveVec)
 
 void Mouse::UpdateCollision()
 {
+	// Ray : Ground
 	{
 		Collider::RayInfo rayInfo;
 		rayInfo.m_pos = GetPos();
-		rayInfo.m_pos.y += 0.2f;
+		rayInfo.m_pos.y += 0.3f;
 
 		rayInfo.m_dir = Math::Vector3::Down;
-		rayInfo.m_range = m_gravity + 0.2f;
+		rayInfo.m_range = m_gravity + 0.3f;
 
-		rayInfo.m_type = Collider::Type::Bump;
+		rayInfo.m_type = Collider::Type::Ground;
 
 		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
 		{
@@ -146,10 +142,11 @@ void Mouse::UpdateCollision()
 		}
 	}
 
+	// Sphere : Bump
 	{
 		Collider::SphereInfo sphereInfo;
-		sphereInfo.m_sphere.Center = GetPos() + Math::Vector3(0, 0.5f, 0);
-		sphereInfo.m_sphere.Radius = 0.3f;
+		sphereInfo.m_sphere.Center = GetPos() + Math::Vector3(0, 1.4f, 0);
+		sphereInfo.m_sphere.Radius = 1.2f;
 		sphereInfo.m_type = Collider::Type::Bump;
 
 		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)

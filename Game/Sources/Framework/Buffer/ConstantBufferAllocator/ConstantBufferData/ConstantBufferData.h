@@ -12,6 +12,11 @@ namespace ConstantBufferData
 		Math::Vector3 CamPos;
 	};
 
+	struct Mesh
+	{
+		Math::Matrix mW;
+	};
+
 	// スキンメッシュ判別
 	struct Object
 	{

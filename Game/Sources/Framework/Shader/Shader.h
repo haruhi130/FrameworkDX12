@@ -39,6 +39,9 @@ public:
 	void DrawModel(const ModelData& modelData, const Math::Matrix& mWorld = Math::Matrix::Identity);
 	void DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld = Math::Matrix::Identity);
 
+	void DrawVertices(const std::vector<Polygon::Vertex>& vertices, const Math::Matrix& mWorld = Math::Matrix::Identity,
+		const Math::Color& colRate = { 1,1,1,1 });
+
 	// CBVƒJƒEƒ“ƒgŽæ“¾
 	inline UINT GetCBVCount()const 
 	{ return m_cbvCount; }

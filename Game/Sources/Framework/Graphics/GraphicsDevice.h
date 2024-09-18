@@ -42,9 +42,6 @@ public:
 	inline CBVSRVUAVHeap* GetCBVSRVUAVHeap()const 
 	{ return m_upCBVSRVUAVHeap.get(); }
 
-	inline ImGuiHeap* GetImGuiHeap()const
-	{ return m_upImGuiHeap.get(); }
-
 	// 定数バッファアロケーター取得
 	inline ConstantBufferAllocator* GetConstantBufferAllocator()const
 	{ return m_upCBufferAllocator.get(); }
@@ -52,6 +49,9 @@ public:
 	// DSVヒープ取得
 	inline DSVHeap* GetDSVHeap()const
 	{ return m_upDSVHeap.get(); }
+
+	inline ImGuiHeap* GetImGuiHeap() const
+	{ return m_upImGuiHeap.get(); }
 
 private:
 	enum class GPUTier
@@ -106,7 +106,6 @@ private:
 	std::unique_ptr<RTVHeap> m_upRTVHeap = nullptr;
 	std::unique_ptr<CBVSRVUAVHeap> m_upCBVSRVUAVHeap = nullptr;
 
-	// imgui
 	std::unique_ptr<ImGuiHeap> m_upImGuiHeap = nullptr;
 
 	ComPtr<ID3D12Fence1> m_cpFence = nullptr;

@@ -19,6 +19,8 @@ public:
 	void PreDraw();
 	void Draw();
 
+	void ImGuiUpdate();
+
 	void SetNextScene(SceneType nextScene)
 	{
 		m_nextSceneType = nextScene;

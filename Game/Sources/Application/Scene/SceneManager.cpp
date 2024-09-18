@@ -33,6 +33,11 @@ void SceneManager::Draw()
 	m_currentScene->Draw();
 }
 
+void SceneManager::ImGuiUpdate()
+{
+	m_currentScene->ImGuiUpdate();
+}
+
 const std::list<std::shared_ptr<BaseObject>>& SceneManager::GetObjList()
 {
 	return m_currentScene->GetObjList();

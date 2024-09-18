@@ -163,6 +163,20 @@ void Shader::DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld)
 	}
 }
 
+void Shader::DrawVertices(const std::vector<Polygon::Vertex>& vertices, const Math::Matrix& mWorld, const Math::Color& colRate)
+{
+	if (vertices.size() < 2) { return; }
+
+	ConstantBufferData::Mesh mesh;
+	mesh.mW = mWorld;
+
+	// シェーダーへ計算したボーンを設定
+	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
+		->BindAndAttachData(1, mesh);
+
+
+}
+
 void Shader::LoadShaderFile(const std::wstring& filePath)
 {
 	ID3DInclude* include = D3D_COMPILE_STANDARD_FILE_INCLUDE;

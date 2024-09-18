@@ -7,9 +7,11 @@ bool Application::Init(int width, int height)
 	// メモリリーク検知
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
+	//===============================================
 	// COM初期化
 	HRESULT result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 
+	//===============================================
 	// ウィンドウ作成
 	if (!m_window.Create(width, height, L"FrameworkDX12", L"Window"))
 	{
@@ -17,6 +19,7 @@ bool Application::Init(int width, int height)
 		return false;
 	}
 
+	//===============================================
 	// グラフィックスデバイス初期化
 	if (!GraphicsDevice::GetInstance().Init(m_window.GetWndHandle(), width, height))
 	{
@@ -24,36 +27,43 @@ bool Application::Init(int width, int height)
 		return false;
 	}
 
-	// ImGui
-	/*IMGUI_CHECKVERSION();
-	if (ImGui::CreateContext() == nullptr)
-	{
-		assert(0 && "ImGui初期化失敗");
-		return false;
-	}
+	//===============================================
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	(void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+	// Setup Dear ImGui style
+	ImGui::StyleColorsClassic();
 
-	bool blnResult = ImGui_ImplWin32_Init(m_window.GetWndHandle());
-	if (!blnResult)
-	{
-		assert(0 && "ImGuiのWindows初期化失敗");
-		return false;
-	}
-	blnResult = ImGui_ImplDX12_Init(
+	// Setup Platform/Renderer backends
+	ImGui_ImplWin32_Init(m_window.GetWndHandle());
+	ImGui_ImplDX12_Init(
 		GraphicsDevice::GetInstance().GetDevice(),
 		3,
 		DXGI_FORMAT_R8G8B8A8_UNORM,
 		GraphicsDevice::GetInstance().GetImGuiHeap()->GetHeap().Get(),
 		GraphicsDevice::GetInstance().GetImGuiHeap()->GetHeap()->GetCPUDescriptorHandleForHeapStart(),
 		GraphicsDevice::GetInstance().GetImGuiHeap()->GetHeap()->GetGPUDescriptorHandleForHeapStart()
-	);*/
+		);
 
+#include "../imgui/ja_glyph_ranges.h"
+	ImFontConfig config;
+	config.MergeMode = true;
+	io.Fonts->AddFontDefault();
+	// ImGui日本語対応
+	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\msgothic.ttc", 13.0f, &config, glyphRangesJapanese);
 
+	//===============================================
 	// オーディオ初期化
 	if (!Audio::GetInstance().Init())
 	{
 		return false;
 	}
 
+	//===============================================
 	// シーン初期化
 	SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Game);
 
@@ -62,6 +72,11 @@ bool Application::Init(int width, int height)
 
 void Application::Execute()
 {
+	// 可変フレームレート対応
+	ServiceLocator::Add(std::make_shared<Time>());
+	auto time = ServiceLocator::Get<Time>();
+	if (time) { time->Start(); }
+
 	// ゲーム初期化
 	if (!Init())
 	{
@@ -77,11 +92,6 @@ void Application::Execute()
 
 	// 音再生
 	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);
-
-	// 可変フレームレート
-	ServiceLocator::Add(std::make_shared<Time>());
-	auto time = ServiceLocator::Get<Time>();
-	if (time != nullptr) { time->Start(); }
 
 	//===============================================
 	// メインゲームループ
@@ -105,10 +115,10 @@ void Application::Execute()
 		// 
 		//=============================================
 
-		// 通常の更新前に行う処理
+		// 事前更新
 		PreUpdate();
 
-		// 通常の更新
+		// 通常更新
 		Update();
 		if (GetAsyncKeyState('O') & 0x8000)
 		{
@@ -127,7 +137,7 @@ void Application::Execute()
 			Audio::GetInstance().ExitLoop();
 		}
 
-		// 通常の更新終了後に行う処理
+		// 後更新
 		PostUpdate();
 
 		//=============================================
@@ -150,35 +160,15 @@ void Application::Execute()
 		// 事前描画
 		PreDraw();
 
-		// 通常の描画
+		// 通常描画
 		Draw();
 
-		//IMGUI用処理
-		/*ImGui_ImplDX12_NewFrame();
-		ImGui_ImplWin32_NewFrame();
-		ImGui::NewFrame();
-
-		ImGui::Begin("RenderTest");
-		ImGui::SetWindowSize(ImVec2(400, 500),
-			ImGuiCond_::ImGuiCond_FirstUseEver);
-		ImGui::End();
-
-		ImGui::Render();
-
-		GraphicsDevice::GetInstance().GetCmdList()->
-			SetDescriptorHeaps(
-				1,
-				GraphicsDevice::GetInstance().GetImGuiHeap()
-				->GetHeap().GetAddressOf());
-
-		ImGui_ImplDX12_RenderDrawData(
-			ImGui::GetDrawData(),
-			GraphicsDevice::GetInstance().GetCmdList());*/
+		//=============================================
+		// ImGui処理
+		ImGuiUpdate();
 
 		//=============================================
-
-		// 描画終了
-		// ダブルバッファリングを行う
+		// 描画終了/バッファフリップ
 		GraphicsDevice::GetInstance().ScreenFlip();
 
 		// 時間管理
@@ -188,6 +178,11 @@ void Application::Execute()
 
 void Application::Terminate()
 {
+	// ImGui Release
+	ImGui_ImplDX12_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+
 	// COM解放
 	CoUninitialize();
 
@@ -218,4 +213,21 @@ void Application::PreDraw()
 void Application::Draw()
 {
 	SceneManager::GetInstance().Draw();
+}
+
+void Application::ImGuiUpdate()
+{
+	ImGui_ImplDX12_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
+	SceneManager::GetInstance().ImGuiUpdate();
+
+	ImGui::Render();
+
+	GraphicsDevice::GetInstance().GetCmdList()->SetDescriptorHeaps(
+		1, GraphicsDevice::GetInstance().GetImGuiHeap()->GetHeap().GetAddressOf());
+
+	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(),
+		GraphicsDevice::GetInstance().GetCmdList());
 }

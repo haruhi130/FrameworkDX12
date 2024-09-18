@@ -25,6 +25,8 @@ private:
 	void PreDraw();
 	void Draw();
 
+	void ImGuiUpdate();
+
 	Window m_window;
 
 	std::shared_ptr<Shader> m_spShader = nullptr;

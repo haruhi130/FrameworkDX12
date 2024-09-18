@@ -15,6 +15,8 @@ public:
 	virtual void PreDraw(){}
 	virtual void Draw(){}
 
+	virtual void ImGuiUpdate(){}
+
 	virtual void SetPos(const Math::Vector3& pos)
 	{ m_mWorld.Translation(pos); }
 
@@ -29,6 +31,8 @@ public:
 
 	bool Intersects(const Collider::SphereInfo& target, std::list<Collider::CollisionResult>* pResults);
 	bool Intersects(const Collider::RayInfo& target, std::list<Collider::CollisionResult>* pResults);
+
+	virtual void OnHit(){}
 
 protected:
 	// ƒJƒƒ‰‚©‚ç‚Ì‹——£

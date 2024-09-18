@@ -189,7 +189,6 @@
     <ClCompile Include="..\Libraries\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\Libraries\imgui\imgui_impl_dx12.cpp" />
     <ClCompile Include="..\Libraries\imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="..\Libraries\imgui\imgui_stdlib.cpp" />
     <ClCompile Include="..\Libraries\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\Libraries\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Sources\Application\Application.cpp" />
@@ -208,6 +207,7 @@
     <ClCompile Include="Sources\Framework\Camera\Camera.cpp" />
     <ClCompile Include="Sources\Framework\Collider\Collider.cpp" />
     <ClCompile Include="Sources\Framework\Collider\Collision.cpp" />
+    <ClCompile Include="Sources\Framework\DebugWireFrame\DebugWireFrame.cpp" />
     <ClCompile Include="Sources\Framework\GameObject\BaseObject.cpp" />
     <ClCompile Include="Sources\Framework\GameObject\Component.cpp" />
     <ClCompile Include="Sources\Framework\GameObject\GameObject.cpp" />
@@ -219,6 +219,7 @@
     <ClCompile Include="Sources\Framework\Mesh\Mesh.cpp" />
     <ClCompile Include="Sources\Framework\Model\KdGLTFLoader.cpp" />
     <ClCompile Include="Sources\Framework\Model\Model.cpp" />
+    <ClCompile Include="Sources\Framework\Polygon\Polygon.cpp" />
     <ClCompile Include="Sources\Framework\Shader\Pipeline\Pipeline.cpp" />
     <ClCompile Include="Sources\Framework\Shader\RootSignature\RootSignature.cpp" />
     <ClCompile Include="Sources\Framework\Shader\Shader.cpp" />
@@ -243,10 +244,10 @@
     <ClInclude Include="..\Libraries\imgui\imgui_impl_dx12.h" />
     <ClInclude Include="..\Libraries\imgui\imgui_impl_win32.h" />
     <ClInclude Include="..\Libraries\imgui\imgui_internal.h" />
-    <ClInclude Include="..\Libraries\imgui\imgui_stdlib.h" />
     <ClInclude Include="..\Libraries\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\Libraries\imgui\imstb_textedit.h" />
     <ClInclude Include="..\Libraries\imgui\imstb_truetype.h" />
+    <ClInclude Include="..\Libraries\imgui\ja_glyph_ranges.h" />
     <ClInclude Include="Sources\Application\Application.h" />
     <ClInclude Include="Sources\Application\GameObject\Camera\GameCamera.h" />
     <ClInclude Include="Sources\Application\GameObject\Ground\Ground.h" />
@@ -265,6 +266,7 @@
     <ClInclude Include="Sources\Framework\Camera\Camera.h" />
     <ClInclude Include="Sources\Framework\Collider\Collider.h" />
     <ClInclude Include="Sources\Framework\Collider\Collision.h" />
+    <ClInclude Include="Sources\Framework\DebugWireFrame\DebugWireFrame.h" />
     <ClInclude Include="Sources\Framework\Framework.h" />
     <ClInclude Include="Sources\Framework\GameObject\BaseObject.h" />
     <ClInclude Include="Sources\Framework\GameObject\Component.h" />
@@ -279,6 +281,7 @@
     <ClInclude Include="Sources\Framework\Mesh\MeshData\MeshData.h" />
     <ClInclude Include="Sources\Framework\Model\KdGLTFLoader.h" />
     <ClInclude Include="Sources\Framework\Model\Model.h" />
+    <ClInclude Include="Sources\Framework\Polygon\Polygon.h" />
     <ClInclude Include="Sources\Framework\Shader\Pipeline\Pipeline.h" />
     <ClInclude Include="Sources\Framework\Shader\RootSignature\RootSignature.h" />
     <ClInclude Include="Sources\Framework\Shader\Shader.h" />

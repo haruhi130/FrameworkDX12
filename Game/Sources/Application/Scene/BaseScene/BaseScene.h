@@ -13,6 +13,8 @@ public:
 	void PreDraw();
 	void Draw();
 
+	void ImGuiUpdate();
+
 	const std::list<std::shared_ptr<BaseObject>>& GetObjList() 
 	{ return m_objList; }
 
