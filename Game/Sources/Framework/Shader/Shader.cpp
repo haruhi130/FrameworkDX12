@@ -174,7 +174,6 @@ void Shader::DrawVertices(const std::vector<Polygon::Vertex>& vertices, const Ma
 	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
 		->BindAndAttachData(1, mesh);
 
-
 }
 
 void Shader::LoadShaderFile(const std::wstring& filePath)

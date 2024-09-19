@@ -6,22 +6,29 @@
 
 void Mouse::Update()
 {
-	m_gravity += 0.005f;
-	m_mWorld._42 -= m_gravity;
+	if (!m_spModel) { return; }
 
-	m_vec = m_mWorld.Translation();
+	// 重力処理
+	m_pos.y -= m_gravity;
+	m_gravity += 0.005f;
+
 	// ステート更新
 	if (m_currentAction)
 	{
 		m_currentAction->Update(*this);
 	}
 
+	// 行列更新
 	UpdateMatrix();
+	// 当たり判定更新
 	UpdateCollision();
 }
 
 void Mouse::PostUpdate()
 {
+	if (!m_spModel) { return; }
+	if (!m_spAnimator) { return; }
+
 	// アニメーション処理
 	m_spAnimator->ProgressTime(m_spModel->WorkNodes());
 	m_spModel->CalcNodeMatrices();
@@ -29,6 +36,8 @@ void Mouse::PostUpdate()
 
 void Mouse::Draw()
 {
+	if (!m_spModel) { return; }
+
 	// モデル描画
 	Application::GetInstance().GetShader().DrawModel(*m_spModel, m_mWorld);
 }
@@ -57,14 +66,14 @@ void Mouse::Init()
 	ChangeActionState(std::make_shared<ActionIdle>());
 
 	m_upCollider = std::make_unique<Collider>();
-	m_upCollider->RegisterCollisionShape("Mouse", m_spModel, Collider::Type::Sight);
+	m_upCollider->RegisterCollisionShape("Mouse", m_spModel, Collider::Type::Sight | Collider::Type::Bump);
 }
 
 void Mouse::UpdateMatrix()
 {
 	Math::Matrix mScale = Math::Matrix::CreateScale(0.5f);
 	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_rot.y));
-	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_vec);
+	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_pos);
 	m_mWorld = mScale * mRot * mTrans;
 }
 
@@ -102,7 +111,7 @@ void Mouse::UpdateCollision()
 	// Ray : Ground
 	{
 		Collider::RayInfo rayInfo;
-		rayInfo.m_pos = GetPos();
+		rayInfo.m_pos = m_pos;
 		rayInfo.m_pos.y += 0.3f;
 
 		rayInfo.m_dir = Math::Vector3::Down;
@@ -119,7 +128,7 @@ void Mouse::UpdateCollision()
 				spObj->Intersects(rayInfo, &retRayList);
 
 				float lap = 0.0f;
-				Math::Vector3 hit = Math::Vector3::Zero;
+				Math::Vector3 hitPos = Math::Vector3::Zero;
 				bool isHit = false;
 
 				for (auto& ret : retRayList)
@@ -127,14 +136,15 @@ void Mouse::UpdateCollision()
 					if (lap < ret.m_overlapDistance)
 					{
 						lap = ret.m_overlapDistance;
-						hit = ret.m_hitPos;
+						hitPos = ret.m_hitPos;
 						isHit = true;
 					}
 				}
 
 				if (isHit)
 				{
-					SetPos(hit);
+					m_pos = hitPos;
+					SetPos(m_pos);
 					m_gravity = 0.0f;
 					m_isGround = true;
 				}
@@ -145,7 +155,7 @@ void Mouse::UpdateCollision()
 	// Sphere : Bump
 	{
 		Collider::SphereInfo sphereInfo;
-		sphereInfo.m_sphere.Center = GetPos() + Math::Vector3(0, 0.8f, 0);
+		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 0.8f, 0);
 		sphereInfo.m_sphere.Radius = 0.6f;
 		sphereInfo.m_type = Collider::Type::Bump;
 
@@ -159,8 +169,9 @@ void Mouse::UpdateCollision()
 
 				for (auto& ret : retBumpList)
 				{
-					Math::Vector3 newPos = GetPos() + (ret.m_hitDir * ret.m_overlapDistance);
-					SetPos(newPos);
+					Math::Vector3 newPos = m_pos + (ret.m_hitDir * ret.m_overlapDistance);
+					m_pos = newPos;
+					SetPos(m_pos);
 				}
 			}
 		}
@@ -214,13 +225,29 @@ void Mouse::ActionWalk::Update(Mouse& owner)
 	auto time = ServiceLocator::Get<Time>();
 	float spd = 5.0f * time->DeltaTime();
 
-	Math::Vector3 vec = Math::Vector3::Zero;
-	if (GetAsyncKeyState('W')) { vec = Math::Vector3::Backward; }
-	if (GetAsyncKeyState('S')) { vec = Math::Vector3::Forward; }
-	if (GetAsyncKeyState('A')) { vec = Math::Vector3::Left; }
-	if (GetAsyncKeyState('D')) { vec = Math::Vector3::Right; }
+	Math::Vector3 move = Math::Vector3::Zero;
+	if (GetAsyncKeyState('W')) 
+	{ 
+		Math::Vector3 vec = Math::Vector3::Backward;
+		move += vec;
+	}
+	if (GetAsyncKeyState('S')) 
+	{
+		Math::Vector3 vec = Math::Vector3::Forward;
+		move += vec;
+	}
+	if (GetAsyncKeyState('A')) 
+	{
+		Math::Vector3 vec = Math::Vector3::Left;
+		move += vec;
+	}
+	if (GetAsyncKeyState('D')) 
+	{
+		Math::Vector3 vec = Math::Vector3::Right;
+		move += vec;
+	}
 
-	if (vec.LengthSquared() == 0)
+	if (move.LengthSquared() == 0)
 	{
 		owner.ChangeActionState(std::make_shared<ActionIdle>());
 		return;
@@ -229,16 +256,16 @@ void Mouse::ActionWalk::Update(Mouse& owner)
 	std::shared_ptr<GameCamera> spCamera = owner.m_wpCamera.lock();
 	if (spCamera)
 	{
-		vec = vec.TransformNormal(vec, spCamera->GetRotationYMatrix());
+		move = move.TransformNormal(move, spCamera->GetRotationYMatrix());
 	}
 
-	vec.Normalize();
-	vec *= spd;
+	move.Normalize();
+	move *= spd;
 
-	owner.m_vec.x += vec.x;
-	owner.m_vec.z += vec.z;
+	owner.m_pos.x += move.x;
+	owner.m_pos.z += move.z;
 
-	owner.UpdateRotate(vec);
+	owner.UpdateRotate(move);
 }
 
 void Mouse::ActionWalk::Exit(Mouse& owner)

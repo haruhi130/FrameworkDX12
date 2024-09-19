@@ -19,9 +19,7 @@ public:
 
 	// 衝突対象を登録
 	void RegistHitObjList(const std::shared_ptr<BaseObject>& obj)
-	{
-		m_wpHitObjList.push_back(obj);
-	}
+	{ m_wpHitObjList.push_back(obj); }
 
 private:
 	void Init()override;
@@ -34,10 +32,14 @@ private:
 	// 衝突判定更新
 	void UpdateCollision();
 
+	// モデル
 	std::shared_ptr<ModelWork> m_spModel = nullptr;
+	// アニメーター
 	std::shared_ptr<Animator> m_spAnimator = nullptr;
 
-	Math::Vector3 m_vec = {};
+	// 座標
+	Math::Vector3 m_pos = {};
+	// 回転情報格納
 	Math::Vector3 m_rot = {};
 
 	// 重力

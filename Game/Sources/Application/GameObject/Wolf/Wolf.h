@@ -15,35 +15,31 @@ public:
 	
 	// 衝突対象を登録
 	void RegistHitObjList(const std::shared_ptr<BaseObject>& obj)
-	{
-		m_wpHitObjList.push_back(obj);
-	}
+	{ m_wpHitObjList.push_back(obj); }
 
 	void ImGuiUpdate()override;
 
 private:
 	void Init()override;
-
+	void UpdateMatrix();
 	void UpdateCollision();
 
 	// 衝突対象リスト
 	std::list<std::weak_ptr<BaseObject>> m_wpHitObjList;
 
+	// モデル
 	std::shared_ptr<ModelWork> m_spModel = nullptr;
+	// アニメーター
 	std::shared_ptr<Animator> m_spAnimator = nullptr;
 
-	// 視界内か
+	// 視界内判定
 	bool m_isSight = false;
 
-	// 視界内角
+	// 視界角度
 	float m_sightAngle = 45.0f;
 
-	Math::Vector3 m_vec;
-
-	// 1.視界の球判定の中 : OK
-	// 2.正面方向から内角分までの左右内 : OK
-	// 3.遮る物がないか判定 : NO
-	// 4.OnHit(); : OK
+	// 座標
+	Math::Vector3 m_pos;
 
 	/////////////////////////////////////////////////
 	// ステートパターン管理

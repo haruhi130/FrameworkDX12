@@ -4,28 +4,33 @@
 
 void Wolf::Update()
 {
+	if (!m_spModel) { return; }
+
 	// ステート更新
 	if (m_currentAction)
 	{
 		m_currentAction->Update(*this);
 	}
 
-	Math::Matrix mScale = Math::Matrix::CreateScale(15.0f);
-	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(0));
-	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_vec);
-	m_mWorld = mScale * mRot * mTrans;
-
+	// 行列更新
+	UpdateMatrix();
+	// 当たり判定更新
 	UpdateCollision();
 }
 
 void Wolf::PostUpdate()
 {
-	m_spAnimator->ProgressTime(m_spModel->WorkNodes());
+	if (!m_spModel) { return; }
+	if (!m_spAnimator) { return; }
+
+	m_spAnimator->ProgressTime(m_spModel->WorkNodes(),0.5f);
 	m_spModel->CalcNodeMatrices();
 }
 
 void Wolf::Draw()
 {
+	if (!m_spModel) { return; }
+
 	// モデル描画
 	Application::GetInstance().GetShader().DrawModel(*m_spModel, m_mWorld);
 }
@@ -69,63 +74,99 @@ void Wolf::Init()
 	ChangeActionState(std::make_shared<ActionWalk>());
 }
 
+void Wolf::UpdateMatrix()
+{
+	Math::Matrix mScale = Math::Matrix::CreateScale(15.0f);
+	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(0));
+	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_pos);
+	m_mWorld = mScale * mRot * mTrans;
+}
+
 void Wolf::UpdateCollision()
 {
-	Collider::SphereInfo sphereInfo;
-	sphereInfo.m_sphere.Center = GetPos() + Math::Vector3(0,1.5f,0);
-	sphereInfo.m_sphere.Radius = 5.0f;
-	sphereInfo.m_type = Collider::Type::Sight;
-
-	for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
+	// Sphere : Sight
 	{
-		std::shared_ptr<BaseObject> spObj = wpObj.lock();
-		if (spObj)
+		Collider::SphereInfo sphereInfo;
+		sphereInfo.m_sphere.Center = GetPos() + Math::Vector3(0, 1.5f, 0);
+		sphereInfo.m_sphere.Radius = 5.0f;
+		sphereInfo.m_type = Collider::Type::Sight;
+
+		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
 		{
-			std::list<Collider::CollisionResult> retSightList;
-			spObj->Intersects(sphereInfo, &retSightList);
-
-			bool isHit = false;
-
-			// 視界球の中
-			for (auto& ret : retSightList)
+			std::shared_ptr<BaseObject> spObj = wpObj.lock();
+			if (spObj)
 			{
-				// 前方向からsightAngle内にターゲットがいるか判定
-				// 向いている方向
-				Math::Vector3 nowDir = GetMatrix().Backward();
-				nowDir.Normalize();
-				float nowAng = DirectX::XMConvertToDegrees(atan2(nowDir.x, nowDir.z));
-				
-				// ターゲットの位置
-				Math::Vector3 targetDir = ret.m_hitDir;
-				targetDir.Normalize();
-				float targetAng = DirectX::XMConvertToDegrees(atan2(targetDir.x, targetDir.z));
+				std::list<Collider::CollisionResult> retSightList;
+				spObj->Intersects(sphereInfo, &retSightList);
 
-				// ターゲットの角度と向いている角度を計算
-				float betweenAng = targetAng - nowAng;
-				
-				// sightAngle内か判定
-				if(betweenAng < m_sightAngle && betweenAng > -m_sightAngle)
+				bool isHit = false;
+
+				// 視界球の中
+				for (auto& ret : retSightList)
 				{
-					// ターゲットとの間に障害物がないか判定
-					// 
-					// Ray判定を作成する
+					// 前方向からsightAngle内にターゲットがいるか判定
+					// 向いている方向
+					Math::Vector3 nowDir = GetMatrix().Backward();
+					nowDir.Normalize();
+					float nowAng = DirectX::XMConvertToDegrees(atan2(nowDir.x, nowDir.z));
 
-					isHit = true;
+					// ターゲットの位置
+					Math::Vector3 targetDir = ret.m_hitDir;
+					targetDir.Normalize();
+					float targetAng = DirectX::XMConvertToDegrees(atan2(targetDir.x, targetDir.z));
+
+					// ターゲットの角度と向いている角度を計算
+					float betweenAng = targetAng - nowAng;
+
+					// sightAngle内か判定
+					if (betweenAng < m_sightAngle && betweenAng > -m_sightAngle)
+					{
+						// ターゲットとの間に障害物がないか判定
+						// 
+						// Ray判定を作成する
+
+						isHit = true;
+					}
 				}
-			}
 
-			// 当たっている
-			if (isHit)
-			{
-				OnHit();
-			}
-			else
-			{
-				m_isSight = false;
+				// 当たっている
+				if (isHit)
+				{
+					OnHit();
+				}
+				else
+				{
+					m_isSight = false;
+				}
 			}
 		}
 	}
 
+	// Sphere : Bump
+	{
+		Collider::SphereInfo sphereInfo;
+		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 1.0f, 0);
+		sphereInfo.m_sphere.Radius = 0.8f;
+		sphereInfo.m_type = Collider::Type::Bump;
+
+		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
+		{
+			std::shared_ptr<BaseObject> spObj = wpObj.lock();
+			if (spObj)
+			{
+				std::list<Collider::CollisionResult> retBumpList;
+				spObj->Intersects(sphereInfo, &retBumpList);
+
+				for (auto& ret : retBumpList)
+				{
+					ret.m_hitDir.y = 0;
+					Math::Vector3 newPos = m_pos + (ret.m_hitDir * ret.m_overlapDistance);
+					m_pos = newPos;
+					SetPos(m_pos);
+				}
+			}
+		}
+	}
 }
 
 void Wolf::ChangeActionState(std::shared_ptr<ActionStateBase> nextState)
@@ -169,11 +210,11 @@ void Wolf::ActionWalk::Update(Wolf& owner)
 	vec.Normalize();
 
 	auto time = ServiceLocator::Get<Time>();
-	float spd = 3.0f * time->DeltaTime();
+	float spd = 1.0f * time->DeltaTime();
 
 	vec *= spd;
 
-	owner.m_vec.z += vec.z;
+	owner.m_pos.z += vec.z;
 }
 
 void Wolf::ActionWalk::Exit(Wolf& owner)

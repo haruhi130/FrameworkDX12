@@ -106,7 +106,7 @@ void GameCamera::UpdateCollision()
 			spObj->Intersects(rayInfo, &retRayList);
 
 			float lap = 0.0f;
-			Math::Vector3 hit = Math::Vector3::Zero;
+			Math::Vector3 hitPos = Math::Vector3::Zero;
 			bool isHit = false;
 
 			for (auto& ret : retRayList)
@@ -114,14 +114,14 @@ void GameCamera::UpdateCollision()
 				if (lap < ret.m_overlapDistance)
 				{
 					lap = ret.m_overlapDistance;
-					hit = ret.m_hitPos + Math::Vector3(0,0.1f,0);
+					hitPos = ret.m_hitPos;
 					isHit = true;
 				}
 			}
 
 			if (isHit)
 			{
-				SetPos(hit);
+				SetPos(hitPos);
 			}
 
 		}
