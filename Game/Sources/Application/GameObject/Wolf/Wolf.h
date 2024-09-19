@@ -32,7 +32,18 @@ private:
 	std::shared_ptr<ModelWork> m_spModel = nullptr;
 	std::shared_ptr<Animator> m_spAnimator = nullptr;
 
+	// 視界内か
 	bool m_isSight = false;
+
+	// 視界内角
+	float m_sightAngle = 45.0f;
+
+	Math::Vector3 m_vec;
+
+	// 1.視界の球判定の中 : OK
+	// 2.正面方向から内角分までの左右内 : OK
+	// 3.遮る物がないか判定 : NO
+	// 4.OnHit(); : OK
 
 	/////////////////////////////////////////////////
 	// ステートパターン管理

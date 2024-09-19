@@ -18,7 +18,7 @@ void Ground::Init()
 			"Ground", m_spModel, Collider::Type::Bump | Collider::Type::Ground);
 	}
 
-	Math::Matrix mScale = Math::Matrix::CreateScale(5, 5, 5);
+	Math::Matrix mScale = Math::Matrix::CreateScale(3);
 	Math::Matrix mTrans = Math::Matrix::CreateTranslation(0, 0, 0);
 	m_mWorld = mScale * mTrans;
 }

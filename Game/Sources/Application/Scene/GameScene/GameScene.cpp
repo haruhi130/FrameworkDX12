@@ -1,4 +1,6 @@
 #include "GameScene.h"
+#include "../SceneManager.h"
+
 #include "../../GameObject/Camera/GameCamera.h"
 #include "../../GameObject/Mouse/Mouse.h"
 #include "../../GameObject/Ground/Ground.h"
@@ -6,6 +8,10 @@
 
 void GameScene::Event()
 {
+	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
+	{
+		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Title);
+	}
 }
 
 void GameScene::Init()
@@ -28,5 +34,4 @@ void GameScene::Init()
 	camera->RegistHitObjList(ground);
 	mouse->SetCamera(camera);
 	m_objList.push_back(camera);
-
 }

@@ -65,7 +65,7 @@ bool Application::Init(int width, int height)
 
 	//===============================================
 	// シーン初期化
-	SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Game);
+	SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Title);
 
 	return true;
 }
@@ -74,8 +74,8 @@ void Application::Execute()
 {
 	// 可変フレームレート対応
 	ServiceLocator::Add(std::make_shared<Time>());
-	auto time = ServiceLocator::Get<Time>();
-	if (time) { time->Start(); }
+	std::shared_ptr<Time> time = ServiceLocator::Get<Time>();
+	if (time != nullptr) { time->Start(); }
 
 	// ゲーム初期化
 	if (!Init())
@@ -167,12 +167,12 @@ void Application::Execute()
 		// ImGui処理
 		ImGuiUpdate();
 
+		// 時間管理
+		ServiceLocator::Update();
+
 		//=============================================
 		// 描画終了/バッファフリップ
 		GraphicsDevice::GetInstance().ScreenFlip();
-
-		// 時間管理
-		ServiceLocator::Update();
 	}
 }
 

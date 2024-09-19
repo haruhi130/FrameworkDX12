@@ -23,7 +23,7 @@ void Mouse::Update()
 void Mouse::PostUpdate()
 {
 	// アニメーション処理
-	m_spAnimator->ProgressTime(m_spModel->WorkNodes(),animeTime);
+	m_spAnimator->ProgressTime(m_spModel->WorkNodes());
 	m_spModel->CalcNodeMatrices();
 }
 
@@ -92,7 +92,7 @@ void Mouse::UpdateRotate(Math::Vector3& moveVec)
 		betweenAng += 360;
 	}
 
-	float rotAng = std::clamp(betweenAng, -20.0f, 20.0f);
+	float rotAng = std::clamp(betweenAng, -36.0f, 36.0f);
 
 	m_rot.y += rotAng;
 }
@@ -145,8 +145,8 @@ void Mouse::UpdateCollision()
 	// Sphere : Bump
 	{
 		Collider::SphereInfo sphereInfo;
-		sphereInfo.m_sphere.Center = GetPos() + Math::Vector3(0, 1.4f, 0);
-		sphereInfo.m_sphere.Radius = 1.2f;
+		sphereInfo.m_sphere.Center = GetPos() + Math::Vector3(0, 0.8f, 0);
+		sphereInfo.m_sphere.Radius = 0.6f;
 		sphereInfo.m_type = Collider::Type::Bump;
 
 		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
@@ -211,13 +211,14 @@ void Mouse::ActionWalk::Enter(Mouse& owner)
 
 void Mouse::ActionWalk::Update(Mouse& owner)
 {
-	float spd = 0.1f;
+	auto time = ServiceLocator::Get<Time>();
+	float spd = 5.0f * time->DeltaTime();
 
 	Math::Vector3 vec = Math::Vector3::Zero;
-	if (GetAsyncKeyState('W')) { vec.z = 1.0f; }
-	if (GetAsyncKeyState('S')) { vec.z = -1.0f; }
-	if (GetAsyncKeyState('A')) { vec.x = -1.0f; }
-	if (GetAsyncKeyState('D')) { vec.x = 1.0f; }
+	if (GetAsyncKeyState('W')) { vec = Math::Vector3::Backward; }
+	if (GetAsyncKeyState('S')) { vec = Math::Vector3::Forward; }
+	if (GetAsyncKeyState('A')) { vec = Math::Vector3::Left; }
+	if (GetAsyncKeyState('D')) { vec = Math::Vector3::Right; }
 
 	if (vec.LengthSquared() == 0)
 	{

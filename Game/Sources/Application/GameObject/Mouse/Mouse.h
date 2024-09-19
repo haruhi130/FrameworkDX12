@@ -13,9 +13,6 @@ public:
 
 	void Draw()override;
 
-	// アニメーション速度(仮)
-	void SetAnimeTime(float time) { animeTime = time; }
-
 	// カメラ取得
 	void SetCamera(const std::shared_ptr<GameCamera>& camera)
 	{ m_wpCamera = camera; }
@@ -51,9 +48,6 @@ private:
 
 	// 衝突対象リスト
 	std::list<std::weak_ptr<BaseObject>> m_wpHitObjList;
-
-	// アニメーション速度(仮)
-	float animeTime = 1.0f;
 
 	// カメラ
 	std::weak_ptr<GameCamera> m_wpCamera;

@@ -14,7 +14,7 @@ public:
 	template<class type>
 	static void Add(std::shared_ptr<type> service)
 	{
-		if (!service) { return; }
+		if (service == nullptr) { return; }
 
 		// 型名を数値データに変換
 		size_t classID = typeid(type).hash_code();

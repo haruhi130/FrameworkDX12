@@ -10,15 +10,17 @@ void Wolf::Update()
 		m_currentAction->Update(*this);
 	}
 
-	Math::Matrix mScale = Math::Matrix::CreateScale(20.0f);
-	m_mWorld = mScale;
+	Math::Matrix mScale = Math::Matrix::CreateScale(15.0f);
+	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(0));
+	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_vec);
+	m_mWorld = mScale * mRot * mTrans;
 
 	UpdateCollision();
 }
 
 void Wolf::PostUpdate()
 {
-	m_spAnimator->ProgressTime(m_spModel->WorkNodes(),1.5f);
+	m_spAnimator->ProgressTime(m_spModel->WorkNodes());
 	m_spModel->CalcNodeMatrices();
 }
 
@@ -54,8 +56,9 @@ void Wolf::Init()
 	}
 
 	// 初期計算
-	Math::Matrix mScale = Math::Matrix::CreateScale(20.0f);
-	m_mWorld = mScale;
+	Math::Matrix mScale = Math::Matrix::CreateScale(15.0f);
+	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(0));
+	m_mWorld = mScale * mRot;
 
 	if (!m_spAnimator)
 	{
@@ -81,10 +84,44 @@ void Wolf::UpdateCollision()
 			std::list<Collider::CollisionResult> retSightList;
 			spObj->Intersects(sphereInfo, &retSightList);
 
+			bool isHit = false;
+
 			// 視界球の中
 			for (auto& ret : retSightList)
 			{
+				// 前方向からsightAngle内にターゲットがいるか判定
+				// 向いている方向
+				Math::Vector3 nowDir = GetMatrix().Backward();
+				nowDir.Normalize();
+				float nowAng = DirectX::XMConvertToDegrees(atan2(nowDir.x, nowDir.z));
+				
+				// ターゲットの位置
+				Math::Vector3 targetDir = ret.m_hitDir;
+				targetDir.Normalize();
+				float targetAng = DirectX::XMConvertToDegrees(atan2(targetDir.x, targetDir.z));
+
+				// ターゲットの角度と向いている角度を計算
+				float betweenAng = targetAng - nowAng;
+				
+				// sightAngle内か判定
+				if(betweenAng < m_sightAngle && betweenAng > -m_sightAngle)
+				{
+					// ターゲットとの間に障害物がないか判定
+					// 
+					// Ray判定を作成する
+
+					isHit = true;
+				}
+			}
+
+			// 当たっている
+			if (isHit)
+			{
 				OnHit();
+			}
+			else
+			{
+				m_isSight = false;
 			}
 		}
 	}
@@ -126,6 +163,17 @@ void Wolf::ActionWalk::Update(Wolf& owner)
 	{
 		owner.ChangeActionState(std::make_shared<ActionIdle>());
 	}
+
+	Math::Vector3 vec = Math::Vector3::Zero;
+	vec.z = -1.0f;
+	vec.Normalize();
+
+	auto time = ServiceLocator::Get<Time>();
+	float spd = 3.0f * time->DeltaTime();
+
+	vec *= spd;
+
+	owner.m_vec.z += vec.z;
 }
 
 void Wolf::ActionWalk::Exit(Wolf& owner)
