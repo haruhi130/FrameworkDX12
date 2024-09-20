@@ -223,7 +223,7 @@
     <ClCompile Include="Sources\Framework\Shader\ModelShader\ModelShader.cpp" />
     <ClCompile Include="Sources\Framework\Shader\Pipeline\Pipeline.cpp" />
     <ClCompile Include="Sources\Framework\Shader\RootSignature\RootSignature.cpp" />
-    <ClCompile Include="Sources\Framework\Shader\Shader.cpp" />
+    <ClCompile Include="Sources\Framework\Shader\ShaderBase.cpp" />
     <ClCompile Include="Sources\Framework\Shader\ShaderManager.cpp" />
     <ClCompile Include="Sources\main.cpp" />
     <ClCompile Include="Sources\Pch.cpp">
@@ -287,7 +287,7 @@
     <ClInclude Include="Sources\Framework\Shader\ModelShader\ModelShader.h" />
     <ClInclude Include="Sources\Framework\Shader\Pipeline\Pipeline.h" />
     <ClInclude Include="Sources\Framework\Shader\RootSignature\RootSignature.h" />
-    <ClInclude Include="Sources\Framework\Shader\Shader.h" />
+    <ClInclude Include="Sources\Framework\Shader\ShaderBase.h" />
     <ClInclude Include="Sources\Framework\Shader\ShaderManager.h" />
     <ClInclude Include="Sources\Framework\Time\Time.h" />
     <ClInclude Include="Sources\main.h" />

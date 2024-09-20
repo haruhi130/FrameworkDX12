@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Shader.h"
+#include "../ShaderBase.h"
 
-class ModelShader : public Shader
+class ModelShader : public ShaderBase
 {
 public:
 	// ƒ{[ƒ“Å‘å”

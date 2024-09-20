@@ -16,7 +16,7 @@ struct RenderingSetting
 	bool IsWireFrame = false;
 };
 
-class Shader
+class ShaderBase
 {
 public:
 	virtual bool Init();

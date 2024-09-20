@@ -1,11 +1,11 @@
-#include "Shader.h"
+#include "ShaderBase.h"
 
-bool Shader::Init()
+bool ShaderBase::Init()
 {
 	return true;
 }
 
-void Shader::Create(const std::wstring& filePath,
+void ShaderBase::Create(const std::wstring& filePath,
 	const RenderingSetting& renderingSetting, const std::vector<RangeType>& rangeTypes)
 {
 	LoadShaderFile(filePath);
@@ -20,7 +20,7 @@ void Shader::Create(const std::wstring& filePath,
 		renderingSetting.IsDepth, renderingSetting.IsDepthMask, renderingSetting.RTVCount, renderingSetting.IsWireFrame);
 }
 
-void Shader::Begin(int w, int h)
+void ShaderBase::Begin(int w, int h)
 {
 	// パイプラインセット
 	GraphicsDevice::GetInstance().GetCmdList()->SetPipelineState(m_upPipeline->GetPipeline());
@@ -63,7 +63,7 @@ void Shader::Begin(int w, int h)
 	GraphicsDevice::GetInstance().GetCmdList()->RSSetScissorRects(1, &rect);
 }
 
-void Shader::LoadShaderFile(const std::wstring& filePath)
+void ShaderBase::LoadShaderFile(const std::wstring& filePath)
 {
 	ID3DInclude* include = D3D_COMPILE_STANDARD_FILE_INCLUDE;
 	UINT flag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
@@ -120,7 +120,7 @@ void Shader::LoadShaderFile(const std::wstring& filePath)
 	}
 }
 
-void Shader::SetMaterial(const Material& material) const
+void ShaderBase::SetMaterial(const Material& material) const
 {
 	material.spBaseColorTex->Set(m_cbvCount);
 	material.spNormalTex->Set(m_cbvCount + 1);

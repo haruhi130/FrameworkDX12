@@ -58,6 +58,7 @@ bool Application::Init(int width, int height)
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\msgothic.ttc", 13.0f, &config, glyphRangesJapanese);
 
 	//===============================================
+	// シェーダー初期化
 	ShaderManager::GetInstance().Init();
 
 	//===============================================
@@ -87,11 +88,6 @@ void Application::Execute()
 		assert(0 && "ゲーム初期化失敗");
 		return;
 	}
-
-	//===============================================
-	// 仮実装
-
-	// シェーダー作成(どのシェーダーを使用するか)
 
 	// 音再生
 	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);

@@ -155,9 +155,6 @@
     <ClCompile Include="Sources\Framework\Mesh\Mesh.cpp">
       <Filter>Framework\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Framework\Shader\Shader.cpp">
-      <Filter>Framework\Shader</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Framework\Shader\Pipeline\Pipeline.cpp">
       <Filter>Framework\Shader\Pipeline</Filter>
     </ClCompile>
@@ -272,6 +269,9 @@
     <ClCompile Include="Sources\Framework\Shader\ShaderManager.cpp">
       <Filter>Framework\Shader</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Framework\Shader\ShaderBase.cpp">
+      <Filter>Framework\Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\main.h" />
@@ -296,9 +296,6 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Mesh\Mesh.h">
       <Filter>Framework\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Framework\Shader\Shader.h">
-      <Filter>Framework\Shader</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Framework\Shader\Pipeline\Pipeline.h">
       <Filter>Framework\Shader\Pipeline</Filter>
@@ -439,6 +436,9 @@
       <Filter>Framework\Shader\ModelShader</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Framework\Shader\ShaderManager.h">
+      <Filter>Framework\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Shader\ShaderBase.h">
       <Filter>Framework\Shader</Filter>
     </ClInclude>
   </ItemGroup>
