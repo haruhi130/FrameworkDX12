@@ -51,6 +51,7 @@ void BaseScene::PreDraw()
 
 void BaseScene::Draw()
 {
+	ShaderManager::GetInstance().m_modelShader.Begin();
 	for (auto& obj : m_objList)
 	{
 		obj->Draw();

@@ -1,15 +1,8 @@
 #include "Camera.h"
 
-void Camera::Set()
+void Camera::Set() const
 {
-	ConstantBufferData::Camera cbCamera;
-	cbCamera.mView = m_mView.Invert();
-	cbCamera.mProj = m_mProj;
-	cbCamera.mProjInv = m_mProj.Invert();
-	cbCamera.CamPos = m_mView.Translation();
-
-	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-		->BindAndAttachData(0, cbCamera);
+	ShaderManager::GetInstance().SetCamera(m_mView,m_mProj);
 }
 
 // 射影行列の設定：各種パラメータから射影行列を生成して保持する

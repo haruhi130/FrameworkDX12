@@ -220,9 +220,11 @@
     <ClCompile Include="Sources\Framework\Model\KdGLTFLoader.cpp" />
     <ClCompile Include="Sources\Framework\Model\Model.cpp" />
     <ClCompile Include="Sources\Framework\Polygon\Polygon.cpp" />
+    <ClCompile Include="Sources\Framework\Shader\ModelShader\ModelShader.cpp" />
     <ClCompile Include="Sources\Framework\Shader\Pipeline\Pipeline.cpp" />
     <ClCompile Include="Sources\Framework\Shader\RootSignature\RootSignature.cpp" />
     <ClCompile Include="Sources\Framework\Shader\Shader.cpp" />
+    <ClCompile Include="Sources\Framework\Shader\ShaderManager.cpp" />
     <ClCompile Include="Sources\main.cpp" />
     <ClCompile Include="Sources\Pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -282,9 +284,11 @@
     <ClInclude Include="Sources\Framework\Model\KdGLTFLoader.h" />
     <ClInclude Include="Sources\Framework\Model\Model.h" />
     <ClInclude Include="Sources\Framework\Polygon\Polygon.h" />
+    <ClInclude Include="Sources\Framework\Shader\ModelShader\ModelShader.h" />
     <ClInclude Include="Sources\Framework\Shader\Pipeline\Pipeline.h" />
     <ClInclude Include="Sources\Framework\Shader\RootSignature\RootSignature.h" />
     <ClInclude Include="Sources\Framework\Shader\Shader.h" />
+    <ClInclude Include="Sources\Framework\Shader\ShaderManager.h" />
     <ClInclude Include="Sources\Framework\Time\Time.h" />
     <ClInclude Include="Sources\main.h" />
     <ClInclude Include="Sources\Pch.h" />

@@ -14,8 +14,6 @@ public:
 	// ƒQ[ƒ€I—¹
 	void Terminate();
 
-	Shader& GetShader()const { return *m_spShader; }
-
 private:
 
 	void PreUpdate();
@@ -28,8 +26,6 @@ private:
 	void ImGuiUpdate();
 
 	Window m_window;
-
-	std::shared_ptr<Shader> m_spShader = nullptr;
 
 	Application(){}
 	~Application(){}

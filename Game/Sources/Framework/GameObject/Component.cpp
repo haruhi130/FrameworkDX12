@@ -1,5 +1,4 @@
 #include "Component.h"
-#include "../../Application/Application.h"
 
 void ModelComponent::Update()
 {
@@ -13,7 +12,7 @@ void ModelComponent::Update()
 
 void ModelComponent::Draw()
 {
-	Application::GetInstance().GetShader().DrawModel(*m_spModelWork);
+	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModelWork);
 }
 
 void ModelComponent::SetModel(std::shared_ptr<ModelData> model)

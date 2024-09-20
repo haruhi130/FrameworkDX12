@@ -6,7 +6,7 @@ public:
 	Camera() { SetProjectionMatrix(60.0f); }
 	~Camera() {}
 
-	void Set();
+	void Set()const;
 
 	virtual void SetCameraMatrix(const Math::Matrix& mCam)
 	{ m_mView = mCam; }

@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "Pipeline/Pipeline.h"
@@ -20,33 +19,20 @@ struct RenderingSetting
 class Shader
 {
 public:
-	// ボーン最大数
-	static const int maxBoneBufferSize = 300;
+	virtual bool Init();
 
 	// シェーダー作成
 	void Create(const std::wstring& filePath,
 		const RenderingSetting& renderingSetting, const std::vector<RangeType>& rangeTypes);
 
-	std::shared_ptr<Shader> CreateSimpleShader();
-
 	// 描画開始
 	void Begin(int w = 1280, int h = 720);
-
-	// メッシュ描画
-	void DrawMesh(const Mesh* mesh,const Math::Matrix& mWorld,const std::vector<Material>& materials);
-
-	// モデル描画
-	void DrawModel(const ModelData& modelData, const Math::Matrix& mWorld = Math::Matrix::Identity);
-	void DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld = Math::Matrix::Identity);
-
-	void DrawVertices(const std::vector<Polygon::Vertex>& vertices, const Math::Matrix& mWorld = Math::Matrix::Identity,
-		const Math::Color& colRate = { 1,1,1,1 });
 
 	// CBVカウント取得
 	inline UINT GetCBVCount()const 
 	{ return m_cbvCount; }
 
-private:
+protected:
 	// シェーダーファイル読込
 	void LoadShaderFile(const std::wstring& filePath);
 

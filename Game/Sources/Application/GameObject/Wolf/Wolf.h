@@ -41,6 +41,12 @@ private:
 	// 座標
 	Math::Vector3 m_pos;
 
+	// 重力
+	float m_gravity = 0.0f;
+
+	// 接地判定
+	bool m_isGround = false;
+
 	/////////////////////////////////////////////////
 	// ステートパターン管理
 private:

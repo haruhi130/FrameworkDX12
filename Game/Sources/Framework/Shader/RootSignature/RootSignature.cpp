@@ -1,4 +1,3 @@
-
 #include "RootSignature.h"
 
 void RootSignature::Create(const std::vector<RangeType>& rangeTypes, UINT& cbvCount)

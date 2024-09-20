@@ -133,6 +133,9 @@
     <Filter Include="Libraries\imgui">
       <UniqueIdentifier>{310a191f-b5d0-43d9-af7d-3311cf4c8ed5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Shader\ModelShader">
+      <UniqueIdentifier>{40ae619a-d9b7-4523-9be7-086db89c3fe3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -262,6 +265,12 @@
     </ClCompile>
     <ClCompile Include="..\Libraries\imgui\imgui_widgets.cpp">
       <Filter>Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Shader\ModelShader\ModelShader.cpp">
+      <Filter>Framework\Shader\ModelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Shader\ShaderManager.cpp">
+      <Filter>Framework\Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -425,6 +434,12 @@
     </ClInclude>
     <ClInclude Include="..\Libraries\imgui\ja_glyph_ranges.h">
       <Filter>Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Shader\ModelShader\ModelShader.h">
+      <Filter>Framework\Shader\ModelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Shader\ShaderManager.h">
+      <Filter>Framework\Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

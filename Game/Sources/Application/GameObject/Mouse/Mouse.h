@@ -39,6 +39,10 @@ private:
 
 	// À•W
 	Math::Vector3 m_pos = {};
+
+	// ˆÚ“®‘¬“x
+	float m_speed = 0.0f;
+
 	// ‰ñ“]î•ñŠi”[
 	Math::Vector3 m_rot = {};
 

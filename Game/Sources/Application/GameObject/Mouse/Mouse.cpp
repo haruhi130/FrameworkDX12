@@ -1,9 +1,6 @@
 #include "Mouse.h"
 #include "../Camera/GameCamera.h"
 
-#include "Application/Application.h"
-
-
 void Mouse::Update()
 {
 	if (!m_spModel) { return; }
@@ -39,7 +36,7 @@ void Mouse::Draw()
 	if (!m_spModel) { return; }
 
 	// ƒ‚ƒfƒ‹•`‰æ
-	Application::GetInstance().GetShader().DrawModel(*m_spModel, m_mWorld);
+	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
 }
 
 void Mouse::Init()
@@ -50,6 +47,8 @@ void Mouse::Init()
 		m_spModel = std::make_shared<ModelWork>();
 		m_spModel->SetModelData("Assets/Models/Mouse/Mouse.gltf");
 	}
+
+	m_speed = 5.0f;
 
 	// ‰ŠúŒvŽZ
 	Math::Matrix mScale = Math::Matrix::CreateScale(0.5f);
@@ -198,12 +197,12 @@ void Mouse::ActionIdle::Enter(Mouse& owner)
 void Mouse::ActionIdle::Update(Mouse& owner)
 {
 	Math::Vector3 vec = Math::Vector3::Zero;
-	if (GetAsyncKeyState('W')) { vec.z = 1.0f; }
-	if (GetAsyncKeyState('S')) { vec.z = -1.0f; }
-	if (GetAsyncKeyState('A')) { vec.x = -1.0f; }
-	if (GetAsyncKeyState('D')) { vec.x = 1.0f; }
+	if (GetAsyncKeyState('W')) { vec = Math::Vector3::Backward; }
+	if (GetAsyncKeyState('S')) { vec = Math::Vector3::Forward; }
+	if (GetAsyncKeyState('A')) { vec = Math::Vector3::Left; }
+	if (GetAsyncKeyState('D')) { vec = Math::Vector3::Right; }
 
-	if (vec.LengthSquared() > 0)
+	if (vec.LengthSquared() > 0.0f)
 	{
 		owner.ChangeActionState(std::make_shared<ActionWalk>());
 	}
@@ -223,7 +222,7 @@ void Mouse::ActionWalk::Enter(Mouse& owner)
 void Mouse::ActionWalk::Update(Mouse& owner)
 {
 	auto time = ServiceLocator::Get<Time>();
-	float spd = 5.0f * time->DeltaTime();
+	float speed = owner.m_speed *	time->DeltaTime();
 
 	Math::Vector3 move = Math::Vector3::Zero;
 	if (GetAsyncKeyState('W')) 
@@ -260,7 +259,7 @@ void Mouse::ActionWalk::Update(Mouse& owner)
 	}
 
 	move.Normalize();
-	move *= spd;
+	move *= speed;
 
 	owner.m_pos.x += move.x;
 	owner.m_pos.z += move.z;

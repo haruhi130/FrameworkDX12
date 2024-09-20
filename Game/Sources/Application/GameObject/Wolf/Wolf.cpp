@@ -1,10 +1,12 @@
 #include "Wolf.h"
 
-#include "Application/Application.h"
-
 void Wolf::Update()
 {
 	if (!m_spModel) { return; }
+
+	// 重力処理
+	m_pos.y -= m_gravity;
+	m_gravity += 0.005f;
 
 	// ステート更新
 	if (m_currentAction)
@@ -23,7 +25,7 @@ void Wolf::PostUpdate()
 	if (!m_spModel) { return; }
 	if (!m_spAnimator) { return; }
 
-	m_spAnimator->ProgressTime(m_spModel->WorkNodes(),0.5f);
+	m_spAnimator->ProgressTime(m_spModel->WorkNodes(),1.5f);
 	m_spModel->CalcNodeMatrices();
 }
 
@@ -32,7 +34,7 @@ void Wolf::Draw()
 	if (!m_spModel) { return; }
 
 	// モデル描画
-	Application::GetInstance().GetShader().DrawModel(*m_spModel, m_mWorld);
+	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
 }
 
 void Wolf::OnHit()
@@ -142,11 +144,55 @@ void Wolf::UpdateCollision()
 		}
 	}
 
+	// Ray : Ground
+	{
+		Collider::RayInfo rayInfo;
+		rayInfo.m_pos = m_pos;
+		rayInfo.m_pos.y += 0.3f;
+
+		rayInfo.m_dir = Math::Vector3::Down;
+		rayInfo.m_range = m_gravity + 0.3f;
+
+		rayInfo.m_type = Collider::Type::Ground;
+
+		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
+		{
+			std::shared_ptr<BaseObject> spObj = wpObj.lock();
+			if (spObj)
+			{
+				std::list<Collider::CollisionResult> retRayList;
+				spObj->Intersects(rayInfo, &retRayList);
+
+				float lap = 0.0f;
+				Math::Vector3 hitPos = Math::Vector3::Zero;
+				bool isHit = false;
+
+				for (auto& ret : retRayList)
+				{
+					if (lap < ret.m_overlapDistance)
+					{
+						lap = ret.m_overlapDistance;
+						hitPos = ret.m_hitPos;
+						isHit = true;
+					}
+				}
+
+				if (isHit)
+				{
+					m_pos = hitPos;
+					SetPos(m_pos);
+					m_gravity = 0.0f;
+					m_isGround = true;
+				}
+			}
+		}
+	}
+
 	// Sphere : Bump
 	{
 		Collider::SphereInfo sphereInfo;
-		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 1.0f, 0);
-		sphereInfo.m_sphere.Radius = 0.8f;
+		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 1.2f, 0);
+		sphereInfo.m_sphere.Radius = 1.0f;
 		sphereInfo.m_type = Collider::Type::Bump;
 
 		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
@@ -159,7 +205,6 @@ void Wolf::UpdateCollision()
 
 				for (auto& ret : retBumpList)
 				{
-					ret.m_hitDir.y = 0;
 					Math::Vector3 newPos = m_pos + (ret.m_hitDir * ret.m_overlapDistance);
 					m_pos = newPos;
 					SetPos(m_pos);
@@ -210,7 +255,7 @@ void Wolf::ActionWalk::Update(Wolf& owner)
 	vec.Normalize();
 
 	auto time = ServiceLocator::Get<Time>();
-	float spd = 1.0f * time->DeltaTime();
+	float spd = 4.0f * time->DeltaTime();
 
 	vec *= spd;
 

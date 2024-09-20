@@ -35,6 +35,7 @@ bool Application::Init(int width, int height)
 	(void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+	
 	// Setup Dear ImGui style
 	ImGui::StyleColorsClassic();
 
@@ -55,6 +56,9 @@ bool Application::Init(int width, int height)
 	io.Fonts->AddFontDefault();
 	// ImGui日本語対応
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\msgothic.ttc", 13.0f, &config, glyphRangesJapanese);
+
+	//===============================================
+	ShaderManager::GetInstance().Init();
 
 	//===============================================
 	// オーディオ初期化
@@ -88,7 +92,6 @@ void Application::Execute()
 	// 仮実装
 
 	// シェーダー作成(どのシェーダーを使用するか)
-	m_spShader = m_spShader->CreateSimpleShader();
 
 	// 音再生
 	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);
@@ -155,8 +158,6 @@ void Application::Execute()
 		// コンスタントバッファ初期化
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()->ResetCurrentUseNumber();
 
-		m_spShader->Begin();
-		
 		// 事前描画
 		PreDraw();
 

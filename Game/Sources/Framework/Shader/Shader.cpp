@@ -1,5 +1,10 @@
 #include "Shader.h"
 
+bool Shader::Init()
+{
+	return true;
+}
+
 void Shader::Create(const std::wstring& filePath,
 	const RenderingSetting& renderingSetting, const std::vector<RangeType>& rangeTypes)
 {
@@ -13,23 +18,6 @@ void Shader::Create(const std::wstring& filePath,
 		renderingSetting.CullMode, renderingSetting.BlendMode, renderingSetting.PrimitiveTopologyType);
 	m_upPipeline->Create({ m_pVSBlob.Get() ,m_pHSBlob.Get() ,m_pDSBlob.Get() ,m_pGSBlob.Get() ,m_pPSBlob.Get() }, renderingSetting.Formats,
 		renderingSetting.IsDepth, renderingSetting.IsDepthMask, renderingSetting.RTVCount, renderingSetting.IsWireFrame);
-}
-
-std::shared_ptr<Shader> Shader::CreateSimpleShader()
-{
-	std::shared_ptr<Shader> shader = std::make_shared<Shader>();
-
-	// シェーダーに渡す情報設定
-	RenderingSetting renderingSetting = {};
-	renderingSetting.InputLayouts =
-	{ InputLayout::POSITION,InputLayout::TEXCOORD,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT,InputLayout::SKININDEX,InputLayout::SKINWEIGHT };
-	renderingSetting.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
-
-	shader->Create(L"SimpleShader", renderingSetting,
-		{ RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::CBV,
-		RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
-
-	return shader;
 }
 
 void Shader::Begin(int w, int h)
@@ -73,107 +61,6 @@ void Shader::Begin(int w, int h)
 	rect.right = w;
 	rect.bottom = h;
 	GraphicsDevice::GetInstance().GetCmdList()->RSSetScissorRects(1, &rect);
-}
-
-void Shader::DrawMesh(const Mesh* mesh, const Math::Matrix& mWorld, const std::vector<Material>& materials)
-{
-	if (mesh == nullptr) { return; }
-
-	// シェーダーへ行列を設定
-	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-		->BindAndAttachData(1, mWorld);
-
-	// 頂点バッファとインデックスバッファをセット
-	mesh->SetToDevice();
-
-	// サブセット描画
-	for (UINT subi = 0; subi < mesh->GetSubsets().size(); subi++)
-	{
-		if (mesh->GetSubsets()[subi].FaceCount == 0)continue;
-
-		const Material& material = materials[mesh->GetSubsets()[subi].MaterialNo];
-
-		SetMaterial(material);
-
-		mesh->DrawSubset(subi);
-	}
-}
-
-void Shader::DrawModel(const ModelData& modelData, const Math::Matrix& mWorld)
-{
-	auto& nodes = modelData.GetNodes();
-
-	// メッシュ描画
-	for (auto& nodeIdx : modelData.GetDrawMeshNodeIndices())
-	{
-		DrawMesh(nodes[nodeIdx].spMesh.get(), nodes[nodeIdx].mWorld * mWorld, modelData.GetMaterials());
-	}
-}
-
-void Shader::DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld)
-{
-	const std::shared_ptr<ModelData>& data = modelWork.GetModelData();
-
-	if (data == nullptr) { return; }
-
-	// 再帰処理
-	if (modelWork.IsNeedCalcNodeMatrices())
-	{
-		modelWork.CalcNodeMatrices();
-	}
-
-	// スキンメッシュか判別
-	{
-		ConstantBufferData::Object obj;
-
-		obj.isSkinMesh = data->IsSkinMesh();
-		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-			->BindAndAttachData(2, obj);
-	}
-
-	auto& workNodes = modelWork.GetNodes();
-	auto& dataNodes = data->GetNodes();
-
-	// スキンメッシュ描画
-	if (data->IsSkinMesh())
-	{
-		ConstantBufferData::Bone bone;
-		for (auto&& nodeIdx : data->GetBoneNodeIndices())
-		{
-			if (nodeIdx >= Shader::maxBoneBufferSize)
-			{
-				assert(0 && "転送できるボーン上限数をオーバー");
-				return;
-			}
-
-			auto& dataNode = dataNodes[nodeIdx];
-			auto& workNode = workNodes[nodeIdx];
-
-			bone.mBones[dataNode.BoneIdx] = dataNode.mBoneInverseWorld * workNode.mWorld;
-		}
-		// シェーダーへ計算したボーンを設定
-		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-			->BindAndAttachData(3, bone);
-	}
-
-	// メッシュ描画
-	for (auto&& nodeIdx : data->GetDrawMeshNodeIndices())
-	{
-		DrawMesh(dataNodes[nodeIdx].spMesh.get(), workNodes[nodeIdx].mWorld * mWorld, data->GetMaterials());
-	}
-}
-
-void Shader::DrawVertices(const std::vector<Polygon::Vertex>& vertices, const Math::Matrix& mWorld, const Math::Color& colRate)
-{
-	if (vertices.size() < 2) { return; }
-
-	ConstantBufferData::Mesh mesh;
-	mesh.mW = mWorld;
-
-	// シェーダーへ計算したボーンを設定
-	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-		->BindAndAttachData(1, mesh);
-
 }
 
 void Shader::LoadShaderFile(const std::wstring& filePath)

@@ -1,9 +1,8 @@
 #include "Ground.h"
-#include "../../Application.h"
 
 void Ground::Draw()
 {
-	Application::GetInstance().GetShader().DrawModel(*m_spModel, m_mWorld);
+	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
 }
 
 void Ground::Init()
