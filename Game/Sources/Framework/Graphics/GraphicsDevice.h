@@ -26,6 +26,9 @@ public:
 	// デバッグ用
 	void EnableDebugLayer();
 
+	// スクリーン座標から3D座標への変換
+	void ClientToWorld(const POINT& screenPos, float projZ, Math::Vector3& dst, const Math::Matrix& mCam, const Math::Matrix& mProj);
+
 	// バックバッファ色変更
 	inline void SetBackBufferColor(const Math::Color& col) 
 	{ m_clearColor = col; }

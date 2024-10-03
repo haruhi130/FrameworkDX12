@@ -15,6 +15,9 @@ public:
 	void SetProjectionMatrix(float fov, float minRange = 0.01f, float maxRange = 1000.0f, float aspectRatio = 16.0f / 9.0f);
 	void SetProjectionMatrix(const DirectX::SimpleMath::Matrix& rProj);
 
+	// クライアント座標から3Dワールド座標を求めるレイ情報を生成
+	void GenerateRayInfoFromClient(const POINT& clientPos, Math::Vector3& rayPos, Math::Vector3& rayDir, float& rayRange) const;
+
 private:
 	Math::Matrix m_mView;
 

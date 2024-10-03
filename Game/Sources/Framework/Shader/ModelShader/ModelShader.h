@@ -19,5 +19,6 @@ public:
 	void DrawModel(const ModelData& modelData, const Math::Matrix& mWorld = Math::Matrix::Identity);
 	void DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld = Math::Matrix::Identity);
 
+private:
 	void DrawSkinMesh(ModelWork& modelWork);
 };

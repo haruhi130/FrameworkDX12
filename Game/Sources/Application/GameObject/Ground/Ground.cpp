@@ -10,7 +10,8 @@ void Ground::Init()
 	if (!m_spModel)
 	{
 		m_spModel = std::make_shared<ModelWork>();
-		m_spModel->SetModelData("Assets/Models/Terrain/StageMap.gltf");
+		m_spModel->SetModelData(Assets::GetInstance().m_modelDatas.
+			GetData("Assets/Models/Terrain/StageMap.gltf"));
 	
 		m_upCollider = std::make_unique<Collider>();
 		m_upCollider->RegisterCollisionShape(

@@ -45,7 +45,8 @@ void Mouse::Init()
 	if (!m_spModel)
 	{
 		m_spModel = std::make_shared<ModelWork>();
-		m_spModel->SetModelData("Assets/Models/Mouse/Mouse.gltf");
+		m_spModel->SetModelData(Assets::GetInstance().m_modelDatas.
+			GetData("Assets/Models/Mouse/Mouse.gltf"));
 	}
 
 	m_speed = 5.0f;
@@ -78,7 +79,7 @@ void Mouse::UpdateMatrix()
 
 void Mouse::UpdateRotate(Math::Vector3& moveVec)
 {
-	if (moveVec.LengthSquared() == 0.0f){ return; }
+	if (moveVec.LengthSquared() == 0.0f) { return; }
 
 	Math::Vector3 targetDir = moveVec;
 	targetDir.Normalize();
@@ -175,6 +176,55 @@ void Mouse::UpdateCollision()
 			}
 		}
 	}
+
+	// Ray : Event
+	{
+		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+		{
+			// マウス情報
+			POINT mousePos = {};
+			GetCursorPos(&mousePos);
+
+			// カメラ情報
+			const std::shared_ptr<GameCamera> spCamera = m_wpCamera.lock();
+			if (spCamera)
+			{
+				Math::Vector3 rayDir = Math::Vector3::Zero;
+				float range = 1.0f;
+
+				Math::Vector3 cameraPos = spCamera->GetPos();
+
+				// 3D座標に変換
+				spCamera->WorkCamera()->GenerateRayInfoFromClient(
+				mousePos, cameraPos, rayDir, range);
+
+				for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
+				{
+					std::shared_ptr<BaseObject> spObj = wpObj.lock();
+					if (spObj)
+					{
+						Math::Vector3 endRayPos = cameraPos + (rayDir * range);
+
+						Collider::RayInfo rayInfo
+						(
+							Collider::Type::Event,
+							cameraPos,
+							endRayPos);
+
+						std::list<Collider::CollisionResult> retRayList;
+						spObj->Intersects(rayInfo, &retRayList);
+
+						for (auto& ret : retRayList)
+						{
+							m_pos = ret.m_hitPos;
+							SetPos(m_pos);
+						}
+					}
+				}
+			}
+		}
+	}
+
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -222,25 +272,25 @@ void Mouse::ActionWalk::Enter(Mouse& owner)
 void Mouse::ActionWalk::Update(Mouse& owner)
 {
 	auto time = ServiceLocator::Get<Time>();
-	float speed = owner.m_speed *	time->DeltaTime();
+	float speed = owner.m_speed * time->DeltaTime();
 
 	Math::Vector3 move = Math::Vector3::Zero;
-	if (GetAsyncKeyState('W')) 
-	{ 
+	if (GetAsyncKeyState('W'))
+	{
 		Math::Vector3 vec = Math::Vector3::Backward;
 		move += vec;
 	}
-	if (GetAsyncKeyState('S')) 
+	if (GetAsyncKeyState('S'))
 	{
 		Math::Vector3 vec = Math::Vector3::Forward;
 		move += vec;
 	}
-	if (GetAsyncKeyState('A')) 
+	if (GetAsyncKeyState('A'))
 	{
 		Math::Vector3 vec = Math::Vector3::Left;
 		move += vec;
 	}
-	if (GetAsyncKeyState('D')) 
+	if (GetAsyncKeyState('D'))
 	{
 		Math::Vector3 vec = Math::Vector3::Right;
 		move += vec;

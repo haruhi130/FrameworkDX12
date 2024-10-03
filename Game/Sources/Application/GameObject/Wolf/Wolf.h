@@ -11,7 +11,7 @@ public:
 
 	void Draw()override;
 
-	void OnHit()override;
+	void OnHit(bool isHit);
 	
 	// Õ“Ë‘ÎÛ‚ğ“o˜^
 	void RegistHitObjList(const std::shared_ptr<BaseObject>& obj)

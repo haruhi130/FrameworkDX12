@@ -27,3 +27,22 @@ void Camera::SetProjectionMatrix(const DirectX::SimpleMath::Matrix& rProj)
 {
 	m_mProj = rProj;
 }
+
+void Camera::GenerateRayInfoFromClient(const POINT& clientPos, Math::Vector3& rayPos, Math::Vector3& rayDir, float& rayRange) const
+{
+	// レイ判定の最遠座標
+	Math::Vector3 farPos;
+
+	// 2D座標を3D座標に変換しレイ情報を求める
+	GraphicsDevice::GetInstance().ClientToWorld(clientPos, 0.0f, rayPos, m_mView, m_mProj);
+	GraphicsDevice::GetInstance().ClientToWorld(clientPos, 1.0f, farPos, m_mView, m_mProj);
+
+	// レイ方向
+	rayDir = farPos - rayPos;
+
+	// レイ判定距離
+	rayRange = rayDir.Length();
+
+	// 正規化
+	rayDir.Normalize();
+}

@@ -37,12 +37,9 @@ void Wolf::Draw()
 	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
 }
 
-void Wolf::OnHit()
+void Wolf::OnHit(bool isHit)
 {
-	if (!m_isSight)
-	{
-		m_isSight = true;
-	}
+	m_isSight = isHit;
 }
 
 void Wolf::ImGuiUpdate()
@@ -50,7 +47,7 @@ void Wolf::ImGuiUpdate()
 	ImGui::Begin(u8"Wolf視界");
 	ImGui::SetWindowSize(ImVec2(100, 100), ImGuiCond_::ImGuiCond_FirstUseEver);
 	ImGui::Checkbox(u8"有効", &m_isSight);
-	
+
 	ImGui::End();
 }
 
@@ -59,13 +56,17 @@ void Wolf::Init()
 	if (!m_spModel)
 	{
 		m_spModel = std::make_shared<ModelWork>();
-		m_spModel->SetModelData("Assets/Models/Wolf/Wolf.gltf");
+		m_spModel->SetModelData(Assets::GetInstance().m_modelDatas.
+			GetData("Assets/Models/Wolf/Wolf.gltf"));
 	}
+
+	m_pos = { 0,0,20 };
 
 	// 初期計算
 	Math::Matrix mScale = Math::Matrix::CreateScale(15.0f);
 	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(0));
-	m_mWorld = mScale * mRot;
+	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_pos);
+	m_mWorld = mScale * mRot * mTrans;
 
 	if (!m_spAnimator)
 	{
@@ -88,9 +89,10 @@ void Wolf::UpdateCollision()
 {
 	// Sphere : Sight
 	{
+		// 視界範囲となる球判定を作成
 		Collider::SphereInfo sphereInfo;
 		sphereInfo.m_sphere.Center = GetPos() + Math::Vector3(0, 1.5f, 0);
-		sphereInfo.m_sphere.Radius = 5.0f;
+		sphereInfo.m_sphere.Radius = 7.0f;
 		sphereInfo.m_type = Collider::Type::Sight;
 
 		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
@@ -103,10 +105,9 @@ void Wolf::UpdateCollision()
 
 				bool isHit = false;
 
-				// 視界球の中
 				for (auto& ret : retSightList)
 				{
-					// 前方向からsightAngle内にターゲットがいるか判定
+					// 視界角度内に範囲を制限
 					// 向いている方向
 					Math::Vector3 nowDir = GetMatrix().Backward();
 					nowDir.Normalize();
@@ -117,29 +118,17 @@ void Wolf::UpdateCollision()
 					targetDir.Normalize();
 					float targetAng = DirectX::XMConvertToDegrees(atan2(targetDir.x, targetDir.z));
 
-					// ターゲットの角度と向いている角度を計算
+					// 角度計算
 					float betweenAng = targetAng - nowAng;
 
 					// sightAngle内か判定
-					if (betweenAng < m_sightAngle && betweenAng > -m_sightAngle)
+					if (betweenAng <= m_sightAngle && betweenAng > -m_sightAngle)
 					{
-						// ターゲットとの間に障害物がないか判定
-						// 
-						// Ray判定を作成する
-
 						isHit = true;
 					}
 				}
 
-				// 当たっている
-				if (isHit)
-				{
-					OnHit();
-				}
-				else
-				{
-					m_isSight = false;
-				}
+				OnHit(isHit);
 			}
 		}
 	}
@@ -191,8 +180,8 @@ void Wolf::UpdateCollision()
 	// Sphere : Bump
 	{
 		Collider::SphereInfo sphereInfo;
-		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 1.2f, 0);
-		sphereInfo.m_sphere.Radius = 1.0f;
+		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 1.5f, 0);
+		sphereInfo.m_sphere.Radius = 1.6f;
 		sphereInfo.m_type = Collider::Type::Bump;
 
 		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)

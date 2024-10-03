@@ -5,6 +5,7 @@
 #include "../../GameObject/Mouse/Mouse.h"
 #include "../../GameObject/Ground/Ground.h"
 #include "../../GameObject/Wolf/Wolf.h"
+#include "../../GameObject/Dumpling/Dumpling.h"
 
 void GameScene::Event()
 {
@@ -16,7 +17,7 @@ void GameScene::Event()
 
 void GameScene::Init()
 {
-	ShowCursor(false);
+	//ShowCursor(false);
 
 	std::shared_ptr<GameCamera> camera = std::make_shared<GameCamera>();
 	m_objList.push_back(camera);
@@ -25,6 +26,9 @@ void GameScene::Init()
 	camera->RegistHitObjList(ground);
 	m_objList.push_back(ground);
 
+	std::shared_ptr<Dumpling> dump = std::make_shared<Dumpling>();
+	m_objList.push_back(dump);
+
 	std::shared_ptr<Wolf> wolf = std::make_shared<Wolf>();
 	wolf->RegistHitObjList(ground);
 	m_objList.push_back(wolf);
@@ -32,7 +36,10 @@ void GameScene::Init()
 	std::shared_ptr<Mouse> mouse = std::make_shared<Mouse>();
 	camera->SetTarget(mouse);
 	wolf->RegistHitObjList(mouse);
+
 	mouse->RegistHitObjList(ground);
+	mouse->RegistHitObjList(dump);
 	mouse->SetCamera(camera);
+	
 	m_objList.push_back(mouse);
 }

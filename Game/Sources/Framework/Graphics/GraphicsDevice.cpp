@@ -157,6 +157,26 @@ void GraphicsDevice::EnableDebugLayer()
 	debugLayer->EnableDebugLayer();
 }
 
+void GraphicsDevice::ClientToWorld(const POINT& screenPos, float projZ, Math::Vector3& dst, const Math::Matrix& mCam, const Math::Matrix& mProj)
+{
+	projZ = std::clamp(projZ, 0.0f, 1.0f);
+
+	Math::Matrix viewInv = mCam;
+	Math::Matrix projInv = mProj.Invert();
+
+	Math::Matrix mVP;
+	mVP._11 = 1280 * 0.5f;
+	mVP._22 = -720 * 0.5f;
+	mVP._41 = 1280 * 0.5f;
+	mVP._42 = 720 * 0.5f;
+
+	Math::Matrix viewportInv = mVP.Invert();
+
+	Math::Matrix convertMat = viewportInv * projInv * viewInv;
+
+	Math::Vector3::Transform({ (float)screenPos.x,(float)screenPos.y,projZ }, convertMat, dst);
+}
+
 bool GraphicsDevice::CreateFactory()
 {
 	UINT dxgiFlags = 0;

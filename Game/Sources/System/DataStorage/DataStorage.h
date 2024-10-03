@@ -1,6 +1,5 @@
 #pragma once
 
-
 template<class type>
 class DataStorage
 {
