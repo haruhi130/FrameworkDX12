@@ -9,7 +9,7 @@ public:
 	{
 		Title,
 		Game,
-		//Result,
+		Result,
 	};
 
 	void PreUpdate();

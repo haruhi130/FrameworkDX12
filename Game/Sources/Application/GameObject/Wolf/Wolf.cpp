@@ -91,7 +91,7 @@ void Wolf::UpdateCollision()
 	{
 		// ‹ŠE”ÍˆÍ‚Æ‚È‚é‹…”»’è‚ğì¬
 		Collider::SphereInfo sphereInfo;
-		sphereInfo.m_sphere.Center = GetPos() + Math::Vector3(0, 1.5f, 0);
+		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 1.5f, 0);
 		sphereInfo.m_sphere.Radius = 7.0f;
 		sphereInfo.m_type = Collider::Type::Sight;
 

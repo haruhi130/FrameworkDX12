@@ -15,7 +15,7 @@ void Ground::Init()
 	
 		m_upCollider = std::make_unique<Collider>();
 		m_upCollider->RegisterCollisionShape(
-			"Ground", m_spModel, Collider::Type::Bump | Collider::Type::Ground);
+			"Ground", m_spModel, Collider::Type::Ground | Collider::Type::Bump);
 	}
 
 	Math::Matrix mScale = Math::Matrix::CreateScale(3);

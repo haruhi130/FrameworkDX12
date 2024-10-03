@@ -1,10 +1,10 @@
 #pragma once
 
-class Dumpling : public BaseObject
+class Cheese : public BaseObject
 {
 public:
-	Dumpling() { Init(); }
-	~Dumpling()override{}
+	Cheese() { Init(); }
+	~Cheese()override{}
 
 	void Update()override;
 

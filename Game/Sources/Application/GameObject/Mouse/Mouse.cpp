@@ -1,5 +1,6 @@
 #include "Mouse.h"
 #include "../Camera/GameCamera.h"
+#include "../../Scene/SceneManager.h"
 
 void Mouse::Update()
 {
@@ -203,7 +204,7 @@ void Mouse::UpdateCollision()
 					std::shared_ptr<BaseObject> spObj = wpObj.lock();
 					if (spObj)
 					{
-						Math::Vector3 endRayPos = cameraPos + (rayDir * range);
+						Math::Vector3 endRayPos = cameraPos + rayDir * range;
 
 						Collider::RayInfo rayInfo
 						(
@@ -225,6 +226,28 @@ void Mouse::UpdateCollision()
 		}
 	}
 
+	// Sphere : Goal
+	{
+		Collider::SphereInfo sphereInfo;
+		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 0.8f, 0);
+		sphereInfo.m_sphere.Radius = 0.6f;
+		sphereInfo.m_type = Collider::Type::Goal;
+
+		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
+		{
+			std::shared_ptr<BaseObject> spObj = wpObj.lock();
+			if (spObj)
+			{
+				std::list<Collider::CollisionResult> retBumpList;
+				spObj->Intersects(sphereInfo, &retBumpList);
+
+				for (auto& ret : retBumpList)
+				{
+					SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Result);
+				}
+			}
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////

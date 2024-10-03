@@ -142,8 +142,14 @@
     <Filter Include="System\Input">
       <UniqueIdentifier>{1a9675bb-2192-46ec-9b2a-a4e0d29972f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\GameObject\Dumpling">
+    <Filter Include="Application\GameObject\Cheese">
       <UniqueIdentifier>{60f3b2a2-116c-4e0e-b081-14322bd54608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\SkySphere">
+      <UniqueIdentifier>{9fe8d8ee-0999-4669-b535-878e75720d2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\ResultScene">
+      <UniqueIdentifier>{0b2586c8-a08e-4566-ae7f-0b09d9c404ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -284,8 +290,14 @@
     <ClCompile Include="Sources\Framework\Input\Input.cpp">
       <Filter>Framework\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Application\GameObject\Dumpling\Dumpling.cpp">
-      <Filter>Application\GameObject\Dumpling</Filter>
+    <ClCompile Include="Sources\Application\GameObject\Cheese\Cheese.cpp">
+      <Filter>Application\GameObject\Cheese</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\SkySphere\SkySphere.cpp">
+      <Filter>Application\GameObject\SkySphere</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\Scene\ResultScene\ResultScene.cpp">
+      <Filter>Application\Scene\ResultScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -462,8 +474,14 @@
     <ClInclude Include="Sources\System\Input\InputSystem.h">
       <Filter>System\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Application\GameObject\Dumpling\Dumpling.h">
-      <Filter>Application\GameObject\Dumpling</Filter>
+    <ClInclude Include="Sources\Application\GameObject\Cheese\Cheese.h">
+      <Filter>Application\GameObject\Cheese</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\SkySphere\SkySphere.h">
+      <Filter>Application\GameObject\SkySphere</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\Scene\ResultScene\ResultScene.h">
+      <Filter>Application\Scene\ResultScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
