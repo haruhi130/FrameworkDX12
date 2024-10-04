@@ -3,10 +3,6 @@
 		"generator":"Khronos glTF Blender I/O v3.5.30",
 		"version":"2.0"
 	},
-	"extensionsUsed":[
-		"KHR_materials_specular",
-		"KHR_materials_ior"
-	],
 	"scene":0,
 	"scenes":[
 		{
@@ -19,28 +15,19 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"Dumpling_Model"
+			"name":"Cube"
 		}
 	],
 	"materials":[
 		{
 			"doubleSided":true,
-			"extensions":{
-				"KHR_materials_specular":{
-					"specularColorFactor":[
-						0,
-						0,
-						0
-					]
-				},
-				"KHR_materials_ior":{
-					"ior":1.4500000476837158
-				}
+			"name":"Material.001",
+			"normalTexture":{
+				"index":0
 			},
-			"name":"Material",
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
-					"index":0
+					"index":1
 				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
@@ -49,7 +36,7 @@
 	],
 	"meshes":[
 		{
-			"name":"\u7403.002",
+			"name":"Cube.002",
 			"primitives":[
 				{
 					"attributes":{
@@ -67,74 +54,83 @@
 		{
 			"sampler":0,
 			"source":0
+		},
+		{
+			"sampler":0,
+			"source":1
 		}
 	],
 	"images":[
 		{
 			"mimeType":"image/png",
-			"name":"Dumpling_Basecolor_01",
-			"uri":"Dumpling_Basecolor_01.png"
+			"name":"stone_4_normal-1K.png",
+			"uri":"stone_4_normal-1K_png.png"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"stone_4_basecolor-1K.png",
+			"uri":"stone_4_basecolor-1K_png.png"
 		}
 	],
 	"accessors":[
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":285,
+			"count":64,
 			"max":[
-				0.032250016927719116,
-				0.06324000656604767,
-				0.13263271749019623
+				0.5,
+				2.0999999046325684,
+				0.5
 			],
 			"min":[
-				-0.03225275129079819,
-				-0.0012627765536308289,
-				-0.13263271749019623
+				-0.5,
+				0,
+				-0.5
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":285,
+			"count":64,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":285,
+			"count":64,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":3,
 			"componentType":5123,
-			"count":1116,
+			"count":132,
 			"type":"SCALAR"
 		}
 	],
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":3420,
+			"byteLength":768,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":2280,
-			"byteOffset":3420,
+			"byteLength":512,
+			"byteOffset":768,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":3420,
-			"byteOffset":5700,
+			"byteLength":768,
+			"byteOffset":1280,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":2232,
-			"byteOffset":9120,
+			"byteLength":264,
+			"byteOffset":2048,
 			"target":34963
 		}
 	],
@@ -146,8 +142,8 @@
 	],
 	"buffers":[
 		{
-			"byteLength":11352,
-			"uri":"Dumpling.bin"
+			"byteLength":2312,
+			"uri":"Pedestal.bin"
 		}
 	]
 }

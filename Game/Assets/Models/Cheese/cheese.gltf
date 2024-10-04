@@ -78,13 +78,13 @@
 	"images":[
 		{
 			"mimeType":"image/png",
-			"name":"cheese02NormalMap",
-			"uri":"cheese02NormalMap.png"
+			"name":"cheese02NormalMap.png",
+			"uri":"cheese02NormalMap_png.png"
 		},
 		{
 			"mimeType":"image/png",
-			"name":"cheese02DiffuseMap",
-			"uri":"cheese02DiffuseMap.png"
+			"name":"cheese02DiffuseMap.png",
+			"uri":"cheese02DiffuseMap_png.png"
 		}
 	],
 	"accessors":[
@@ -158,7 +158,7 @@
 	"buffers":[
 		{
 			"byteLength":1560,
-			"uri":"cheese.bin"
+			"uri":"Cheese.bin"
 		}
 	]
 }

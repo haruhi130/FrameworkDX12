@@ -56,8 +56,8 @@
 	"images":[
 		{
 			"mimeType":"image/png",
-			"name":"lonely_road_afternoon_puresky_1k",
-			"uri":"lonely_road_afternoon_puresky_1k.png"
+			"name":"lonely_road_afternoon_puresky_1k.hdr",
+			"uri":"lonely_road_afternoon_puresky_1k_hdr.png"
 		}
 	],
 	"accessors":[

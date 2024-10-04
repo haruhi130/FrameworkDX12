@@ -196,6 +196,7 @@
     <ClCompile Include="Sources\Application\GameObject\Cheese\Cheese.cpp" />
     <ClCompile Include="Sources\Application\GameObject\Ground\Ground.cpp" />
     <ClCompile Include="Sources\Application\GameObject\Mouse\Mouse.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\Pedestal\Pedestal.cpp" />
     <ClCompile Include="Sources\Application\GameObject\SkySphere\SkySphere.cpp" />
     <ClCompile Include="Sources\Application\GameObject\Wolf\Wolf.cpp" />
     <ClCompile Include="Sources\Application\Scene\BaseScene\BaseScene.cpp" />
@@ -259,6 +260,7 @@
     <ClInclude Include="Sources\Application\GameObject\Cheese\Cheese.h" />
     <ClInclude Include="Sources\Application\GameObject\Ground\Ground.h" />
     <ClInclude Include="Sources\Application\GameObject\Mouse\Mouse.h" />
+    <ClInclude Include="Sources\Application\GameObject\Pedestal\Pedestal.h" />
     <ClInclude Include="Sources\Application\GameObject\SkySphere\SkySphere.h" />
     <ClInclude Include="Sources\Application\GameObject\Wolf\Wolf.h" />
     <ClInclude Include="Sources\Application\Scene\BaseScene\BaseScene.h" />

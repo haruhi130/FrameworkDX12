@@ -151,6 +151,9 @@
     <Filter Include="Application\Scene\ResultScene">
       <UniqueIdentifier>{0b2586c8-a08e-4566-ae7f-0b09d9c404ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\GameObject\Pedestal">
+      <UniqueIdentifier>{5280235c-4136-4acf-8f45-820ff643d27e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -298,6 +301,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Application\Scene\ResultScene\ResultScene.cpp">
       <Filter>Application\Scene\ResultScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\Pedestal\Pedestal.cpp">
+      <Filter>Application\GameObject\Pedestal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -482,6 +488,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Application\Scene\ResultScene\ResultScene.h">
       <Filter>Application\Scene\ResultScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\Pedestal\Pedestal.h">
+      <Filter>Application\GameObject\Pedestal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

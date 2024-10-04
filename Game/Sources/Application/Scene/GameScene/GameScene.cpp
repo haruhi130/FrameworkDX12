@@ -7,6 +7,7 @@
 #include "../../GameObject/Ground/Ground.h"
 #include "../../GameObject/Wolf/Wolf.h"
 #include "../../GameObject/Cheese/Cheese.h"
+#include "../../GameObject/Pedestal/Pedestal.h"
 
 void GameScene::Event()
 {
@@ -38,9 +39,14 @@ void GameScene::Init()
 	std::shared_ptr<Cheese> cheese = std::make_shared<Cheese>();
 	m_objList.push_back(cheese);
 
+	// 台座
+	std::shared_ptr<Pedestal> pedestal = std::make_shared<Pedestal>();
+	m_objList.push_back(pedestal);
+
 	// 敵(オオカミ)
 	std::shared_ptr<Wolf> wolf = std::make_shared<Wolf>();
 	wolf->RegistHitObjList(ground);
+	wolf->RegistHitObjList(pedestal);
 	m_objList.push_back(wolf);
 
 	// プレイヤー(ネズミ)
@@ -53,6 +59,7 @@ void GameScene::Init()
 	// プレイヤーが対象に設定するもの
 	mouse->RegistHitObjList(ground);
 	mouse->RegistHitObjList(cheese);
+	mouse->RegistHitObjList(pedestal);
 	mouse->SetCamera(camera);
 	
 	m_objList.push_back(mouse);
