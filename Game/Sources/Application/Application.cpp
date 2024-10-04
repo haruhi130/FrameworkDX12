@@ -78,9 +78,7 @@ bool Application::Init(int width, int height)
 void Application::Execute()
 {
 	// 可変フレームレート対応
-	ServiceLocator::Add(std::make_shared<Time>());
-	std::shared_ptr<Time> time = ServiceLocator::Get<Time>();
-	if (time != nullptr) { time->Start(); }
+	ServiceLocator::Add(std::make_shared<Time_VRR>());
 
 	// ゲーム初期化
 	if (!Init())
@@ -88,6 +86,10 @@ void Application::Execute()
 		assert(0 && "ゲーム初期化失敗");
 		return;
 	}
+
+	// 時間管理
+	std::shared_ptr<Time> spTime = ServiceLocator::Get<Time>();
+	if (spTime != nullptr) { spTime->Start(); }
 
 	// 音再生
 	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);

@@ -1,6 +1,13 @@
 #pragma once
 
-class Time:public Service
+class Time : public Service
+{
+public:
+	virtual float DeltaTime() const { return 0.0f; }
+};
+
+// 可変フレームレート
+class Time_VRR : public Time
 {
 public:
 	void Start()override
@@ -13,22 +20,20 @@ public:
 	{
 		// 処理が終わったあとの時間を取得
 		auto now = std::chrono::system_clock::now();
-		// 前回の時間との間隔を計算
-		auto procTime = now - m_prevTime;
 
-		// 指定単位で数える
-		auto count = std::chrono::duration_cast<
-			std::chrono::microseconds>(procTime).count();
+		// 1フレームにかかった時間を計算
+		m_deltaTime = std::chrono::duration_cast<
+			std::chrono::microseconds>(now - m_prevTime).count();
 
 		// 1秒かけたら到達する係数に変換
-		m_deltaTime = count / 1000000.0f;
+		m_deltaTime /= 1000000.0f;
 
 		// 次の計算のために現在時刻を覚える
 		m_prevTime = now;
 	}
 
 	// 係数取得
-	virtual float DeltaTime() { return m_deltaTime; }
+	float DeltaTime()const override { return m_deltaTime; }
 
 private:
 	// 一秒間隔に変換する
@@ -38,8 +43,13 @@ private:
 	std::chrono::system_clock::time_point m_prevTime;
 };
 
-class TimeFFR : public Time
+// 固定フレームレート
+class Time_FFR : public Time
 {
 public:
-	float DeltaTime()override { return 0.016f; }
+	static const int frameRate = 60;
+	float DeltaTime()const override 
+	{
+		return (1 / (float)frameRate) / 1000000.0f;
+	}
 };

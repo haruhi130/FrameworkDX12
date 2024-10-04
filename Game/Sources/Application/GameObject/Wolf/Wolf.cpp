@@ -180,7 +180,7 @@ void Wolf::UpdateCollision()
 	// Sphere : Bump
 	{
 		Collider::SphereInfo sphereInfo;
-		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 1.5f, 0);
+		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 1.6f, 0);
 		sphereInfo.m_sphere.Radius = 1.6f;
 		sphereInfo.m_type = Collider::Type::Bump;
 
@@ -240,10 +240,10 @@ void Wolf::ActionWalk::Update(Wolf& owner)
 	}
 
 	Math::Vector3 vec = Math::Vector3::Zero;
-	vec.z = -1.0f;
+	vec.z = -0.5f;
 	vec.Normalize();
 
-	auto time = ServiceLocator::Get<Time>();
+	auto time = ServiceLocator::Get<Time_VRR>();
 	float spd = 4.0f * time->DeltaTime();
 
 	vec *= spd;

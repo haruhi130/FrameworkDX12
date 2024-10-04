@@ -294,7 +294,7 @@ void Mouse::ActionWalk::Enter(Mouse& owner)
 
 void Mouse::ActionWalk::Update(Mouse& owner)
 {
-	auto time = ServiceLocator::Get<Time>();
+	auto time = ServiceLocator::Get<Time_VRR>();
 	float speed = owner.m_speed * time->DeltaTime();
 
 	Math::Vector3 move = Math::Vector3::Zero;
