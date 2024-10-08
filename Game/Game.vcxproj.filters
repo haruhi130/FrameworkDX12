@@ -154,6 +154,15 @@
     <Filter Include="Application\GameObject\Pedestal">
       <UniqueIdentifier>{5280235c-4136-4acf-8f45-820ff643d27e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Shader\SpriteShader">
+      <UniqueIdentifier>{3878d2ed-b624-470e-92a2-13f6dd282523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Shader\HLSL\SimpleShader">
+      <UniqueIdentifier>{70fd057c-6bf8-4645-948e-7b53ec72faae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Shader\HLSL\SpriteShader">
+      <UniqueIdentifier>{61176808-7942-4704-bbef-8dbbf6af8480}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -233,7 +242,7 @@
     <ClCompile Include="Sources\Application\Scene\TitleScene\TitleScene.cpp">
       <Filter>Application\Scene\TitleScene</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Framework\Model\KdGLTFLoader.cpp">
+    <ClCompile Include="Sources\Framework\Model\GLTFLoader.cpp">
       <Filter>Framework\Model</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Framework\GameObject\BaseObject.cpp">
@@ -304,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Application\GameObject\Pedestal\Pedestal.cpp">
       <Filter>Application\GameObject\Pedestal</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Shader\SpriteShader\SpriteShader.cpp">
+      <Filter>Framework\Shader\SpriteShader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -411,7 +423,7 @@
     <ClInclude Include="Sources\Application\Scene\TitleScene\TitleScene.h">
       <Filter>Application\Scene\TitleScene</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Framework\Model\KdGLTFLoader.h">
+    <ClInclude Include="Sources\Framework\Model\GLTFLoader.h">
       <Filter>Framework\Model</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Framework\GameObject\BaseObject.h">
@@ -492,22 +504,34 @@
     <ClInclude Include="Sources\Application\GameObject\Pedestal\Pedestal.h">
       <Filter>Application\GameObject\Pedestal</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Framework\Shader\SpriteShader\SpriteShader.h">
+      <Filter>Framework\Shader\SpriteShader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Sources\Framework\Shader\HLSL\inc_SimpleShader.hlsli">
-      <Filter>Framework\Shader\HLSL</Filter>
-    </None>
     <None Include="Sources\Framework\Shader\HLSL\inc_Common.hlsli">
       <Filter>Framework\Shader\HLSL</Filter>
     </None>
+    <None Include="Sources\Framework\Shader\HLSL\SimpleShader\inc_SimpleShader.hlsli">
+      <Filter>Framework\Shader\HLSL\SimpleShader</Filter>
+    </None>
+    <None Include="Sources\Framework\Shader\HLSL\SpriteShader\inc_SpriteShader.hlsli">
+      <Filter>Framework\Shader\HLSL\SpriteShader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Sources\Framework\Shader\HLSL\SimpleShader_PS.hlsl">
-      <Filter>Framework\Shader\HLSL</Filter>
+    <FxCompile Include="Sources\Framework\Shader\HLSL\SimpleShader\SimpleShader_PS.hlsl">
+      <Filter>Framework\Shader\HLSL\SimpleShader</Filter>
     </FxCompile>
-    <FxCompile Include="Sources\Framework\Shader\HLSL\SimpleShader_VS.hlsl">
-      <Filter>Framework\Shader\HLSL</Filter>
+    <FxCompile Include="Sources\Framework\Shader\HLSL\SimpleShader\SimpleShader_VS.hlsl">
+      <Filter>Framework\Shader\HLSL\SimpleShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Sources\Framework\Shader\HLSL\SpriteShader\SpriteShader_PS.hlsl">
+      <Filter>Framework\Shader\HLSL\SpriteShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Sources\Framework\Shader\HLSL\SpriteShader\SpriteShader_VS.hlsl">
+      <Filter>Framework\Shader\HLSL\SpriteShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

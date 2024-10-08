@@ -33,7 +33,7 @@ public:
 	void CreateAnimations(const std::shared_ptr<GLTFModel>& spGltfModel);								// アニメーション作成
 
 	// ノード取得
-	inline const std::vector<Node>& GetNodes()const 
+	inline const std::vector<Node>& GetNodes() const 
 	{ return m_nodes; }
 
 	inline std::vector<Node>& WorkNodes()
@@ -111,7 +111,8 @@ public:
 	};
 
 	ModelWork(){}
-	ModelWork(const std::shared_ptr<ModelData>& spModelData) { SetModelData(spModelData); }
+	ModelWork(const std::shared_ptr<ModelData>& spModelData) 
+	{ SetModelData(spModelData); }
 
 	~ModelWork(){}
 
@@ -123,12 +124,14 @@ public:
 	void SetModelData(std::string_view fileName);
 
 	// モデル取得
-	inline const std::shared_ptr<ModelData> GetModelData()const 
+	inline const std::shared_ptr<ModelData> GetModelData() const 
 	{ return m_spModelData; }
 
 	// アニメーションデータ取得
-	const std::shared_ptr<AnimationData> GetAnimation(std::string animName) const { return !m_spModelData ? nullptr : m_spModelData->GetAnimation(animName); }
-	const std::shared_ptr<AnimationData> GetAnimation(int index) const { return !m_spModelData ? nullptr : m_spModelData->GetAnimation(index); }
+	inline const std::shared_ptr<AnimationData> GetAnimation(std::string animName) const 
+	{ return !m_spModelData ? nullptr : m_spModelData->GetAnimation(animName); }
+	inline const std::shared_ptr<AnimationData> GetAnimation(int index) const 
+	{ return !m_spModelData ? nullptr : m_spModelData->GetAnimation(index); }
 
 	// モデルデータのノード配列取得
 	inline const std::vector<ModelData::Node>& GetDataNodes() const
@@ -140,7 +143,8 @@ public:
 	inline std::vector<Node>& WorkNodes() 
 	{ return m_coppiedNodes; }
 
-	bool IsNeedCalcNodeMatrices() const { return m_isNeedCalcNode; }
+	inline bool IsNeedCalcNodeMatrices() const 
+	{ return m_isNeedCalcNode; }
 
 private:
 	// モデルデータ
@@ -148,7 +152,6 @@ private:
 
 	// 活動中変化する可能性のあるノードデータのコピー配列
 	std::vector<Node> m_coppiedNodes;
-
 
 	bool m_isNeedCalcNode = false;
 };

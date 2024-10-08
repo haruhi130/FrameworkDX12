@@ -7,7 +7,7 @@ enum class DepthStencilFormat
 	DepthHighQualityAndStencil = DXGI_FORMAT_R24G8_TYPELESS,
 };
 
-class DepthStencil :public Buffer
+class DepthStencil : public Buffer
 {
 public:
 	~DepthStencil()override{}
@@ -19,7 +19,8 @@ public:
 	void ClearBuffer() const;
 
 	// DSV”Ô†æ“¾
-	inline UINT GetDSVNumber() const{ return m_DSVNumber; }
+	inline UINT GetDSVNumber() const
+	{ return m_DSVNumber; }
 
 private:
 	UINT m_DSVNumber = 0;

@@ -36,7 +36,7 @@ void SkySphere::Init()
 	m_localPos = { 0,0,0 };
 	m_mLocal = Math::Matrix::CreateTranslation(m_localPos);
 
-	Math::Matrix mScale = Math::Matrix::CreateScale(100);
+	Math::Matrix mScale = Math::Matrix::CreateScale(200);
 	m_mWorld = mScale;
 
 }

@@ -12,20 +12,21 @@ namespace ConstantBufferData
 		Math::Vector3 CamPos;
 	};
 
-	struct Mesh
-	{
-		Math::Matrix mW;
-	};
-
 	// スキンメッシュ判別
 	struct Object
 	{
-		int isSkinMesh = 0;
+		int IsSkinMesh = 0;
 	};
 
 	// スキンメッシュ用ボーン構造体
 	struct Bone
 	{
 		Math::Matrix mBones[300];
+	};
+
+	struct Sprite
+	{
+		Math::Matrix mTransform;
+		Math::Vector4 Color = { 1,1,1,1 };
 	};
 }

@@ -47,6 +47,8 @@ bool Texture::Load(const std::string& filePath)
 		return false;
 	}
 
+	m_desc = resDesc;
+
 	m_SRVNumber = GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->CreateSRV(m_cpBuffer.Get());
 
 	return true;

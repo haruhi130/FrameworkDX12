@@ -8,7 +8,7 @@ bool ModelShader::Init()
 	{ InputLayout::POSITION,InputLayout::TEXCOORD,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT,InputLayout::SKININDEX,InputLayout::SKINWEIGHT };
 	renderingSetting.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
 
-	Create(L"SimpleShader", renderingSetting,
+	Create(L"SimpleShader/SimpleShader", renderingSetting,
 		{ RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::CBV,
 		RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
 
@@ -73,7 +73,7 @@ void ModelShader::DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld)
 	{
 		ConstantBufferData::Object obj;
 
-		obj.isSkinMesh = data->IsSkinMesh();
+		obj.IsSkinMesh = data->IsSkinMesh();
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
 			->BindAndAttachData(2, obj);
 
@@ -118,4 +118,12 @@ void ModelShader::DrawSkinMesh(ModelWork& modelWork)
 	// シェーダーへ計算したボーンを設定
 	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
 		->BindAndAttachData(3, bone);
+}
+
+void ModelShader::SetMaterial(const Material& material) const
+{
+	material.spBaseColorTex->Set(m_cbvCount);
+	material.spNormalTex->Set(m_cbvCount + 1);
+	material.spMetallicRoughnessTex->Set(m_cbvCount + 2);
+	material.spEmissiveTex->Set(m_cbvCount + 3);
 }

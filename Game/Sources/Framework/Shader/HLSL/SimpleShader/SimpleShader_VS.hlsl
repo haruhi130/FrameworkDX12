@@ -1,5 +1,5 @@
 #include "inc_SimpleShader.hlsli"
-#include "inc_Common.hlsli"
+#include "../inc_Common.hlsli"
 
 VSOutput main( 
 float4 pos : POSITION,float2 uv : TEXCOORD,float3 normal : NORMAL,

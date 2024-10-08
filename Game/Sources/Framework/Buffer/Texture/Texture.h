@@ -1,6 +1,6 @@
 #pragma once
 
-class Texture:public Buffer
+class Texture : public Buffer
 {
 public:
 	~Texture()override{}
@@ -12,9 +12,14 @@ public:
 	void Set(int index) const;
 
 	// SRV”Ô†æ“¾
-	inline int GetSRVNumber() const { return m_SRVNumber; }
+	inline int GetSRVNumber() const 
+	{ return m_SRVNumber; }
+
+	inline const D3D12_RESOURCE_DESC& GetInfo() const
+	{ return m_desc; }
 
 private:
 	int m_SRVNumber = 0;
 
+	D3D12_RESOURCE_DESC m_desc = {};
 };

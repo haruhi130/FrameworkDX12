@@ -26,7 +26,7 @@ public:
 		const RenderingSetting& renderingSetting, const std::vector<RangeType>& rangeTypes);
 
 	// 描画開始
-	void Begin(int w = 1280, int h = 720);
+	virtual void Begin(int w = 1280, int h = 720);
 
 	// CBVカウント取得
 	inline UINT GetCBVCount()const 
@@ -35,9 +35,6 @@ public:
 protected:
 	// シェーダーファイル読込
 	void LoadShaderFile(const std::wstring& filePath);
-
-	// マテリアルセット
-	void SetMaterial(const Material& material) const;
 
 	std::unique_ptr<Pipeline>		m_upPipeline = nullptr;
 	std::unique_ptr<RootSignature>	m_upRootSignature = nullptr;

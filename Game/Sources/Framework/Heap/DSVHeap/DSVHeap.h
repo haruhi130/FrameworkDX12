@@ -1,6 +1,6 @@
 #pragma once
 
-class DSVHeap :public BaseHeap<int>
+class DSVHeap : public BaseHeap<int>
 {
 public:
 	DSVHeap(){}

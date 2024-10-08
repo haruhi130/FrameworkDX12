@@ -53,7 +53,7 @@ public:
 	void DrawInstanced(UINT vertexCount) const;
 
 	// サブセット取得
-	inline const std::vector<MeshSubset>& GetSubsets()const 
+	inline const std::vector<MeshSubset>& GetSubsets() const 
 	{ return m_subsets; }
 
 	// 軸平行境界ボックス取得
@@ -64,11 +64,11 @@ public:
 	{ return m_bs; }
 
 	// 座標配列取得
-	inline const std::vector<Math::Vector3>& GetPositions()const
+	inline const std::vector<Math::Vector3>& GetPositions() const
 	{ return m_positions; }
 
 	// 面配列取得
-	inline const std::vector<MeshFace>& GetFaces()const 
+	inline const std::vector<MeshFace>& GetFaces() const 
 	{ return m_faces; }
 
 private:

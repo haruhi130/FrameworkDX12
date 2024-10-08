@@ -1,5 +1,5 @@
 #include "Model.h"
-#include "KdGLTFLoader.h"
+#include "GLTFLoader.h"
 
 bool ModelData::Load(const std::string& filePath)
 {

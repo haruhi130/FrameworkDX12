@@ -23,7 +23,7 @@ protected:
 // また、GameObject同士の親子構造を管理する
 // このコンポーネントはGameObjectのリスト先頭に
 // 必ず付与されているものとする
-class TransformComponent :public Component
+class TransformComponent : public Component
 {
 public:
 	Math::Matrix& Transform()
@@ -51,7 +51,7 @@ private:
 };
 
 // モデル管理用コンポーネント
-class ModelComponent :public Component
+class ModelComponent : public Component
 {
 public:
 	~ModelComponent() {}

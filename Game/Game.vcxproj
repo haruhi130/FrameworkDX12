@@ -222,7 +222,7 @@
     <ClCompile Include="Sources\Framework\Heap\RTVHeap\RTVHeap.cpp" />
     <ClCompile Include="Sources\Framework\Input\Input.cpp" />
     <ClCompile Include="Sources\Framework\Mesh\Mesh.cpp" />
-    <ClCompile Include="Sources\Framework\Model\KdGLTFLoader.cpp" />
+    <ClCompile Include="Sources\Framework\Model\GLTFLoader.cpp" />
     <ClCompile Include="Sources\Framework\Model\Model.cpp" />
     <ClCompile Include="Sources\Framework\Polygon\Polygon.cpp" />
     <ClCompile Include="Sources\Framework\Shader\ModelShader\ModelShader.cpp" />
@@ -230,6 +230,7 @@
     <ClCompile Include="Sources\Framework\Shader\RootSignature\RootSignature.cpp" />
     <ClCompile Include="Sources\Framework\Shader\ShaderBase.cpp" />
     <ClCompile Include="Sources\Framework\Shader\ShaderManager.cpp" />
+    <ClCompile Include="Sources\Framework\Shader\SpriteShader\SpriteShader.cpp" />
     <ClCompile Include="Sources\main.cpp" />
     <ClCompile Include="Sources\Pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -291,7 +292,7 @@
     <ClInclude Include="Sources\Framework\Input\Input.h" />
     <ClInclude Include="Sources\Framework\Mesh\Mesh.h" />
     <ClInclude Include="Sources\Framework\Mesh\MeshData\MeshData.h" />
-    <ClInclude Include="Sources\Framework\Model\KdGLTFLoader.h" />
+    <ClInclude Include="Sources\Framework\Model\GLTFLoader.h" />
     <ClInclude Include="Sources\Framework\Model\Model.h" />
     <ClInclude Include="Sources\Framework\Polygon\Polygon.h" />
     <ClInclude Include="Sources\Framework\Shader\ModelShader\ModelShader.h" />
@@ -299,6 +300,7 @@
     <ClInclude Include="Sources\Framework\Shader\RootSignature\RootSignature.h" />
     <ClInclude Include="Sources\Framework\Shader\ShaderBase.h" />
     <ClInclude Include="Sources\Framework\Shader\ShaderManager.h" />
+    <ClInclude Include="Sources\Framework\Shader\SpriteShader\SpriteShader.h" />
     <ClInclude Include="Sources\Framework\Time\Time.h" />
     <ClInclude Include="Sources\main.h" />
     <ClInclude Include="Sources\Pch.h" />
@@ -313,10 +315,11 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Sources\Framework\Shader\HLSL\inc_Common.hlsli" />
-    <None Include="Sources\Framework\Shader\HLSL\inc_SimpleShader.hlsli" />
+    <None Include="Sources\Framework\Shader\HLSL\SimpleShader\inc_SimpleShader.hlsli" />
+    <None Include="Sources\Framework\Shader\HLSL\SpriteShader\inc_SpriteShader.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Sources\Framework\Shader\HLSL\SimpleShader_PS.hlsl">
+    <FxCompile Include="Sources\Framework\Shader\HLSL\SimpleShader\SimpleShader_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -338,7 +341,51 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="Sources\Framework\Shader\HLSL\SimpleShader_VS.hlsl">
+    <FxCompile Include="Sources\Framework\Shader\HLSL\SimpleShader\SimpleShader_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ObjectFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ObjectFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ObjectFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Sources\Framework\Shader\HLSL\SpriteShader\SpriteShader_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ObjectFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ObjectFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ObjectFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Sources\Framework\Shader\HLSL\SpriteShader\SpriteShader_VS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

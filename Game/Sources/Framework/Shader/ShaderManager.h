@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ModelShader/ModelShader.h"
+#include "SpriteShader/SpriteShader.h"
 
 class ShaderManager
 {
@@ -11,6 +12,7 @@ public:
 	void WriteCamera() const;
 
 	ModelShader m_modelShader;
+	SpriteShader m_spriteShader;
 
 private:
 	ConstantBufferData::Camera m_cbCamera;

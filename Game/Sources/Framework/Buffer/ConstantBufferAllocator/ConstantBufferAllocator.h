@@ -1,6 +1,6 @@
 #pragma once
 
-class ConstantBufferAllocator:public Buffer
+class ConstantBufferAllocator : public Buffer
 {
 public:
 	~ConstantBufferAllocator()override{}

@@ -83,8 +83,8 @@ public:
 	void RegisterCollisionShape(std::string_view name, ModelWork* model, UINT type);
 
 	// Õ“Ë”»’èÀs
-	bool Intersects(const SphereInfo& targetShape, const Math::Matrix& ownerMat, std::list<Collider::CollisionResult>* pResults)const;
-	bool Intersects(const RayInfo& targetShape, const Math::Matrix& ownerMat, std::list<Collider::CollisionResult>* pResults)const;
+	bool Intersects(const SphereInfo& targetShape, const Math::Matrix& ownerMat, std::list<Collider::CollisionResult>* pResults) const;
+	bool Intersects(const RayInfo& targetShape, const Math::Matrix& ownerMat, std::list<Collider::CollisionResult>* pResults) const;
 
 	// Õ“Ë”»’è‚Ì—LŒø/–³Œø‚Ìİ’è
 	void SetEnable(std::string_view name, bool isEnable);
@@ -137,7 +137,7 @@ private:
 	DirectX::BoundingSphere m_shape;
 };
 
-class ModelCollision :public CollisionShape
+class ModelCollision : public CollisionShape
 {
 public:
 	ModelCollision(const std::shared_ptr<ModelData>& model, UINT type)

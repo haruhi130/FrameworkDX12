@@ -17,18 +17,23 @@ public:
 
 	virtual void ImGuiUpdate(){}
 
+	// 座標設定
 	virtual void SetPos(const Math::Vector3& pos)
 	{ m_mWorld.Translation(pos); }
 
-	virtual Math::Vector3 GetPos()const 
+	// 座標取得
+	inline virtual Math::Vector3 GetPos() const 
 	{ return m_mWorld.Translation(); }
 
-	const Math::Matrix& GetMatrix() const 
+	// 行列取得
+	inline const Math::Matrix& GetMatrix() const 
 	{ return m_mWorld; }
 
-	virtual bool IsExpired() const 
+	// オブジェクトが有効か
+	inline virtual bool IsExpired() const 
 	{ return m_isExpired; }
 
+	// 当たり判定
 	bool Intersects(const Collider::SphereInfo& target, std::list<Collider::CollisionResult>* pResults);
 	bool Intersects(const Collider::RayInfo& target, std::list<Collider::CollisionResult>* pResults);
 

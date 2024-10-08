@@ -38,19 +38,19 @@ public:
 	{ return m_cpDevice.Get(); }
 
 	// コマンドリスト取得
-	inline ID3D12GraphicsCommandList10* GetCmdList()const
+	inline ID3D12GraphicsCommandList10* GetCmdList() const
 	{ return m_cpCmdList.Get(); }
 
 	// CBVSRVUAVヒープ取得
-	inline CBVSRVUAVHeap* GetCBVSRVUAVHeap()const 
+	inline CBVSRVUAVHeap* GetCBVSRVUAVHeap() const 
 	{ return m_upCBVSRVUAVHeap.get(); }
 
 	// 定数バッファアロケーター取得
-	inline ConstantBufferAllocator* GetConstantBufferAllocator()const
+	inline ConstantBufferAllocator* GetConstantBufferAllocator() const
 	{ return m_upCBufferAllocator.get(); }
 
 	// DSVヒープ取得
-	inline DSVHeap* GetDSVHeap()const
+	inline DSVHeap* GetDSVHeap() const
 	{ return m_upDSVHeap.get(); }
 
 	inline ImGuiHeap* GetImGuiHeap() const

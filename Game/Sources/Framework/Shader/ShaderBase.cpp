@@ -119,11 +119,3 @@ void ShaderBase::LoadShaderFile(const std::wstring& filePath)
 		}
 	}
 }
-
-void ShaderBase::SetMaterial(const Material& material) const
-{
-	material.spBaseColorTex->Set(m_cbvCount);
-	material.spNormalTex->Set(m_cbvCount + 1);
-	material.spMetallicRoughnessTex->Set(m_cbvCount + 2);
-	material.spEmissiveTex->Set(m_cbvCount + 3);
-}

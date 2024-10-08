@@ -3,6 +3,7 @@
 void ShaderManager::Init()
 {
 	m_modelShader.Init();
+	m_spriteShader.Init();
 }
 
 void ShaderManager::SetCamera(const Math::Matrix& view, const Math::Matrix& proj)

@@ -8,7 +8,7 @@ public:
 	// ボーン最大数
 	static const int maxBoneBufferSize = 300;
 
-	bool Init();
+	bool Init()override;
 
 	void Begin();
 
@@ -21,4 +21,7 @@ public:
 
 private:
 	void DrawSkinMesh(ModelWork& modelWork);
+
+	// マテリアルセット
+	void SetMaterial(const Material& material) const;
 };

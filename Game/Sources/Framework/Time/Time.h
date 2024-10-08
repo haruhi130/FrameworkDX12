@@ -21,12 +21,14 @@ public:
 		// 処理が終わったあとの時間を取得
 		auto now = std::chrono::system_clock::now();
 
+		auto procTime = now - m_prevTime;
+
 		// 1フレームにかかった時間を計算
-		m_deltaTime = std::chrono::duration_cast<
-			std::chrono::microseconds>(now - m_prevTime).count();
+		auto count = std::chrono::duration_cast<
+			std::chrono::microseconds>(procTime).count();
 
 		// 1秒かけたら到達する係数に変換
-		m_deltaTime /= 1000000.0f;
+		m_deltaTime = count / 1000000.0f;
 
 		// 次の計算のために現在時刻を覚える
 		m_prevTime = now;
