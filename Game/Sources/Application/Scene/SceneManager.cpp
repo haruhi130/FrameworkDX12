@@ -34,6 +34,11 @@ void SceneManager::Draw()
 	m_currentScene->Draw();
 }
 
+void SceneManager::DrawSprite()
+{
+	m_currentScene->DrawSprite();
+}
+
 void SceneManager::ImGuiUpdate()
 {
 	m_currentScene->ImGuiUpdate();

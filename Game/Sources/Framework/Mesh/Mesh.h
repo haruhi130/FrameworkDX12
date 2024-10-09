@@ -42,9 +42,12 @@ public:
 	// バッファセット
 	void SetToDevice() const;
 
-	// メッシュ作成
+	// モデル用メッシュ作成
 	void Create(const std::vector<MeshVertex>& vertices,
 		const std::vector<MeshFace>& faces, const std::vector<MeshSubset>& subsets, bool isSkinMesh);
+
+	// 通常メッシュ作成
+	void Create(std::vector<Vertex> vertices);
 
 	// サブセット描画
 	void DrawSubset(int subsetNo)const;
@@ -94,4 +97,5 @@ private:
 
 	// スキンメッシュ判別
 	bool m_isSkinMesh = false;
+
 };

@@ -163,6 +163,9 @@
     <Filter Include="Framework\Shader\HLSL\SpriteShader">
       <UniqueIdentifier>{61176808-7942-4704-bbef-8dbbf6af8480}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\GameObject\Test">
+      <UniqueIdentifier>{c4df280a-ec35-4207-b74e-d36a4203702b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -316,6 +319,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Framework\Shader\SpriteShader\SpriteShader.cpp">
       <Filter>Framework\Shader\SpriteShader</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\Test\Test.cpp">
+      <Filter>Application\GameObject\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -506,6 +512,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Shader\SpriteShader\SpriteShader.h">
       <Filter>Framework\Shader\SpriteShader</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\Test\Test.h">
+      <Filter>Application\GameObject\Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

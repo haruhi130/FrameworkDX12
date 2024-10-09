@@ -29,4 +29,9 @@ namespace ConstantBufferData
 		Math::Matrix mTransform;
 		Math::Vector4 Color = { 1,1,1,1 };
 	};
+
+	struct Projection
+	{
+		Math::Matrix mProj;
+	};
 }

@@ -15,9 +15,9 @@ bool ModelShader::Init()
 	return true;
 }
 
-void ModelShader::Begin()
+void ModelShader::Begin(int w, int h)
 {
-	ShaderBase::Begin();
+	ShaderBase::Begin(w,h);
 
 	ShaderManager::GetInstance().WriteCamera();
 }

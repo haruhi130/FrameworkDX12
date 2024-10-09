@@ -22,6 +22,7 @@ private:
 
 	void PreDraw();
 	void Draw();
+	void DrawSprite();
 
 	void ImGuiUpdate();
 

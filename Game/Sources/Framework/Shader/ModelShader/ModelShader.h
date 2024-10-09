@@ -10,7 +10,7 @@ public:
 
 	bool Init()override;
 
-	void Begin();
+	void Begin(int w = 1280,int h = 720);
 
 	// ƒƒbƒVƒ…•`‰æ
 	void DrawMesh(const Mesh* mesh, const Math::Matrix& mWorld, const std::vector<Material>& materials);

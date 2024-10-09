@@ -14,6 +14,7 @@ public:
 
 	virtual void PreDraw(){}
 	virtual void Draw(){}
+	virtual void DrawSprite(){}
 
 	virtual void ImGuiUpdate(){}
 

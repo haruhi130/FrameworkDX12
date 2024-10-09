@@ -162,6 +162,9 @@ void Application::Execute()
 		// í èÌï`âÊ
 		Draw();
 
+		// 2Dï`âÊ
+		DrawSprite();
+
 		//=============================================
 		// ImGuièàóù
 		ImGuiUpdate();
@@ -212,6 +215,11 @@ void Application::PreDraw()
 void Application::Draw()
 {
 	SceneManager::GetInstance().Draw();
+}
+
+void Application::DrawSprite()
+{
+	SceneManager::GetInstance().DrawSprite();
 }
 
 void Application::ImGuiUpdate()

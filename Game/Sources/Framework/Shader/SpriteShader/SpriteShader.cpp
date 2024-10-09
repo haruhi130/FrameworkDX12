@@ -9,21 +9,27 @@ bool SpriteShader::Init()
 	renderingSetting.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
 
 	Create(L"SpriteShader/SpriteShader", renderingSetting,
-		{ RangeType::CBV,RangeType::CBV,RangeType::SRV});
+		{ RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::SRV});
 
 	return true;
 }
 
-void SpriteShader::Begin()
+void SpriteShader::Begin(int w, int h)
 {
-	ShaderBase::Begin();
+	ShaderBase::Begin(w,h);
+
+	m_mProj2D = DirectX::XMMatrixOrthographicLH(w, h, 0, 1);
+	m_cbProj.mProj = m_mProj2D;
+
+	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
+		->BindAndAttachData(2, m_cbProj);
 }
 
 void SpriteShader::DrawTex(const Texture* tex, int x, int y, int w, int h, const Math::Rectangle* srcRect, const Math::Color& color, const Math::Vector2& pivot)
 {
 	if (tex == nullptr) { return; }
 
-	tex->Set(m_cbvCount + tex->GetSRVNumber());
+	tex->Set(m_cbvCount);
 
 	m_cbSprite.Color = color;
 	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
@@ -58,4 +64,14 @@ void SpriteShader::DrawTex(const Texture* tex, int x, int y, int w, int h, const
 		{ {x2, y2, 0},	{uvMax.x, uvMin.y} }
 	};
 
+	std::vector<Vertex> vertices;
+	for (int i = 0; i < 4; i++)
+	{
+		vertices.emplace_back(vertex[i]);
+	}
+
+	m_spMesh = std::make_shared<Mesh>();
+	m_spMesh->Create(vertices);
+
+	m_spMesh->DrawInstanced(6);
 }

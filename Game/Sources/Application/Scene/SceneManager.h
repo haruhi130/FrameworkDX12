@@ -18,6 +18,7 @@ public:
 
 	void PreDraw();
 	void Draw();
+	void DrawSprite();
 
 	void ImGuiUpdate();
 

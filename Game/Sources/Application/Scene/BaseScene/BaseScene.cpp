@@ -58,6 +58,15 @@ void BaseScene::Draw()
 	}
 }
 
+void BaseScene::DrawSprite()
+{
+	ShaderManager::GetInstance().m_spriteShader.Begin();
+	for (auto& obj : m_objList)
+	{
+		obj->DrawSprite();
+	}
+}
+
 void BaseScene::ImGuiUpdate()
 {
 	for (auto& obj : m_objList)
