@@ -5,11 +5,11 @@ bool ModelShader::Init()
 	// シェーダーに渡す情報設定
 	RenderingSetting renderingSetting = {};
 	renderingSetting.InputLayouts =
-	{ InputLayout::POSITION,InputLayout::TEXCOORD,InputLayout::COLOR,InputLayout::NORMAL,InputLayout::TANGENT,InputLayout::SKININDEX,InputLayout::SKINWEIGHT };
+	{ InputLayout::POSITION,InputLayout::TEXCOORD,InputLayout::NORMAL,InputLayout::COLOR,InputLayout::TANGENT,InputLayout::SKININDEX,InputLayout::SKINWEIGHT };
 	renderingSetting.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
 
 	Create(L"SimpleShader/SimpleShader", renderingSetting,
-		{ RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::CBV,
+		{ RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::CBV,
 		RangeType::SRV,RangeType::SRV,RangeType::SRV ,RangeType::SRV });
 
 	return true;
@@ -19,7 +19,9 @@ void ModelShader::Begin(int w, int h)
 {
 	ShaderBase::Begin(w,h);
 
-	ShaderManager::GetInstance().WriteCamera();
+	ShaderManager::GetInstance().WriteCBCamera();
+
+	ShaderManager::GetInstance().WriteCBLight();
 }
 
 void ModelShader::DrawMesh(const Mesh* mesh, const Math::Matrix& mWorld, const std::vector<Material>& materials)
@@ -46,8 +48,11 @@ void ModelShader::DrawMesh(const Mesh* mesh, const Math::Matrix& mWorld, const s
 	}
 }
 
-void ModelShader::DrawModel(const ModelData& modelData, const Math::Matrix& mWorld)
+void ModelShader::DrawModel(const ModelData& modelData, const Math::Matrix& mWorld, bool isUseLight)
 {
+	// ライトを使用するか
+	ShaderManager::GetInstance().SetIsUseLight(isUseLight);
+
 	auto& nodes = modelData.GetNodes();
 
 	// メッシュ描画
@@ -57,11 +62,14 @@ void ModelShader::DrawModel(const ModelData& modelData, const Math::Matrix& mWor
 	}
 }
 
-void ModelShader::DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld)
+void ModelShader::DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld, bool isUseLight)
 {
 	const std::shared_ptr<ModelData>& data = modelWork.GetModelData();
 
 	if (data == nullptr) { return; }
+
+	// ライトを使用するか
+	ShaderManager::GetInstance().SetIsUseLight(isUseLight);
 
 	// 再帰処理
 	if (modelWork.IsNeedCalcNodeMatrices())
@@ -120,8 +128,16 @@ void ModelShader::DrawSkinMesh(ModelWork& modelWork)
 		->BindAndAttachData(3, bone);
 }
 
-void ModelShader::SetMaterial(const Material& material) const
+void ModelShader::SetMaterial(const Material& material)
 {
+	m_cbMaterial.BaseColor = material.BaseColor;
+	m_cbMaterial.Emissive = material.Emissive;
+	m_cbMaterial.Metallic = material.Metallic;
+	m_cbMaterial.Roughness = material.Roughness;
+
+	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
+		->BindAndAttachData(4, m_cbMaterial);
+
 	material.spBaseColorTex->Set(m_cbvCount);
 	material.spNormalTex->Set(m_cbvCount + 1);
 	material.spMetallicRoughnessTex->Set(m_cbvCount + 2);

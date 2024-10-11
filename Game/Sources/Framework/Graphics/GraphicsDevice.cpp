@@ -165,10 +165,10 @@ void GraphicsDevice::ClientToWorld(const POINT& screenPos, float projZ, Math::Ve
 	Math::Matrix projInv = mProj.Invert();
 
 	Math::Matrix mVP;
-	mVP._11 = 1280 * 0.5f;
-	mVP._22 = -720 * 0.5f;
-	mVP._41 = 1280 * 0.5f;
-	mVP._42 = 720 * 0.5f;
+	mVP._11 = windowWidth * 0.5f;
+	mVP._22 = -windowHeight * 0.5f;
+	mVP._41 = windowWidth * 0.5f;
+	mVP._42 = windowHeight * 0.5f;
 
 	Math::Matrix viewportInv = mVP.Invert();
 

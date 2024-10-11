@@ -6,7 +6,7 @@ class Application
 {
 public:
 	// ƒQ[ƒ€‰Šú‰»
-	bool Init(int width = 1280,int height = 720);
+	bool Init(int width = windowWidth,int height = windowHeight);
 
 	// ƒQ[ƒ€Às
 	void Execute();

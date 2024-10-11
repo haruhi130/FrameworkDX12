@@ -9,6 +9,8 @@
 #include "../../GameObject/Cheese/Cheese.h"
 #include "../../GameObject/Pedestal/Pedestal.h"
 
+#include "../../GameObject/Test/Test.h"
+
 void GameScene::Event()
 {
 	// ƒV[ƒ“Ø‚è‘Ö‚¦
@@ -21,6 +23,11 @@ void GameScene::Event()
 void GameScene::Init()
 {
 	//ShowCursor(false);
+
+	std::shared_ptr<Test> test = std::make_shared<Test>();
+	test->SetRectangle({ 0,0,1600,900 });
+	test->SetPos({ 320,180 });
+	m_objList.push_back(test);
 
 	// ƒJƒƒ‰
 	std::shared_ptr<GameCamera> camera = std::make_shared<GameCamera>();

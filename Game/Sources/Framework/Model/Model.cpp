@@ -252,5 +252,5 @@ void ModelWork::SetModelData(const std::shared_ptr<ModelData>& spModelData)
 
 void ModelWork::SetModelData(std::string_view fileName)
 {
-	SetModelData(Assets::GetInstance().m_modelDatas.LoadData(fileName));
+	SetModelData(Assets::GetInstance().m_modelDatas.GetData(fileName));
 }

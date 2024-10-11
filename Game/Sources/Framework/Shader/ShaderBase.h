@@ -27,7 +27,7 @@ public:
 		const RenderingSetting& renderingSetting, const std::vector<RangeType>& rangeTypes);
 
 	// 描画開始
-	virtual void Begin(int w = 1280, int h = 720);
+	virtual void Begin(int w = windowWidth, int h = windowHeight);
 
 	// CBVカウント取得
 	inline UINT GetCBVCount()const 

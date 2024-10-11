@@ -16,7 +16,7 @@ void SkySphere::Update()
 
 void SkySphere::Draw()
 {
-	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
+	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld, false);
 }
 
 void SkySphere::SetTarget(const std::shared_ptr<BaseObject>& target)

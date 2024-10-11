@@ -2,11 +2,11 @@
 
 Texture2D g_inputTex : register(t0);
 
-SamplerState g_ss : register(s0);
+SamplerState g_ssCP : register(s1);
 
 float4 main(VSOutput In) : SV_TARGET
 {
-    float4 color = g_inputTex.Sample(g_ss, In.UV);
+    float4 color = g_inputTex.Sample(g_ssCP, In.UV);
 	
     if (color.a < 0.1f) discard;
 	
