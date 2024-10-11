@@ -1,4 +1,4 @@
-#include "inc_SimpleShader.hlsli"
+#include "inc_ModelShader.hlsli"
 #include "../inc_Common.hlsli"
 
 VSOutput main( 
@@ -20,19 +20,23 @@ float4 color : COLOR,float3 tangent :TANGENT,uint4 skinIndex : SKININDEX,float4 
     }
     
     VSOutput Out;
+    
+    // 座標変換
     Out.pos = mul(pos, g_mWorld);
     Out.wPos = Out.pos.xyz;
     Out.pos = mul(Out.pos, g_mView);
     Out.pos = mul(Out.pos, g_mProj);
+    
+    // UV座標
     Out.uv = uv;
+    
+    // 頂点色
     Out.color = color;
     
-    Out.normal = normalize(mul(normal, (float3x3) g_mWorld));
+    // 法線
     Out.wN = normalize(mul(normal, (float3x3) g_mWorld));
     Out.wT = normalize(mul(tangent, (float3x3) g_mWorld));
-    
-    float3 binormal = cross(normal, tangent);
-    Out.wB = normalize(mul(binormal, (float3x3) g_mWorld));
+    Out.wB = normalize(cross(Out.wN, Out.wT));
     
     return Out;
 }

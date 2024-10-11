@@ -1,0 +1,117 @@
+#include "inc_ModelShader.hlsli"
+#include "../inc_Common.hlsli"
+
+Texture2D g_diffuseTex : register(t0);              // Diffuseテクスチャ
+Texture2D g_normalTex : register(t1);               // Normalテクスチャ
+Texture2D g_metallicRoughnessTex : register(t2);    // MetallicRoughnessテクスチャ
+Texture2D g_emissiveTex : register(t3);             // Emissiveテクスチャ
+
+SamplerState g_ssWP : register(s0); // Wrap  : Point
+SamplerState g_ssCP : register(s1); // Clamp : Point
+SamplerState g_ssWL : register(s2); // Wrap  : Linear
+SamplerState g_ssCL : register(s3); // Clamp : Linear
+
+float BlinnPhong(float3 lightDir, float3 vCam, float3 normal, float specPower)
+{
+    float3 H = normalize(-lightDir + vCam);
+    float NdotH = saturate(dot(normal, H)); // カメラの角度差(0～1)
+    float spec = pow(NdotH, specPower);
+    
+    // 正規化Blinn-Phong
+    return spec * ((specPower + 2) / (2 * 3.14159265358979f));
+}
+
+float4 main(VSOutput In) : SV_TARGET
+{
+    // カメラへの方向
+    float3 vCam = normalize(g_camPos - In.wPos);
+    
+    // 法線マップから法線べクトルを取得
+    float3 vNormal = g_normalTex.Sample(g_ssWL, In.uv).rgb;
+    
+    // UV座標から射影座標へ変換
+    vNormal = vNormal * 2.0 - 1.0;
+    
+    // 3種の法線から行列を作成
+    row_major float3x3 mTBN =
+    {
+        normalize(In.wT),
+        normalize(In.wB),
+        normalize(In.wN),
+    };
+    
+    // 法線ベクトルをピクセル空間へ変換
+    vNormal = mul(vNormal, mTBN);
+    
+    // 正規化
+    vNormal = normalize(vNormal);
+    
+    // 材質色
+    float4 baseColor = g_diffuseTex.Sample(g_ssWL, In.uv) * g_baseCol * In.color;
+    
+    float4 mr = g_metallicRoughnessTex.Sample(g_ssWL, In.uv);
+    
+    // 金属性
+    float metallic = g_metallic * mr.b;
+    
+    // 粗さ
+    float roughness = g_roughness * mr.g;
+    // 滑らかさ
+    float smoothness = 1.0 - roughness * roughness;
+    float specPower = pow(2, 11 * smoothness);
+    
+    
+    // 出力する色
+    float3 outColor = 0;
+    
+    //------------------------------------------
+    // ライティング
+    //------------------------------------------
+    // 光の計算を行うか
+    if (g_isUseLight)
+    {
+        // 材質の拡散色   非金属ほど材質の色になり金属ほど拡散色は無くなる
+        float3 baseDiffuse = lerp(baseColor.rgb, float3(0, 0, 0), metallic);
+        // 材質の反射色   非金属ほど光の色を反射し金属ほど材質の色が乗る
+        float3 baseSpecular = lerp(0.04, baseColor.rgb, metallic);
+        
+        // Diffuse
+        {
+            // 光の方向と法線の方向の角度差が光の強さ
+            float Dot = dot(-g_DL_Dir,vNormal);
+            // マイナス値は0
+            float DiffusePow = saturate(Dot);
+            
+            // 正規化Lambert
+            DiffusePow /= 3.14159265358979f;
+        
+            // 光の色 * 材質の拡散色
+            outColor += (g_DL_Color * DiffusePow) * baseDiffuse * baseColor.a;
+        }
+    
+        // Specular
+        {
+            // 反射した光の強さ
+            float spec = BlinnPhong(g_DL_Dir, vCam, vNormal, specPower);
+        
+            // 光の色 * 反射光の強さ * 材質の反射色
+            outColor += (g_DL_Color * spec) * baseSpecular * baseColor.a;
+        }
+        
+        // Ambient
+        {
+            // 全体の明度
+            outColor += g_AL_Power * baseColor.rgb * baseColor.a;
+        }
+    }
+    else
+    {
+        // 光の計算をしない場合材質色を返す
+        outColor = baseColor.rgb;
+    }
+    
+    //------------------------------------------
+	// 出力
+	//------------------------------------------
+    return float4(outColor, baseColor.a);
+}

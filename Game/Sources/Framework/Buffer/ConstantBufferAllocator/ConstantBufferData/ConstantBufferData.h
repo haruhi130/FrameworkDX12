@@ -1,9 +1,10 @@
 #pragma once
 
+// シェーダーへ転送する定数バッファデータ群
 namespace ConstantBufferData
 {
 	// カメラ用構造体
-	struct Camera
+	struct CameraInfo
 	{
 		Math::Matrix mView;
 		Math::Matrix mProj;
@@ -13,18 +14,18 @@ namespace ConstantBufferData
 	};
 
 	// スキンメッシュ判別
-	struct Object
+	struct ObjectInfo
 	{
 		int IsSkinMesh = 0;
 	};
 
 	// スキンメッシュ用構造体
-	struct Bone
+	struct BoneInfo
 	{
 		Math::Matrix mBones[300];
 	};
 
-	struct Material
+	struct MaterialInfo
 	{
 		Math::Vector4 BaseColor;
 		Math::Vector3 Emissive;
@@ -33,20 +34,20 @@ namespace ConstantBufferData
 	};
 
 	// 2D描画用構造体
-	struct Sprite
+	struct SpriteInfo
 	{
 		Math::Matrix mTransform;
 		Math::Vector4 Color = { 1,1,1,1 };
 	};
 
 	// 射影行列単体
-	struct Projection
+	struct ProjectionInfo
 	{
 		Math::Matrix mProj;
 	};
 
 	// ライト
-	struct Light
+	struct LightInfo
 	{
 		float AmbientLightPower = 1.0f;
 		Math::Vector3 DirectionalLightDir = { 1,-1,1 };

@@ -34,10 +34,10 @@ public:
 
 private:
 	// カメラ定数バッファ
-	ConstantBufferData::Camera m_cbCamera;
+	ConstantBufferData::CameraInfo m_cbCamera;
 
 	// ライト定数バッファ
-	ConstantBufferData::Light m_cbLight;
+	ConstantBufferData::LightInfo m_cbLight;
 
 public:
 	static ShaderManager& GetInstance()

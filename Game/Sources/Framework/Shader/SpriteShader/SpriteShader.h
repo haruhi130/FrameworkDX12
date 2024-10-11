@@ -30,8 +30,8 @@ public:
 	{ m_cbSprite.mTransform = m; }
 
 private:
-	ConstantBufferData::Sprite m_cbSprite;
-	ConstantBufferData::Projection m_cbProj;
+	ConstantBufferData::SpriteInfo m_cbSprite;
+	ConstantBufferData::ProjectionInfo m_cbProj;
 
 	std::shared_ptr<Mesh> m_spMesh = nullptr;
 };

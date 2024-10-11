@@ -27,5 +27,5 @@ private:
 	void SetMaterial(const Material& material);
 
 	// マテリアル定数バッファ
-	ConstantBufferData::Material m_cbMaterial;
+	ConstantBufferData::MaterialInfo m_cbMaterial;
 };

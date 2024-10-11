@@ -5328,11 +5328,16 @@
 				}
 			},
 			"name":"mouse_by_dommk_body",
+			"normalTexture":{
+				"index":0
+			},
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
-					"index":0
+					"index":1
 				},
-				"roughnessFactor":0.5527864098548889
+				"metallicRoughnessTexture":{
+					"index":2
+				}
 			}
 		},
 		{
@@ -5350,11 +5355,16 @@
 				}
 			},
 			"name":"mouse_by_dommk_eyes",
+			"normalTexture":{
+				"index":3
+			},
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
-					"index":1
+					"index":4
 				},
-				"roughnessFactor":0.5527864098548889
+				"metallicRoughnessTexture":{
+					"index":5
+				}
 			}
 		}
 	],
@@ -5413,9 +5423,30 @@
 		{
 			"sampler":0,
 			"source":1
+		},
+		{
+			"sampler":0,
+			"source":2
+		},
+		{
+			"sampler":0,
+			"source":3
+		},
+		{
+			"sampler":0,
+			"source":4
+		},
+		{
+			"sampler":0,
+			"source":5
 		}
 	],
 	"images":[
+		{
+			"mimeType":"image/png",
+			"name":"mouse_by_dommk_body_Normal",
+			"uri":"mouse_by_dommk_body_Normal.png"
+		},
 		{
 			"mimeType":"image/png",
 			"name":"mouse_by_dommk_body_Base_Color",
@@ -5423,8 +5454,23 @@
 		},
 		{
 			"mimeType":"image/png",
+			"name":"mouse_by_dommk_body_Metallic-mouse_by_dommk_body_Roughness",
+			"uri":"mouse_by_dommk_body_Metallic-mouse_by_dommk_body_Roughness.png"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"mouse_by_dommk_eyes_Normal",
+			"uri":"mouse_by_dommk_eyes_Normal.png"
+		},
+		{
+			"mimeType":"image/png",
 			"name":"mouse_by_dommk_eyes_Base_Color",
 			"uri":"mouse_by_dommk_eyes_Base_Color.png"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"mouse_by_dommk_eyes_Metallic-mouse_by_dommk_eyes_Roughness",
+			"uri":"mouse_by_dommk_eyes_Metallic-mouse_by_dommk_eyes_Roughness.png"
 		}
 	],
 	"skins":[

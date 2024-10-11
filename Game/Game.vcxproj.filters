@@ -157,14 +157,14 @@
     <Filter Include="Framework\Shader\SpriteShader">
       <UniqueIdentifier>{3878d2ed-b624-470e-92a2-13f6dd282523}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\Shader\HLSL\SimpleShader">
-      <UniqueIdentifier>{70fd057c-6bf8-4645-948e-7b53ec72faae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Shader\HLSL\SpriteShader">
       <UniqueIdentifier>{61176808-7942-4704-bbef-8dbbf6af8480}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\GameObject\Test">
       <UniqueIdentifier>{c4df280a-ec35-4207-b74e-d36a4203702b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Shader\HLSL\ModelShader">
+      <UniqueIdentifier>{c262dadd-aec8-483c-a580-e89566200f41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -522,25 +522,25 @@
     <None Include="Sources\Framework\Shader\HLSL\inc_Common.hlsli">
       <Filter>Framework\Shader\HLSL</Filter>
     </None>
-    <None Include="Sources\Framework\Shader\HLSL\SimpleShader\inc_SimpleShader.hlsli">
-      <Filter>Framework\Shader\HLSL\SimpleShader</Filter>
-    </None>
     <None Include="Sources\Framework\Shader\HLSL\SpriteShader\inc_SpriteShader.hlsli">
       <Filter>Framework\Shader\HLSL\SpriteShader</Filter>
     </None>
+    <None Include="Sources\Framework\Shader\HLSL\ModelShader\inc_ModelShader.hlsli">
+      <Filter>Framework\Shader\HLSL\ModelShader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Sources\Framework\Shader\HLSL\SimpleShader\SimpleShader_PS.hlsl">
-      <Filter>Framework\Shader\HLSL\SimpleShader</Filter>
-    </FxCompile>
-    <FxCompile Include="Sources\Framework\Shader\HLSL\SimpleShader\SimpleShader_VS.hlsl">
-      <Filter>Framework\Shader\HLSL\SimpleShader</Filter>
-    </FxCompile>
     <FxCompile Include="Sources\Framework\Shader\HLSL\SpriteShader\SpriteShader_PS.hlsl">
       <Filter>Framework\Shader\HLSL\SpriteShader</Filter>
     </FxCompile>
     <FxCompile Include="Sources\Framework\Shader\HLSL\SpriteShader\SpriteShader_VS.hlsl">
       <Filter>Framework\Shader\HLSL\SpriteShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Sources\Framework\Shader\HLSL\ModelShader\ModelShader_VS.hlsl">
+      <Filter>Framework\Shader\HLSL\ModelShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Sources\Framework\Shader\HLSL\ModelShader\ModelShader_PS.hlsl">
+      <Filter>Framework\Shader\HLSL\ModelShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
