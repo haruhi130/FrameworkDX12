@@ -28,6 +28,8 @@
 
 #include "Model/Model.h"
 
+#include "Shader/RenderTargetChange.h"
+
 #include "Collider/Collision.h"
 #include "Collider/Collider.h"
 

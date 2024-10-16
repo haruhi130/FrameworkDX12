@@ -30,6 +30,8 @@ float4 color : COLOR,float3 tangent :TANGENT,uint4 skinIndex : SKININDEX,float4 
     // UVç¿ïW
     Out.uv = uv;
     
+    Out.tangent = tangent;
+    
     // í∏ì_êF
     Out.color = color;
     

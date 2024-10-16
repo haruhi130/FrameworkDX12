@@ -109,15 +109,6 @@
     <Filter Include="Application\GameObject\Camera">
       <UniqueIdentifier>{6de25e56-a0c1-4477-808d-4ac59cf98a43}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\GameObject\Mouse">
-      <UniqueIdentifier>{dc894cb8-7212-4ed1-9693-92e91a21c24d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\GameObject\Ground">
-      <UniqueIdentifier>{2f243d8f-cb9e-4c13-ad3f-35fb1abff775}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\GameObject\Wolf">
-      <UniqueIdentifier>{e809706b-29d1-4af2-b480-456695c28c35}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Polygon">
       <UniqueIdentifier>{9c0e5c3e-2c23-437a-97b3-e73a32857e51}</UniqueIdentifier>
     </Filter>
@@ -142,17 +133,8 @@
     <Filter Include="System\Input">
       <UniqueIdentifier>{1a9675bb-2192-46ec-9b2a-a4e0d29972f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\GameObject\Cheese">
-      <UniqueIdentifier>{60f3b2a2-116c-4e0e-b081-14322bd54608}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\GameObject\SkySphere">
-      <UniqueIdentifier>{9fe8d8ee-0999-4669-b535-878e75720d2f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Scene\ResultScene">
       <UniqueIdentifier>{0b2586c8-a08e-4566-ae7f-0b09d9c404ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\GameObject\Pedestal">
-      <UniqueIdentifier>{5280235c-4136-4acf-8f45-820ff643d27e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Framework\Shader\SpriteShader">
       <UniqueIdentifier>{3878d2ed-b624-470e-92a2-13f6dd282523}</UniqueIdentifier>
@@ -165,6 +147,36 @@
     </Filter>
     <Filter Include="Framework\Shader\HLSL\ModelShader">
       <UniqueIdentifier>{c262dadd-aec8-483c-a580-e89566200f41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Shader\PostProcessShader">
+      <UniqueIdentifier>{4d8b929b-8048-4fb7-a420-0fe97a1b4015}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Shader\HLSL\PostProcessShader">
+      <UniqueIdentifier>{edbcda7e-0728-4195-be15-5661172f69ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject">
+      <UniqueIdentifier>{b7e71088-01bb-4b24-9968-4af00f41ee6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\OtherObject">
+      <UniqueIdentifier>{8abe7efb-bf24-4496-8ae0-ec63739ffa9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Mouse">
+      <UniqueIdentifier>{481e51f3-6e73-493b-950d-e2b6d06a3e60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Stage">
+      <UniqueIdentifier>{d6b56fd9-f890-4294-838f-c9588c669ffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Wolf">
+      <UniqueIdentifier>{f85823e9-ab9b-4895-ba44-8e0e5c1593ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Sky">
+      <UniqueIdentifier>{9ef125b7-0734-4675-96b1-4feb6143703c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Cheese">
+      <UniqueIdentifier>{9c34ab17-3646-4599-b4d7-471a327dbe26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Pedestal">
+      <UniqueIdentifier>{9c23c38e-d305-40d1-9fb8-8cb79d4d6615}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -254,15 +266,6 @@
     <ClCompile Include="Sources\Application\GameObject\Camera\GameCamera.cpp">
       <Filter>Application\GameObject\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Application\GameObject\Mouse\Mouse.cpp">
-      <Filter>Application\GameObject\Mouse</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Application\GameObject\Ground\Ground.cpp">
-      <Filter>Application\GameObject\Ground</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Application\GameObject\Wolf\Wolf.cpp">
-      <Filter>Application\GameObject\Wolf</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Framework\Polygon\Polygon.cpp">
       <Filter>Framework\Polygon</Filter>
     </ClCompile>
@@ -305,23 +308,41 @@
     <ClCompile Include="Sources\Framework\Input\Input.cpp">
       <Filter>Framework\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Application\GameObject\Cheese\Cheese.cpp">
-      <Filter>Application\GameObject\Cheese</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Application\GameObject\SkySphere\SkySphere.cpp">
-      <Filter>Application\GameObject\SkySphere</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Application\Scene\ResultScene\ResultScene.cpp">
       <Filter>Application\Scene\ResultScene</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Application\GameObject\Pedestal\Pedestal.cpp">
-      <Filter>Application\GameObject\Pedestal</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Framework\Shader\SpriteShader\SpriteShader.cpp">
       <Filter>Framework\Shader\SpriteShader</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Application\GameObject\Test\Test.cpp">
       <Filter>Application\GameObject\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Shader\RenderTargetChange.cpp">
+      <Filter>Framework\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Shader\PostProcessShader\PostProcessShader.cpp">
+      <Filter>Framework\Shader\PostProcessShader</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\ModelObject.cpp">
+      <Filter>Application\GameObject\ModelObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Mouse\Mouse.cpp">
+      <Filter>Application\GameObject\ModelObject\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Stage\Stage.cpp">
+      <Filter>Application\GameObject\ModelObject\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Wolf\Wolf.cpp">
+      <Filter>Application\GameObject\ModelObject\Wolf</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Sky\Sky.cpp">
+      <Filter>Application\GameObject\ModelObject\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Cheese\Cheese.cpp">
+      <Filter>Application\GameObject\ModelObject\Cheese</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Pedestal\Pedestal.cpp">
+      <Filter>Application\GameObject\ModelObject\Pedestal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -438,15 +459,6 @@
     <ClInclude Include="Sources\Application\GameObject\Camera\GameCamera.h">
       <Filter>Application\GameObject\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Application\GameObject\Mouse\Mouse.h">
-      <Filter>Application\GameObject\Mouse</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Application\GameObject\Ground\Ground.h">
-      <Filter>Application\GameObject\Ground</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Application\GameObject\Wolf\Wolf.h">
-      <Filter>Application\GameObject\Wolf</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Framework\Polygon\Polygon.h">
       <Filter>Framework\Polygon</Filter>
     </ClInclude>
@@ -498,23 +510,41 @@
     <ClInclude Include="Sources\System\Input\InputSystem.h">
       <Filter>System\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Application\GameObject\Cheese\Cheese.h">
-      <Filter>Application\GameObject\Cheese</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Application\GameObject\SkySphere\SkySphere.h">
-      <Filter>Application\GameObject\SkySphere</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Application\Scene\ResultScene\ResultScene.h">
       <Filter>Application\Scene\ResultScene</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Application\GameObject\Pedestal\Pedestal.h">
-      <Filter>Application\GameObject\Pedestal</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Framework\Shader\SpriteShader\SpriteShader.h">
       <Filter>Framework\Shader\SpriteShader</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Application\GameObject\Test\Test.h">
       <Filter>Application\GameObject\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Shader\RenderTargetChange.h">
+      <Filter>Framework\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Shader\PostProcessShader\PostProcessShader.h">
+      <Filter>Framework\Shader\PostProcessShader</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\ModelObject.h">
+      <Filter>Application\GameObject\ModelObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Mouse\Mouse.h">
+      <Filter>Application\GameObject\ModelObject\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Stage\Stage.h">
+      <Filter>Application\GameObject\ModelObject\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Wolf\Wolf.h">
+      <Filter>Application\GameObject\ModelObject\Wolf</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Sky\Sky.h">
+      <Filter>Application\GameObject\ModelObject\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Cheese\Cheese.h">
+      <Filter>Application\GameObject\ModelObject\Cheese</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Pedestal\Pedestal.h">
+      <Filter>Application\GameObject\ModelObject\Pedestal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -527,6 +557,9 @@
     </None>
     <None Include="Sources\Framework\Shader\HLSL\ModelShader\inc_ModelShader.hlsli">
       <Filter>Framework\Shader\HLSL\ModelShader</Filter>
+    </None>
+    <None Include="Sources\Framework\Shader\HLSL\PostProcessShader\inc_PostProcessShader.hlsli">
+      <Filter>Framework\Shader\HLSL\PostProcessShader</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -541,6 +574,12 @@
     </FxCompile>
     <FxCompile Include="Sources\Framework\Shader\HLSL\ModelShader\ModelShader_PS.hlsl">
       <Filter>Framework\Shader\HLSL\ModelShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Sources\Framework\Shader\HLSL\PostProcessShader\PostProcessShader_VS.hlsl">
+      <Filter>Framework\Shader\HLSL\PostProcessShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Sources\Framework\Shader\HLSL\PostProcessShader\PostProcessShader_PS.hlsl">
+      <Filter>Framework\Shader\HLSL\PostProcessShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

@@ -53,7 +53,7 @@ public:
 	void DrawSubset(int subsetNo)const;
 
 	// インスタンス描画
-	void DrawInstanced(UINT vertexCount) const;
+	void DrawInstanced(UINT vertexCount = 6) const;
 
 	// サブセット取得
 	inline const std::vector<MeshSubset>& GetSubsets() const 

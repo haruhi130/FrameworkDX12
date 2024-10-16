@@ -1,31 +1,28 @@
-#include "SkySphere.h"
+#include "Sky.h"
 
-void SkySphere::Update()
+void Sky::Update()
 {
+	if (!m_spModel) { return; }
+
 	Math::Matrix targetMat = Math::Matrix::Identity;
 	if (!m_wpTarget.expired())
 	{
 		targetMat = Math::Matrix::CreateTranslation(m_wpTarget.lock()->GetPos());
 	}
 
-	m_mLocal = Math::Matrix::CreateTranslation(m_localPos);
+	m_mLocal = Math::Matrix::CreateTranslation(m_pos);
 
 	Math::Matrix mScale = Math::Matrix::CreateScale(100);
 	m_mWorld = m_mLocal * mScale * targetMat;
 }
 
-void SkySphere::Draw()
+void Sky::Draw()
 {
+	if (!m_spModel) { return; }
 	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld, false);
 }
 
-void SkySphere::SetTarget(const std::shared_ptr<BaseObject>& target)
-{
-	if (!target) return;
-	m_wpTarget = target;
-}
-
-void SkySphere::Init()
+void Sky::Init()
 {
 	if (!m_spModel)
 	{
@@ -33,10 +30,8 @@ void SkySphere::Init()
 		m_spModel->SetModelData(Assets::GetInstance().m_modelDatas.GetData("Assets/Models/SkySphere/SkySphere.gltf"));
 	}
 
-	m_localPos = { 0,0,0 };
-	m_mLocal = Math::Matrix::CreateTranslation(m_localPos);
+	m_mLocal = Math::Matrix::CreateTranslation(m_pos);
 
 	Math::Matrix mScale = Math::Matrix::CreateScale(200);
 	m_mWorld = mScale;
-
 }

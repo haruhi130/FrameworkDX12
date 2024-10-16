@@ -1,6 +1,8 @@
 #pragma once
 
-class Wolf : public BaseObject
+#include "../ModelObject.h"
+
+class Wolf : public ModelObject
 {
 public:
 	Wolf() { Init(); }
@@ -8,29 +10,25 @@ public:
 
 	void Update()override;
 	void PostUpdate()override;
-
 	void Draw()override;
 
 	void OnHit(bool isHit);
-	
-	// 衝突対象を登録
-	void RegistHitObjList(const std::shared_ptr<BaseObject>& obj)
-	{ m_wpHitObjList.push_back(obj); }
 
 	void ImGuiUpdate()override;
 
+	// 衝突対象を登録
+	void RegistHitObjList(const std::shared_ptr<ModelObject>& obj)
+	{ m_wpObjList.push_back(obj); }
+
 private:
 	void Init()override;
-	void UpdateMatrix();
-	void UpdateCollision();
 
-	// 衝突対象リスト
-	std::list<std::weak_ptr<BaseObject>> m_wpHitObjList;
+	void UpdateMatrix()override;
+	void UpdateRotate(Math::Vector3& moveVec)override;
+	void UpdateCollision()override;
 
-	// モデル
-	std::shared_ptr<ModelWork> m_spModel = nullptr;
-	// アニメーター
-	std::shared_ptr<Animator> m_spAnimator = nullptr;
+	// Hit対象オブジェクトリスト
+	std::list<std::weak_ptr<ModelObject>> m_wpObjList;
 
 	// 視界内判定
 	bool m_isSight = false;
@@ -38,17 +36,14 @@ private:
 	// 視界角度
 	float m_sightAngle = 45.0f;
 
-	// 座標
-	Math::Vector3 m_pos;
-
 	// 重力
 	float m_gravity = 0.0f;
 
 	// 接地判定
 	bool m_isGround = false;
 
-	/////////////////////////////////////////////////
-	// ステートパターン管理
+/////////////////////////////////////////////////
+// ステートパターン管理
 private:
 	class ActionStateBase
 	{

@@ -147,23 +147,16 @@ void Application::Execute()
 		// 
 		//=============================================
 
-		// 描画準備開始
-		GraphicsDevice::GetInstance().Prepare();
-
-		// 画像用にヒープを指定
-		GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
-
-		// コンスタントバッファ初期化
-		GraphicsDevice::GetInstance().GetConstantBufferAllocator()->ResetCurrentUseNumber();
-
-		// 事前描画
 		PreDraw();
 
-		// 通常描画
 		Draw();
 
-		// 2D描画
+		PostDraw();
+
 		DrawSprite();
+
+		ShaderManager::GetInstance().m_postProcessShader.Begin();
+		ShaderManager::GetInstance().m_postProcessShader.Draw();
 
 		//=============================================
 		// ImGui処理
@@ -209,12 +202,29 @@ void Application::PostUpdate()
 
 void Application::PreDraw()
 {
+	// レンダーターゲット変更
+	ShaderManager::GetInstance().m_postProcessShader.PreDraw();
+
+	// 画像用にヒープを指定
+	GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
+
+	// コンスタントバッファ初期化
+	GraphicsDevice::GetInstance().GetConstantBufferAllocator()->ResetCurrentUseNumber();
+
 	SceneManager::GetInstance().PreDraw();
 }
 
 void Application::Draw()
 {
 	SceneManager::GetInstance().Draw();
+}
+
+void Application::PostDraw()
+{
+	ShaderManager::GetInstance().m_postProcessShader.PostProcess();
+
+	// 描画準備開始
+	GraphicsDevice::GetInstance().Prepare();
 }
 
 void Application::DrawSprite()

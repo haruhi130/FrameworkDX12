@@ -29,6 +29,10 @@ public:
 	// スクリーン座標から3D座標への変換
 	void ClientToWorld(const POINT& screenPos, float projZ, Math::Vector3& dst, const Math::Matrix& mCam, const Math::Matrix& mProj);
 
+	// リソースバリア切り替え
+	void SetResourceBarrier(ID3D12Resource* pResource, D3D12_RESOURCE_STATES before,
+		D3D12_RESOURCE_STATES after);
+
 	// バックバッファ色変更
 	inline void SetBackBufferColor(const Math::Color& col) 
 	{ m_clearColor = col; }
@@ -41,13 +45,19 @@ public:
 	inline ID3D12GraphicsCommandList10* GetCmdList() const
 	{ return m_cpCmdList.Get(); }
 
-	// CBVSRVUAVヒープ取得
-	inline CBVSRVUAVHeap* GetCBVSRVUAVHeap() const 
-	{ return m_upCBVSRVUAVHeap.get(); }
+	inline std::vector<ComPtr<ID3D12Resource>> GetBackBuffers() 
+	{ return m_cpBackBuffers; }
 
 	// 定数バッファアロケーター取得
 	inline ConstantBufferAllocator* GetConstantBufferAllocator() const
 	{ return m_upCBufferAllocator.get(); }
+
+	inline RTVHeap* GetRTVHeap() const 
+	{ return m_upRTVHeap.get(); }
+
+	// CBVSRVUAVヒープ取得
+	inline CBVSRVUAVHeap* GetCBVSRVUAVHeap() const 
+	{ return m_upCBVSRVUAVHeap.get(); }
 
 	// DSVヒープ取得
 	inline DSVHeap* GetDSVHeap() const
@@ -55,6 +65,9 @@ public:
 
 	inline ImGuiHeap* GetImGuiHeap() const
 	{ return m_upImGuiHeap.get(); }
+
+	inline DepthStencil* GetDepthStencil() const
+	{ return m_upDepthStencil.get(); }
 
 private:
 	enum class GPUTier
@@ -91,10 +104,6 @@ private:
 	// フェンス作成
 	bool CreateFence();
 
-	// リソースバリア切り替え
-	void SetResourceBarrier(ID3D12Resource* pResource,D3D12_RESOURCE_STATES before,
-		D3D12_RESOURCE_STATES after);
-
 	ComPtr<IDXGIFactory7> m_cpDxgiFactory = nullptr;
 	ComPtr<ID3D12Device14> m_cpDevice = nullptr;
 
@@ -104,7 +113,7 @@ private:
 
 	ComPtr<IDXGISwapChain4> m_cpSwapChain = nullptr;
 
-	std::vector<ComPtr<ID3D12Resource>> m_pBackBuffers = {};
+	std::vector<ComPtr<ID3D12Resource>> m_cpBackBuffers = {};
 
 	std::unique_ptr<RTVHeap> m_upRTVHeap = nullptr;
 	std::unique_ptr<CBVSRVUAVHeap> m_upCBVSRVUAVHeap = nullptr;

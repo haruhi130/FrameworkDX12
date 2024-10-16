@@ -22,6 +22,9 @@ public:
 	inline UINT GetDSVNumber() const
 	{ return m_DSVNumber; }
 
+	inline ComPtr<ID3D12Resource> GetBuffer() 
+	{ return m_cpBuffer; }
+
 private:
 	UINT m_DSVNumber = 0;
 };

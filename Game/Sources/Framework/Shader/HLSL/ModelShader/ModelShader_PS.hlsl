@@ -60,7 +60,6 @@ float4 main(VSOutput In) : SV_TARGET
     float smoothness = 1.0 - roughness * roughness;
     float specPower = pow(2, 11 * smoothness);
     
-    
     // o—Í‚·‚éF
     float3 outColor = 0;
     

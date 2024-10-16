@@ -14,7 +14,6 @@ struct RenderingSetting
 	bool IsDepthMask = true;
 	int RTVCount = 1;
 	bool IsWireFrame = false;
-	bool IsStrip = false;
 };
 
 class ShaderBase

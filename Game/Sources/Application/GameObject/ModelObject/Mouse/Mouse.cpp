@@ -1,6 +1,5 @@
 #include "Mouse.h"
-#include "../Camera/GameCamera.h"
-#include "../../Scene/SceneManager.h"
+#include "../../Camera/GameCamera.h"
 
 void Mouse::Update()
 {
@@ -38,9 +37,7 @@ void Mouse::Draw()
 
 	// ÉÇÉfÉãï`âÊ
 	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
-}
-
-void Mouse::Init()
+}void Mouse::Init()
 {
 	// ÉÇÉfÉãì«Ç›çûÇ›
 	if (!m_spModel)
@@ -120,7 +117,7 @@ void Mouse::UpdateCollision()
 
 		rayInfo.m_type = Collider::Type::Ground;
 
-		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
+		for (std::weak_ptr<BaseObject> wpObj : m_wpObjList)
 		{
 			std::shared_ptr<BaseObject> spObj = wpObj.lock();
 			if (spObj)
@@ -160,7 +157,7 @@ void Mouse::UpdateCollision()
 		sphereInfo.m_sphere.Radius = 0.6f;
 		sphereInfo.m_type = Collider::Type::Bump;
 
-		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
+		for (std::weak_ptr<BaseObject> wpObj : m_wpObjList)
 		{
 			std::shared_ptr<BaseObject> spObj = wpObj.lock();
 			if (spObj)
@@ -197,11 +194,11 @@ void Mouse::UpdateCollision()
 
 				// 3Dç¿ïWÇ…ïœä∑
 				spCamera->WorkCamera()->GenerateRayInfoFromClient(
-				mousePos, cameraPos, rayDir, range);
+					mousePos, cameraPos, rayDir, range);
 
-				for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
+				for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
 				{
-					std::shared_ptr<BaseObject> spObj = wpObj.lock();
+					std::shared_ptr<ModelObject> spObj = wpObj.lock();
 					if (spObj)
 					{
 						Math::Vector3 endRayPos = cameraPos + rayDir * range;
@@ -217,8 +214,7 @@ void Mouse::UpdateCollision()
 
 						for (auto& ret : retRayList)
 						{
-							m_pos = ret.m_hitPos;
-							SetPos(m_pos);
+							std::shared_ptr<ModelWork> spModel = spObj->GetModel();
 						}
 					}
 				}
@@ -233,7 +229,7 @@ void Mouse::UpdateCollision()
 		sphereInfo.m_sphere.Radius = 2.0f;
 		sphereInfo.m_type = Collider::Type::Goal;
 
-		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
+		for (std::weak_ptr<BaseObject> wpObj : m_wpObjList)
 		{
 			std::shared_ptr<BaseObject> spObj = wpObj.lock();
 			if (spObj)
@@ -243,7 +239,7 @@ void Mouse::UpdateCollision()
 
 				for (auto& ret : retBumpList)
 				{
-					SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Result);
+					
 				}
 			}
 		}

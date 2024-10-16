@@ -2,6 +2,7 @@
 
 #include "ModelShader/ModelShader.h"
 #include "SpriteShader/SpriteShader.h"
+#include "PostProcessShader/PostProcessShader.h"
 
 class ShaderManager
 {
@@ -22,15 +23,16 @@ public:
 	// 平行光の方向と色を設定
 	void SetDirectionalLight(const Math::Vector3& dir, const Math::Vector3& color);
 	// 環境光の強さを設定
-	void SetAmbientLight(const float pow);
+	void SetAmbientLight(float pow);
 	// 設定したライト情報をシェーダーへ転送
 	void WriteCBLight() const;
-
+	
 	//-------------------------------------------------
 	// シェーダー
 	//-------------------------------------------------
 	ModelShader m_modelShader;
 	SpriteShader m_spriteShader;
+	PostProcessShader m_postProcessShader;
 
 private:
 	// カメラ定数バッファ

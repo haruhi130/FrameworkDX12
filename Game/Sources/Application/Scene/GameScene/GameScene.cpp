@@ -1,13 +1,14 @@
 #include "GameScene.h"
 #include "../SceneManager.h"
 
-#include "../../GameObject/SkySphere/SkySphere.h"
 #include "../../GameObject/Camera/GameCamera.h"
-#include "../../GameObject/Mouse/Mouse.h"
-#include "../../GameObject/Ground/Ground.h"
-#include "../../GameObject/Wolf/Wolf.h"
-#include "../../GameObject/Cheese/Cheese.h"
-#include "../../GameObject/Pedestal/Pedestal.h"
+
+#include "../../GameObject/ModelObject/Mouse/Mouse.h"
+#include "../../GameObject/ModelObject/Stage/Stage.h"
+#include "../../GameObject/ModelObject/Wolf/Wolf.h"
+#include "../../GameObject/ModelObject/Sky/Sky.h"
+#include "../../GameObject/ModelObject/Cheese/Cheese.h"
+#include "../../GameObject/ModelObject/Pedestal/Pedestal.h"
 
 #include "../../GameObject/Test/Test.h"
 
@@ -34,13 +35,13 @@ void GameScene::Init()
 	m_objList.push_back(camera);
 
 	// 空
-	std::shared_ptr<SkySphere> sky = std::make_shared<SkySphere>();
+	std::shared_ptr<Sky> sky = std::make_shared<Sky>();
 	m_objList.push_back(sky);
 
 	// 地面
-	std::shared_ptr<Ground> ground = std::make_shared<Ground>();
-	camera->RegistHitObjList(ground);
-	m_objList.push_back(ground);
+	std::shared_ptr<Stage> stage = std::make_shared<Stage>();
+	camera->RegistHitObjList(stage);
+	m_objList.push_back(stage);
 
 	// チーズ(ゴール)
 	std::shared_ptr<Cheese> cheese = std::make_shared<Cheese>();
@@ -52,7 +53,7 @@ void GameScene::Init()
 
 	// 敵(オオカミ)
 	std::shared_ptr<Wolf> wolf = std::make_shared<Wolf>();
-	wolf->RegistHitObjList(ground);
+	wolf->RegistHitObjList(stage);
 	wolf->RegistHitObjList(pedestal);
 	m_objList.push_back(wolf);
 
@@ -64,7 +65,7 @@ void GameScene::Init()
 	wolf->RegistHitObjList(mouse);
 
 	// プレイヤーが対象に設定するもの
-	mouse->RegistHitObjList(ground);
+	mouse->RegistHitObjList(stage);
 	mouse->RegistHitObjList(cheese);
 	mouse->RegistHitObjList(pedestal);
 	mouse->SetCamera(camera);

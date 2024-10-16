@@ -1,11 +1,8 @@
 #include "Cheese.h"
 
-void Cheese::Update()
-{
-}
-
 void Cheese::Draw()
 {
+	if (!m_spModel) { return; }
 	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
 }
 
@@ -23,5 +20,5 @@ void Cheese::Init()
 	m_mWorld = mScale * mRot * mTrans;
 
 	m_upCollider = std::make_unique<Collider>();
-	m_upCollider->RegisterCollisionShape("Cheese",m_spModel, Collider::Type::Goal);
+	m_upCollider->RegisterCollisionShape("Cheese", m_spModel, Collider::Type::Goal);
 }

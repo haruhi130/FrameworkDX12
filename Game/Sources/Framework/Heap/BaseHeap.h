@@ -54,6 +54,9 @@ public:
 		return handle;
 	}
 
+	inline ComPtr<ID3D12DescriptorHeap> GetHeap()
+	{ return m_cpHeap; }
+
 protected:
 	ComPtr<ID3D12DescriptorHeap> m_cpHeap = nullptr;
 	type m_useCount = {};

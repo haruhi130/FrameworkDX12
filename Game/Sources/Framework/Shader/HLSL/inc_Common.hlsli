@@ -16,13 +16,13 @@ cbuffer cbCamera : register(b0)
 // ライト
 cbuffer cbLight : register(b5)
 {
-    // 環境光
-    float   g_AL_Power;
+    // ライトの使用判別
+    int g_isUseLight;
     
     // 平行光
     float3  g_DL_Dir;    // 光の方向
     float3  g_DL_Color;  // 光の色
     
-    // ライトの使用判別
-    int     g_isUseLight;
+    // 環境光
+    float g_AL_Power;
 }

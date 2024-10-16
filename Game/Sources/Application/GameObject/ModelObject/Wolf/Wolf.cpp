@@ -25,7 +25,7 @@ void Wolf::PostUpdate()
 	if (!m_spModel) { return; }
 	if (!m_spAnimator) { return; }
 
-	m_spAnimator->ProgressTime(m_spModel->WorkNodes(),1.5f);
+	m_spAnimator->ProgressTime(m_spModel->WorkNodes(), 1.5f);
 	m_spModel->CalcNodeMatrices();
 }
 
@@ -85,6 +85,10 @@ void Wolf::UpdateMatrix()
 	m_mWorld = mScale * mRot * mTrans;
 }
 
+void Wolf::UpdateRotate(Math::Vector3& moveVec)
+{
+}
+
 void Wolf::UpdateCollision()
 {
 	// Sphere : Sight
@@ -95,7 +99,7 @@ void Wolf::UpdateCollision()
 		sphereInfo.m_sphere.Radius = 7.0f;
 		sphereInfo.m_type = Collider::Type::Sight;
 
-		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
+		for (std::weak_ptr<BaseObject> wpObj : m_wpObjList)
 		{
 			std::shared_ptr<BaseObject> spObj = wpObj.lock();
 			if (spObj)
@@ -144,7 +148,7 @@ void Wolf::UpdateCollision()
 
 		rayInfo.m_type = Collider::Type::Ground;
 
-		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
+		for (std::weak_ptr<BaseObject> wpObj : m_wpObjList)
 		{
 			std::shared_ptr<BaseObject> spObj = wpObj.lock();
 			if (spObj)
@@ -184,7 +188,7 @@ void Wolf::UpdateCollision()
 		sphereInfo.m_sphere.Radius = 1.6f;
 		sphereInfo.m_type = Collider::Type::Bump;
 
-		for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
+		for (std::weak_ptr<BaseObject> wpObj : m_wpObjList)
 		{
 			std::shared_ptr<BaseObject> spObj = wpObj.lock();
 			if (spObj)

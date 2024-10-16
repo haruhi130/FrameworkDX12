@@ -193,13 +193,14 @@
     <ClCompile Include="..\Libraries\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Sources\Application\Application.cpp" />
     <ClCompile Include="Sources\Application\GameObject\Camera\GameCamera.cpp" />
-    <ClCompile Include="Sources\Application\GameObject\Cheese\Cheese.cpp" />
-    <ClCompile Include="Sources\Application\GameObject\Ground\Ground.cpp" />
-    <ClCompile Include="Sources\Application\GameObject\Mouse\Mouse.cpp" />
-    <ClCompile Include="Sources\Application\GameObject\Pedestal\Pedestal.cpp" />
-    <ClCompile Include="Sources\Application\GameObject\SkySphere\SkySphere.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Cheese\Cheese.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\ModelObject.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Mouse\Mouse.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Pedestal\Pedestal.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Sky\Sky.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Stage\Stage.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Wolf\Wolf.cpp" />
     <ClCompile Include="Sources\Application\GameObject\Test\Test.cpp" />
-    <ClCompile Include="Sources\Application\GameObject\Wolf\Wolf.cpp" />
     <ClCompile Include="Sources\Application\Scene\BaseScene\BaseScene.cpp" />
     <ClCompile Include="Sources\Application\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="Sources\Application\Scene\ResultScene\ResultScene.cpp" />
@@ -228,6 +229,8 @@
     <ClCompile Include="Sources\Framework\Polygon\Polygon.cpp" />
     <ClCompile Include="Sources\Framework\Shader\ModelShader\ModelShader.cpp" />
     <ClCompile Include="Sources\Framework\Shader\Pipeline\Pipeline.cpp" />
+    <ClCompile Include="Sources\Framework\Shader\PostProcessShader\PostProcessShader.cpp" />
+    <ClCompile Include="Sources\Framework\Shader\RenderTargetChange.cpp" />
     <ClCompile Include="Sources\Framework\Shader\RootSignature\RootSignature.cpp" />
     <ClCompile Include="Sources\Framework\Shader\ShaderBase.cpp" />
     <ClCompile Include="Sources\Framework\Shader\ShaderManager.cpp" />
@@ -259,13 +262,14 @@
     <ClInclude Include="..\Libraries\imgui\ja_glyph_ranges.h" />
     <ClInclude Include="Sources\Application\Application.h" />
     <ClInclude Include="Sources\Application\GameObject\Camera\GameCamera.h" />
-    <ClInclude Include="Sources\Application\GameObject\Cheese\Cheese.h" />
-    <ClInclude Include="Sources\Application\GameObject\Ground\Ground.h" />
-    <ClInclude Include="Sources\Application\GameObject\Mouse\Mouse.h" />
-    <ClInclude Include="Sources\Application\GameObject\Pedestal\Pedestal.h" />
-    <ClInclude Include="Sources\Application\GameObject\SkySphere\SkySphere.h" />
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Cheese\Cheese.h" />
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\ModelObject.h" />
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Mouse\Mouse.h" />
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Pedestal\Pedestal.h" />
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Sky\Sky.h" />
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Stage\Stage.h" />
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Wolf\Wolf.h" />
     <ClInclude Include="Sources\Application\GameObject\Test\Test.h" />
-    <ClInclude Include="Sources\Application\GameObject\Wolf\Wolf.h" />
     <ClInclude Include="Sources\Application\Scene\BaseScene\BaseScene.h" />
     <ClInclude Include="Sources\Application\Scene\GameScene\GameScene.h" />
     <ClInclude Include="Sources\Application\Scene\ResultScene\ResultScene.h" />
@@ -299,6 +303,8 @@
     <ClInclude Include="Sources\Framework\Polygon\Polygon.h" />
     <ClInclude Include="Sources\Framework\Shader\ModelShader\ModelShader.h" />
     <ClInclude Include="Sources\Framework\Shader\Pipeline\Pipeline.h" />
+    <ClInclude Include="Sources\Framework\Shader\PostProcessShader\PostProcessShader.h" />
+    <ClInclude Include="Sources\Framework\Shader\RenderTargetChange.h" />
     <ClInclude Include="Sources\Framework\Shader\RootSignature\RootSignature.h" />
     <ClInclude Include="Sources\Framework\Shader\ShaderBase.h" />
     <ClInclude Include="Sources\Framework\Shader\ShaderManager.h" />
@@ -318,6 +324,7 @@
     <None Include="packages.config" />
     <None Include="Sources\Framework\Shader\HLSL\inc_Common.hlsli" />
     <None Include="Sources\Framework\Shader\HLSL\ModelShader\inc_ModelShader.hlsli" />
+    <None Include="Sources\Framework\Shader\HLSL\PostProcessShader\inc_PostProcessShader.hlsli" />
     <None Include="Sources\Framework\Shader\HLSL\SpriteShader\inc_SpriteShader.hlsli" />
   </ItemGroup>
   <ItemGroup>
@@ -364,6 +371,50 @@
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
       <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compiledBuffer</VariableName>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+    </FxCompile>
+    <FxCompile Include="Sources\Framework\Shader\HLSL\PostProcessShader\PostProcessShader_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ObjectFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ObjectFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ObjectFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Sources\Framework\Shader\HLSL\PostProcessShader\PostProcessShader_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ObjectFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ObjectFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ObjectFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compiledBuffer</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RelativeDir)\%(Filename).shaderinc</HeaderFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Sources\Framework\Shader\HLSL\SpriteShader\SpriteShader_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

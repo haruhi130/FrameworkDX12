@@ -1,8 +1,10 @@
 #pragma once
 
+#include "../ModelObject.h"
+
 class GameCamera;
 
-class Mouse : public BaseObject
+class Mouse : public ModelObject
 {
 public:
 	Mouse() { Init(); }
@@ -10,35 +12,28 @@ public:
 
 	void Update()override;
 	void PostUpdate()override;
-
 	void Draw()override;
 
-	// カメラ取得
+	// 衝突対象を登録
+	void RegistHitObjList(const std::shared_ptr<ModelObject>& obj)
+	{ m_wpObjList.push_back(obj); }
+
+	// カメラ登録
 	void SetCamera(const std::shared_ptr<GameCamera>& camera)
 	{ m_wpCamera = camera; }
-
-	// 衝突対象を登録
-	void RegistHitObjList(const std::shared_ptr<BaseObject>& obj)
-	{ m_wpHitObjList.push_back(obj); }
 
 private:
 	void Init()override;
 
-	// 行列更新
-	void UpdateMatrix();
+	void UpdateMatrix()override;
+	void UpdateRotate(Math::Vector3& moveVec)override;
+	void UpdateCollision()override;
 
-	// 回転更新
-	void UpdateRotate(Math::Vector3& moveVec);
-	// 衝突判定更新
-	void UpdateCollision();
+	// カメラ
+	std::weak_ptr<GameCamera> m_wpCamera;
 
-	// モデル
-	std::shared_ptr<ModelWork> m_spModel = nullptr;
-	// アニメーター
-	std::shared_ptr<Animator> m_spAnimator = nullptr;
-
-	// 座標
-	Math::Vector3 m_pos = {};
+	// Hit対象オブジェクトリスト
+	std::list<std::weak_ptr<ModelObject>> m_wpObjList;
 
 	// 移動速度
 	float m_speed = 0.0f;
@@ -48,23 +43,17 @@ private:
 
 	// 重力
 	float m_gravity = 0.0f;
-	
+
 	// 接地判定
 	bool m_isGround = false;
 
-	// 衝突対象リスト
-	std::list<std::weak_ptr<BaseObject>> m_wpHitObjList;
-
-	// カメラ
-	std::weak_ptr<GameCamera> m_wpCamera;
-
-	/////////////////////////////////////////////////
-	// ステートパターン管理
+/////////////////////////////////////////////////
+// ステートパターン管理
 private:
 	class ActionStateBase
 	{
 	public:
-		virtual ~ActionStateBase(){}
+		virtual ~ActionStateBase() {}
 
 		virtual void Enter(Mouse& owner) = 0;
 		virtual void Update(Mouse& owner) = 0;

@@ -26,7 +26,6 @@ void SpriteShader::Begin(int w, int h)
 
 void SpriteShader::DrawTex(const Texture* tex, int x, int y, int w, int h, const Math::Rectangle* srcRect, const Math::Color& color, const Math::Vector2& pivot)
 {
-
 	if (tex == nullptr) { return; }
 
 	tex->Set(m_cbvCount);
@@ -73,5 +72,5 @@ void SpriteShader::DrawTex(const Texture* tex, int x, int y, int w, int h, const
 	m_spMesh = std::make_shared<Mesh>();
 	m_spMesh->Create(vertices);
 
-	m_spMesh->DrawInstanced(6);
+	m_spMesh->DrawInstanced();
 }

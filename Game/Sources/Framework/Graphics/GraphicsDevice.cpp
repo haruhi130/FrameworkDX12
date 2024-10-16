@@ -98,7 +98,7 @@ void GraphicsDevice::Prepare()
 {
 	auto bbIdx = m_cpSwapChain->GetCurrentBackBufferIndex();
 
-	SetResourceBarrier(m_pBackBuffers[bbIdx].Get(),
+	SetResourceBarrier(m_cpBackBuffers[bbIdx].Get(),
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	auto rtvH = m_upRTVHeap->GetCPUHandle(bbIdx);
@@ -108,15 +108,13 @@ void GraphicsDevice::Prepare()
 	m_cpCmdList->OMSetRenderTargets(1, &rtvH, true, &dsvH);
 
 	m_cpCmdList->ClearRenderTargetView(rtvH, m_clearColor, 0, nullptr);
-
-	m_upDepthStencil->ClearBuffer();
 }
 
 void GraphicsDevice::ScreenFlip()
 {
 	auto bbIdx = m_cpSwapChain->GetCurrentBackBufferIndex();
 
-	SetResourceBarrier(m_pBackBuffers[bbIdx].Get(),
+	SetResourceBarrier(m_cpBackBuffers[bbIdx].Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 
 	m_cpCmdList->Close();
@@ -174,7 +172,8 @@ void GraphicsDevice::ClientToWorld(const POINT& screenPos, float projZ, Math::Ve
 
 	Math::Matrix convertMat = viewportInv * projInv * viewInv;
 
-	Math::Vector3::Transform({ (float)screenPos.x,(float)screenPos.y,projZ }, convertMat, dst);
+	Math::Vector3::Transform(
+		{ (float)screenPos.x,(float)screenPos.y,projZ }, convertMat, dst);
 }
 
 bool GraphicsDevice::CreateFactory()
@@ -356,23 +355,23 @@ bool GraphicsDevice::CreateSwapChain(HWND hWnd, int width, int height)
 	}
 
 	// 使用するバッファ数でresize
-	m_pBackBuffers.resize(swapChainDesc.BufferCount);
+	m_cpBackBuffers.resize(swapChainDesc.BufferCount);
 
 	return true;
 }
 
 bool GraphicsDevice::CreateRTV()
 {
-	for (int idx = 0; idx < m_pBackBuffers.size(); ++idx)
+	for (int idx = 0; idx < m_cpBackBuffers.size(); ++idx)
 	{
-		auto result = m_cpSwapChain->GetBuffer(idx, IID_PPV_ARGS(m_pBackBuffers[idx].GetAddressOf()));
+		auto result = m_cpSwapChain->GetBuffer(idx, IID_PPV_ARGS(m_cpBackBuffers[idx].GetAddressOf()));
 		if (FAILED(result))
 		{
 			return false;
 		}
 
 		// レンダーターゲットビュー作成
-		m_upRTVHeap->CreateRTV(m_pBackBuffers[idx].Get());
+		m_upRTVHeap->CreateRTV(m_cpBackBuffers[idx].Get());
 	}
 
 	return true;

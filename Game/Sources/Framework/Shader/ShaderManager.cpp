@@ -4,6 +4,7 @@ void ShaderManager::Init()
 {
 	// 各シェーダーのInitを呼び出し
 	m_modelShader.Init();
+	m_postProcessShader.Init();
 	m_spriteShader.Init();
 }
 
@@ -34,7 +35,7 @@ void ShaderManager::SetDirectionalLight(const Math::Vector3& dir, const Math::Ve
 	m_cbLight.DirectionalLightColor = color;
 }
 
-void ShaderManager::SetAmbientLight(const float pow)
+void ShaderManager::SetAmbientLight(float pow)
 {
 	m_cbLight.AmbientLightPower = pow;
 }
@@ -44,3 +45,4 @@ void ShaderManager::WriteCBLight() const
 	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
 		->BindAndAttachData(5, m_cbLight);
 }
+

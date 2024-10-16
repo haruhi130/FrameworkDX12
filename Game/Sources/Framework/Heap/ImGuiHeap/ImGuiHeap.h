@@ -6,9 +6,6 @@ public:
 	ImGuiHeap(){}
 	~ImGuiHeap()override{}
 
-	inline ComPtr<ID3D12DescriptorHeap> GetHeap()
-	{ return m_cpHeap; }
-
 private:
 
 };

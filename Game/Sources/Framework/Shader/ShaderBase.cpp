@@ -2,6 +2,8 @@
 
 bool ShaderBase::Init()
 {
+	m_cbvCount = 0;
+
 	return true;
 }
 
