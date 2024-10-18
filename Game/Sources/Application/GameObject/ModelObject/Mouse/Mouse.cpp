@@ -1,5 +1,6 @@
 #include "Mouse.h"
 #include "../../Camera/GameCamera.h"
+#include "../../../Scene/SceneManager.h"
 
 void Mouse::Update()
 {
@@ -8,6 +9,19 @@ void Mouse::Update()
 	// 重力処理
 	m_pos.y -= m_gravity;
 	m_gravity += 0.005f;
+
+	--m_coolTime;
+	if (m_coolTime <= 0)
+	{
+		m_coolTime = 0.0f;
+	}
+
+	if (GetAsyncKeyState('B'))
+	{
+		m_isMasked = false;
+		m_spModel = m_spOriginalModel;
+		m_spAnimator->SetAnimation(m_spOriginalModel->GetModelData()->GetAnimation("Idle"));
+	}
 
 	// ステート更新
 	if (m_currentAction)
@@ -26,9 +40,12 @@ void Mouse::PostUpdate()
 	if (!m_spModel) { return; }
 	if (!m_spAnimator) { return; }
 
-	// アニメーション処理
-	m_spAnimator->ProgressTime(m_spModel->WorkNodes());
-	m_spModel->CalcNodeMatrices();
+	if (!m_isMasked)
+	{
+		// アニメーション処理
+		m_spAnimator->ProgressTime(m_spOriginalModel->WorkNodes());
+		m_spOriginalModel->CalcNodeMatrices();
+	}
 }
 
 void Mouse::Draw()
@@ -37,7 +54,17 @@ void Mouse::Draw()
 
 	// モデル描画
 	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
-}void Mouse::Init()
+}
+void Mouse::ImGuiUpdate()
+{
+	ImGui::Begin(u8"MouseCT");
+	ImGui::SetWindowSize(ImVec2(0, 100));
+	ImGui::LabelText("MouseCT", "CT : %f", m_coolTime);
+
+	ImGui::End();
+}
+
+void Mouse::Init()
 {
 	// モデル読み込み
 	if (!m_spModel)
@@ -45,6 +72,7 @@ void Mouse::Draw()
 		m_spModel = std::make_shared<ModelWork>();
 		m_spModel->SetModelData(Assets::GetInstance().m_modelDatas.
 			GetData("Assets/Models/Mouse/Mouse.gltf"));
+		m_spOriginalModel = m_spModel;
 	}
 
 	m_speed = 5.0f;
@@ -64,7 +92,7 @@ void Mouse::Draw()
 	ChangeActionState(std::make_shared<ActionIdle>());
 
 	m_upCollider = std::make_unique<Collider>();
-	m_upCollider->RegisterCollisionShape("Mouse", m_spModel, Collider::Type::Sight | Collider::Type::Bump);
+	m_upCollider->RegisterCollisionShape("Mouse", m_spOriginalModel, Collider::Type::Sight | Collider::Type::Bump);
 }
 
 void Mouse::UpdateMatrix()
@@ -214,7 +242,13 @@ void Mouse::UpdateCollision()
 
 						for (auto& ret : retRayList)
 						{
-							std::shared_ptr<ModelWork> spModel = spObj->GetModel();
+							m_maskedModel = spObj->GetModel();
+							if (m_coolTime <= 0)
+							{
+								m_isMasked = true;
+								m_coolTime = 60.0f * 5;
+								m_spModel.swap(m_maskedModel);
+							}
 						}
 					}
 				}
@@ -226,7 +260,7 @@ void Mouse::UpdateCollision()
 	{
 		Collider::SphereInfo sphereInfo;
 		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 0.8f, 0);
-		sphereInfo.m_sphere.Radius = 2.0f;
+		sphereInfo.m_sphere.Radius = 3.0f;
 		sphereInfo.m_type = Collider::Type::Goal;
 
 		for (std::weak_ptr<BaseObject> wpObj : m_wpObjList)
@@ -239,7 +273,7 @@ void Mouse::UpdateCollision()
 
 				for (auto& ret : retBumpList)
 				{
-					
+					SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Result);
 				}
 			}
 		}
@@ -260,7 +294,11 @@ void Mouse::ChangeActionState(std::shared_ptr<ActionStateBase> nextState)
 // 待機状態
 void Mouse::ActionIdle::Enter(Mouse& owner)
 {
-	owner.m_spAnimator->SetAnimation(owner.m_spModel->GetModelData()->GetAnimation("Idle"));
+	if (!owner.m_isMasked)
+	{
+		owner.m_spAnimator->SetAnimation(owner.m_spOriginalModel->GetModelData()->GetAnimation("Idle"));
+		owner.m_spAnimator->ResetAdvanceTime();
+	}
 }
 
 void Mouse::ActionIdle::Update(Mouse& owner)
@@ -285,7 +323,11 @@ void Mouse::ActionIdle::Exit(Mouse& owner)
 // 歩き状態
 void Mouse::ActionWalk::Enter(Mouse& owner)
 {
-	owner.m_spAnimator->SetAnimation(owner.m_spModel->GetModelData()->GetAnimation("Walk"));
+	if (!owner.m_isMasked)
+	{
+		owner.m_spAnimator->SetAnimation(owner.m_spOriginalModel->GetModelData()->GetAnimation("Walk"));
+		owner.m_spAnimator->ResetAdvanceTime();
+	}
 }
 
 void Mouse::ActionWalk::Update(Mouse& owner)

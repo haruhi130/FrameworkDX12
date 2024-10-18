@@ -2,9 +2,9 @@
 #include "../inc_Common.hlsli"
 
 Texture2D g_diffuseTex : register(t0);              // Diffuseテクスチャ
-Texture2D g_normalTex : register(t1);               // Normalテクスチャ
+Texture2D g_emissiveTex : register(t1);             // Emissiveテクスチャ
 Texture2D g_metallicRoughnessTex : register(t2);    // MetallicRoughnessテクスチャ
-Texture2D g_emissiveTex : register(t3);             // Emissiveテクスチャ
+Texture2D g_normalTex : register(t3);               // Normalテクスチャ
 
 SamplerState g_ssWP : register(s0); // Wrap  : Point
 SamplerState g_ssCP : register(s1); // Clamp : Point

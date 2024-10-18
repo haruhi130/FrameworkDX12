@@ -92,7 +92,7 @@ void Application::Execute()
 	if (spTime != nullptr) { spTime->Start(); }
 
 	// 音再生
-	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);
+	//Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);
 
 	//===============================================
 	// メインゲームループ

@@ -147,8 +147,20 @@ void ModelShader::SetMaterial(const Material& material)
 		->BindAndAttachData(4, m_cbMaterial);
 
 	// ƒ}ƒeƒŠƒAƒ‹‰æ‘œ‚ðÝ’è
-	material.spBaseColorTex->Set(m_cbvCount);
-	material.spNormalTex->Set(m_cbvCount + 1);
-	material.spMetallicRoughnessTex->Set(m_cbvCount + 2);
-	material.spEmissiveTex->Set(m_cbvCount + 3);
+	if (material.spBaseColorTex != nullptr)
+	{
+		material.spBaseColorTex->Set(m_cbvCount);
+	}
+	if (material.spEmissiveTex != nullptr)
+	{
+		material.spEmissiveTex->Set(m_cbvCount + 1);
+	}
+	if (material.spMetallicRoughnessTex != nullptr)
+	{
+		material.spMetallicRoughnessTex->Set(m_cbvCount + 2);
+	}
+	if (material.spNormalTex != nullptr)
+	{
+		material.spNormalTex->Set(m_cbvCount + 3);
+	}
 }

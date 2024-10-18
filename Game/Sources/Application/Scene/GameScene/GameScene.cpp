@@ -23,7 +23,7 @@ void GameScene::Event()
 
 void GameScene::Init()
 {
-	//ShowCursor(false);
+	ShowCursor(false);
 
 	std::shared_ptr<Test> test = std::make_shared<Test>();
 	test->SetRectangle({ 0,0,1600,900 });

@@ -11,7 +11,6 @@ void Test::Init()
 	if (!m_spTex)
 	{
 		m_spTex = std::make_shared<Texture>();
-		m_spTex = Assets::GetInstance().m_textures.GetData("Assets/Textures/back.png");
-		//m_spTex->Load("Assets/Textures/back.png");
+		m_spTex->Load("Assets/Textures/back.png");
 	}
 }

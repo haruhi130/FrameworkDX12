@@ -22,6 +22,8 @@ public:
 	void SetCamera(const std::shared_ptr<GameCamera>& camera)
 	{ m_wpCamera = camera; }
 
+	void ImGuiUpdate()override;
+
 private:
 	void Init()override;
 
@@ -46,6 +48,13 @@ private:
 
 	// 接地判定
 	bool m_isGround = false;
+
+	float m_coolTime = 60.0f;
+	bool m_isMasked = false;
+
+	std::shared_ptr<ModelWork> m_maskedModel;
+
+	std::shared_ptr<ModelWork> m_spOriginalModel;
 
 /////////////////////////////////////////////////
 // ステートパターン管理

@@ -103,7 +103,7 @@ void ModelData::CreateMaterials(const std::shared_ptr<GLTFModel>& spGltfModel, c
 	m_materials.resize(spGltfModel->Materials.size());
 	std::string dirPath = GetDirFromPath(fileDir);
 
-	for (UINT i = 0; i < m_materials.size(); ++i)
+	for (UINT i = 0; i < m_materials.size(); i++)
 	{
 		const GLTFMaterial& rSrcMaterial = spGltfModel->Materials[i];
 		Material& rDstMaterial = m_materials[i];
@@ -115,11 +115,19 @@ void ModelData::CreateMaterials(const std::shared_ptr<GLTFModel>& spGltfModel, c
 		{
 			rDstMaterial.spBaseColorTex->Load(dirPath + rSrcMaterial.BaseColorTexName);
 		}
+		else
+		{
+			rDstMaterial.spBaseColorTex = nullptr;
+		}
 
 		rDstMaterial.spEmissiveTex = std::make_shared<Texture>();
 		if (!rSrcMaterial.EmissiveTexName.empty())
 		{
 			rDstMaterial.spEmissiveTex->Load(dirPath + rSrcMaterial.EmissiveTexName);
+		}
+		else
+		{
+			rDstMaterial.spEmissiveTex = nullptr;
 		}
 
 		rDstMaterial.spMetallicRoughnessTex = std::make_shared<Texture>();
@@ -127,11 +135,19 @@ void ModelData::CreateMaterials(const std::shared_ptr<GLTFModel>& spGltfModel, c
 		{
 			rDstMaterial.spMetallicRoughnessTex->Load(dirPath + rSrcMaterial.MetallicRoughnessTexName);
 		}
+		else
+		{
+			rDstMaterial.spMetallicRoughnessTex = nullptr;
+		}
 
 		rDstMaterial.spNormalTex = std::make_shared<Texture>();
 		if (!rSrcMaterial.NormalTexName.empty())
 		{
 			rDstMaterial.spNormalTex->Load(dirPath + rSrcMaterial.NormalTexName);
+		}
+		else
+		{
+			rDstMaterial.spNormalTex = nullptr;
 		}
 
 		// äÓñ{êF
