@@ -92,7 +92,7 @@ void Application::Execute()
 	if (spTime != nullptr) { spTime->Start(); }
 
 	// 音再生
-	//Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/TitleBGM.wav", true);
+	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/Under_line.wav", true);
 
 	//===============================================
 	// メインゲームループ
@@ -121,19 +121,19 @@ void Application::Execute()
 
 		// 通常更新
 		Update();
-		if (GetAsyncKeyState('O') & 0x8000)
+		if (GetAsyncKeyState('V') & 0x8000)
 		{
 			Audio::GetInstance().Stop();
 		}
-		if (GetAsyncKeyState('P') & 0x8000)
+		if (GetAsyncKeyState('B') & 0x8000)
 		{
 			Audio::GetInstance().Pause();
 		}
-		if (GetAsyncKeyState('I') & 0x8000)
+		if (GetAsyncKeyState('N') & 0x8000)
 		{
 			Audio::GetInstance().Resume();
 		}
-		if (GetAsyncKeyState('U') & 0x8000)
+		if (GetAsyncKeyState('M') & 0x8000)
 		{
 			Audio::GetInstance().ExitLoop();
 		}
@@ -160,7 +160,7 @@ void Application::Execute()
 
 		//=============================================
 		// ImGui処理
-		ImGuiUpdate();
+		//ImGuiUpdate();
 
 		// 時間管理
 		ServiceLocator::Update();

@@ -91,6 +91,17 @@ private:
 		void Exit(Mouse& owner)	override;
 	};
 
+	// •Ï‘•ó‘Ô
+	class ActionMasked : public ActionStateBase
+	{
+	public:
+		~ActionMasked()override {}
+
+		void Enter(Mouse& owner) override;
+		void Update(Mouse& owner) override;
+		void Exit(Mouse& owner)	override;
+	};
+
 	void ChangeActionState(std::shared_ptr<ActionStateBase> nextState);
 	std::shared_ptr<ActionStateBase> m_currentAction = nullptr;
 };

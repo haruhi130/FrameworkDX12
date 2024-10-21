@@ -10,6 +10,7 @@ public:
 		Title,
 		Game,
 		Result,
+		Failed,
 	};
 
 	void PreUpdate();

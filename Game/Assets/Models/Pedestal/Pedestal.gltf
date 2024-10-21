@@ -30,7 +30,9 @@
 					"index":1
 				},
 				"metallicFactor":0,
-				"roughnessFactor":0.5
+				"metallicRoughnessTexture":{
+					"index":2
+				}
 			}
 		}
 	],
@@ -58,6 +60,10 @@
 		{
 			"sampler":0,
 			"source":1
+		},
+		{
+			"sampler":0,
+			"source":2
 		}
 	],
 	"images":[
@@ -70,6 +76,11 @@
 			"mimeType":"image/png",
 			"name":"stone_4_basecolor-1K.png",
 			"uri":"stone_4_basecolor-1K_png.png"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"stone_4_roughness-1K",
+			"uri":"stone_4_roughness-1K.png"
 		}
 	],
 	"accessors":[

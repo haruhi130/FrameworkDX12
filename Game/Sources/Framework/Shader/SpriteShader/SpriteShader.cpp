@@ -5,18 +5,18 @@ bool SpriteShader::Init()
 	// シェーダーに渡す情報設定
 	RenderingSetting renderingSetting = {};
 	renderingSetting.InputLayouts =
-	{ InputLayout::POSITION,InputLayout::TEXCOORD};
+	{ InputLayout::POSITION,InputLayout::TEXCOORD };
 	renderingSetting.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
 
 	Create(L"SpriteShader/SpriteShader", renderingSetting,
-		{ RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::SRV});
+		{ RangeType::CBV,RangeType::CBV,RangeType::CBV,RangeType::SRV });
 
 	return true;
 }
 
 void SpriteShader::Begin(int w, int h)
 {
-	ShaderBase::Begin(w,h);
+	ShaderBase::Begin(w, h);
 
 	m_cbProj.mProj = DirectX::XMMatrixOrthographicLH((float)w, (float)h, 0, 1);
 
@@ -24,7 +24,7 @@ void SpriteShader::Begin(int w, int h)
 		->BindAndAttachData(2, m_cbProj);
 }
 
-void SpriteShader::DrawTex(const Texture* tex, int x, int y, int w, int h, const Math::Rectangle* srcRect, const Math::Color& color, const Math::Vector2& pivot)
+void SpriteShader::DrawTexture(const Texture* tex,const Math::Color& color)
 {
 	if (tex == nullptr) { return; }
 
@@ -34,43 +34,6 @@ void SpriteShader::DrawTex(const Texture* tex, int x, int y, int w, int h, const
 	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
 		->BindAndAttachData(1, m_cbSprite);
 
-	Math::Vector2 uvMin = { 0,0 };
-	Math::Vector2 uvMax = { 1,1 };
-
-	if (srcRect)
-	{
-		uvMin.x = srcRect->x / (float)tex->GetInfo().Width;
-		uvMin.y = srcRect->y / (float)tex->GetInfo().Height;
-
-		uvMax.x = (srcRect->x + srcRect->width) / (float)tex->GetInfo().Width;
-		uvMax.y = (srcRect->y + srcRect->height) / (float)tex->GetInfo().Height;
-	}
-
-	float x1 = (float)x;
-	float y1 = (float)y;
-	float x2 = (float)(x + w);
-	float y2 = (float)(y + h);
-
-	x1 -= pivot.x * w;
-	x2 -= pivot.x * w;
-	y1 -= pivot.y * h;
-	y2 -= pivot.y * h;
-
-	Vertex vertex[] = {
-		{ {x1, y1, 0},	{uvMin.x, uvMax.y} },
-		{ {x1, y2, 0},	{uvMin.x, uvMin.y} },
-		{ {x2, y1, 0},	{uvMax.x, uvMax.y} },
-		{ {x2, y2, 0},	{uvMax.x, uvMin.y} }
-	};
-
-	std::vector<Vertex> vertices;
-	for (int i = 0; i < 4; ++i)
-	{
-		vertices.emplace_back(vertex[i]);
-	}
-
-	m_spMesh = std::make_shared<Mesh>();
-	m_spMesh->Create(vertices);
-
-	m_spMesh->DrawInstanced();
+	tex->SetToDevice();
+	GraphicsDevice::GetInstance().GetCmdList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }

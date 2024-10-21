@@ -142,9 +142,6 @@
     <Filter Include="Framework\Shader\HLSL\SpriteShader">
       <UniqueIdentifier>{61176808-7942-4704-bbef-8dbbf6af8480}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\GameObject\Test">
-      <UniqueIdentifier>{c4df280a-ec35-4207-b74e-d36a4203702b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Shader\HLSL\ModelShader">
       <UniqueIdentifier>{c262dadd-aec8-483c-a580-e89566200f41}</UniqueIdentifier>
     </Filter>
@@ -156,9 +153,6 @@
     </Filter>
     <Filter Include="Application\GameObject\ModelObject">
       <UniqueIdentifier>{b7e71088-01bb-4b24-9968-4af00f41ee6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\GameObject\OtherObject">
-      <UniqueIdentifier>{8abe7efb-bf24-4496-8ae0-ec63739ffa9c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\GameObject\ModelObject\Mouse">
       <UniqueIdentifier>{481e51f3-6e73-493b-950d-e2b6d06a3e60}</UniqueIdentifier>
@@ -177,6 +171,24 @@
     </Filter>
     <Filter Include="Application\GameObject\ModelObject\Pedestal">
       <UniqueIdentifier>{9c23c38e-d305-40d1-9fb8-8cb79d4d6615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Easing">
+      <UniqueIdentifier>{6f32ae16-78e3-436e-a28d-ee0cd21f579d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\SpriteObject">
+      <UniqueIdentifier>{49c6a320-4f49-4a88-bf2b-4c2313fe2d4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\FailedResultScene">
+      <UniqueIdentifier>{45d0a506-9fd0-460e-ac1b-799b8c39a935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Box">
+      <UniqueIdentifier>{92daba65-71c2-4eaa-a7db-24ba4f1f57dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Meat">
+      <UniqueIdentifier>{93e46b80-2c86-47ab-b5c0-6d829b2fa8b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\RiceBall">
+      <UniqueIdentifier>{49851a6d-15c5-40a3-817b-1c43c4c7541c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -314,9 +326,6 @@
     <ClCompile Include="Sources\Framework\Shader\SpriteShader\SpriteShader.cpp">
       <Filter>Framework\Shader\SpriteShader</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Application\GameObject\Test\Test.cpp">
-      <Filter>Application\GameObject\Test</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Framework\Shader\RenderTargetChange.cpp">
       <Filter>Framework\Shader</Filter>
     </ClCompile>
@@ -343,6 +352,21 @@
     </ClCompile>
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Pedestal\Pedestal.cpp">
       <Filter>Application\GameObject\ModelObject\Pedestal</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\SpriteObject\SpriteObject.cpp">
+      <Filter>Application\GameObject\SpriteObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\Scene\FailedResultScene\FailedResultScene.cpp">
+      <Filter>Application\Scene\FailedResultScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Box\Box.cpp">
+      <Filter>Application\GameObject\ModelObject\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Meat\Meat.cpp">
+      <Filter>Application\GameObject\ModelObject\Meat</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\RiceBall\RiceBall.cpp">
+      <Filter>Application\GameObject\ModelObject\RiceBall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -516,9 +540,6 @@
     <ClInclude Include="Sources\Framework\Shader\SpriteShader\SpriteShader.h">
       <Filter>Framework\Shader\SpriteShader</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Application\GameObject\Test\Test.h">
-      <Filter>Application\GameObject\Test</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Framework\Shader\RenderTargetChange.h">
       <Filter>Framework\Shader</Filter>
     </ClInclude>
@@ -545,6 +566,24 @@
     </ClInclude>
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Pedestal\Pedestal.h">
       <Filter>Application\GameObject\ModelObject\Pedestal</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\System\Easing\Easing.h">
+      <Filter>System\Easing</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\SpriteObject\SpriteObject.h">
+      <Filter>Application\GameObject\SpriteObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\Scene\FailedResultScene\FailedResultScene.h">
+      <Filter>Application\Scene\FailedResultScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Box\Box.h">
+      <Filter>Application\GameObject\ModelObject\Box</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Meat\Meat.h">
+      <Filter>Application\GameObject\ModelObject\Meat</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\RiceBall\RiceBall.h">
+      <Filter>Application\GameObject\ModelObject\RiceBall</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

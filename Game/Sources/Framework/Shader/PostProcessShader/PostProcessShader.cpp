@@ -10,8 +10,7 @@ bool PostProcessShader::Init()
 	{ InputLayout::POSITION,InputLayout::TEXCOORD };
 	renderingSetting.Formats = { DXGI_FORMAT_R8G8B8A8_UNORM };
 
-	Create(L"PostProcessShader/PostProcessShader", renderingSetting, 
-		{ RangeType::SRV });
+	Create(L"PostProcessShader/PostProcessShader", renderingSetting,{ RangeType::SRV });
 	
 	return true;
 }

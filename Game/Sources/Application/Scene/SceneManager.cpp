@@ -4,6 +4,7 @@
 #include "GameScene/GameScene.h"
 #include "TitleScene/TitleScene.h"
 #include "ResultScene/ResultScene.h"
+#include "FailedResultScene/FailedResultScene.h"
 
 void SceneManager::PreUpdate()
 {
@@ -59,16 +60,16 @@ void SceneManager::ChangeScene(SceneType type)
 	switch (type)
 	{
 	case SceneType::Title:
-		GraphicsDevice::GetInstance().SetBackBufferColor({ 0.8f,0.5f,0.3f,1.0f });
 		m_currentScene = std::make_shared<TitleScene>();
 		break;
 	case SceneType::Game:
-		GraphicsDevice::GetInstance().SetBackBufferColor({ 0.5f,0.5f,0.5f,1.0f });
 		m_currentScene = std::make_shared<GameScene>();
 		break;
 	case SceneType::Result:
-		GraphicsDevice::GetInstance().SetBackBufferColor({ 0.1f,0.3f,0.5f,1.0f });
 		m_currentScene = std::make_shared<ResultScene>();
+		break;
+	case SceneType::Failed:
+		m_currentScene = std::make_shared<FailedResultScene>();
 		break;
 	}
 

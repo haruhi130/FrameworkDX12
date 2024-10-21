@@ -50,8 +50,8 @@ namespace ConstantBufferData
 	struct LightInfo
 	{
 		int IsUseLight = 0;
-		Math::Vector3 DirectionalLightDir = { 0,-1,1 };
+		Math::Vector3 DirectionalLightDir = { 1,-1,-1 };
 		Math::Vector3 DirectionalLightColor = { 1,1,1 };
-		float AmbientLightPower = 1.0f;
+		float AmbientLightPower = 0.9f;
 	};
 }

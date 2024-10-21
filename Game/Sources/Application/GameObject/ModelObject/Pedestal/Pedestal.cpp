@@ -16,7 +16,7 @@ void Pedestal::Init()
 	}
 
 	Math::Matrix mScale = Math::Matrix::CreateScale(1.5f);
-	Math::Matrix mTrans = Math::Matrix::CreateTranslation(15, 0, 0);
+	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_pos);
 
 	m_mWorld = mScale * mTrans;
 

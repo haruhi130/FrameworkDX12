@@ -16,13 +16,6 @@ void Mouse::Update()
 		m_coolTime = 0.0f;
 	}
 
-	if (GetAsyncKeyState('B'))
-	{
-		m_isMasked = false;
-		m_spModel = m_spOriginalModel;
-		m_spAnimator->SetAnimation(m_spOriginalModel->GetModelData()->GetAnimation("Idle"));
-	}
-
 	// ステート更新
 	if (m_currentAction)
 	{
@@ -59,7 +52,7 @@ void Mouse::ImGuiUpdate()
 {
 	ImGui::Begin(u8"MouseCT");
 	ImGui::SetWindowSize(ImVec2(0, 100));
-	ImGui::LabelText("MouseCT", "CT : %f", m_coolTime);
+	ImGui::LabelText("MouseCT", "CT : %.2f", m_coolTime);
 
 	ImGui::End();
 }
@@ -205,7 +198,7 @@ void Mouse::UpdateCollision()
 
 	// Ray : Event
 	{
-		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+		if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
 		{
 			// マウス情報
 			POINT mousePos = {};
@@ -313,6 +306,11 @@ void Mouse::ActionIdle::Update(Mouse& owner)
 	{
 		owner.ChangeActionState(std::make_shared<ActionWalk>());
 	}
+
+	if (owner.m_isMasked)
+	{
+		owner.ChangeActionState(std::make_shared<ActionMasked>());
+	}
 }
 
 void Mouse::ActionIdle::Exit(Mouse& owner)
@@ -357,6 +355,11 @@ void Mouse::ActionWalk::Update(Mouse& owner)
 		move += vec;
 	}
 
+	if (owner.m_isMasked)
+	{
+		owner.ChangeActionState(std::make_shared<ActionMasked>());
+	}
+
 	if (move.LengthSquared() == 0)
 	{
 		owner.ChangeActionState(std::make_shared<ActionIdle>());
@@ -380,4 +383,29 @@ void Mouse::ActionWalk::Update(Mouse& owner)
 
 void Mouse::ActionWalk::Exit(Mouse& owner)
 {
+}
+
+void Mouse::ActionMasked::Enter(Mouse& owner)
+{
+}
+
+void Mouse::ActionMasked::Update(Mouse& owner)
+{
+	owner.m_upCollider->SetEnable(Collider::Type::Sight, false);
+
+	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
+	{
+		owner.m_isMasked = false;
+		owner.m_spModel = owner.m_spOriginalModel;
+	}
+
+	if (!owner.m_isMasked)
+	{
+		owner.ChangeActionState(std::make_shared<ActionIdle>());
+	}
+}
+
+void Mouse::ActionMasked::Exit(Mouse& owner)
+{
+	owner.m_upCollider->SetEnable(Collider::Type::Sight, true);
 }

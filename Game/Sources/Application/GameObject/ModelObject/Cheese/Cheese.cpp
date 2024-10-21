@@ -16,7 +16,7 @@ void Cheese::Init()
 
 	Math::Matrix mScale = Math::Matrix::CreateScale(1.0f);
 	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(45.0f));
-	Math::Matrix mTrans = Math::Matrix::CreateTranslation(15.1f, 3.1f, 0.1f);
+	Math::Matrix mTrans = Math::Matrix::CreateTranslation(0.1f, 3.1f, 25.1f);
 	m_mWorld = mScale * mRot * mTrans;
 
 	m_upCollider = std::make_unique<Collider>();

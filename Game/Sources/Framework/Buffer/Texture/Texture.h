@@ -3,10 +3,12 @@
 class Texture : public Buffer
 {
 public:
-	~Texture()override{}
+	~Texture()override {}
 
 	// テクスチャロード
 	bool Load(const std::string& filePath);
+
+	bool Create(const std::string& fileName, const Math::Vector2& pos, const Math::Rectangle* rect = nullptr, const Math::Vector2& pivot = { 0.5f,0.5f });
 
 	bool CreateRenderTarget();
 
@@ -20,11 +22,15 @@ public:
 	}
 
 	// SRV番号取得
-	inline int GetSRVNumber() const 
-	{ return m_SRVNumber; }
+	inline int GetSRVNumber() const
+	{
+		return m_SRVNumber;
+	}
 
 	inline const D3D12_RESOURCE_DESC& GetInfo() const
-	{ return m_desc; }
+	{
+		return m_desc;
+	}
 
 private:
 	int m_SRVNumber = 0;

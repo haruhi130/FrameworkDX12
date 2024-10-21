@@ -42,6 +42,8 @@ private:
 	// 接地判定
 	bool m_isGround = false;
 
+	float m_sightTime = 0.0f;
+
 /////////////////////////////////////////////////
 // ステートパターン管理
 private:

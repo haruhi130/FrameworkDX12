@@ -1,4 +1,5 @@
 #include "Wolf.h"
+#include "../../../Scene/SceneManager.h"
 
 void Wolf::Update()
 {
@@ -7,6 +8,16 @@ void Wolf::Update()
 	// 重力処理
 	m_pos.y -= m_gravity;
 	m_gravity += 0.005f;
+
+	if (m_sightTime <= 0)
+	{
+		m_sightTime = 0.0f;
+	}
+
+	if (m_sightTime >= 60.0f * 3)
+	{
+		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Failed);
+	}
 
 	// ステート更新
 	if (m_currentAction)
@@ -47,6 +58,7 @@ void Wolf::ImGuiUpdate()
 	ImGui::Begin(u8"Wolf視界");
 	ImGui::SetWindowSize(ImVec2(100, 100), ImGuiCond_::ImGuiCond_FirstUseEver);
 	ImGui::Checkbox(u8"有効", &m_isSight);
+	ImGui::LabelText("sightTime", "ST : %f", m_sightTime);
 
 	ImGui::End();
 }
@@ -60,7 +72,7 @@ void Wolf::Init()
 			GetData("Assets/Models/Wolf/Wolf.gltf"));
 	}
 
-	m_pos = { 0,0,20 };
+	m_pos = { -5,0,20 };
 
 	// 初期計算
 	Math::Matrix mScale = Math::Matrix::CreateScale(15.0f);
@@ -96,7 +108,7 @@ void Wolf::UpdateCollision()
 		// 視界範囲となる球判定を作成
 		Collider::SphereInfo sphereInfo;
 		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 1.5f, 0);
-		sphereInfo.m_sphere.Radius = 7.0f;
+		sphereInfo.m_sphere.Radius = 5.0f;
 		sphereInfo.m_type = Collider::Type::Sight;
 
 		for (std::weak_ptr<BaseObject> wpObj : m_wpObjList)
@@ -221,6 +233,7 @@ void Wolf::ActionIdle::Enter(Wolf& owner)
 
 void Wolf::ActionIdle::Update(Wolf& owner)
 {
+	++owner.m_sightTime;
 	if (!owner.m_isSight)
 	{
 		owner.ChangeActionState(std::make_shared<ActionWalk>());
@@ -242,6 +255,8 @@ void Wolf::ActionWalk::Update(Wolf& owner)
 	{
 		owner.ChangeActionState(std::make_shared<ActionIdle>());
 	}
+
+	--owner.m_sightTime;
 
 	Math::Vector3 vec = Math::Vector3::Zero;
 	vec.z = -0.5f;

@@ -9,6 +9,9 @@
 // InputSystem
 #include "Input/InputSystem.h"
 
+// Easing
+#include "Easing/Easing.h"
+
 // Service
 #include "Service/Service.h"
 
