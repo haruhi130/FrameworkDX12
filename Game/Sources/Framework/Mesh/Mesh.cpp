@@ -94,16 +94,46 @@ void Mesh::Create(const std::vector<MeshVertex>& vertices,
 	m_isSkinMesh = isSkinMesh;
 }
 
-void Mesh::Create(std::vector<Vertex> vertices)
+void Mesh::Create(const Texture& tex, const Math::Vector2& pos, const Math::Rectangle* rect, const Math::Vector2& pivot)
 {
+	Math::Vector2 uvMin = { 0,0 };
+	Math::Vector2 uvMax = { 1,1 };
+
+	if (rect)
+	{
+		uvMin.x = rect->x / (float)tex.GetInfo().Width;
+		uvMin.y = rect->y / (float)tex.GetInfo().Height;
+
+		uvMax.x = (rect->x + rect->width) / (float)tex.GetInfo().Width;
+		uvMax.y = (rect->y + rect->height) / (float)tex.GetInfo().Height;
+	}
+
+	float x1 = (float)pos.x;
+	float y1 = (float)pos.y;
+	int w = (int)tex.GetInfo().Width;
+	int h = (int)tex.GetInfo().Height;
+	float x2 = (float)(pos.x + w);
+	float y2 = (float)(pos.y + h);
+
+	x1 -= pivot.x * w;
+	x2 -= pivot.x * w;
+	y1 -= pivot.y * h;
+	y2 -= pivot.y * h;
+
+	Vertex vertex[] =
+	{
+		{ {x1, y1, 0},	{uvMin.x, uvMax.y} },
+		{ {x1, y2, 0},	{uvMin.x, uvMin.y} },
+		{ {x2, y1, 0},	{uvMax.x, uvMax.y} },
+		{ {x2, y2, 0},	{uvMax.x, uvMin.y} }
+	};
+
 	D3D12_HEAP_PROPERTIES heapProp = {};
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-	heapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
-	heapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
 
 	D3D12_RESOURCE_DESC resDesc = {};
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resDesc.Width = sizeof(Vertex) * vertices.size();
+	resDesc.Width = sizeof(vertex);
 	resDesc.Height = 1;
 	resDesc.DepthOrArraySize = 1;
 	resDesc.MipLevels = 1;
@@ -112,19 +142,17 @@ void Mesh::Create(std::vector<Vertex> vertices)
 	resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	// 頂点バッファ作成
-	auto result = GraphicsDevice::GetInstance().GetDevice()->
-		CreateCommittedResource(
-			&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc,
-			D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(m_cpVBuffer.ReleaseAndGetAddressOf()));
-	if (FAILED(result))
-	{
-		assert(0 && "頂点バッファ作成失敗");
-	}
+	auto result = GraphicsDevice::GetInstance().GetDevice()
+		->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE,
+			&resDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(m_cpVBuffer.ReleaseAndGetAddressOf()));
 
-	// 頂点バッファデータをビューに書き込み
+	Vertex* vbMap = nullptr;
+	m_cpVBuffer->Map(0, nullptr, (void**)&vbMap);
+	std::copy(std::begin(vertex), std::end(vertex), vbMap);
+	m_cpVBuffer->Unmap(0, nullptr);
+
 	m_vbView.BufferLocation = m_cpVBuffer->GetGPUVirtualAddress();
-	m_vbView.SizeInBytes = (UINT)resDesc.Width;
+	m_vbView.SizeInBytes = sizeof(vertex);
 	m_vbView.StrideInBytes = sizeof(Vertex);
 
 	std::vector<UINT> indices;
@@ -137,36 +165,18 @@ void Mesh::Create(std::vector<Vertex> vertices)
 
 	resDesc.Width = sizeof(UINT) * indices.size();
 
-	// インデックスバッファ作成
-	result = GraphicsDevice::GetInstance().GetDevice()->
-		CreateCommittedResource(
-			&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc,
-			D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(m_cpIBuffer.ReleaseAndGetAddressOf()));
-	if (FAILED(result))
-	{
-		assert(0 && "インデックスバッファ作成失敗");
-	}
+	result = GraphicsDevice::GetInstance().GetDevice()->CreateCommittedResource(
+		&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(m_cpIBuffer.ReleaseAndGetAddressOf()));
 
-	// インデックスバッファデータをビューに書き込み
-	m_ibView.BufferLocation = m_cpIBuffer->GetGPUVirtualAddress();
-	m_ibView.SizeInBytes = (UINT)resDesc.Width;
-	m_ibView.Format = DXGI_FORMAT_R32_UINT;
-
-	// 頂点情報コピー
-	Vertex* vbMap = nullptr;
-	{
-		m_cpVBuffer->Map(0, nullptr, (void**)&vbMap);
-		std::copy(std::begin(vertices), std::end(vertices), vbMap);
-		m_cpVBuffer->Unmap(0, nullptr);
-	}
-
-	// インデックス情報コピー
 	UINT* ibMap = nullptr;
-	{
-		m_cpIBuffer->Map(0, nullptr, (void**)&ibMap);
-		std::copy(std::begin(indices), std::end(indices), ibMap);
-		m_cpIBuffer->Unmap(0, nullptr);
-	}
+	m_cpIBuffer->Map(0, nullptr, (void**)&ibMap);
+	std::copy(std::begin(indices), std::end(indices), ibMap);
+	m_cpIBuffer->Unmap(0, nullptr);
+
+	m_ibView.BufferLocation = m_cpIBuffer->GetGPUVirtualAddress();
+	m_ibView.Format = DXGI_FORMAT_R32_UINT;
+	m_ibView.SizeInBytes = (UINT)resDesc.Width;
 }
 
 void Mesh::DrawSubset(int subsetNo) const
@@ -183,10 +193,18 @@ void Mesh::DrawSubset(int subsetNo) const
 	);
 }
 
-void Mesh::DrawInstanced(UINT vertexCount) const
+void Mesh::DrawIndexed(UINT vertexCount) const
 {
 	GraphicsDevice::GetInstance().GetCmdList()->IASetVertexBuffers(0, 1, &m_vbView);
 	GraphicsDevice::GetInstance().GetCmdList()->IASetIndexBuffer(&m_ibView);
 
 	GraphicsDevice::GetInstance().GetCmdList()->DrawIndexedInstanced(vertexCount, 1, 0, 0, 0);
+}
+
+void Mesh::DrawInstanced(UINT vertexCount) const
+{
+	GraphicsDevice::GetInstance().GetCmdList()->IASetVertexBuffers(0, 1, &m_vbView);
+	GraphicsDevice::GetInstance().GetCmdList()->IASetIndexBuffer(&m_ibView);
+
+	GraphicsDevice::GetInstance().GetCmdList()->DrawInstanced(vertexCount, 1, 0, 0);
 }

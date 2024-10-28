@@ -13,7 +13,7 @@ bool Application::Init(int width, int height)
 
 	//===============================================
 	// ウィンドウ作成
-	if (!m_window.Create(width, height, L"FrameworkDX12", L"Window"))
+	if (!m_window.Create(width, height, L"ネズミ怪盗カフェ・ラッテ", L"Window"))
 	{
 		assert(0 && "ウィンドウ作成失敗");
 		return false;

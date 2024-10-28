@@ -133,9 +133,6 @@
     <Filter Include="System\Input">
       <UniqueIdentifier>{1a9675bb-2192-46ec-9b2a-a4e0d29972f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Scene\ResultScene">
-      <UniqueIdentifier>{0b2586c8-a08e-4566-ae7f-0b09d9c404ac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Shader\SpriteShader">
       <UniqueIdentifier>{3878d2ed-b624-470e-92a2-13f6dd282523}</UniqueIdentifier>
     </Filter>
@@ -189,6 +186,9 @@
     </Filter>
     <Filter Include="Application\GameObject\ModelObject\RiceBall">
       <UniqueIdentifier>{49851a6d-15c5-40a3-817b-1c43c4c7541c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\ResultScene">
+      <UniqueIdentifier>{0b2586c8-a08e-4566-ae7f-0b09d9c404ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

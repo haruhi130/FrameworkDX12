@@ -10,7 +10,7 @@ public:
 
 	void Begin(int w = windowWidth, int h = windowHeight);
 
-	void DrawTexture(const Texture* tex,const Math::Color& color = { 1,1,1,1 });
+	void DrawTexture(const Texture* tex,const Mesh* mesh,const Math::Color& color = { 1,1,1,1 });
 
 	inline void SetMatrix(const Math::Matrix& m)
 	{ 

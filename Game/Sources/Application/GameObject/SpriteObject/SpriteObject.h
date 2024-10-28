@@ -15,7 +15,13 @@ public:
 		{
 			m_spTex = std::make_shared<Texture>();
 		}
-		m_spTex->Create(name,m_pos,&m_rect);
+		m_spTex = Assets::GetInstance().m_textures.GetData(name);
+
+		if (!m_spMesh)
+		{
+			m_spMesh = std::make_shared<Mesh>();
+		}
+		m_spMesh->Create(*m_spTex, m_pos, &m_rect);
 	}
 
 	void SetPos(Math::Vector2 pos)
@@ -32,6 +38,7 @@ private:
 	void Init()override;
 
 	std::shared_ptr<Texture> m_spTex = nullptr;
+	std::shared_ptr<Mesh> m_spMesh = nullptr;
 
 	Math::Vector2 m_pos;
 	Math::Rectangle m_rect;

@@ -44,6 +44,13 @@ private:
 
 	float m_sightTime = 0.0f;
 
+	// 回転情報格納
+	Math::Vector3 m_rot = {};
+
+	float m_rotTime = 0.0f;
+
+	int m_r = 1;
+
 /////////////////////////////////////////////////
 // ステートパターン管理
 private:

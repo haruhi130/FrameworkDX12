@@ -92,13 +92,46 @@ void Wolf::Init()
 void Wolf::UpdateMatrix()
 {
 	Math::Matrix mScale = Math::Matrix::CreateScale(15.0f);
-	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(0));
+	Math::Matrix mRot = Math::Matrix::Identity;
+	if (m_r >= 0)
+	{
+		mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(0));
+	}
+	else
+	{
+		mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180));
+	}
 	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_pos);
 	m_mWorld = mScale * mRot * mTrans;
 }
 
 void Wolf::UpdateRotate(Math::Vector3& moveVec)
 {
+	if (moveVec.LengthSquared() == 0.0f) { return; }
+
+	Math::Vector3 targetDir = moveVec;
+	targetDir.Normalize();
+	float targetAng = atan2(targetDir.x, targetDir.z);
+	targetAng = DirectX::XMConvertToDegrees(targetAng);
+
+	Math::Vector3 nowDir = GetMatrix().Backward();
+	nowDir.Normalize();
+	float nowAng = atan2(nowDir.x, nowDir.z);
+	nowAng = DirectX::XMConvertToDegrees(nowAng);
+
+	float betweenAng = targetAng - nowAng;
+	if (betweenAng > 180)
+	{
+		betweenAng -= 360;
+	}
+	else if (betweenAng < -180)
+	{
+		betweenAng += 360;
+	}
+
+	float rotAng = std::clamp(betweenAng, -36.0f, 36.0f);
+
+	m_rot.y += rotAng;
 }
 
 void Wolf::UpdateCollision()
@@ -257,9 +290,16 @@ void Wolf::ActionWalk::Update(Wolf& owner)
 	}
 
 	--owner.m_sightTime;
+	++owner.m_rotTime;
+
+	if (owner.m_rotTime > 60.0f * 5)
+	{
+		owner.m_r *= -1;
+		owner.m_rotTime = 0;
+	}
 
 	Math::Vector3 vec = Math::Vector3::Zero;
-	vec.z = -0.5f;
+	vec.z = -0.5f * owner.m_r;
 	vec.Normalize();
 
 	auto time = ServiceLocator::Get<Time_VRR>();
@@ -268,6 +308,8 @@ void Wolf::ActionWalk::Update(Wolf& owner)
 	vec *= spd;
 
 	owner.m_pos.z += vec.z;
+
+	owner.UpdateRotate(vec);
 }
 
 void Wolf::ActionWalk::Exit(Wolf& owner)

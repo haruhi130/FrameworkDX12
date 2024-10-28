@@ -19,7 +19,7 @@ void Stage::Init()
 			"Stage", m_spModel, Collider::Type::Ground | Collider::Type::Bump);
 	}
 
-	Math::Matrix mScale = Math::Matrix::CreateScale(2,1,2);
+	Math::Matrix mScale = Math::Matrix::CreateScale(2,0.5,2);
 	Math::Matrix mTrans = Math::Matrix::CreateTranslation(0, 0, 0);
 	m_mWorld = mScale * mTrans;
 }

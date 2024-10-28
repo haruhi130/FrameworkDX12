@@ -46,14 +46,15 @@ public:
 	void Create(const std::vector<MeshVertex>& vertices,
 		const std::vector<MeshFace>& faces, const std::vector<MeshSubset>& subsets, bool isSkinMesh);
 
-	// 通常メッシュ作成
-	void Create(std::vector<Vertex> vertices);
+	// 画像用メッシュ作成
+	void Create(const Texture& tex ,const Math::Vector2& pos, const Math::Rectangle* rect = nullptr, const Math::Vector2& pivot = { 0.5f,0.5f });
 
 	// サブセット描画
 	void DrawSubset(int subsetNo)const;
 
 	// インスタンス描画
-	void DrawInstanced(UINT vertexCount = 6) const;
+	void DrawIndexed(UINT vertexCount = 6) const;
+	void DrawInstanced(UINT vertexCount = 4) const;
 
 	// サブセット取得
 	inline const std::vector<MeshSubset>& GetSubsets() const 

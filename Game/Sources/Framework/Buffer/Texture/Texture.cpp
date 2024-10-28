@@ -1,9 +1,11 @@
 #include "Texture.h"
 
-bool Texture::Load(const std::string& filePath)
+bool Texture::Load(std::string_view fileName)
 {
+	if (fileName.empty()) { return false; }
+
 	wchar_t wFilePath[128];
-	MultiByteToWideChar(CP_ACP, 0, filePath.c_str(), -1, wFilePath, _countof(wFilePath));
+	MultiByteToWideChar(CP_ACP, 0, fileName.data(), -1, wFilePath, _countof(wFilePath));
 
 	DirectX::TexMetadata metadata = {};
 	DirectX::ScratchImage scratchImage = {};
@@ -50,95 +52,6 @@ bool Texture::Load(const std::string& filePath)
 	m_desc = resDesc;
 
 	m_SRVNumber = GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->CreateSRV(m_cpBuffer.Get());
-
-	return true;
-}
-
-bool Texture::Create(const std::string& fileName, const Math::Vector2& pos, const Math::Rectangle* rect, const Math::Vector2& pivot)
-{
-	Load(fileName);
-
-	Math::Vector2 uvMin = { 0,0 };
-	Math::Vector2 uvMax = { 1,1 };
-
-	if (rect)
-	{
-		uvMin.x = rect->x / (float)this->GetInfo().Width;
-		uvMin.y = rect->y / (float)this->GetInfo().Height;
-
-		uvMax.x = (rect->x + rect->width) / (float)this->GetInfo().Width;
-		uvMax.y = (rect->y + rect->height) / (float)this->GetInfo().Height;
-	}
-
-	float x1 = (float)pos.x;
-	float y1 = (float)pos.y;
-	int w = (int)this->GetInfo().Width;
-	int h = (int)this->GetInfo().Height;
-	float x2 = (float)(pos.x + w);
-	float y2 = (float)(pos.y + h);
-
-	x1 -= pivot.x * w;
-	x2 -= pivot.x * w;
-	y1 -= pivot.y * h;
-	y2 -= pivot.y * h;
-
-	Vertex vertex[] =
-	{
-		{ {x1, y1, 0},	{uvMin.x, uvMax.y} },
-		{ {x1, y2, 0},	{uvMin.x, uvMin.y} },
-		{ {x2, y1, 0},	{uvMax.x, uvMax.y} },
-		{ {x2, y2, 0},	{uvMax.x, uvMin.y} }
-	};
-
-	D3D12_HEAP_PROPERTIES heapProp = {};
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-
-	D3D12_RESOURCE_DESC resDesc = {};
-	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resDesc.Width = sizeof(vertex);
-	resDesc.Height = 1;
-	resDesc.DepthOrArraySize = 1;
-	resDesc.MipLevels = 1;
-	resDesc.Format = DXGI_FORMAT_UNKNOWN;
-	resDesc.SampleDesc.Count = 1;
-	resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
-	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	auto result = GraphicsDevice::GetInstance().GetDevice()
-		->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE,
-			&resDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(m_VB.ReleaseAndGetAddressOf()));
-
-	Vertex* vbMap = nullptr;
-	m_VB->Map(0, nullptr, (void**)&vbMap);
-	std::copy(std::begin(vertex), std::end(vertex), vbMap);
-	m_VB->Unmap(0, nullptr);
-
-	m_VBV.BufferLocation = m_VB->GetGPUVirtualAddress();
-	m_VBV.SizeInBytes = sizeof(vertex);
-	m_VBV.StrideInBytes = sizeof(Vertex);
-
-	std::vector<UINT> indices;
-	indices.emplace_back(0);
-	indices.emplace_back(1);
-	indices.emplace_back(2);
-	indices.emplace_back(2);
-	indices.emplace_back(1);
-	indices.emplace_back(3);
-
-	resDesc.Width = sizeof(UINT) * indices.size();
-
-	result = GraphicsDevice::GetInstance().GetDevice()->CreateCommittedResource(
-		&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(m_IB.ReleaseAndGetAddressOf()));
-
-	UINT* ibMap = nullptr;
-	m_IB->Map(0, nullptr, (void**)&ibMap);
-	std::copy(std::begin(indices), std::end(indices), ibMap);
-	m_IB->Unmap(0, nullptr);
-
-	m_IBV.BufferLocation = m_IB->GetGPUVirtualAddress();
-	m_IBV.Format = DXGI_FORMAT_R32_UINT;
-	m_IBV.SizeInBytes = (UINT)resDesc.Width;
 
 	return true;
 }

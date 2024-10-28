@@ -113,7 +113,7 @@ void ModelData::CreateMaterials(const std::shared_ptr<GLTFModel>& spGltfModel, c
 		rDstMaterial.spBaseColorTex = std::make_shared<Texture>();
 		if (!rSrcMaterial.BaseColorTexName.empty())
 		{
-			rDstMaterial.spBaseColorTex->Load(dirPath + rSrcMaterial.BaseColorTexName);
+			rDstMaterial.spBaseColorTex = Assets::GetInstance().m_textures.GetData(dirPath + rSrcMaterial.BaseColorTexName);
 		}
 		else
 		{
@@ -123,7 +123,7 @@ void ModelData::CreateMaterials(const std::shared_ptr<GLTFModel>& spGltfModel, c
 		rDstMaterial.spEmissiveTex = std::make_shared<Texture>();
 		if (!rSrcMaterial.EmissiveTexName.empty())
 		{
-			rDstMaterial.spEmissiveTex->Load(dirPath + rSrcMaterial.EmissiveTexName);
+			rDstMaterial.spEmissiveTex = Assets::GetInstance().m_textures.GetData(dirPath + rSrcMaterial.EmissiveTexName);
 		}
 		else
 		{
@@ -133,7 +133,7 @@ void ModelData::CreateMaterials(const std::shared_ptr<GLTFModel>& spGltfModel, c
 		rDstMaterial.spMetallicRoughnessTex = std::make_shared<Texture>();
 		if (!rSrcMaterial.MetallicRoughnessTexName.empty())
 		{
-			rDstMaterial.spMetallicRoughnessTex->Load(dirPath + rSrcMaterial.MetallicRoughnessTexName);
+			rDstMaterial.spMetallicRoughnessTex = Assets::GetInstance().m_textures.GetData(dirPath + rSrcMaterial.MetallicRoughnessTexName);
 		}
 		else
 		{
@@ -143,7 +143,7 @@ void ModelData::CreateMaterials(const std::shared_ptr<GLTFModel>& spGltfModel, c
 		rDstMaterial.spNormalTex = std::make_shared<Texture>();
 		if (!rSrcMaterial.NormalTexName.empty())
 		{
-			rDstMaterial.spNormalTex->Load(dirPath + rSrcMaterial.NormalTexName);
+			rDstMaterial.spNormalTex = Assets::GetInstance().m_textures.GetData(dirPath + rSrcMaterial.NormalTexName);
 		}
 		else
 		{

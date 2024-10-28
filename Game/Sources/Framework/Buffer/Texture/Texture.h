@@ -6,9 +6,7 @@ public:
 	~Texture()override {}
 
 	// テクスチャロード
-	bool Load(const std::string& filePath);
-
-	bool Create(const std::string& fileName, const Math::Vector2& pos, const Math::Rectangle* rect = nullptr, const Math::Vector2& pivot = { 0.5f,0.5f });
+	bool Load(std::string_view fileName);
 
 	bool CreateRenderTarget();
 

@@ -97,5 +97,4 @@ private:
 
 	Assets(){}
 	~Assets() { Release(); }
-
 };

@@ -24,7 +24,7 @@ void SpriteShader::Begin(int w, int h)
 		->BindAndAttachData(2, m_cbProj);
 }
 
-void SpriteShader::DrawTexture(const Texture* tex,const Math::Color& color)
+void SpriteShader::DrawTexture(const Texture* tex, const Mesh* mesh, const Math::Color& color)
 {
 	if (tex == nullptr) { return; }
 
@@ -34,6 +34,5 @@ void SpriteShader::DrawTexture(const Texture* tex,const Math::Color& color)
 	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
 		->BindAndAttachData(1, m_cbSprite);
 
-	tex->SetToDevice();
-	GraphicsDevice::GetInstance().GetCmdList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
+	mesh->DrawIndexed();
 }
