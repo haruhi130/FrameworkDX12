@@ -1,288 +1,330 @@
 #include "Audio.h"
 
-bool Audio::Init()
+// ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+// 
+// AudioManager
+// 
+// ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+bool AudioManager::Init()
 {
-	auto result = XAudio2Create(m_cpXAudio2.ReleaseAndGetAddressOf());
-	if (FAILED(result))
+	// AudioEngine初期化
+	DirectX::AUDIO_ENGINE_FLAGS flags = DirectX::AudioEngine_ReverbUseFilters;
+
+	if (!m_upAudioEngine)
 	{
-		return false;
+		m_upAudioEngine = std::make_unique<DirectX::AudioEngine>(flags);
+		m_upAudioEngine->SetReverb(DirectX::Reverb_Default);
 	}
 
-	result = m_cpXAudio2->CreateMasteringVoice(&m_pMasteringVoice);
-	if (FAILED(result))
-	{
-		return false;
-	}
+	m_listener.OrientFront = { 0,0,1 };
 
 	return true;
 }
 
-bool Audio::LoadWaveFile(const std::wstring& wFilePath, WaveData* outData)
+void AudioManager::Update()
 {
-	if (outData)
+	if (m_upAudioEngine != nullptr)
 	{
-		free(outData->soundBuffer);
+		m_upAudioEngine->Update();
+	}
+
+	// ストップさせたインスタンスは終了と判定しリストから削除
+	for (auto it = m_playList.begin(); it != m_playList.end();)
+	{
+		if (it->second->IsStopped())
+		{
+			it = m_playList.erase(it);
+
+			continue;
+		}
+		++it;
+	}
+}
+
+void AudioManager::SetListenerMatrix(const Math::Matrix& mWorld)
+{
+	m_listener.SetPosition(mWorld.Translation());
+
+	m_listener.OrientFront = mWorld.Backward();
+}
+
+std::shared_ptr<SoundInstance> AudioManager::Play
+(std::string_view fileName, bool isLoop)
+{
+	if (!m_upAudioEngine) { return nullptr; }
+
+	std::shared_ptr<SoundEffect> spSoundData = GetSound(fileName);
+
+	if (!spSoundData) { return nullptr; }
+
+	std::shared_ptr<SoundInstance> spInstance = std::make_shared<SoundInstance>(spSoundData);
+
+	if (!spInstance->CreateInstance()) { return nullptr; }
+
+	if (!spInstance->Play(isLoop)) { return nullptr; }
+
+	AddPlayList(spInstance);
+
+	return spInstance;
+}
+
+std::shared_ptr<SoundInstance3D> AudioManager::Play3D
+(std::string_view fileName, const Math::Vector3& pos, bool isLoop)
+{
+	if (!m_upAudioEngine) { return nullptr; }
+
+	std::shared_ptr<SoundEffect> spSoundData = GetSound(fileName);
+
+	if (!spSoundData) { return nullptr; }
+
+	std::shared_ptr<SoundInstance3D> spInstance = std::make_shared<SoundInstance3D>(spSoundData,m_listener);
+
+	if (!spInstance->CreateInstance()) { return nullptr; }
+
+	if (!spInstance->Play(isLoop)) { return nullptr; }
+
+	spInstance->SetPos(pos);
+
+	AddPlayList(spInstance);
+
+	return spInstance;
+}
+
+void AudioManager::StopAllSound()
+{
+	auto it = m_playList.begin();
+	while (it != m_playList.end())
+	{
+		(*it).second->Stop();
+		++it;
+	}
+}
+
+void AudioManager::PauseAllSound()
+{
+	auto it = m_playList.begin();
+	while (it != m_playList.end())
+	{
+		(*it).second->Pause();
+		++it;
+	}
+}
+
+void AudioManager::ResumeAllSound()
+{
+	auto it = m_playList.begin();
+	while (it != m_playList.end())
+	{
+		(*it).second->Resume();
+		++it;
+	}
+}
+
+void AudioManager::SoundReset()
+{
+	StopAllSound();
+
+	m_omSounds.clear();
+}
+
+void AudioManager::LoadSoundAssets(std::initializer_list<std::string_view>& fileNames)
+{
+	for (std::string_view fileName : fileNames)
+	{
+		auto itFound = m_omSounds.find(fileName.data());
+
+		if (itFound != m_omSounds.end()) { continue; }
+
+		auto newSound = std::make_shared<SoundEffect>();
+		if (!newSound->Load(fileName, m_upAudioEngine))
+		{
+			assert(0 && "サウンドアセット読み込み失敗");
+			continue;
+		}
+		m_omSounds.emplace(fileName, newSound);
+	}
+}
+
+void AudioManager::Release()
+{
+	StopAllSound();
+
+	m_playList.clear();
+	m_omSounds.clear();
+	m_upAudioEngine = nullptr;
+}
+
+std::shared_ptr<SoundEffect> AudioManager::GetSound(std::string_view fileName)
+{
+	auto itFound = m_omSounds.find(fileName.data());
+
+	// 登録チェック
+	if (itFound != m_omSounds.end())
+	{
+		return (*itFound).second;
 	}
 	else
 	{
-		return false;
-	}
-
-	HMMIO mmioHandle = nullptr;
-
-	// チャンク情報
-	MMCKINFO chunkInfo = {};
-
-	// RIFFチャンク用
-	MMCKINFO riffChunkInfo = {};
-
-	// WAVファイルを開く
-	mmioHandle = mmioOpen(
-		(LPWSTR)wFilePath.data(),
-		nullptr,
-		MMIO_READ
-	);
-
-	if (!mmioHandle)
-	{
-		assert(0 && "WAVファイルを開けませんでした");
-		return false;
-	}
-
-	// RIFFチャンクに進入するためfccTypeにWAVEを設定
-	riffChunkInfo.fccType = mmioFOURCC('W', 'A', 'V', 'E');
-
-	// RIFFチャンクに進入する
-	if (mmioDescend(
-		mmioHandle,		// MMIOハンドル
-		&riffChunkInfo,	// 取得したチャンク情報
-		nullptr,		// 親チャンク
-		MMIO_FINDRIFF	// 取得情報の種類s
-	) != MMSYSERR_NOERROR)
-	{
-		assert(0 && "RIFFチャンクに進入失敗しました");
-		mmioClose(mmioHandle, MMIO_FHOPEN);
-		return false;
-	}
-
-	// 侵入先のチャンクをfmt として設定
-	chunkInfo.ckid = mmioFOURCC('f', 'm', 't',' ');
-	if (mmioDescend(
-		mmioHandle,
-		&chunkInfo,
-		&riffChunkInfo,
-		MMIO_FINDCHUNK
-	) != MMSYSERR_NOERROR)
-	{
-		assert(0 && "fmtチャンクが存在しません");
-		mmioClose(mmioHandle, MMIO_FHOPEN);
-		return false;
-	}
-
-	// fmtデータの読み込み
-	DWORD readSize = mmioRead(
-		mmioHandle,					// ハンドル
-		(HPSTR)&outData->wavFormat,	// 読み込み用バッファ
-		chunkInfo.cksize			// バッファサイズ
-	);
-
-	if (readSize != chunkInfo.cksize)
-	{
-		assert(0 && "読み込みサイズが一致していません");
-		mmioClose(mmioHandle, MMIO_FHOPEN);
-		return false;
-	}
-
-	// フォーマットチェック
-	if (outData->wavFormat.wFormatTag != WAVE_FORMAT_PCM)
-	{
-		assert(0 && "Waveフォーマットエラー");
-		mmioClose(mmioHandle, MMIO_FHOPEN);
-		return false;
-	}
-
-	// fmtチャンクを退出
-	if (mmioAscend(
-		mmioHandle,
-		&chunkInfo,
-		0
-	) != MMSYSERR_NOERROR)
-	{
-		assert(0 && "fmtチャンク退出失敗");
-		mmioClose(mmioHandle, MMIO_FHOPEN);
-		return false;
-	}
-
-	// dataチャンクに侵入
-	chunkInfo.ckid = mmioFOURCC('d', 'a', 't', 'a');
-	if (mmioDescend(
-		mmioHandle,
-		&chunkInfo,
-		&riffChunkInfo,
-		MMIO_FINDCHUNK
-	) != MMSYSERR_NOERROR)
-	{
-		assert(0 && "dataチャンク侵入失敗");
-		mmioClose(mmioHandle, MMIO_FHOPEN);
-		return false;
-	}
-
-	// サイズ保存
-	outData->size = chunkInfo.cksize;
-
-	// dataチャンク読み込み
-	outData->soundBuffer = new char[chunkInfo.cksize];
-	readSize = mmioRead(
-		mmioHandle,
-		(HPSTR)outData->soundBuffer,
-		chunkInfo.cksize
-	);
-	if (readSize != chunkInfo.cksize)
-	{
-		assert(0 && "dataチャンク読み込み失敗");
-		delete[] outData->soundBuffer;
-		return false;
-	}
-
-	// ファイルを閉じる
-	mmioClose(mmioHandle, MMIO_FHOPEN);
-
-	return true;
-}
-
-bool Audio::PlayWaveSound(const std::wstring& fileName, bool isLoop)
-{
-	m_waveData = {};
-
-	if (!LoadWaveFile(fileName,&m_waveData))
-	{
-		assert(0 && "Waveファイル読み込み失敗");
-		return false;
-	}
-
-	//===================
-	// SourceVoiceの作成
-	//===================
-
-	WAVEFORMATEX waveFormat = {};
-
-	// 波形フォーマット設定
-	memcpy(&waveFormat, &m_waveData.wavFormat, sizeof(m_waveData.wavFormat));
-
-	// 1サンプルあたりのバッファサイズ算出
-	waveFormat.wBitsPerSample = m_waveData.wavFormat.nBlockAlign * 8 / m_waveData.wavFormat.nChannels;
-
-	// SourceVoice作成(フォーマットのみ)
-	auto result = m_cpXAudio2->CreateSourceVoice(&m_pSourceVoice, (WAVEFORMATEX*)&waveFormat);
-	if (FAILED(result))
-	{
-		assert(0 && "SourceVoice作成失敗");
-		return false;
-	}
-
-	// 波形データをSourceVoiceに渡す
-	XAUDIO2_BUFFER xAudio2Buffer = {};
-	memset(&xAudio2Buffer, 0, sizeof(XAUDIO2_BUFFER));
-	xAudio2Buffer.pAudioData = (BYTE*)m_waveData.soundBuffer;
-	xAudio2Buffer.Flags = XAUDIO2_END_OF_STREAM;
-	xAudio2Buffer.AudioBytes = m_waveData.size;
-
-	// ループ設定
-	xAudio2Buffer.LoopCount = isLoop ? XAUDIO2_LOOP_INFINITE : 0;
-
-	XAUDIO2_VOICE_STATE state;
-	m_pSourceVoice->GetState(&state);
-
-	if (state.BuffersQueued == 0)
-	{
-		m_pSourceVoice->FlushSourceBuffers();
-		m_pSourceVoice->SubmitSourceBuffer(&xAudio2Buffer);
-	}
-
-	// 実際に音を鳴らす
-	m_pSourceVoice->Start(0);
-
-	return true;
-}
-
-bool Audio::ExitLoop()
-{
-	if (m_pSourceVoice)
-	{
-		m_pSourceVoice->ExitLoop();
-	}
-	else 
-	{
-		return false; 
-	}
-
-	return true;
-}
-
-bool Audio::Stop()
-{
-	if (m_pSourceVoice)
-	{
-		m_pSourceVoice->Stop(0);
-		m_pSourceVoice->FlushSourceBuffers();
-	}
-
-	return true;
-}
-
-bool Audio::Pause()
-{
-	if (m_pSourceVoice)
-	{
-		m_pSourceVoice->Stop(0);
-	}
-
-	return true;
-}
-
-bool Audio::Resume()
-{
-	if (m_pSourceVoice)
-	{
-		XAUDIO2_VOICE_STATE state;
-		m_pSourceVoice->GetState(&state);
-
-		if (state.BuffersQueued != 0)
+		// 生成
+		auto newSound = std::make_shared<SoundEffect>();
+		if (!newSound->Load(fileName, m_upAudioEngine))
 		{
-			m_pSourceVoice->Start();
+			// 読み込み失敗時はnull
+			return nullptr;
+		}
+
+		// 登録
+		m_omSounds.emplace(fileName, newSound);
+
+		return newSound;
+	}
+}
+
+// ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+// 
+// SoundInstance
+// 
+// ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+SoundInstance::SoundInstance(const std::shared_ptr<SoundEffect>& spSoundEffect)
+:m_spSoundData(spSoundEffect){}
+
+bool SoundInstance::CreateInstance()
+{
+	if (!m_spSoundData) { return false; }
+
+	DirectX::SOUND_EFFECT_INSTANCE_FLAGS flags = DirectX::SoundEffectInstance_Default;
+
+	m_upInstance = (m_spSoundData->CreateInstance(flags));
+
+	return true;
+}
+
+bool SoundInstance::Play(bool isLoop)
+{
+	if (!m_upInstance) { return false; }
+
+	Stop();
+
+	m_upInstance->Play(isLoop);
+
+	return true;
+}
+
+void SoundInstance::SetVolume(float volume)
+{
+	if (!m_upInstance) { return; }
+
+	std::clamp(volume, 0.0f, 30.0f);
+
+	m_upInstance->SetVolume(volume);
+}
+
+void SoundInstance::SetPitch(float pitch)
+{
+	if (!m_upInstance) { return; }
+
+	m_upInstance->SetPitch(pitch);
+}
+
+bool SoundInstance::IsPlaying()
+{
+	if (!m_upInstance) { return false; }
+
+	return (m_upInstance->GetState() == DirectX::SoundState::PLAYING);
+}
+
+bool SoundInstance::IsPause()
+{
+	if (!m_upInstance) { return false; }
+
+	return (m_upInstance->GetState() == DirectX::SoundState::PAUSED);
+}
+
+bool SoundInstance::IsStopped()
+{
+	if (!m_upInstance) { return false; }
+
+	return (m_upInstance->GetState() == DirectX::SoundState::STOPPED);
+}
+
+bool SoundInstance::IsLooped()
+{
+	if (!m_upInstance) { return false; }
+	
+	return m_upInstance->IsLooped();
+}
+
+// ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+// 
+// SoundInstance3D
+// 
+// ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+SoundInstance3D::SoundInstance3D(const std::shared_ptr<SoundEffect>& spSoundEffect, const DirectX::AudioListener& ownerListener)
+:SoundInstance(spSoundEffect),m_ownerListener(ownerListener){}
+
+bool SoundInstance3D::CreateInstance()
+{
+	if (!m_spSoundData) { return false; }
+
+	DirectX::SOUND_EFFECT_INSTANCE_FLAGS flags = DirectX::SoundEffectInstance_Default | 
+		DirectX::SoundEffectInstance_Use3D | DirectX::SoundEffectInstance_ReverbUseFilters;
+
+	m_upInstance = (m_spSoundData->CreateInstance(flags));
+
+	return true;
+}
+
+bool SoundInstance3D::Play(bool isLoop)
+{
+	if (!m_upInstance) { return false; }
+
+	SoundInstance::Play(isLoop);
+
+	return true;
+}
+
+void SoundInstance3D::SetPos(const Math::Vector3& pos)
+{
+	if (!m_upInstance) { return; }
+
+	m_emitter.SetPosition(pos);
+
+	m_upInstance->Apply3D(m_ownerListener, m_emitter, false);
+}
+
+void SoundInstance3D::SetCurveDistanceScaler(float val)
+{
+	if (!m_upInstance) { return; }
+
+	m_emitter.CurveDistanceScaler = val;
+
+	m_upInstance->Apply3D(m_ownerListener, m_emitter, false);
+}
+
+// ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+// 
+// SoundEffect
+// 
+// ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+bool SoundEffect::Load(std::string_view fileName, const std::unique_ptr<DirectX::AudioEngine>& engine)
+{
+	if (engine.get() != nullptr)
+	{
+		try
+		{
+			// wstringに変換
+			std::wstring wFileName = sjis_to_wide(fileName.data());
+
+			// 音データ読み込み
+			m_upSoundEffect = std::make_unique<DirectX::SoundEffect>(engine.get(), wFileName.c_str());
+		}
+		catch (...)
+		{
+			assert(0 && "Sound File Load Error");
+
+			return false;
 		}
 	}
 
 	return true;
-}
-
-void Audio::SetVolume(float volume)
-{
-	if (m_pSourceVoice)
-	{
-		m_pSourceVoice->SetVolume(volume);
-	}
-}
-
-void Audio::SetPitch(float pitch)
-{
-	if (m_pSourceVoice)
-	{
-		m_pSourceVoice->SetFrequencyRatio(std::max(std::min(pitch, 100.0f), XAUDIO2_MIN_FREQ_RATIO));
-	}
-}
-
-void Audio::Release()
-{
-	Stop();
-	if (m_pSourceVoice)
-	{
-		m_pSourceVoice->DestroyVoice();
-		m_pSourceVoice = nullptr;
-	}
-	if (m_pMasteringVoice)
-	{
-		m_pMasteringVoice->DestroyVoice();
-		m_pMasteringVoice = nullptr;
-	}
 }

@@ -52,6 +52,6 @@ namespace ConstantBufferData
 		int IsUseLight = 0;
 		Math::Vector3 DirectionalLightDir = { 1,-1,-1 };
 		Math::Vector3 DirectionalLightColor = { 1,1,1 };
-		float AmbientLightPower = 0.9f;
+		float AmbientLightPower = 1.0f;
 	};
 }

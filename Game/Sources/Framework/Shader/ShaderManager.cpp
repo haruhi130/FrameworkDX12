@@ -33,6 +33,8 @@ void ShaderManager::SetDirectionalLight(const Math::Vector3& dir, const Math::Ve
 {
 	m_cbLight.DirectionalLightDir = dir;
 	m_cbLight.DirectionalLightColor = color;
+
+	m_cbLight.DirectionalLightDir.Normalize();
 }
 
 void ShaderManager::SetAmbientLight(float pow)

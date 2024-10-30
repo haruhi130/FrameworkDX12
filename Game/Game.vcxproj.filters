@@ -190,6 +190,9 @@
     <Filter Include="Application\Scene\ResultScene">
       <UniqueIdentifier>{0b2586c8-a08e-4566-ae7f-0b09d9c404ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Libraries\tinygltf">
+      <UniqueIdentifier>{9d4fbbf3-3369-4c6e-b062-d96a461e9c29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -584,6 +587,21 @@
     </ClInclude>
     <ClInclude Include="Sources\Application\GameObject\ModelObject\RiceBall\RiceBall.h">
       <Filter>Application\GameObject\ModelObject\RiceBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\tinygltf\json.hpp">
+      <Filter>Libraries\tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\tinygltf\stb_image.h">
+      <Filter>Libraries\tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\tinygltf\stb_image_write.h">
+      <Filter>Libraries\tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\tinygltf\tiny_gltf.h">
+      <Filter>Libraries\tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\strconv.h">
+      <Filter>Libraries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

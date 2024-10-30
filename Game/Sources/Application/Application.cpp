@@ -63,10 +63,10 @@ bool Application::Init(int width, int height)
 
 	//===============================================
 	// オーディオ初期化
-	if (!Audio::GetInstance().Init())
+	if (!AudioManager::GetInstance().Init())
 	{
 		return false;
-	}
+	};
 
 	//===============================================
 	// シーン初期化
@@ -92,7 +92,8 @@ void Application::Execute()
 	if (spTime != nullptr) { spTime->Start(); }
 
 	// 音再生
-	Audio::GetInstance().PlayWaveSound(L"Assets/Sounds/Under_line.wav", true);
+	auto bgm = AudioManager::GetInstance().Play("Assets/Sounds/Under_line.wav", true);
+	bgm->SetVolume(SceneManager::GetInstance().GetBGMVolume());
 
 	//===============================================
 	// メインゲームループ
@@ -121,22 +122,6 @@ void Application::Execute()
 
 		// 通常更新
 		Update();
-		if (GetAsyncKeyState('V') & 0x8000)
-		{
-			Audio::GetInstance().Stop();
-		}
-		if (GetAsyncKeyState('B') & 0x8000)
-		{
-			Audio::GetInstance().Pause();
-		}
-		if (GetAsyncKeyState('N') & 0x8000)
-		{
-			Audio::GetInstance().Resume();
-		}
-		if (GetAsyncKeyState('M') & 0x8000)
-		{
-			Audio::GetInstance().ExitLoop();
-		}
 
 		// 後更新
 		PostUpdate();
@@ -160,7 +145,7 @@ void Application::Execute()
 
 		//=============================================
 		// ImGui処理
-		//ImGuiUpdate();
+		ImGuiUpdate();
 
 		// 時間管理
 		ServiceLocator::Update();
@@ -192,11 +177,16 @@ void Application::PreUpdate()
 
 void Application::Update()
 {
+	AudioManager::GetInstance().Update();
+
 	SceneManager::GetInstance().Update();
 }
 
 void Application::PostUpdate()
 {
+	AudioManager::GetInstance().SetListenerMatrix(
+		ShaderManager::GetInstance().GetCBCamera().mView.Invert());
+
 	SceneManager::GetInstance().PostUpdate();
 }
 

@@ -9,18 +9,18 @@
 #include "../../GameObject/ModelObject/Sky/Sky.h"
 #include "../../GameObject/ModelObject/Cheese/Cheese.h"
 #include "../../GameObject/ModelObject/Pedestal/Pedestal.h"
-#include "../../GameObject/SpriteObject/SpriteObject.h"
-
 #include "../../GameObject/ModelObject/Box/Box.h"
 #include "../../GameObject/ModelObject/Meat/Meat.h"
 #include "../../GameObject/ModelObject/RiceBall/RiceBall.h"
+
+#include "../../GameObject/SpriteObject/SpriteObject.h"
 
 void GameScene::Event()
 {
 	// シーン切り替え
 	if (GetAsyncKeyState('O') & 0x8000)
 	{
-		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Result);
+		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Clear);
 	}
 	// シーン切り替え
 	if (GetAsyncKeyState('L') & 0x8000)
@@ -33,15 +33,11 @@ void GameScene::Init()
 {
 	ShowCursor(false);
 
+	ShaderManager::GetInstance().SetAmbientLight(0.7f);
+
 	// カメラ
 	std::shared_ptr<GameCamera> camera = std::make_shared<GameCamera>();
 	m_objList.push_back(camera);
-
-	// プレイヤー(ネズミ)
-	std::shared_ptr<Mouse> mouse = std::make_shared<Mouse>();
-
-	// 敵(オオカミ)
-	std::shared_ptr<Wolf> wolf = std::make_shared<Wolf>();
 
 	// 空
 	std::shared_ptr<Sky> sky = std::make_shared<Sky>();
@@ -51,6 +47,14 @@ void GameScene::Init()
 	std::shared_ptr<Stage> stage = std::make_shared<Stage>();
 	camera->RegistHitObjList(stage);
 	m_objList.push_back(stage);
+
+	// プレイヤー(ネズミ)
+	std::shared_ptr<Mouse> mouse = std::make_shared<Mouse>();
+	sky->SetTarget(mouse);
+	camera->SetTarget(mouse);
+
+	// 敵(オオカミ)
+	std::shared_ptr<Wolf> wolf = std::make_shared<Wolf>();
 
 	// 肉
 	std::shared_ptr<Meat> meat = std::make_shared<Meat>();
@@ -78,36 +82,31 @@ void GameScene::Init()
 	wolf->RegistHitObjList(pedestal);
 	m_objList.push_back(pedestal);
 
-	// 肉用
+	// 台座肉用
 	pedestal = std::make_shared<Pedestal>();
 	pedestal->SetPos({ 15,0,0 });
 	mouse->RegistHitObjList(pedestal);
 	wolf->RegistHitObjList(pedestal);
 	m_objList.push_back(pedestal);
 
-	// おにぎり用
+	// 台座おにぎり用
 	pedestal = std::make_shared<Pedestal>();
 	pedestal->SetPos({ -7,0,10 });
 	mouse->RegistHitObjList(pedestal);
 	wolf->RegistHitObjList(pedestal);
 	m_objList.push_back(pedestal);
 
+	// オオカミが対象に設定するもの
 	wolf->RegistHitObjList(stage);
-	wolf->RegistHitObjList(pedestal);
 	wolf->RegistHitObjList(box);
 	wolf->RegistHitObjList(meat);
 	wolf->RegistHitObjList(rice);
-	m_objList.push_back(wolf);
-
-	// プレイヤーを対象に設定するもの
-	sky->SetTarget(mouse);
-	camera->SetTarget(mouse);
 	wolf->RegistHitObjList(mouse);
+	m_objList.push_back(wolf);
 
 	// プレイヤーが対象に設定するもの
 	mouse->RegistHitObjList(stage);
 	mouse->RegistHitObjList(cheese);
-	mouse->RegistHitObjList(pedestal);
 	mouse->RegistHitObjList(box);
 	mouse->RegistHitObjList(meat);
 	mouse->RegistHitObjList(rice);
@@ -115,10 +114,11 @@ void GameScene::Init()
 
 	m_objList.push_back(mouse);
 
-	std::shared_ptr<SpriteObject> cursor = std::make_shared<SpriteObject>();
-	cursor->SetPos({ 0,0 });
-	cursor->SetRectangle({ 0,0,32,32 });
-	cursor->SetTexture("Assets/Textures/mark.png");
-	m_objList.push_back(cursor);
+	// カーソル画像
+	std::shared_ptr<SpriteObject> sprite = std::make_shared<SpriteObject>();
+	sprite->SetPos({ 0,0 });
+	sprite->SetRectangle({ 0,0,32,32 });
+	sprite->SetTexture("Assets/Textures/mark.png");
+	m_objList.push_back(sprite);
 
 }

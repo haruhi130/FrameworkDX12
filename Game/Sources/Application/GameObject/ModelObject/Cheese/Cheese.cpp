@@ -1,9 +1,16 @@
 #include "Cheese.h"
+#include "../../../Scene/SceneManager.h"
 
 void Cheese::Draw()
 {
 	if (!m_spModel) { return; }
 	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
+}
+
+void Cheese::Update()
+{
+	m_se->SetVolume(SceneManager::GetInstance().GetSEVolume());
+	m_se->SetCurveDistanceScaler();
 }
 
 void Cheese::Init()
@@ -21,4 +28,6 @@ void Cheese::Init()
 
 	m_upCollider = std::make_unique<Collider>();
 	m_upCollider->RegisterCollisionShape("Cheese", m_spModel, Collider::Type::Goal);
+
+	m_se = AudioManager::GetInstance().Play3D("Assets/Sounds/get.wav",GetPos(), true);
 }

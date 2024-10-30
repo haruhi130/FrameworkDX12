@@ -16,24 +16,17 @@ void TitleScene::Init()
 {
 	ShowCursor(true);
 
-	// ƒ^ƒCƒgƒ‹ƒƒS
-	std::shared_ptr<SpriteObject> cursor = std::make_shared<SpriteObject>();
-	cursor->SetPos({ 0.0f,80.0f });
-	cursor->SetRectangle({ 0,0,960,480 });
-	cursor->SetTexture("Assets/Textures/logo.png");
-	m_objList.push_back(cursor);
-
 	// Press Enter
-	cursor = std::make_shared<SpriteObject>();
-	cursor->SetPos({ 0,-200 });
-	cursor->SetRectangle({ 0,0,420,78 });
-	cursor->SetTexture("Assets/Textures/press.png");
-	m_objList.push_back(cursor);
+	std::shared_ptr<SpriteObject> sprite = std::make_shared<SpriteObject>();
+	sprite->SetPos({ 0,-200 });
+	sprite->SetRectangle({ 0,0,420,78 });
+	sprite->SetTexture("Assets/Textures/press.png");
+	m_objList.push_back(sprite);
 
 	// ”wŒi
-	cursor = std::make_shared<SpriteObject>();
-	cursor->SetPos({ 0,0 });
-	cursor->SetRectangle({ 0,0,1280,720 });
-	cursor->SetTexture("Assets/Textures/back.png");
-	m_objList.push_back(cursor);
+	sprite = std::make_shared<SpriteObject>();
+	sprite->SetPos({ 0,0 });
+	sprite->SetRectangle({ 0,0,1280,720 });
+	sprite->SetTexture("Assets/Textures/TitleLogo.png");
+	m_objList.push_back(sprite);
 }

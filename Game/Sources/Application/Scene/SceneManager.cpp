@@ -65,7 +65,7 @@ void SceneManager::ChangeScene(SceneType type)
 	case SceneType::Game:
 		m_currentScene = std::make_shared<GameScene>();
 		break;
-	case SceneType::Result:
+	case SceneType::Clear:
 		m_currentScene = std::make_shared<ResultScene>();
 		break;
 	case SceneType::Failed:

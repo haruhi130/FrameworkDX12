@@ -266,7 +266,7 @@ void Mouse::UpdateCollision()
 
 				for (auto& ret : retBumpList)
 				{
-					SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Result);
+					SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Clear);
 				}
 			}
 		}

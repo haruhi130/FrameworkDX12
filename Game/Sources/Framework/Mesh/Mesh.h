@@ -54,7 +54,6 @@ public:
 
 	// インスタンス描画
 	void DrawIndexed(UINT vertexCount = 6) const;
-	void DrawInstanced(UINT vertexCount = 4) const;
 
 	// サブセット取得
 	inline const std::vector<MeshSubset>& GetSubsets() const 

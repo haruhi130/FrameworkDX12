@@ -61,14 +61,11 @@
 // DirectX Tool Kit
 #pragma comment(lib,"DirectXTK12.lib")
 #include <SimpleMath.h>
+#include <Audio.h>
 
 // DirectX Tex
 #pragma comment(lib,"DirectXTex.lib")
 #include <DirectXTex.h>
-
-// XAudio2
-#pragma comment(lib,"xaudio2.lib")
-#include <xaudio2.h>
 
 // multimedia
 #include <mmsystem.h>
@@ -76,10 +73,15 @@
 // ImGui
 #define IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_PLACEMENT_NEW
-#include "../imgui/imgui.h"
-#include "../imgui/imgui_internal.h"
-#include "../imgui/imgui_impl_win32.h"
-#include "../imgui/imgui_impl_dx12.h"
+#include <imgui.h>
+#include <imgui_internal.h>
+#include <imgui_impl_win32.h>
+#include <imgui_impl_dx12.h>
+
+//===============================================
+// ï∂éöÉRÅ[Éhïœä∑
+//===============================================
+#include <strconv.h>
 
 // System
 #include "System/System.h"

@@ -195,16 +195,7 @@ void Mesh::DrawSubset(int subsetNo) const
 
 void Mesh::DrawIndexed(UINT vertexCount) const
 {
-	GraphicsDevice::GetInstance().GetCmdList()->IASetVertexBuffers(0, 1, &m_vbView);
-	GraphicsDevice::GetInstance().GetCmdList()->IASetIndexBuffer(&m_ibView);
+	SetToDevice();
 
 	GraphicsDevice::GetInstance().GetCmdList()->DrawIndexedInstanced(vertexCount, 1, 0, 0, 0);
-}
-
-void Mesh::DrawInstanced(UINT vertexCount) const
-{
-	GraphicsDevice::GetInstance().GetCmdList()->IASetVertexBuffers(0, 1, &m_vbView);
-	GraphicsDevice::GetInstance().GetCmdList()->IASetIndexBuffer(&m_ibView);
-
-	GraphicsDevice::GetInstance().GetCmdList()->DrawInstanced(vertexCount, 1, 0, 0);
 }

@@ -16,6 +16,9 @@ public:
 	// 設定したカメラ情報をシェーダーへ転送
 	void WriteCBCamera() const;
 
+	const ConstantBufferData::CameraInfo& GetCBCamera() const
+	{ return m_cbCamera; }
+
 	//-------------------------------------------------
 	// ライト設定
 	// 陰影の有無を設定・転送
