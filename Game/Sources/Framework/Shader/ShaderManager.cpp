@@ -48,3 +48,17 @@ void ShaderManager::WriteCBLight() const
 		->BindAndAttachData(5, m_cbLight);
 }
 
+void ShaderManager::WriteCBShadowArea(const Math::Matrix& proj, float dirLightHeight)
+{
+	Math::Vector3 lightDir = m_cbLight.DirectionalLightDir;
+	Math::Vector3 lightPos = m_cbCamera.CamPos;
+	Math::Vector3 up = (lightDir == Math::Vector3::Up) ? Math::Vector3::Right : Math::Vector3::Up;
+
+	Math::Matrix shadowVP = DirectX::XMMatrixLookAtLH(lightPos - lightDir * dirLightHeight, lightPos, up);
+
+	shadowVP *= proj;
+
+	m_cbLight.DirLight_mVP = shadowVP;
+	WriteCBLight();
+}
+

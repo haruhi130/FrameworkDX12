@@ -8,7 +8,7 @@ public:
 	// ƒ{[ƒ“Å‘å”
 	static const int maxBoneBufferSize = 300;
 
-	bool Init()override;
+	bool Init() override;
 
 	void Begin(int w = windowWidth,int h = windowHeight);
 

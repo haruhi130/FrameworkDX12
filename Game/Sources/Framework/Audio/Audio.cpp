@@ -214,8 +214,6 @@ void SoundInstance::SetVolume(float volume)
 {
 	if (!m_upInstance) { return; }
 
-	std::clamp(volume, 0.0f, 30.0f);
-
 	m_upInstance->SetVolume(volume);
 }
 

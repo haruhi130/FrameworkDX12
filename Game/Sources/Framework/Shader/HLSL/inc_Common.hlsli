@@ -25,4 +25,6 @@ cbuffer cbLight : register(b5)
     
     // ŠÂ‹«Œõ
     float g_AL_Power;
+    
+    row_major float4x4 g_DL_mVP;
 }

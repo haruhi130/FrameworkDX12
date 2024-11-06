@@ -56,6 +56,37 @@ bool Texture::Load(std::string_view fileName)
 	return true;
 }
 
+bool Texture::CreateResource()
+{
+	D3D12_HEAP_PROPERTIES heapProp = {};
+	heapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
+
+	D3D12_RESOURCE_DESC resDesc = {};
+	resDesc = GraphicsDevice::GetInstance().GetBackBuffers()[0]->GetDesc();
+
+	// クリアバリュー設定
+	float ClearColor[4] = { 0.5,0.5,0.5,1 };
+	D3D12_CLEAR_VALUE clearValue = {};
+	clearValue.Format = resDesc.Format;
+	clearValue.Color[0] = ClearColor[0];
+	clearValue.Color[1] = ClearColor[1];
+	clearValue.Color[2] = ClearColor[2];
+	clearValue.Color[3] = ClearColor[3];
+
+	auto result = GraphicsDevice::GetInstance().GetDevice()->
+		CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc,
+			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, &clearValue, IID_PPV_ARGS(m_cpBuffer.ReleaseAndGetAddressOf()));
+	if (FAILED(result))
+	{
+		assert(0 && "マルチパスレンダリング用リソース作成失敗");
+		return false;
+	}
+
+	m_desc = resDesc;
+
+	return true;
+}
+
 bool Texture::CreateRenderTarget()
 {
 	Vertex vertex[] =

@@ -53,5 +53,7 @@ namespace ConstantBufferData
 		Math::Vector3 DirectionalLightDir = { 1,-1,-1 };
 		Math::Vector3 DirectionalLightColor = { 1,1,1 };
 		float AmbientLightPower = 1.0f;
+
+		Math::Matrix DirLight_mVP;
 	};
 }

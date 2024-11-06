@@ -8,6 +8,7 @@ public:
 	// テクスチャロード
 	bool Load(std::string_view fileName);
 
+	bool CreateResource();
 	bool CreateRenderTarget();
 
 	// シェーダーリソースとして設定
@@ -29,6 +30,9 @@ public:
 	{
 		return m_desc;
 	}
+
+	inline ComPtr<ID3D12Resource> GetBuffer()
+	{ return m_cpBuffer; }
 
 private:
 	int m_SRVNumber = 0;

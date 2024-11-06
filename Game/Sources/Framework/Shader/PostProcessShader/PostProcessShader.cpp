@@ -17,7 +17,7 @@ bool PostProcessShader::Init()
 
 void PostProcessShader::Begin(int w, int h)
 {
-	ShaderBase::Begin();
+	ShaderBase::Begin(w,h);
 }
 
 void PostProcessShader::PreDraw()
@@ -27,6 +27,7 @@ void PostProcessShader::PreDraw()
 
 void PostProcessShader::Draw()
 {
+	m_change.m_spRTTexture->Set(m_cbvCount);
 	m_change.Draw();
 }
 

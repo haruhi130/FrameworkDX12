@@ -18,7 +18,7 @@ bool ModelShader::Init()
 void ModelShader::Begin(int w, int h)
 {
 	ShaderBase::Begin(w,h);
-
+	
 	// ƒJƒƒ‰î•ñ
 	ShaderManager::GetInstance().WriteCBCamera();
 

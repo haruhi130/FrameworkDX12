@@ -29,6 +29,8 @@ public:
 	void SetAmbientLight(float pow);
 	// 設定したライト情報をシェーダーへ転送
 	void WriteCBLight() const;
+
+	void WriteCBShadowArea(const Math::Matrix& proj, float dirLightHeight);
 	
 	//-------------------------------------------------
 	// シェーダー

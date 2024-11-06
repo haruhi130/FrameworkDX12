@@ -137,11 +137,8 @@ void Application::Execute()
 		Draw();
 
 		PostDraw();
-
+		
 		DrawSprite();
-
-		ShaderManager::GetInstance().m_postProcessShader.Begin();
-		ShaderManager::GetInstance().m_postProcessShader.Draw();
 
 		//=============================================
 		// ImGui処理
@@ -184,6 +181,7 @@ void Application::Update()
 
 void Application::PostUpdate()
 {
+	// 3Dサウンド用リスナー更新
 	AudioManager::GetInstance().SetListenerMatrix(
 		ShaderManager::GetInstance().GetCBCamera().mView.Invert());
 
@@ -215,6 +213,9 @@ void Application::PostDraw()
 
 	// 描画準備開始
 	GraphicsDevice::GetInstance().Prepare();
+
+	ShaderManager::GetInstance().m_postProcessShader.Begin();
+	ShaderManager::GetInstance().m_postProcessShader.Draw();
 }
 
 void Application::DrawSprite()

@@ -1,22 +1,21 @@
 #pragma once
 
-class RenderTargetChange
+struct RenderTargetChange
 {
-public:
+	// レンダーターゲット切り替え用のリソース作成
 	bool CreateRenderTarget();
 
-	bool ChangeRenderTarget();
-	void UndoRenderTarget();
+	// レンダーターゲット変更
+	bool ChangeRenderTarget() const;
+	// レンダーターゲットを戻す
+	void UndoRenderTarget() const;
 
+	// レンダーターゲット用テクスチャ作成
 	bool CreateRTTexture();
 
-	void Draw();
+	// 描画
+	void Draw() const;
 
-private:
-
-	ComPtr<ID3D12Resource> m_cpResource = nullptr;
-	ComPtr<ID3D12DescriptorHeap> m_cpRTVResource = nullptr;
-	ComPtr<ID3D12DescriptorHeap> m_cpSRVResource = nullptr;
-	
 	std::shared_ptr<Texture> m_spRTTexture = nullptr;
+	int m_rtvNum = 0;
 };
