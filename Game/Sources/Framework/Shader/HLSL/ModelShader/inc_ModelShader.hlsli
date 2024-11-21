@@ -10,17 +10,8 @@ struct VSOutput
     float3 wN       : TEXCOORD2;    // ワールド法線
     float3 wT       : TEXCOORD3;    // ワールド接線
     float3 wB       : TEXCOORD4;    // ワールド従法線
-    float4 tPos     : TPOS;
-    float4 pos      : Position;
-};
-
-struct VSOutputShadow
-{
-    float4 pos : SV_Position;
-    float4 pPos : TEXCOORD0;
-    
-    float2 uv : TEXCOORD1;
-    
+    float4 tPos     : TPOS;         // ライトカメラ座標
+    float4 pos      : Position;     // 標準座標
 };
 
 // ワールド変換行列

@@ -37,7 +37,6 @@ void GameScene::Init()
 
 	// カメラ
 	std::shared_ptr<GameCamera> camera = std::make_shared<GameCamera>();
-	m_objList.push_back(camera);
 
 	// 空
 	std::shared_ptr<Sky> sky = std::make_shared<Sky>();
@@ -80,6 +79,7 @@ void GameScene::Init()
 	pedestal->SetPos({ 0,0,25 });
 	mouse->RegistHitObjList(pedestal);
 	wolf->RegistHitObjList(pedestal);
+	camera->RegistHitObjList(pedestal);
 	m_objList.push_back(pedestal);
 
 	// 台座肉用
@@ -87,6 +87,7 @@ void GameScene::Init()
 	pedestal->SetPos({ 15,0,0 });
 	mouse->RegistHitObjList(pedestal);
 	wolf->RegistHitObjList(pedestal);
+	camera->RegistHitObjList(pedestal);
 	m_objList.push_back(pedestal);
 
 	// 台座おにぎり用
@@ -95,6 +96,13 @@ void GameScene::Init()
 	mouse->RegistHitObjList(pedestal);
 	wolf->RegistHitObjList(pedestal);
 	m_objList.push_back(pedestal);
+
+	camera->RegistHitObjList(pedestal);
+	camera->RegistHitObjList(stage);
+	camera->RegistHitObjList(box);
+	camera->RegistHitObjList(meat);
+	camera->RegistHitObjList(rice);
+	m_objList.push_back(camera);
 
 	// オオカミが対象に設定するもの
 	wolf->RegistHitObjList(stage);

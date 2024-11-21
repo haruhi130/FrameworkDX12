@@ -7,6 +7,7 @@
 class ShaderManager
 {
 public:
+	// シェーダー初期化
 	bool Init();
 
 	//-------------------------------------------------
@@ -40,7 +41,6 @@ public:
 	//-------------------------------------------------
 	// シェーダー
 	//-------------------------------------------------
-	
 	ModelShader m_modelShader;
 	SpriteShader m_spriteShader;
 	PostProcessShader m_postProcessShader;
@@ -52,7 +52,9 @@ private:
 	// ライト定数バッファ
 	ConstantBufferData::LightInfo m_cbLight;
 
+	// 影描画範囲
 	Math::Matrix m_shadowProj;
+	// ライトの疑似高さ
 	float m_dirLightHeight = 0.0f;
 
 public:

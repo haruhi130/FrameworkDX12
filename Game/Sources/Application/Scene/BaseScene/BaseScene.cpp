@@ -48,7 +48,8 @@ void BaseScene::PreDraw()
 		obj->PreDraw();
 	}
 
-	ShaderManager::GetInstance().m_modelShader.BeginShadow();
+	// ‰e‚ð•t‚¯‚éƒIƒuƒWƒFƒNƒg‚Ì•`‰æ
+	ShaderManager::GetInstance().m_modelShader.BeginShadow(2048,2048);
 	for (auto& obj : m_objList)
 	{
 		obj->DrawShadow();
@@ -57,6 +58,7 @@ void BaseScene::PreDraw()
 
 void BaseScene::Draw()
 {
+	// ƒ‚ƒfƒ‹•`‰æ
 	ShaderManager::GetInstance().m_modelShader.Begin();
 	for (auto& obj : m_objList)
 	{
@@ -66,6 +68,7 @@ void BaseScene::Draw()
 
 void BaseScene::DrawSprite()
 {
+	// 2D‰æ‘œ•`‰æ
 	ShaderManager::GetInstance().m_spriteShader.Begin();
 	for (auto& obj : m_objList)
 	{

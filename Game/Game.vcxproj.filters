@@ -112,9 +112,6 @@
     <Filter Include="Framework\Polygon">
       <UniqueIdentifier>{9c0e5c3e-2c23-437a-97b3-e73a32857e51}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\DebugWireFrame">
-      <UniqueIdentifier>{c1c71e08-483d-49c2-a9bf-6f393d93f3b4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Heap\ImGuiHeap">
       <UniqueIdentifier>{439abdb6-25a3-464a-a270-6a3dcbfbce8c}</UniqueIdentifier>
     </Filter>
@@ -283,9 +280,6 @@
     </ClCompile>
     <ClCompile Include="Sources\Framework\Polygon\Polygon.cpp">
       <Filter>Framework\Polygon</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Framework\DebugWireFrame\DebugWireFrame.cpp">
-      <Filter>Framework\DebugWireFrame</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Framework\Heap\ImGuiHeap\ImGuiHeap.cpp">
       <Filter>Framework\Heap\ImGuiHeap</Filter>
@@ -489,9 +483,6 @@
     <ClInclude Include="Sources\Framework\Polygon\Polygon.h">
       <Filter>Framework\Polygon</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Framework\DebugWireFrame\DebugWireFrame.h">
-      <Filter>Framework\DebugWireFrame</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Framework\Heap\ImGuiHeap\ImGuiHeap.h">
       <Filter>Framework\Heap\ImGuiHeap</Filter>
     </ClInclude>
@@ -539,9 +530,6 @@
     </ClInclude>
     <ClInclude Include="Sources\Application\Scene\ResultScene\ResultScene.h">
       <Filter>Application\Scene\ResultScene</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Framework\Shader\SpriteShader\SpriteShader.h">
-      <Filter>Framework\Shader\SpriteShader</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Framework\Shader\RenderTargetChange.h">
       <Filter>Framework\Shader</Filter>
@@ -602,6 +590,9 @@
     </ClInclude>
     <ClInclude Include="..\Libraries\strconv.h">
       <Filter>Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Shader\SpriteShader\SpriteShader.h">
+      <Filter>Framework\Shader\SpriteShader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

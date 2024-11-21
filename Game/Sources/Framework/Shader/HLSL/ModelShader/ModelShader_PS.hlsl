@@ -1,19 +1,19 @@
 #include "inc_ModelShader.hlsli"
 #include "../inc_Common.hlsli"
 
-Texture2D<float4> g_diffuseTex : register(t0);              // Diffuseテクスチャ
-Texture2D<float4> g_emissiveTex : register(t1);             // Emissiveテクスチャ
-Texture2D<float4> g_metallicRoughnessTex : register(t2);    // MetallicRoughnessテクスチャ
-Texture2D<float4> g_normalTex : register(t3);               // Normalテクスチャ
+Texture2D g_diffuseTex : register(t0);              // Diffuseテクスチャ
+Texture2D g_emissiveTex : register(t1);             // Emissiveテクスチャ
+Texture2D g_metallicRoughnessTex : register(t2);    // MetallicRoughnessテクスチャ
+Texture2D g_normalTex : register(t3);               // Normalテクスチャ
 
-Texture2D<float> g_shadowTex : register(t4);
+Texture2D<float> g_shadowTex : register(t4);        // シャドウマップ
 
 SamplerState g_ssWP : register(s0); // Wrap  : Point
 SamplerState g_ssCP : register(s1); // Clamp : Point
 SamplerState g_ssWL : register(s2); // Wrap  : Linear
 SamplerState g_ssCL : register(s3); // Clamp : Linear
 
-SamplerComparisonState g_ssCmp : register(s4);
+SamplerComparisonState g_ssCmp : register(s4); // 補間用比較機能付き
 
 float BlinnPhong(float3 lightDir, float3 vCam, float3 normal, float specPower)
 {
@@ -27,8 +27,14 @@ float BlinnPhong(float3 lightDir, float3 vCam, float3 normal, float specPower)
 
 float4 main(VSOutput In) : SV_TARGET
 {
-    //float dep = g_shadowTex.Sample(g_ssCP, In.uv);
-    //return float4(dep, dep, dep, 1);
+    // 材質色
+    float4 baseColor = g_diffuseTex.Sample(g_ssWL, In.uv) * g_baseCol * In.color;
+    
+    // Alphaテスト
+    if (baseColor.a < 0.05f)
+    {
+        discard;
+    }
     
     // カメラへの方向
     float3 vCam = normalize(g_camPos - In.wPos);
@@ -53,9 +59,7 @@ float4 main(VSOutput In) : SV_TARGET
     // 正規化
     vNormal = normalize(vNormal);
     
-    // 材質色
-    float4 baseColor = g_diffuseTex.Sample(g_ssWL, In.uv) * g_baseCol * In.color;
-    
+    // 金属性・粗さ色
     float4 mr = g_metallicRoughnessTex.Sample(g_ssWL, In.uv);
     
     // 金属性
@@ -65,32 +69,36 @@ float4 main(VSOutput In) : SV_TARGET
     float roughness = g_roughness * mr.g;
     // 滑らかさ
     float smoothness = 1.0 - roughness;
-    float specPower = pow(2, 11 * smoothness);
+    float specPower = pow(2, 11 * smoothness); // 1～2048
     
-    // 出力する色
+    // 最終的に出力される色
     float3 outColor = 0;
     
+    //------------------------------------------
+    // シャドウマッピング
+    //------------------------------------------
     float shadow = 1;
-    
-    //float3 vp = In.tPos.xyz / In.tPos.w;
-    //float2 shadowUV = (vp.xy + float2(1, -1)) * float2(0.5, -0.5);
-    //float depthLight = g_shadowTex.SampleCmp(g_ssCmp, shadowUV, vp.z - 0.005f);
-    //shadow = lerp(0.5f, 1.0f, depthLight);
-    
     
     float4 liPos = In.tPos;
     liPos.xyz /= liPos.w;
+
+    float bias = 0.003f;
     
+    // 深度マップの範囲内かチェック
     if (abs(liPos.x) <= 1 && abs(liPos.y) <= 1 && liPos.z <= 1)
     {
+        // 射影座標からUV座標へ変換
         float2 uv = (liPos.xy * float2(1, -1)) * 0.5 + 0.5;
-        float z = liPos.z - 0.004f;
-        
+        // ライト方向からのカメラ距離(シャドウアクネ対策)
+        float z = liPos.z - bias;
+
+        // 画像サイズからテクセルサイズを計算        
         float w, h;
         g_shadowTex.GetDimensions(w, h);
         float tw = 1.0 / w;
         float th = 1.0 / h;
         
+        // UVの周辺3x3を判定し平均値を計算
         shadow = 0;
         for (int y = -1; y <= 1; y++)
         {
@@ -115,7 +123,7 @@ float4 main(VSOutput In) : SV_TARGET
         
         // Diffuse
         {
-            // 光の方向と法線の方向の角度差が光の強さ
+            // 光の方向と法線の方向の角度差
             float Dot = dot(-g_DL_Dir, vNormal);
             // マイナス値は0
             float DiffusePow = saturate(Dot);
@@ -123,8 +131,8 @@ float4 main(VSOutput In) : SV_TARGET
             // 正規化Lambert
             DiffusePow /= 3.14159265358979f;
         
-            // 光の色 * 材質の拡散色
-            outColor += (g_DL_Color * DiffusePow) * baseDiffuse * baseColor.a * shadow;
+            // 光の色 * 材質の拡散色 * 影
+            outColor += (g_DL_Color * DiffusePow) * baseDiffuse * shadow;
         }
     
         // Specular
@@ -132,15 +140,15 @@ float4 main(VSOutput In) : SV_TARGET
             // 反射した光の強さ
             float spec = BlinnPhong(g_DL_Dir, vCam, vNormal, specPower);
         
-            // 光の色 * 反射光の強さ * 材質の反射色
-            outColor += (g_DL_Color * spec) * baseSpecular * baseColor.a * shadow;
+            // 光の色 * 反射光の強さ * 材質の反射色 * 調整値 * 影
+            outColor += (g_DL_Color * spec) * baseSpecular * 0.5f * shadow;
         }
         
         // Ambient
         {
             // 全体の明度
             float toBright = saturate(g_AL_Power);
-            outColor += toBright * baseColor.rgb * baseColor.a;
+            outColor += toBright * baseColor.rgb;
         }
     }
     else

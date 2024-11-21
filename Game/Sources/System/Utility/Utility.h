@@ -18,5 +18,8 @@ inline std::string GetDirFromPath(const std::string& path)
 }
 
 // 画面サイズ
-const int windowWidth = 1280;
-const int windowHeight = 720;
+constexpr int window_width = 1280;
+constexpr int window_height = 720;
+
+// シャドウマップ解像度
+constexpr int shadow_difinition = 2048;

@@ -9,7 +9,6 @@ public:
 	~Stage()override{}
 
 	void Draw()override;
-	void DrawShadow()override;
 
 private:
 	void Init()override;

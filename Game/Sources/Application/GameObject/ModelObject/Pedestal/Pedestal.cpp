@@ -19,7 +19,7 @@ void Pedestal::Init()
 	if (!m_spModel)
 	{
 		m_spModel = std::make_shared<ModelWork>();
-		m_spModel->SetModelData(Assets::GetInstance().m_modelDatas.GetData("Assets/Models/Building/Japanese_Farmers_House.gltf"));
+		m_spModel->SetModelData(Assets::GetInstance().m_modelDatas.GetData("Assets/Models/Pedestal/Pedestal.gltf"));
 	}
 
 	Math::Matrix mScale = Math::Matrix::CreateScale(1.5f);

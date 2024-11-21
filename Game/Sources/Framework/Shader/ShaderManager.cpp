@@ -2,7 +2,7 @@
 
 bool ShaderManager::Init()
 {
-	// 各シェーダーのInitを呼び出し
+	// 各シェーダーのInitを呼び出して初期化
 	if (!m_postProcessShader.Init())
 	{
 		return false;
@@ -16,6 +16,7 @@ bool ShaderManager::Init()
 		return false;
 	}
 
+	// 影描画範囲設定
 	SetDirLightShadowArea({ 40.0f,40.0f }, 30.0f);
 
 	WriteCBShadowArea(m_shadowProj, m_dirLightHeight);

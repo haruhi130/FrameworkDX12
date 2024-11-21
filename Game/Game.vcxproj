@@ -217,7 +217,6 @@
     <ClCompile Include="Sources\Framework\Camera\Camera.cpp" />
     <ClCompile Include="Sources\Framework\Collider\Collider.cpp" />
     <ClCompile Include="Sources\Framework\Collider\Collision.cpp" />
-    <ClCompile Include="Sources\Framework\DebugWireFrame\DebugWireFrame.cpp" />
     <ClCompile Include="Sources\Framework\GameObject\BaseObject.cpp" />
     <ClCompile Include="Sources\Framework\GameObject\Component.cpp" />
     <ClCompile Include="Sources\Framework\GameObject\GameObject.cpp" />
@@ -297,7 +296,6 @@
     <ClInclude Include="Sources\Framework\Camera\Camera.h" />
     <ClInclude Include="Sources\Framework\Collider\Collider.h" />
     <ClInclude Include="Sources\Framework\Collider\Collision.h" />
-    <ClInclude Include="Sources\Framework\DebugWireFrame\DebugWireFrame.h" />
     <ClInclude Include="Sources\Framework\Framework.h" />
     <ClInclude Include="Sources\Framework\GameObject\BaseObject.h" />
     <ClInclude Include="Sources\Framework\GameObject\Component.h" />

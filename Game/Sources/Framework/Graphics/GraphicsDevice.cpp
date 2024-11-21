@@ -64,7 +64,7 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 	}
 
 	m_upLightDepthStencil = std::make_unique<DepthStencil>();
-	if (!m_upLightDepthStencil->Create(Math::Vector2(1024, 1024)))
+	if (!m_upLightDepthStencil->Create(Math::Vector2(shadow_difinition, shadow_difinition)))
 	{
 		assert(0 && "LightópDepthStencilçÏê¨é∏îs");
 		return false;
@@ -168,10 +168,10 @@ void GraphicsDevice::ClientToWorld(const POINT& screenPos, float projZ, Math::Ve
 	Math::Matrix projInv = mProj.Invert();
 
 	Math::Matrix mVP;
-	mVP._11 = windowWidth * 0.5f;
-	mVP._22 = -windowHeight * 0.5f;
-	mVP._41 = windowWidth * 0.5f;
-	mVP._42 = windowHeight * 0.5f;
+	mVP._11 = window_width * 0.5f;
+	mVP._22 = -window_height * 0.5f;
+	mVP._41 = window_width * 0.5f;
+	mVP._42 = window_height * 0.5f;
 
 	Math::Matrix viewportInv = mVP.Invert();
 

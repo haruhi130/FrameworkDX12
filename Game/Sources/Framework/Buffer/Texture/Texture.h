@@ -8,8 +8,13 @@ public:
 	// テクスチャロード
 	bool Load(std::string_view fileName);
 
+	// レンダーターゲット用リソース作成
 	bool CreateResource();
+
+	// レンダーターゲット用板ポリ作成
 	bool CreateRenderTarget();
+	
+	// 深度テクスチャ作成
 	bool CreateDepthSRV();
 	bool CreateLightDepthSRV();
 

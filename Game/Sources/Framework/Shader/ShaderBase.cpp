@@ -10,20 +10,24 @@ bool ShaderBase::Init()
 	return true;
 }
 
-void ShaderBase::Create(std::shared_ptr<RootSignature> spRootSignature, std::shared_ptr<Pipeline> spPipeline, const std::wstring& filePath,
+void ShaderBase::Create(const std::shared_ptr<RootSignature>& spRootSignature, const std::shared_ptr<Pipeline>& spPipeline, const std::wstring& filePath,
 	const RenderingSetting& renderingSetting, const std::vector<RangeType>& rangeTypes)
 {
+	// シェーダー読み込み
 	LoadShaderFile(filePath);
 
+	// ルートシグネチャ作成
 	spRootSignature->Create(rangeTypes, m_cbvCount);
 
+	// パイプライン設定
 	spPipeline->SetRenderSettings(spRootSignature.get(), renderingSetting.InputLayouts,
 		renderingSetting.CullMode, renderingSetting.BlendMode, renderingSetting.PrimitiveTopologyType);
+	// パイプライン作成
 	spPipeline->Create({ m_cpVSBlob.Get() ,m_cpHSBlob.Get() ,m_cpDSBlob.Get() ,m_cpGSBlob.Get() ,m_cpPSBlob.Get() }, renderingSetting.Formats,
 		renderingSetting.IsDepth, renderingSetting.IsDepthMask, renderingSetting.RTVCount, renderingSetting.IsWireFrame);
 }
 
-void ShaderBase::Begin(std::shared_ptr<RootSignature> spRootSignature, std::shared_ptr<Pipeline> spPipeline,
+void ShaderBase::Begin(const std::shared_ptr<RootSignature>& spRootSignature, const std::shared_ptr<Pipeline>& spPipeline,
 	int w, int h)
 {
 	// パイプラインセット

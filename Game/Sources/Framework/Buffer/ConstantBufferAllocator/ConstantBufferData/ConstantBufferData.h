@@ -25,6 +25,7 @@ namespace ConstantBufferData
 		Math::Matrix mBones[256];
 	};
 
+	// モデルマテリアル情報
 	struct MaterialInfo
 	{
 		Math::Vector4 BaseColor;
@@ -40,7 +41,7 @@ namespace ConstantBufferData
 		Math::Vector4 Color = { 1,1,1,1 };
 	};
 
-	// 射影行列単体
+	// 射影行列
 	struct ProjectionInfo
 	{
 		Math::Matrix mProj;
@@ -50,10 +51,11 @@ namespace ConstantBufferData
 	struct LightInfo
 	{
 		float IsUseLight = 0.0f;
-		Math::Vector3 DirectionalLightDir = { -1,-1,-1 };
+		Math::Vector3 DirectionalLightDir = { -0.5f,-1,-1 };
 		Math::Vector3 DirectionalLightColor = { 1,1,1 };
 		float AmbientLightPower = 1.0f;
 
+		// ライトカメラ
 		Math::Matrix DirLight_mVP;
 	};
 }

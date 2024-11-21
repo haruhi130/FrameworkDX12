@@ -57,6 +57,7 @@ void RenderTargetChange::UndoRenderTarget() const
 
 bool RenderTargetChange::CreateRTTexture()
 {
+	// レンダーターゲット用板ポリ作成
 	if (!m_spRTTexture)
 	{
 		m_spRTTexture = std::make_shared<Texture>();
@@ -71,6 +72,7 @@ bool RenderTargetChange::CreateRTTexture()
 
 bool RenderTargetChange::CreateDepthTexture()
 {
+	// 深度テクスチャ作成
 	if (!m_spDepthTexture)
 	{
 		m_spDepthTexture = std::make_shared<Texture>();
