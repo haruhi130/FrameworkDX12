@@ -123,9 +123,6 @@ void GameCamera::UpdateCollision()
 			{
 				SetPos(hitPos);
 			}
-
 		}
 	}
-
-
 }

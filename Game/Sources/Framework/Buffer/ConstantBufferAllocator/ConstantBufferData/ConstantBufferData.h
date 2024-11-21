@@ -22,7 +22,7 @@ namespace ConstantBufferData
 	// スキンメッシュ用構造体
 	struct BoneInfo
 	{
-		Math::Matrix mBones[300];
+		Math::Matrix mBones[256];
 	};
 
 	struct MaterialInfo
@@ -49,8 +49,8 @@ namespace ConstantBufferData
 	// ライト
 	struct LightInfo
 	{
-		int IsUseLight = 0;
-		Math::Vector3 DirectionalLightDir = { 1,-1,-1 };
+		float IsUseLight = 0.0f;
+		Math::Vector3 DirectionalLightDir = { -1,-1,-1 };
 		Math::Vector3 DirectionalLightColor = { 1,1,1 };
 		float AmbientLightPower = 1.0f;
 

@@ -61,17 +61,16 @@ bool Texture::CreateResource()
 	D3D12_HEAP_PROPERTIES heapProp = {};
 	heapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
 
+	auto bbuff = GraphicsDevice::GetInstance().GetBackBuffers();
 	D3D12_RESOURCE_DESC resDesc = {};
-	resDesc = GraphicsDevice::GetInstance().GetBackBuffers()[0]->GetDesc();
+	resDesc = bbuff[0]->GetDesc();
 
 	// クリアバリュー設定
-	float ClearColor[4] = { 0.5,0.5,0.5,1 };
 	D3D12_CLEAR_VALUE clearValue = {};
 	clearValue.Format = resDesc.Format;
-	clearValue.Color[0] = ClearColor[0];
-	clearValue.Color[1] = ClearColor[1];
-	clearValue.Color[2] = ClearColor[2];
-	clearValue.Color[3] = ClearColor[3];
+	clearValue.Color[0] = clearValue.Color[1] 
+		= clearValue.Color[2] = 1.0f;
+	clearValue.Color[3] = 1.0f;
 
 	auto result = GraphicsDevice::GetInstance().GetDevice()->
 		CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &resDesc,
@@ -81,8 +80,6 @@ bool Texture::CreateResource()
 		assert(0 && "マルチパスレンダリング用リソース作成失敗");
 		return false;
 	}
-
-	m_desc = resDesc;
 
 	return true;
 }
@@ -146,6 +143,22 @@ bool Texture::CreateRenderTarget()
 	m_IBV.BufferLocation = m_IB->GetGPUVirtualAddress();
 	m_IBV.Format = DXGI_FORMAT_R32_UINT;
 	m_IBV.SizeInBytes = (UINT)resDesc.Width;
+
+	return true;
+}
+
+bool Texture::CreateDepthSRV()
+{
+	m_cpBuffer = GraphicsDevice::GetInstance().GetDepthStencil()->GetBuffer();
+	m_SRVNumber = GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->CreateSRV(m_cpBuffer.Get());
+
+	return true;
+}
+
+bool Texture::CreateLightDepthSRV()
+{
+	m_cpBuffer = GraphicsDevice::GetInstance().GetLightDepthStencil()->GetBuffer();
+	m_SRVNumber = GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->CreateSRV(m_cpBuffer.Get());
 
 	return true;
 }

@@ -10,7 +10,7 @@ int CBVSRVUAVHeap::CreateSRV(ID3D12Resource* pBuffer)
 
 	D3D12_CPU_DESCRIPTOR_HANDLE handle = m_cpHeap->GetCPUDescriptorHandleForHeapStart();
 	handle.ptr += ((UINT64)m_useCount.x + 1) * m_incrementSize
-		+ (UINT64)m_nextRegistNumber * m_incrementSize;
+		+ ((UINT64)m_nextRegistNumber * m_incrementSize);
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 	srvDesc.Format = pBuffer->GetDesc().Format;

@@ -1,11 +1,11 @@
 #include "inc_PostProcessShader.hlsli"
 
 Texture2D<float4> tex : register(t0);
-SamplerState smp : register(s0);
+
+SamplerState smp : register(s2);
 
 float4 main(Output In) : SV_TARGET
-{    
-    //return float4(In.uv, 1, 1);
+{
     float4 base = tex.Sample(smp, In.uv);
     
     //float w, h, levels;
@@ -27,5 +27,6 @@ float4 main(Output In) : SV_TARGET
     //Y = step(0.1, Y);
     
     //return float4(Y, Y, Y, base.a);
+    
     return base;
 }

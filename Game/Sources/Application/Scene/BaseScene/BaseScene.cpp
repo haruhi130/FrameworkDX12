@@ -47,6 +47,12 @@ void BaseScene::PreDraw()
 	{
 		obj->PreDraw();
 	}
+
+	ShaderManager::GetInstance().m_modelShader.BeginShadow();
+	for (auto& obj : m_objList)
+	{
+		obj->DrawShadow();
+	}
 }
 
 void BaseScene::Draw()

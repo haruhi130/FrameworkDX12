@@ -20,5 +20,4 @@ public:
 private:
 	ConstantBufferData::SpriteInfo m_cbSprite;
 	ConstantBufferData::ProjectionInfo m_cbProj;
-
 };

@@ -62,5 +62,7 @@ private:
 
 	bool m_isValid = true;
 
+	Math::Vector3 v;
+
 	std::list<std::weak_ptr<BaseObject>> m_wpHitObjList;
 };

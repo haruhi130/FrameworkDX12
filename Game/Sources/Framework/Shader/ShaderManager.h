@@ -7,7 +7,7 @@
 class ShaderManager
 {
 public:
-	void Init();
+	bool Init();
 
 	//-------------------------------------------------
 	// カメラ設定
@@ -27,14 +27,20 @@ public:
 	void SetDirectionalLight(const Math::Vector3& dir, const Math::Vector3& color);
 	// 環境光の強さを設定
 	void SetAmbientLight(float pow);
+
+	void SetDirLightShadowArea(const Math::Vector2& area, float height);
+
 	// 設定したライト情報をシェーダーへ転送
 	void WriteCBLight() const;
 
 	void WriteCBShadowArea(const Math::Matrix& proj, float dirLightHeight);
 	
+	void WriteLightParams();
+
 	//-------------------------------------------------
 	// シェーダー
 	//-------------------------------------------------
+	
 	ModelShader m_modelShader;
 	SpriteShader m_spriteShader;
 	PostProcessShader m_postProcessShader;
@@ -45,6 +51,9 @@ private:
 
 	// ライト定数バッファ
 	ConstantBufferData::LightInfo m_cbLight;
+
+	Math::Matrix m_shadowProj;
+	float m_dirLightHeight = 0.0f;
 
 public:
 	static ShaderManager& GetInstance()

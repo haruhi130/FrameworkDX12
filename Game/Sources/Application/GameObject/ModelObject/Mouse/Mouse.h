@@ -13,6 +13,7 @@ public:
 	void Update()override;
 	void PostUpdate()override;
 	void Draw()override;
+	void DrawShadow()override;
 
 	// Õ“Ë‘ÎÛ‚ğ“o˜^
 	void RegistHitObjList(const std::shared_ptr<ModelObject>& obj)

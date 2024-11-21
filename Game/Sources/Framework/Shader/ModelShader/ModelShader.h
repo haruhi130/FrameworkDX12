@@ -6,11 +6,12 @@ class ModelShader : public ShaderBase
 {
 public:
 	// ボーン最大数
-	static const int maxBoneBufferSize = 300;
+	static const int maxBoneBufferSize = 256;
 
 	bool Init() override;
 
 	void Begin(int w = windowWidth,int h = windowHeight);
+	void BeginShadow();
 
 	// メッシュ描画
 	void DrawMesh(const Mesh* mesh, const Math::Matrix& mWorld, const std::vector<Material>& materials);
@@ -28,4 +29,9 @@ private:
 
 	// マテリアル定数バッファ
 	ConstantBufferData::MaterialInfo m_cbMaterial;
+
+	std::shared_ptr<Pipeline> m_spPipelineShadow = nullptr;
+
+	// 影描画用DepthTexture
+	std::shared_ptr<Texture> m_spShadowTex = nullptr;
 };

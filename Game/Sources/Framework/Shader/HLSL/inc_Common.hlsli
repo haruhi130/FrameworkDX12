@@ -5,7 +5,7 @@
 //=====================================================
 
 // カメラ
-cbuffer cbCamera : register(b0)
+cbuffer cbCamera : register(b4)
 {
     row_major float4x4 g_mView;     // ビュー変換行列
     row_major float4x4 g_mProj;     // 射影変換行列

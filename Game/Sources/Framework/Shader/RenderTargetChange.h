@@ -13,9 +13,16 @@ struct RenderTargetChange
 	// レンダーターゲット用テクスチャ作成
 	bool CreateRTTexture();
 
+	bool CreateDepthTexture();
+
 	// 描画
 	void Draw() const;
 
 	std::shared_ptr<Texture> m_spRTTexture = nullptr;
 	int m_rtvNum = 0;
+
+	int m_renderTargetSRVNumber = 0;
+
+	std::shared_ptr<Texture> m_spDepthTexture = nullptr;
+	int m_depthSRVNumber = 0;
 };

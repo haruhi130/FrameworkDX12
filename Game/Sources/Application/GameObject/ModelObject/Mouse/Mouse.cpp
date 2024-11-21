@@ -48,6 +48,15 @@ void Mouse::Draw()
 	// ƒ‚ƒfƒ‹•`‰æ
 	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
 }
+
+void Mouse::DrawShadow()
+{
+	if (!m_spModel) { return; }
+
+	// ƒ‚ƒfƒ‹•`‰æ
+	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
+}
+
 void Mouse::ImGuiUpdate()
 {
 	ImGui::Begin(u8"MouseCT");

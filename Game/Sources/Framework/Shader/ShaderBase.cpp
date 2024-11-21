@@ -4,35 +4,37 @@ bool ShaderBase::Init()
 {
 	m_cbvCount = 0;
 
+	m_spRootSignature = std::make_shared<RootSignature>();
+	m_spPipeline = std::make_shared<Pipeline>();
+	
 	return true;
 }
 
-void ShaderBase::Create(const std::wstring& filePath,
+void ShaderBase::Create(std::shared_ptr<RootSignature> spRootSignature, std::shared_ptr<Pipeline> spPipeline, const std::wstring& filePath,
 	const RenderingSetting& renderingSetting, const std::vector<RangeType>& rangeTypes)
 {
 	LoadShaderFile(filePath);
 
-	m_upRootSignature = std::make_unique<RootSignature>();
-	m_upRootSignature->Create(rangeTypes, m_cbvCount);
+	spRootSignature->Create(rangeTypes, m_cbvCount);
 
-	m_upPipeline = std::make_unique<Pipeline>();
-	m_upPipeline->SetRenderSettings(m_upRootSignature.get(), renderingSetting.InputLayouts,
+	spPipeline->SetRenderSettings(spRootSignature.get(), renderingSetting.InputLayouts,
 		renderingSetting.CullMode, renderingSetting.BlendMode, renderingSetting.PrimitiveTopologyType);
-	m_upPipeline->Create({ m_pVSBlob.Get() ,m_pHSBlob.Get() ,m_pDSBlob.Get() ,m_pGSBlob.Get() ,m_pPSBlob.Get() }, renderingSetting.Formats,
+	spPipeline->Create({ m_cpVSBlob.Get() ,m_cpHSBlob.Get() ,m_cpDSBlob.Get() ,m_cpGSBlob.Get() ,m_cpPSBlob.Get() }, renderingSetting.Formats,
 		renderingSetting.IsDepth, renderingSetting.IsDepthMask, renderingSetting.RTVCount, renderingSetting.IsWireFrame);
 }
 
-void ShaderBase::Begin(int w, int h)
+void ShaderBase::Begin(std::shared_ptr<RootSignature> spRootSignature, std::shared_ptr<Pipeline> spPipeline,
+	int w, int h)
 {
 	// パイプラインセット
-	GraphicsDevice::GetInstance().GetCmdList()->SetPipelineState(m_upPipeline->GetPipeline());
+	GraphicsDevice::GetInstance().GetCmdList()->SetPipelineState(spPipeline->GetPipeline());
 
 	// ルートシグネチャセット
-	GraphicsDevice::GetInstance().GetCmdList()->SetGraphicsRootSignature(m_upRootSignature->GetRootSignature());
+	GraphicsDevice::GetInstance().GetCmdList()->SetGraphicsRootSignature(spRootSignature->GetRootSignature());
 
 	// トポロジー設定
 	D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType =
-		static_cast<D3D12_PRIMITIVE_TOPOLOGY_TYPE>(m_upPipeline->GetTopologyType());
+		static_cast<D3D12_PRIMITIVE_TOPOLOGY_TYPE>(spPipeline->GetTopologyType());
 
 	switch (topologyType)
 	{
@@ -54,8 +56,8 @@ void ShaderBase::Begin(int w, int h)
 	D3D12_VIEWPORT viewport = {};
 	viewport.Width = static_cast<float>(w);
 	viewport.Height = static_cast<float>(h);
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
+	viewport.MinDepth = D3D12_MIN_DEPTH;
+	viewport.MaxDepth = D3D12_MAX_DEPTH;
 	GraphicsDevice::GetInstance().GetCmdList()->RSSetViewports(1, &viewport);
 
 	// レクト設定
@@ -65,7 +67,7 @@ void ShaderBase::Begin(int w, int h)
 	GraphicsDevice::GetInstance().GetCmdList()->RSSetScissorRects(1, &rect);
 }
 
-void ShaderBase::LoadShaderFile(const std::wstring& filePath)
+void ShaderBase::LoadShaderFile(const std::wstring& filePath, const std::string& entryPoint)
 {
 	ID3DInclude* include = D3D_COMPILE_STANDARD_FILE_INCLUDE;
 	UINT flag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
@@ -77,8 +79,8 @@ void ShaderBase::LoadShaderFile(const std::wstring& filePath)
 	// 頂点シェーダーのコンパイル
 	{
 		std::wstring fullFilepath = currentPath + filePath + L"_VS" + format;
-		auto result = D3DCompileFromFile(fullFilepath.c_str(), nullptr, include, "main",
-			"vs_5_0", flag, 0, m_pVSBlob.GetAddressOf(), &pErrorBlob);
+		auto result = D3DCompileFromFile(fullFilepath.c_str(), nullptr, include, entryPoint.data(),
+			"vs_5_0", flag, 0, m_cpVSBlob.GetAddressOf(), &pErrorBlob);
 
 		if (FAILED(result))
 		{
@@ -90,29 +92,29 @@ void ShaderBase::LoadShaderFile(const std::wstring& filePath)
 	// ハルシェーダーのコンパイル
 	{
 		std::wstring fullFilepath = currentPath + filePath + L"_HS" + format;
-		auto result = D3DCompileFromFile(fullFilepath.c_str(), nullptr, include, "main",
-			"hs_5_0", flag, 0, m_pHSBlob.GetAddressOf(), &pErrorBlob);
+		auto result = D3DCompileFromFile(fullFilepath.c_str(), nullptr, include, entryPoint.data(),
+			"hs_5_0", flag, 0, m_cpHSBlob.GetAddressOf(), &pErrorBlob);
 	}
 
 	// ドメインシェーダーのコンパイル
 	{
 		std::wstring fullFilepath = currentPath + filePath + L"_DS" + format;
-		auto result = D3DCompileFromFile(fullFilepath.c_str(), nullptr, include, "main",
-			"ds_5_0", flag, 0, m_pDSBlob.GetAddressOf(), &pErrorBlob);
+		auto result = D3DCompileFromFile(fullFilepath.c_str(), nullptr, include, entryPoint.data(),
+			"ds_5_0", flag, 0, m_cpDSBlob.GetAddressOf(), &pErrorBlob);
 	}
 
 	// ジオメトリシェーダーのコンパイル
 	{
 		std::wstring fullFilepath = currentPath + filePath + L"_GS" + format;
-		auto result = D3DCompileFromFile(fullFilepath.c_str(), nullptr, include, "main",
-			"gs_5_0", flag, 0, m_pGSBlob.GetAddressOf(), &pErrorBlob);
+		auto result = D3DCompileFromFile(fullFilepath.c_str(), nullptr, include, entryPoint.data(),
+			"gs_5_0", flag, 0, m_cpGSBlob.GetAddressOf(), &pErrorBlob);
 	}
 
 	// ピクセルシェーダーのコンパイル
 	{
 		std::wstring fullFilepath = currentPath + filePath + L"_PS" + format;
-		auto result = D3DCompileFromFile(fullFilepath.c_str(), nullptr, include, "main",
-			"ps_5_0", flag, 0, m_pPSBlob.GetAddressOf(), &pErrorBlob);
+		auto result = D3DCompileFromFile(fullFilepath.c_str(), nullptr, include, entryPoint.data(),
+			"ps_5_0", flag, 0, m_cpPSBlob.GetAddressOf(), &pErrorBlob);
 
 		if (FAILED(result))
 		{

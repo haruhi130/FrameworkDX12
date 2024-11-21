@@ -6,6 +6,14 @@ void Stage::Draw()
 	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
 }
 
+void Stage::DrawShadow()
+{
+	if (!m_spModel) { return; }
+
+	// ƒ‚ƒfƒ‹•`‰æ
+	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
+}
+
 void Stage::Init()
 {
 	if (!m_spModel)

@@ -4,13 +4,13 @@ struct VSOutput
     float2 UV : TEXCOORD;
 };
 
-cbuffer cbSprite :register(b1)
+cbuffer cbSprite :register(b0)
 {
     row_major float4x4 g_mTransform;
     float4 g_color;
 };
 
-cbuffer cbProjection : register(b2)
+cbuffer cbProjection : register(b1)
 {
     row_major float4x4 g_mProj;
 }

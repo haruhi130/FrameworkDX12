@@ -24,8 +24,9 @@ float4 color : COLOR,float3 tangent :TANGENT,uint4 skinIndex : SKININDEX,float4 
     // 座標変換
     Out.pos = mul(pos, g_mWorld);
     Out.wPos = Out.pos.xyz;
-    Out.pos = mul(Out.pos, g_mView);
-    Out.pos = mul(Out.pos, g_mProj);
+    Out.svPos = mul(Out.pos, g_mView);
+    Out.svPos = mul(Out.svPos, g_mProj);
+    Out.tPos = mul(Out.pos,g_DL_mVP);
     
     // UV座標
     Out.uv = uv;
@@ -41,4 +42,26 @@ float4 color : COLOR,float3 tangent :TANGENT,uint4 skinIndex : SKININDEX,float4 
     Out.wB = normalize(cross(Out.wN, Out.wT));
     
     return Out;
+}
+
+float4 Shadow(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD
+, uint4 skinIndex : SKININDEX, float4 skinWeight : SKINWEIGHT) : SV_Position
+{
+    // スキンメッシュ処理
+    if (g_isSkinMeshObj)
+    {
+        row_major float4x4 mBones = 0;
+        [unroll]
+        for (int i = 0; i < 4; i++)
+        {
+            mBones += g_mBones[skinIndex[i]] * skinWeight[i];
+        }
+    
+        pos = mul(pos, mBones);
+        normal = mul(normal, (float3x3) mBones);
+    }
+    
+    pos = mul(pos, g_mWorld);
+    
+    return mul(pos, g_DL_mVP);
 }

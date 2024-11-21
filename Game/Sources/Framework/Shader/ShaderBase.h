@@ -22,11 +22,12 @@ public:
 	virtual bool Init();
 
 	// シェーダー作成
-	void Create(const std::wstring& filePath,
+	void Create(std::shared_ptr<RootSignature> spRootSignature, std::shared_ptr<Pipeline> spPipeline,const std::wstring& filePath,
 		const RenderingSetting& renderingSetting, const std::vector<RangeType>& rangeTypes);
 
 	// 描画開始
-	virtual void Begin(int w = windowWidth, int h = windowHeight);
+	virtual void Begin(std::shared_ptr<RootSignature> spRootSignature, std::shared_ptr<Pipeline> spPipeline,
+		int w = windowWidth, int h = windowHeight);
 
 	// CBVカウント取得
 	inline UINT GetCBVCount()const 
@@ -34,16 +35,16 @@ public:
 
 protected:
 	// シェーダーファイル読込
-	void LoadShaderFile(const std::wstring& filePath);
+	void LoadShaderFile(const std::wstring& filePath,const std::string& entryPoint = "main");
 
-	std::unique_ptr<Pipeline>		m_upPipeline = nullptr;
-	std::unique_ptr<RootSignature>	m_upRootSignature = nullptr;
+	std::shared_ptr<Pipeline>		m_spPipeline = nullptr;
+	std::shared_ptr<RootSignature>	m_spRootSignature = nullptr;
 
-	ComPtr<ID3DBlob> m_pVSBlob = nullptr;	// 頂点シェーダー
-	ComPtr<ID3DBlob> m_pHSBlob = nullptr;	// ハルシェーダー
-	ComPtr<ID3DBlob> m_pDSBlob = nullptr;	// ドメインシェーダー
-	ComPtr<ID3DBlob> m_pGSBlob = nullptr;	// ジオメトリシェーダー
-	ComPtr<ID3DBlob> m_pPSBlob = nullptr;	// ピクセルシェーダー
+	ComPtr<ID3DBlob> m_cpVSBlob = nullptr;	// 頂点シェーダー
+	ComPtr<ID3DBlob> m_cpHSBlob = nullptr;	// ハルシェーダー
+	ComPtr<ID3DBlob> m_cpDSBlob = nullptr;	// ドメインシェーダー
+	ComPtr<ID3DBlob> m_cpGSBlob = nullptr;	// ジオメトリシェーダー
+	ComPtr<ID3DBlob> m_cpPSBlob = nullptr;	// ピクセルシェーダー
 
 	UINT m_cbvCount = 0;
 };

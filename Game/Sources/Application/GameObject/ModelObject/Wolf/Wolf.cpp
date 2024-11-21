@@ -48,6 +48,14 @@ void Wolf::Draw()
 	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
 }
 
+void Wolf::DrawShadow()
+{
+	if (!m_spModel) { return; }
+
+	// ƒ‚ƒfƒ‹•`‰æ
+	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
+}
+
 void Wolf::OnHit(bool isHit)
 {
 	m_isSight = isHit;

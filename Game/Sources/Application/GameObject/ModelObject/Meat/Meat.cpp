@@ -7,6 +7,13 @@ void Meat::Draw()
 	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
 }
 
+void Meat::DrawShadow()
+{
+	if (!m_spModel) { return; }
+
+	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
+}
+
 void Meat::Init()
 {
 	if (!m_spModel)

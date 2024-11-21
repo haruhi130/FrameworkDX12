@@ -15,10 +15,6 @@ public:
 	// GPU側アドレス取得
 	const D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle(int number)override;
 
-	// ヒープ取得
-	inline ID3D12DescriptorHeap* GetHeap()
-	{ return m_cpHeap.Get(); }
-
 	// ヒープ使用量取得
 	inline const Math::Vector3& GetUseCount() 
 	{ return m_useCount; }

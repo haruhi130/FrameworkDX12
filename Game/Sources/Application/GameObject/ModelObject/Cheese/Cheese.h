@@ -9,6 +9,7 @@ public:
 	~Cheese()override{}
 
 	void Draw()override;
+	void DrawShadow()override;
 
 	void Update()override;
 

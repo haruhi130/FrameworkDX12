@@ -13,6 +13,7 @@ int DSVHeap::CreateDSV(ID3D12Resource* pBuffer, DXGI_FORMAT format)
 
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
 	dsvDesc.Format = format;
+	dsvDesc.Flags = D3D12_DSV_FLAG_NONE;
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 
 	GraphicsDevice::GetInstance().GetDevice()->CreateDepthStencilView(pBuffer, &dsvDesc, handle);

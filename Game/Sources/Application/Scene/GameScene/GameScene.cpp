@@ -33,7 +33,7 @@ void GameScene::Init()
 {
 	ShowCursor(false);
 
-	ShaderManager::GetInstance().SetAmbientLight(0.7f);
+	ShaderManager::GetInstance().SetAmbientLight(1.0f);
 
 	// ƒJƒƒ‰
 	std::shared_ptr<GameCamera> camera = std::make_shared<GameCamera>();

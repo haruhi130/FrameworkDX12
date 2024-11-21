@@ -59,7 +59,10 @@ bool Application::Init(int width, int height)
 
 	//===============================================
 	// シェーダー初期化
-	ShaderManager::GetInstance().Init();
+	if (!ShaderManager::GetInstance().Init())
+	{
+		return false;
+	}
 
 	//===============================================
 	// オーディオ初期化
@@ -117,13 +120,10 @@ void Application::Execute()
 		// 
 		//=============================================
 
-		// 事前更新
 		PreUpdate();
 
-		// 通常更新
 		Update();
 
-		// 後更新
 		PostUpdate();
 
 		//=============================================
@@ -142,7 +142,7 @@ void Application::Execute()
 
 		//=============================================
 		// ImGui処理
-		ImGuiUpdate();
+		//ImGuiUpdate();
 
 		// 時間管理
 		ServiceLocator::Update();
@@ -174,6 +174,7 @@ void Application::PreUpdate()
 
 void Application::Update()
 {
+	// サウンド更新
 	AudioManager::GetInstance().Update();
 
 	SceneManager::GetInstance().Update();
@@ -190,16 +191,15 @@ void Application::PostUpdate()
 
 void Application::PreDraw()
 {
-	// レンダーターゲット変更
-	ShaderManager::GetInstance().m_postProcessShader.PreDraw();
-
-	// 画像用にヒープを指定
+	// DescriptorHeap設定
 	GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
 
-	// コンスタントバッファ初期化
+	// コンスタントバッファ番号初期化
 	GraphicsDevice::GetInstance().GetConstantBufferAllocator()->ResetCurrentUseNumber();
 
 	SceneManager::GetInstance().PreDraw();
+
+	ShaderManager::GetInstance().m_postProcessShader.PreDraw();
 }
 
 void Application::Draw()
@@ -211,10 +211,11 @@ void Application::PostDraw()
 {
 	ShaderManager::GetInstance().m_postProcessShader.PostProcess();
 
-	// 描画準備開始
+	// 描画前準備
 	GraphicsDevice::GetInstance().Prepare();
 
 	ShaderManager::GetInstance().m_postProcessShader.Begin();
+	
 	ShaderManager::GetInstance().m_postProcessShader.Draw();
 }
 

@@ -12,7 +12,7 @@ void Pipeline::SetRenderSettings(RootSignature* pRootSignature, const std::vecto
 }
 
 void Pipeline::Create(std::vector<ID3DBlob*> pBlobs, const std::vector<DXGI_FORMAT> formats, bool isDepth,
-	bool isDepthMask,int rtvCount, bool isWireFrame)
+	bool isDepthMask, int rtvCount, bool isWireFrame)
 {
 	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayouts;
 	SetInputLayout(inputLayouts, m_inputLayouts);
@@ -46,8 +46,16 @@ void Pipeline::Create(std::vector<ID3DBlob*> pBlobs, const std::vector<DXGI_FORM
 	}
 
 	// ピクセルシェーダーをセット
-	graphicsPipelineState.PS.pShaderBytecode = pBlobs[4]->GetBufferPointer();
-	graphicsPipelineState.PS.BytecodeLength = pBlobs[4]->GetBufferSize();
+	if (pBlobs[4])
+	{
+		graphicsPipelineState.PS.pShaderBytecode = pBlobs[4]->GetBufferPointer();
+		graphicsPipelineState.PS.BytecodeLength = pBlobs[4]->GetBufferSize();
+	}
+	else
+	{
+		graphicsPipelineState.PS.pShaderBytecode = nullptr;
+		graphicsPipelineState.PS.BytecodeLength = 0;
+	}
 
 	graphicsPipelineState.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 
@@ -78,7 +86,7 @@ void Pipeline::Create(std::vector<ID3DBlob*> pBlobs, const std::vector<DXGI_FORM
 		{
 			graphicsPipelineState.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 		}
-		graphicsPipelineState.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+		graphicsPipelineState.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 		graphicsPipelineState.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 	}
 	else

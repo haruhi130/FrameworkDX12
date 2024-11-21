@@ -13,6 +13,7 @@ public:
 	virtual void PostUpdate(){}
 
 	virtual void PreDraw(){}
+	virtual void DrawShadow(){}
 	virtual void Draw(){}
 	virtual void DrawSprite(){}
 

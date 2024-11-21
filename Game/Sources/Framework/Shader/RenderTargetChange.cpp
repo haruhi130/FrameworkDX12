@@ -7,16 +7,16 @@ bool RenderTargetChange::CreateRenderTarget()
 	{
 		m_spRTTexture = std::make_shared<Texture>();
 	}
-	if(!m_spRTTexture->CreateResource())
-	{ 
-		return false; 
+	if (!m_spRTTexture->CreateResource())
+	{
+		return false;
 	}
 
 	// RTV作成
 	m_rtvNum = GraphicsDevice::GetInstance().GetRTVHeap()->CreateRTV(m_spRTTexture->GetBuffer().Get());
-	
+
 	// SRV作成
-	GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->CreateSRV(m_spRTTexture->GetBuffer().Get());
+	m_renderTargetSRVNumber = GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->CreateSRV(m_spRTTexture->GetBuffer().Get());
 
 	return true;
 }
@@ -27,17 +27,22 @@ bool RenderTargetChange::ChangeRenderTarget() const
 	GraphicsDevice::GetInstance().SetResourceBarrier(m_spRTTexture->GetBuffer().Get(),
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
+	// RTVハンドル取得
 	auto rtvH = GraphicsDevice::GetInstance().GetRTVHeap()->GetCPUHandle(m_rtvNum);
-	auto dsvH = GraphicsDevice::GetInstance().GetDSVHeap()->GetCPUHandle(GraphicsDevice::GetInstance().GetDepthStencil()->GetDSVNumber());
+	
+	// DSVハンドル取得
+	auto dsvH = GraphicsDevice::GetInstance().GetDSVHeap()->GetCPUHandle(
+		GraphicsDevice::GetInstance().GetDepthStencil()->GetDSVNumber());
 
 	// レンダーターゲット切り替え
 	GraphicsDevice::GetInstance().GetCmdList()->OMSetRenderTargets(
 		1, &rtvH, false, &dsvH);
 
-	float clearColor[4] = { 0.5,0.5,0.5,1 };
+	float clearColor[4] = { 1.0f,1.0f,1.0f,1.0f };
 	GraphicsDevice::GetInstance().GetCmdList()->ClearRenderTargetView(
-		rtvH,clearColor,0,nullptr);
+		rtvH, clearColor, 0, nullptr);
 
+	// 通常深度バッファクリア
 	GraphicsDevice::GetInstance().GetDepthStencil()->ClearBuffer();
 
 	return true;
@@ -52,7 +57,7 @@ void RenderTargetChange::UndoRenderTarget() const
 
 bool RenderTargetChange::CreateRTTexture()
 {
-	if(!m_spRTTexture)
+	if (!m_spRTTexture)
 	{
 		m_spRTTexture = std::make_shared<Texture>();
 	}
@@ -64,9 +69,23 @@ bool RenderTargetChange::CreateRTTexture()
 	return true;
 }
 
+bool RenderTargetChange::CreateDepthTexture()
+{
+	if (!m_spDepthTexture)
+	{
+		m_spDepthTexture = std::make_shared<Texture>();
+	}
+	if (!m_spDepthTexture->CreateDepthSRV())
+	{
+		return false;
+	}
+
+	return true;
+}
+
 void RenderTargetChange::Draw() const
 {
 	m_spRTTexture->SetToDevice();
-	
+
 	GraphicsDevice::GetInstance().GetCmdList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }

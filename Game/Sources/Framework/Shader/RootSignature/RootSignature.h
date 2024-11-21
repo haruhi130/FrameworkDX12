@@ -11,6 +11,7 @@ enum class TextureAddressMode
 {
 	Wrap,
 	Clamp,
+	Clamp_Cmp,
 };
 
 enum class D3D12Filter
@@ -35,7 +36,7 @@ private:
 
 	// ƒTƒ“ƒvƒ‰[ì¬
 	void CreateStaticSampler(D3D12_STATIC_SAMPLER_DESC& samplerDesc, TextureAddressMode mode,
-		D3D12Filter filter, int count);
+		D3D12Filter filter, int count,bool bCmp = false);
 
 	ComPtr<ID3DBlob> m_cpRootBlob = nullptr;
 	ComPtr<ID3D12RootSignature> m_cpRootSignature = nullptr;

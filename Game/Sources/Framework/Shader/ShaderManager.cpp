@@ -1,11 +1,26 @@
 #include "ShaderManager.h"
 
-void ShaderManager::Init()
+bool ShaderManager::Init()
 {
 	// 各シェーダーのInitを呼び出し
-	m_modelShader.Init();
-	m_postProcessShader.Init();
-	m_spriteShader.Init();
+	if (!m_postProcessShader.Init())
+	{
+		return false;
+	}
+	if (!m_modelShader.Init())
+	{
+		return false;
+	}
+	if (!m_spriteShader.Init())
+	{
+		return false;
+	}
+
+	SetDirLightShadowArea({ 40.0f,40.0f }, 30.0f);
+
+	WriteCBShadowArea(m_shadowProj, m_dirLightHeight);
+
+	return true;
 }
 
 void ShaderManager::SetCamera(const Math::Matrix& view, const Math::Matrix& proj)
@@ -19,13 +34,12 @@ void ShaderManager::SetCamera(const Math::Matrix& view, const Math::Matrix& proj
 void ShaderManager::WriteCBCamera() const
 {
 	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-		->BindAndAttachData(0, m_cbCamera);
+		->BindAndAttachData(4, m_cbCamera);
 }
 
 void ShaderManager::SetIsUseLight(bool isUseLight)
 {
 	m_cbLight.IsUseLight = isUseLight;
-
 	WriteCBLight();
 }
 
@@ -33,13 +47,18 @@ void ShaderManager::SetDirectionalLight(const Math::Vector3& dir, const Math::Ve
 {
 	m_cbLight.DirectionalLightDir = dir;
 	m_cbLight.DirectionalLightColor = color;
-
-	m_cbLight.DirectionalLightDir.Normalize();
 }
 
 void ShaderManager::SetAmbientLight(float pow)
 {
 	m_cbLight.AmbientLightPower = pow;
+}
+
+void ShaderManager::SetDirLightShadowArea(const Math::Vector2& area, float height)
+{
+	m_shadowProj = DirectX::XMMatrixOrthographicLH(area.x, area.x, 1.0f, height * 2.0f);
+
+	m_dirLightHeight = height;
 }
 
 void ShaderManager::WriteCBLight() const
@@ -57,8 +76,12 @@ void ShaderManager::WriteCBShadowArea(const Math::Matrix& proj, float dirLightHe
 	Math::Matrix shadowVP = DirectX::XMMatrixLookAtLH(lightPos - lightDir * dirLightHeight, lightPos, up);
 
 	shadowVP *= proj;
-
 	m_cbLight.DirLight_mVP = shadowVP;
+}
+
+void ShaderManager::WriteLightParams()
+{
+	WriteCBShadowArea(m_shadowProj, m_dirLightHeight);
 	WriteCBLight();
 }
 

@@ -49,18 +49,8 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 		return false;
 	}
 
-	m_upCBVSRVUAVHeap = std::make_unique<CBVSRVUAVHeap>();
-	if (!m_upCBVSRVUAVHeap->Create(HeapType::CBVSRVUAV, Math::Vector3(500)))
-	{
-		assert(0 && "CBVSRVUAVÉqÅ[ÉvçÏê¨é∏îs");
-		return false;
-	}
-
-	m_upCBufferAllocator = std::make_unique<ConstantBufferAllocator>();
-	m_upCBufferAllocator->Create(m_upCBVSRVUAVHeap.get());
-
 	m_upDSVHeap = std::make_unique<DSVHeap>();
-	if (!m_upDSVHeap->Create(HeapType::DSV, 500))
+	if (!m_upDSVHeap->Create(HeapType::DSV, 2))
 	{
 		assert(0 && "DSVÉqÅ[ÉvçÏê¨é∏îs");
 		return false;
@@ -72,6 +62,23 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 		assert(0 && "DepthStencilçÏê¨é∏îs");
 		return false;
 	}
+
+	m_upLightDepthStencil = std::make_unique<DepthStencil>();
+	if (!m_upLightDepthStencil->Create(Math::Vector2(1024, 1024)))
+	{
+		assert(0 && "LightópDepthStencilçÏê¨é∏îs");
+		return false;
+	}
+
+	m_upCBVSRVUAVHeap = std::make_unique<CBVSRVUAVHeap>();
+	if (!m_upCBVSRVUAVHeap->Create(HeapType::CBVSRVUAV, Math::Vector3(500)))
+	{
+		assert(0 && "CBVSRVUAVÉqÅ[ÉvçÏê¨é∏îs");
+		return false;
+	}
+
+	m_upCBufferAllocator = std::make_unique<ConstantBufferAllocator>();
+	m_upCBufferAllocator->Create(m_upCBVSRVUAVHeap.get());
 
 	if (!CreateRTV())
 	{
@@ -103,9 +110,7 @@ void GraphicsDevice::Prepare()
 
 	auto rtvH = m_upRTVHeap->GetCPUHandle(bbIdx);
 
-	auto dsvH = m_upDSVHeap->GetCPUHandle(m_upDepthStencil->GetDSVNumber());
-
-	m_cpCmdList->OMSetRenderTargets(1, &rtvH, true, &dsvH);
+	m_cpCmdList->OMSetRenderTargets(1, &rtvH, false, nullptr);
 
 	m_cpCmdList->ClearRenderTargetView(rtvH, m_clearColor, 0, nullptr);
 }

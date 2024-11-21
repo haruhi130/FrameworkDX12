@@ -11,6 +11,7 @@ public:
 	void Update()override;
 	void PostUpdate()override;
 	void Draw()override;
+	void DrawShadow()override;
 
 	void OnHit(bool isHit);
 

@@ -12,16 +12,7 @@ void RootSignature::Create(const std::vector<RangeType>& rangeTypes, UINT& cbvCo
 	// SRVÇÃêîÇæÇØSamplerDescÇê∂ê¨
 	int samplerCount = 0;
 
-	for (int i = 0; i < (int)rangeTypes.size(); ++i)
-	{
-		if (rangeTypes[i] == RangeType::SRV)
-		{
-			++samplerCount;
-		}
-	}
-
 	// éwíËÇ≥ÇÍÇΩèáÇ…ê›íË
-	samplerCount = 0;
 	bool bSampler = false;
 	int uavCount = 0;
 
@@ -59,7 +50,7 @@ void RootSignature::Create(const std::vector<RangeType>& rangeTypes, UINT& cbvCo
 		}
 	}
 
-	std::array<D3D12_STATIC_SAMPLER_DESC, 4> pStaticSamplerDescs = {};
+	std::array<D3D12_STATIC_SAMPLER_DESC, 5> pStaticSamplerDescs = {};
 
 	if (bSampler)
 	{
@@ -67,10 +58,11 @@ void RootSignature::Create(const std::vector<RangeType>& rangeTypes, UINT& cbvCo
 		CreateStaticSampler(pStaticSamplerDescs[1], TextureAddressMode::Clamp, D3D12Filter::Point, 1);
 		CreateStaticSampler(pStaticSamplerDescs[2], TextureAddressMode::Wrap, D3D12Filter::Linear, 2);
 		CreateStaticSampler(pStaticSamplerDescs[3], TextureAddressMode::Clamp, D3D12Filter::Linear, 3);
+		CreateStaticSampler(pStaticSamplerDescs[4], TextureAddressMode::Clamp_Cmp, D3D12Filter::Linear, 4, true);
 	}
 
 	rootSignatureDesc.pStaticSamplers = bSampler ? pStaticSamplerDescs.data() : nullptr;
-	rootSignatureDesc.NumStaticSamplers = bSampler ? 4 : 0;
+	rootSignatureDesc.NumStaticSamplers = bSampler ? 5 : 0;
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 	rootSignatureDesc.pParameters = rootParams.data();
 	rootSignatureDesc.NumParameters = (int)rangeTypes.size();
@@ -123,13 +115,22 @@ void RootSignature::CreateRange(D3D12_DESCRIPTOR_RANGE& pRange, RangeType type, 
 }
 
 void RootSignature::CreateStaticSampler(D3D12_STATIC_SAMPLER_DESC& pSamplerDesc, TextureAddressMode mode,
-	D3D12Filter filter, int count)
+	D3D12Filter filter, int count, bool bCmp)
 {
+	if (mode == TextureAddressMode::Clamp_Cmp)
+	{
+		mode = TextureAddressMode::Clamp;
+	}
+
 	D3D12_TEXTURE_ADDRESS_MODE addressMode = mode == TextureAddressMode::Wrap ?
 		D3D12_TEXTURE_ADDRESS_MODE_WRAP : D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
 
 	D3D12_FILTER samplingFilter = filter == D3D12Filter::Point ?
 		D3D12_FILTER_MIN_MAG_MIP_POINT : D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+	if (bCmp)
+	{
+		samplingFilter = D3D12_FILTER_COMPARISON_MIN_MAG_MIP_POINT;
+	}
 
 	pSamplerDesc = {};
 	pSamplerDesc.AddressU = addressMode;
@@ -139,8 +140,9 @@ void RootSignature::CreateStaticSampler(D3D12_STATIC_SAMPLER_DESC& pSamplerDesc,
 	pSamplerDesc.Filter = samplingFilter;
 	pSamplerDesc.MaxLOD = D3D12_FLOAT32_MAX;
 	pSamplerDesc.MinLOD = 0.0f;
-	pSamplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+	pSamplerDesc.ComparisonFunc = bCmp == false ? D3D12_COMPARISON_FUNC_NEVER :
+		D3D12_COMPARISON_FUNC_LESS_EQUAL;
 	pSamplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-	pSamplerDesc.MaxAnisotropy = 16;
+	pSamplerDesc.MaxAnisotropy = bCmp == false ? 16 : 1;
 	pSamplerDesc.ShaderRegister = count;
 }

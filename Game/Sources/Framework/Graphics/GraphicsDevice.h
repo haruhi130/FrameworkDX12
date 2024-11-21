@@ -34,7 +34,7 @@ public:
 		D3D12_RESOURCE_STATES after);
 
 	// バックバッファ色変更
-	inline void SetBackBufferColor(const Math::Color& col) 
+	inline void SetBackBufferColor(const Math::Color& col)
 	{ m_clearColor = col; }
 
 	// デバイス取得
@@ -45,18 +45,18 @@ public:
 	inline ID3D12GraphicsCommandList10* GetCmdList() const
 	{ return m_cpCmdList.Get(); }
 
-	inline std::vector<ComPtr<ID3D12Resource>> GetBackBuffers() 
+	inline std::vector<ComPtr<ID3D12Resource>> GetBackBuffers()
 	{ return m_cpBackBuffers; }
 
 	// 定数バッファアロケーター取得
 	inline ConstantBufferAllocator* GetConstantBufferAllocator() const
 	{ return m_upCBufferAllocator.get(); }
 
-	inline RTVHeap* GetRTVHeap() const 
+	inline RTVHeap* GetRTVHeap() const
 	{ return m_upRTVHeap.get(); }
 
 	// CBVSRVUAVヒープ取得
-	inline CBVSRVUAVHeap* GetCBVSRVUAVHeap() const 
+	inline CBVSRVUAVHeap* GetCBVSRVUAVHeap() const
 	{ return m_upCBVSRVUAVHeap.get(); }
 
 	// DSVヒープ取得
@@ -68,6 +68,9 @@ public:
 
 	inline DepthStencil* GetDepthStencil() const
 	{ return m_upDepthStencil.get(); }
+
+	inline DepthStencil* GetLightDepthStencil() const
+	{ return m_upLightDepthStencil.get(); }
 
 private:
 	enum class GPUTier
@@ -96,7 +99,7 @@ private:
 	bool CreateCommandQueue();
 
 	// スワップチェーン作成
-	bool CreateSwapChain(HWND hWnd,int width,int height);
+	bool CreateSwapChain(HWND hWnd, int width, int height);
 
 	// レンダーターゲットビュー作成
 	bool CreateRTV();
@@ -127,8 +130,9 @@ private:
 
 	std::unique_ptr<DSVHeap> m_upDSVHeap = nullptr;
 	std::unique_ptr<DepthStencil> m_upDepthStencil = nullptr;
+	std::unique_ptr<DepthStencil> m_upLightDepthStencil = nullptr;
 
-	Math::Color m_clearColor = {0.5f,0.5f,0.5f,1.0f};
+	Math::Color m_clearColor = { 1.0f,1.0f,1.0f,1.0f };
 
 	GraphicsDevice() {}
 	~GraphicsDevice() {}

@@ -12,6 +12,5 @@ public:
 	void PostProcess();
 
 private:
-	RenderTargetChange m_change;
-
+	RenderTargetChange m_RTChange;
 };

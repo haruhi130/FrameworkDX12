@@ -10,6 +10,8 @@ public:
 
 	bool CreateResource();
 	bool CreateRenderTarget();
+	bool CreateDepthSRV();
+	bool CreateLightDepthSRV();
 
 	// シェーダーリソースとして設定
 	void Set(int index) const;
@@ -30,9 +32,6 @@ public:
 	{
 		return m_desc;
 	}
-
-	inline ComPtr<ID3D12Resource> GetBuffer()
-	{ return m_cpBuffer; }
 
 private:
 	int m_SRVNumber = 0;

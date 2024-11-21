@@ -9,6 +9,7 @@ public:
 	virtual void Update()override{}
 	virtual void PostUpdate()override{}
 	virtual void Draw()override{}
+	virtual void DrawShadow()override{}
 
 	virtual void ImGuiUpdate()override{}
 
