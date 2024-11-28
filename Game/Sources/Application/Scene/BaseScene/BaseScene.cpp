@@ -30,6 +30,8 @@ void BaseScene::Update()
 		obj->Update();
 	}
 
+	EffekseerManager::GetInstance().Update();
+
 	Event();
 }
 

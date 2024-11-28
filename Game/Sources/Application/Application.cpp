@@ -71,6 +71,11 @@ bool Application::Init(int width, int height)
 		return false;
 	};
 
+	if(!EffekseerManager::GetInstance().Init())
+	{
+		return false;
+	}
+
 	//===============================================
 	// シーン初期化
 	SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Title);
@@ -98,6 +103,8 @@ void Application::Execute()
 	auto bgm = AudioManager::GetInstance().Play("Assets/Sounds/Under_line.wav", true);
 	bgm->SetVolume(SceneManager::GetInstance().GetBGMVolume());
 
+	EffekseerManager::GetInstance().Load();
+
 	//===============================================
 	// メインゲームループ
 	while (true)
@@ -121,6 +128,11 @@ void Application::Execute()
 		//=============================================
 
 		PreUpdate();
+
+		if (GetAsyncKeyState('N') & 0x8000)
+		{
+			EffekseerManager::GetInstance().Play();
+		}
 
 		Update();
 
@@ -191,9 +203,6 @@ void Application::PostUpdate()
 
 void Application::PreDraw()
 {
-	// DescriptorHeap設定
-	GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
-
 	// コンスタントバッファ番号初期化
 	GraphicsDevice::GetInstance().GetConstantBufferAllocator()->ResetCurrentUseNumber();
 
@@ -205,17 +214,19 @@ void Application::PreDraw()
 void Application::Draw()
 {
 	SceneManager::GetInstance().Draw();
+
+	EffekseerManager::GetInstance().Draw();
 }
 
 void Application::PostDraw()
 {
 	ShaderManager::GetInstance().m_postProcessShader.PostProcess();
-
+	
 	// 描画前準備
 	GraphicsDevice::GetInstance().Prepare();
 
 	ShaderManager::GetInstance().m_postProcessShader.Begin();
-	
+
 	ShaderManager::GetInstance().m_postProcessShader.Draw();
 }
 

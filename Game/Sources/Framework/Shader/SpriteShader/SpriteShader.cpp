@@ -20,6 +20,9 @@ bool SpriteShader::Init()
 
 void SpriteShader::Begin(int w, int h)
 {
+	// DescriptorHeap設定
+	GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
+
 	// ルートシグネチャとパイプライン設定
 	ShaderBase::Begin(m_spRootSignature, m_spPipeline, w, h);
 

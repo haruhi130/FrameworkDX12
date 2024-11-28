@@ -190,6 +190,9 @@
     <Filter Include="Libraries\tinygltf">
       <UniqueIdentifier>{9d4fbbf3-3369-4c6e-b062-d96a461e9c29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Effekseer">
+      <UniqueIdentifier>{7b840324-eac8-495b-b1aa-cdf07c07d227}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -364,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Application\GameObject\ModelObject\RiceBall\RiceBall.cpp">
       <Filter>Application\GameObject\ModelObject\RiceBall</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\Effekseer\EffekseerManager.cpp">
+      <Filter>Framework\Effekseer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -593,6 +599,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Shader\SpriteShader\SpriteShader.h">
       <Filter>Framework\Shader\SpriteShader</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\Effekseer\EffekseerManager.h">
+      <Filter>Framework\Effekseer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

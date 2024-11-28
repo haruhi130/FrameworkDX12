@@ -45,6 +45,10 @@ public:
 	inline ID3D12GraphicsCommandList10* GetCmdList() const
 	{ return m_cpCmdList.Get(); }
 
+	// コマンドキュー取得
+	inline ID3D12CommandQueue* GetCmdQueue() const
+	{ return m_cpCmdQueue.Get(); }
+
 	// バックバッファ取得
 	inline std::vector<ComPtr<ID3D12Resource>> GetBackBuffers()
 	{ return m_cpBackBuffers; }

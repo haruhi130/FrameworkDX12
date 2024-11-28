@@ -11,7 +11,6 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 	EnableDebugLayer();
 #endif // _DEBUG
 
-
 	if (!CreateDevice())
 	{
 		assert(0 && "デバイス作成失敗");
@@ -66,7 +65,7 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 	m_upLightDepthStencil = std::make_unique<DepthStencil>();
 	if (!m_upLightDepthStencil->Create(Math::Vector2(shadow_difinition, shadow_difinition)))
 	{
-		assert(0 && "Light用DepthStencil作成失敗");
+		assert(0 && "LightDepthStencil作成失敗");
 		return false;
 	}
 

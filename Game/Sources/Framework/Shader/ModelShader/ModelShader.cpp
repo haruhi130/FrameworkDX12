@@ -46,6 +46,9 @@ bool ModelShader::Init()
 
 void ModelShader::Begin(int w, int h)
 {
+	// DescriptorHeap設定
+	GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
+
 	// ルートシグネチャとパイプライン設定
 	ShaderBase::Begin(m_spRootSignature, m_spPipeline, w, h);
 
@@ -61,6 +64,9 @@ void ModelShader::Begin(int w, int h)
 
 void ModelShader::BeginShadow(int w,int h)
 {
+	// DescriptorHeap設定
+	GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
+
 	// シャドウマップ用のハンドル取得
 	auto handle = GraphicsDevice::GetInstance().GetDSVHeap()->GetCPUHandle(
 		GraphicsDevice::GetInstance().GetLightDepthStencil()->GetDSVNumber());

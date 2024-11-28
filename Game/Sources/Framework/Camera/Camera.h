@@ -18,6 +18,12 @@ public:
 	// クライアント座標から3Dワールド座標を求めるレイ情報を生成
 	void GenerateRayInfoFromClient(const POINT& clientPos, Math::Vector3& rayPos, Math::Vector3& rayDir, float& rayRange) const;
 
+	inline const Math::Matrix& GetCameraMatrix() const 
+	{ return m_mView; }
+
+	inline const Math::Matrix& GetProjMatrix() const
+	{ return m_mProj; }
+
 private:
 	Math::Matrix m_mView;
 

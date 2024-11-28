@@ -35,4 +35,6 @@
 
 #include "GameObject/BaseObject.h"
 
+#include "Effekseer/EffekseerManager.h"
+
 #include "Shader/ShaderManager.h"

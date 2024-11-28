@@ -63,6 +63,8 @@ void GameCamera::Init()
 	m_localPos = Math::Matrix::CreateTranslation(m_local);
 
 	m_mousePos = { 640,360 };
+
+	EffekseerManager::GetInstance().SetCamera(m_spCamera);
 }
 
 void GameCamera::UpdateRotateByMouse()

@@ -27,8 +27,14 @@ bool PostProcessShader::Init()
 
 void PostProcessShader::Begin(int w, int h)
 {
+	// DescriptorHeap設定
+	GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
+
 	// ルートシグネチャとパイプライン設定
 	ShaderBase::Begin(m_spRootSignature, m_spPipeline, w, h);
+
+	// 変更したレンダーターゲット先に書き込んだ画像をシェーダーにセット
+	m_RTChange.m_spRTTexture->Set(m_cbvCount);
 }
 
 void PostProcessShader::PreDraw()
@@ -39,8 +45,6 @@ void PostProcessShader::PreDraw()
 
 void PostProcessShader::Draw()
 {
-	// 変更したレンダーターゲット先に書き込んだ画像をシェーダーにセット
-	m_RTChange.m_spRTTexture->Set(m_cbvCount);
 	// 描画
 	m_RTChange.Draw();
 }
