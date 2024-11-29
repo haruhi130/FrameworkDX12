@@ -30,8 +30,6 @@ void BaseScene::Update()
 		obj->Update();
 	}
 
-	EffekseerManager::GetInstance().Update();
-
 	Event();
 }
 
@@ -41,6 +39,9 @@ void BaseScene::PostUpdate()
 	{
 		obj->PostUpdate();
 	}
+
+	// エフェクト更新
+	EffekseerManager::GetInstance().Update();
 }
 
 void BaseScene::PreDraw()
@@ -66,6 +67,9 @@ void BaseScene::Draw()
 	{
 		obj->Draw();
 	}
+
+	// エフェクト描画
+	EffekseerManager::GetInstance().Draw();
 }
 
 void BaseScene::DrawSprite()

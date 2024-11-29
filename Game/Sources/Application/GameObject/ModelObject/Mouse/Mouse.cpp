@@ -16,6 +16,11 @@ void Mouse::Update()
 		m_coolTime = 0.0f;
 	}
 
+	if (GetAsyncKeyState('N') & 0x8000)
+	{
+		auto effect = EffekseerManager::GetInstance().Play("Heal.efk", m_pos, false);
+	}
+
 	// ステート更新
 	if (m_currentAction)
 	{

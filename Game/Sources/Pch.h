@@ -45,6 +45,9 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+// multimedia
+#include <mmsystem.h>
+
 //==============================================
 // Direct3D12
 //==============================================
@@ -67,10 +70,9 @@
 #pragma comment(lib,"DirectXTex.lib")
 #include <DirectXTex.h>
 
-// multimedia
-#include <mmsystem.h>
-
+//==============================================
 // ImGui
+//==============================================
 #define IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_PLACEMENT_NEW
 #include <imgui.h>
@@ -78,19 +80,21 @@
 #include <imgui_impl_win32.h>
 #include <imgui_impl_dx12.h>
 
+//==============================================
 // Effekseer
+//==============================================
 #pragma comment(lib,"Effekseer.lib")
+#pragma comment(lib,"EffekseerRendererCommon.lib")
 #pragma comment(lib,"EffekseerRendererDX12.lib")
 #pragma comment(lib,"EffekseerRendererLLGI.lib")
-#pragma comment(lib,"EffekseerRendererCommon.lib")
 #pragma comment(lib,"LLGI.lib")
 
 #include <Effekseer/Effekseer.h>
 #include <EffekseerRendererDX12/EffekseerRendererDX12.h>
 
-//===============================================
+//==============================================
 // ï∂éöÉRÅ[Éhïœä∑
-//===============================================
+//==============================================
 #include <strconv.h>
 
 // System

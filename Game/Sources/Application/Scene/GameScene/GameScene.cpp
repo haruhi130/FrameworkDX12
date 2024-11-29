@@ -44,7 +44,6 @@ void GameScene::Init()
 
 	// 地面
 	std::shared_ptr<Stage> stage = std::make_shared<Stage>();
-	camera->RegistHitObjList(stage);
 	m_objList.push_back(stage);
 
 	// プレイヤー(ネズミ)
@@ -128,5 +127,4 @@ void GameScene::Init()
 	sprite->SetRectangle({ 0,0,32,32 });
 	sprite->SetTexture("Assets/Textures/mark.png");
 	m_objList.push_back(sprite);
-
 }

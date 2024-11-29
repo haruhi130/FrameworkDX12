@@ -71,7 +71,7 @@ bool Application::Init(int width, int height)
 		return false;
 	};
 
-	if(!EffekseerManager::GetInstance().Init())
+	if(!EffekseerManager::GetInstance().Init(width,height))
 	{
 		return false;
 	}
@@ -103,7 +103,7 @@ void Application::Execute()
 	auto bgm = AudioManager::GetInstance().Play("Assets/Sounds/Under_line.wav", true);
 	bgm->SetVolume(SceneManager::GetInstance().GetBGMVolume());
 
-	EffekseerManager::GetInstance().Load();
+	//auto effect = EffekseerManager::GetInstance().Play("Assets/Effects/Heal.efk", { 0,0.1f,10 });
 
 	//===============================================
 	// メインゲームループ
@@ -128,11 +128,6 @@ void Application::Execute()
 		//=============================================
 
 		PreUpdate();
-
-		if (GetAsyncKeyState('N') & 0x8000)
-		{
-			EffekseerManager::GetInstance().Play();
-		}
 
 		Update();
 
@@ -214,14 +209,12 @@ void Application::PreDraw()
 void Application::Draw()
 {
 	SceneManager::GetInstance().Draw();
-
-	EffekseerManager::GetInstance().Draw();
 }
 
 void Application::PostDraw()
 {
 	ShaderManager::GetInstance().m_postProcessShader.PostProcess();
-	
+
 	// 描画前準備
 	GraphicsDevice::GetInstance().Prepare();
 

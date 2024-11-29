@@ -216,6 +216,9 @@ bool ModelData::IsSkinMesh()
 	return false;
 }
 
+// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// 
+// ModelWork
+// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// 
 void ModelWork::CalcNodeMatrices()
 {
 	if (!m_spModelData) { return; }
