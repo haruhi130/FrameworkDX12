@@ -57,6 +57,8 @@ private:
 
 	std::shared_ptr<ModelWork> m_spOriginalModel;
 
+	std::shared_ptr<EffekseerObject> m_spEffect = nullptr;
+
 /////////////////////////////////////////////////
 // ステートパターン管理
 private:

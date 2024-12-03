@@ -103,8 +103,6 @@ void Application::Execute()
 	auto bgm = AudioManager::GetInstance().Play("Assets/Sounds/Under_line.wav", true);
 	bgm->SetVolume(SceneManager::GetInstance().GetBGMVolume());
 
-	//auto effect = EffekseerManager::GetInstance().Play("Assets/Effects/Heal.efk", { 0,0.1f,10 });
-
 	//===============================================
 	// メインゲームループ
 	while (true)

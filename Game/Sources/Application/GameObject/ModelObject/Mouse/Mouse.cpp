@@ -254,7 +254,6 @@ void Mouse::UpdateCollision()
 							{
 								m_isMasked = true;
 								m_coolTime = 60.0f * 5;
-								m_spModel.swap(m_maskedModel);
 							}
 						}
 					}
@@ -401,6 +400,12 @@ void Mouse::ActionWalk::Exit(Mouse& owner)
 
 void Mouse::ActionMasked::Enter(Mouse& owner)
 {
+	if (!EffekseerManager::GetInstance().IsPlaying("SmokeBomb.efk"))
+	{
+		owner.m_spEffect = EffekseerManager::GetInstance().Play("SmokeBomb.efk", owner.m_pos, false);
+	}
+
+	owner.m_spModel.swap(owner.m_maskedModel);
 }
 
 void Mouse::ActionMasked::Update(Mouse& owner)

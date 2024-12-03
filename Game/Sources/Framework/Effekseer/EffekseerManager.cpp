@@ -213,24 +213,13 @@ const bool EffekseerManager::IsPlaying(const std::string& name) const
 	return it->second->IsPlaying();
 }
 
-void EffekseerManager::Reset()
+void EffekseerManager::Release()
 {
 	StopAllEffect();
 
 	m_omEffects.clear();
 
 	m_isPause = false;
-}
-
-void EffekseerManager::Release()
-{
-	Reset();
-
-	m_pEfkManager.Reset();
-	m_pEfkRenderer.Reset();
-
-	m_pEfkMemoryPool.Reset();
-	m_pEfkCmdList.Reset();
 }
 
 std::shared_ptr<EffekseerObject> EffekseerManager::Play(const EffectInfo& info)

@@ -56,7 +56,6 @@ public:
 	{ m_wpCamera = camera; }
 	
 	// ‰ð•ú
-	void Reset();
 	void Release();
 
 private:
