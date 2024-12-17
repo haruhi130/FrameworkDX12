@@ -16,6 +16,10 @@ struct AxisStatus
 	{
 		return AxisStatus(m_width + value.m_width, m_height + value.m_height);
 	}
+	AxisStatus operator-(const AxisStatus& value)
+	{
+		return AxisStatus(m_width - value.m_width, m_height - value.m_height);
+	}
 	AxisStatus operator+=(const AxisStatus& value)
 	{
 		m_width += value.m_width;
@@ -25,7 +29,7 @@ struct AxisStatus
 };
 
 // キーの状態
-enum KeyStatus
+enum ButtonStatus
 {
 	Free = 1 << 0,		// 押されていない
 	Press = 1 << 1,		// 押した瞬間
@@ -45,10 +49,13 @@ public:
 private:
 	static inputTypeID m_nextInputTypeID;
 };
-
 inputTypeID InputTypeManager::m_nextInputTypeID = 0;
 
-class InputCollector
+/// <summary>
+/// ゲームの場面ごとに入力の役割を設定するクラス
+/// Work：ボタンの役割を設定、複数設定可能
+/// </summary>
+class InputWorkCollector
 {
 public:
 	// コレクタが有効か
@@ -76,9 +83,8 @@ public:
 	}
 
 	//------------------------------------------------
-	// Key
+	// Button
 	//------------------------------------------------
-
 	// ボタンワークを追加
 	inline void AddButtonWork(std::string_view work)
 	{
@@ -112,7 +118,6 @@ public:
 	//------------------------------------------------
 	// Axis
 	//------------------------------------------------
-
 	// 軸ワークを追加
 	inline void AddAxisWork(std::string_view work)
 	{
@@ -155,6 +160,9 @@ private:
 	std::unordered_map<std::string, std::unordered_map<std::string, std::unordered_set<std::string>>> m_umWorkToAxises;
 };
 
+/// <summary>
+/// 入力形式：ボタンフォーマットの管理クラス
+/// </summary>
 template<typename KeyCodeType>
 class InputButtonFormatBase
 {
@@ -202,6 +210,9 @@ private:
 template<typename KeyCodeType>
 inputTypeID InputButtonFormatBase<KeyCodeType>::m_buttonFormatTypeID = 0;
 
+/// <summary>
+/// 入力形式：軸フォーマットの管理クラス
+/// </summary>
 template<typename KeyCodeType>
 class InputAxisFormatBase
 {
@@ -266,6 +277,10 @@ public:
 	virtual const std::unordered_map<std::string, AxisStatus>& GetAllAxisResult() = 0;
 };
 
+/// <summary>
+/// 単一の入力デバイス：登録したフォーマットを管理するクラス
+/// キーボード・マウス/コントローラー毎の管理
+/// </summary>
 template<typename KeyCodeType>
 class InputDeviceBase : public IInputDeviceBase
 {
@@ -282,45 +297,45 @@ public:
 			{
 				// 前のフレームの入力状態を取得
 				short result = m_umButtonToResult[button.first];
-				// ボタンが押されている場合
+				// ボタンが押されていた場合
 				if (format.second->CheckButtonState(button.second))
 				{
 					// 前フレームでボタンが押されていない
-					if (result & KeyStatus::Free)
+					if (result & ButtonStatus::Free)
 					{
 						// 結果にPressを追加
-						result |= KeyStatus::Press;
+						result |= ButtonStatus::Press;
 					}
 					// 前フレームでもボタンが押されている
 					else
 					{
 						// 結果からPressを除外
-						result &= ~KeyStatus::Press;
+						result &= ~ButtonStatus::Press;
 					}
 					// 結果からFreeを除外
-					result &= ~KeyStatus::Free;
+					result &= ~ButtonStatus::Free;
 					// 結果にHoldを追加
-					result |= KeyStatus::Hold;
+					result |= ButtonStatus::Hold;
 				}
 				// ボタンが押されていない
 				else
 				{
 					// 前フレームでボタンが押されている
-					if (result & KeyStatus::Hold)
+					if (result & ButtonStatus::Hold)
 					{
 						// 結果にReleaseを追加
-						result |= KeyStatus::Release;
+						result |= ButtonStatus::Release;
 					}
 					// 前フレームでもボタンが押されていない
 					else
 					{
 						// 結果からReleaseを除外
-						result &= ~KeyStatus::Release;
+						result &= ~ButtonStatus::Release;
 					}
-					// 結果にHoldを追加
-					result &= ~KeyStatus::Hold;
-					// 結果からFreeを除外
-					result |= KeyStatus::Free;
+					// 結果にHoldを除外
+					result &= ~ButtonStatus::Hold;
+					// 結果からFreeを追加
+					result |= ButtonStatus::Free;
 				}
 				// ボタン入力の結果をコンテナに格納
 				m_umButtonToResult[button.first] = result;
@@ -334,7 +349,7 @@ public:
 		for (auto&& format : m_umNameToAxisFormat)
 		{
 			// 軸の状態を検索
-			for (auto&& axis : format.second->GetAxisNamtToKeyCode())
+			for (auto&& axis : format.second->GetAxisNameToKeyCode())
 			{
 				// 軸入力の結果をコンテナに格納
 				m_umAxisToResult[axis.first] = format.second->CheckAxisState(axis.second);
@@ -363,7 +378,7 @@ public:
 		auto it = m_umButtonToResult.find(buttonName.data());
 		if (it != m_umButtonToResult.end())
 		{
-			return it->second & KeyStatus::Free;
+			return it->second & ButtonStatus::Free;
 		}
 		return false;
 	}
@@ -374,7 +389,7 @@ public:
 		auto it = m_umButtonToResult.find(buttonName.data());
 		if (it != m_umButtonToResult.end())
 		{
-			return it->second & KeyStatus::Press;
+			return it->second & ButtonStatus::Press;
 		}
 		return false;
 	}
@@ -385,7 +400,7 @@ public:
 		auto it = m_umButtonToResult.find(buttonName.data());
 		if (it != m_umButtonToResult.end())
 		{
-			return it->second & KeyStatus::Hold;
+			return it->second & ButtonStatus::Hold;
 		}
 		return false;
 	}
@@ -396,7 +411,7 @@ public:
 		auto it = m_umButtonToResult.find(buttonName.data());
 		if (it != m_umButtonToResult.end())
 		{
-			return it->second & KeyStatus::Release;
+			return it->second & ButtonStatus::Release;
 		}
 		return false;
 	}
@@ -483,6 +498,10 @@ protected:
 template<typename KeyCodeType>
 inputTypeID InputDeviceBase<KeyCodeType>::m_deviceTypeID = 0;
 
+/// <summary>
+/// 入力デバイス：入力デバイスを管理するクラス
+/// 単一の入力デバイスを一括管理する
+/// </summary>
 class InputDeviceCentor
 {
 public:
@@ -547,6 +566,10 @@ private:
 	std::unordered_map<inputTypeID, std::string> m_umDeviceTypeToName;
 };
 
+/// <summary>
+/// デバイスとコレクタを紐づけるクラス
+/// 入力検知システム
+/// </summary>
 class Input
 {
 public:
@@ -585,9 +608,9 @@ public:
 	//-------------------------------------------
 
 	// コレクタを追加
-	inline std::shared_ptr<InputCollector> AddCollector(std::string_view collectorName)
+	inline std::shared_ptr<InputWorkCollector> AddCollector(std::string_view collectorName)
 	{
-		std::shared_ptr<InputCollector> spCollector = std::make_shared<InputCollector>();
+		std::shared_ptr<InputWorkCollector> spCollector = std::make_shared<InputWorkCollector>();
 		m_umNameToCollector[collectorName.data()] = spCollector;
 		spCollector->SetName(collectorName);
 		spCollector->SetActive(true);
@@ -595,13 +618,13 @@ public:
 	}
 
 	// コレクタを取得
-	inline std::shared_ptr<InputCollector>GetCollector(std::string_view collectorName)
+	inline std::shared_ptr<InputWorkCollector>GetCollector(std::string_view collectorName)
 	{
 		return m_umNameToCollector[collectorName.data()];
 	}
 
 	// 全てのコレクタを取得
-	inline std::unordered_map<std::string, std::shared_ptr<InputCollector>>& GetAllCollector()
+	inline std::unordered_map<std::string, std::shared_ptr<InputWorkCollector>>& GetAllCollector()
 	{
 		return m_umNameToCollector;
 	}
@@ -619,22 +642,22 @@ public:
 	// ボタンワークがFreeならtrue
 	inline const bool IsButtonWorkFree(std::string_view work)
 	{
-		return m_umWorkToButtonResult[work.data()] & KeyStatus::Free;
+		return m_umWorkToButtonResult[work.data()] & ButtonStatus::Free;
 	}
 	// ボタンワークがPressならtrue
 	inline const bool IsButtonWorkPress(std::string_view work)
 	{
-		return m_umWorkToButtonResult[work.data()] & KeyStatus::Free;
+		return m_umWorkToButtonResult[work.data()] & ButtonStatus::Press;
 	}
 	// ボタンワークがHoldならtrue
 	inline const bool IsButtonWorkHold(std::string_view work)
 	{
-		return m_umWorkToButtonResult[work.data()] & KeyStatus::Hold;
+		return m_umWorkToButtonResult[work.data()] & ButtonStatus::Hold;
 	}
 	// ボタンワークがReleaseならtrue
 	inline const bool IsButtonWorkRelease(std::string_view work)
 	{
-		return m_umWorkToButtonResult[work.data()] & KeyStatus::Release;
+		return m_umWorkToButtonResult[work.data()] & ButtonStatus::Release;
 	}
 
 	// 軸の状態を取得
@@ -689,12 +712,11 @@ public:
 	}
 
 private:
-
 	// デバイスを管理するクラスのインスタンス
 	InputDeviceCentor m_deviceCentor;
 
 	// コレクタの名前とインスタンスを紐づけるコンテナ
-	std::unordered_map<std::string, std::shared_ptr<InputCollector>> m_umNameToCollector;
+	std::unordered_map<std::string, std::shared_ptr<InputWorkCollector>> m_umNameToCollector;
 	// Workと結果を紐づけるコンテナ
 	std::unordered_map<std::string, short> m_umWorkToButtonResult;
 	std::unordered_map<std::string, AxisStatus> m_umWorkToAxisResult;

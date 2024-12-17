@@ -21,7 +21,7 @@ bool RenderTargetChange::CreateRenderTarget()
 	return true;
 }
 
-bool RenderTargetChange::ChangeRenderTarget() const
+void RenderTargetChange::ChangeRenderTarget() const
 {
 	// リソースバリア切り替え
 	GraphicsDevice::GetInstance().SetResourceBarrier(m_spRTTexture->GetBuffer().Get(),
@@ -44,8 +44,6 @@ bool RenderTargetChange::ChangeRenderTarget() const
 
 	// 通常深度バッファクリア
 	GraphicsDevice::GetInstance().GetDepthStencil()->ClearBuffer();
-
-	return true;
 }
 
 void RenderTargetChange::UndoRenderTarget() const

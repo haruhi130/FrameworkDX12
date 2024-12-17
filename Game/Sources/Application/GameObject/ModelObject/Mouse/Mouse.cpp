@@ -59,7 +59,7 @@ void Mouse::DrawShadow()
 	if (!m_spModel) { return; }
 
 	// モデル描画
-	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
+	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld, false);
 }
 
 void Mouse::ImGuiUpdate()
@@ -74,15 +74,15 @@ void Mouse::ImGuiUpdate()
 void Mouse::Init()
 {
 	// モデル読み込み
-	if (!m_spModel)
+	if (!m_spOriginalModel)
 	{
-		m_spModel = std::make_shared<ModelWork>();
-		m_spModel->SetModelData(Assets::GetInstance().m_modelDatas.
+		m_spOriginalModel = std::make_shared<ModelWork>();
+		m_spOriginalModel->SetModelData(Assets::GetInstance().m_modelDatas.
 			GetData("Assets/Models/Mouse/Mouse.gltf"));
-		m_spOriginalModel = m_spModel;
+		m_spModel = m_spOriginalModel;
 	}
 
-	m_speed = 5.0f;
+	m_speed = 3.0f;
 
 	// 初期計算
 	Math::Matrix mScale = Math::Matrix::CreateScale(0.5f);
@@ -113,6 +113,8 @@ void Mouse::UpdateMatrix()
 void Mouse::UpdateRotate(Math::Vector3& moveVec)
 {
 	if (moveVec.LengthSquared() == 0.0f) { return; }
+
+	auto time = ServiceLocator::Get<Time>();
 
 	Math::Vector3 targetDir = moveVec;
 	targetDir.Normalize();
@@ -148,13 +150,14 @@ void Mouse::UpdateCollision()
 		rayInfo.m_pos.y += 0.3f;
 
 		rayInfo.m_dir = Math::Vector3::Down;
+		rayInfo.m_dir.Normalize();
 		rayInfo.m_range = m_gravity + 0.3f;
 
 		rayInfo.m_type = Collider::Type::Ground;
 
-		for (std::weak_ptr<BaseObject> wpObj : m_wpObjList)
+		for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
 		{
-			std::shared_ptr<BaseObject> spObj = wpObj.lock();
+			std::shared_ptr<ModelObject> spObj = wpObj.lock();
 			if (spObj)
 			{
 				std::list<Collider::CollisionResult> retRayList;
@@ -192,9 +195,9 @@ void Mouse::UpdateCollision()
 		sphereInfo.m_sphere.Radius = 0.6f;
 		sphereInfo.m_type = Collider::Type::Bump;
 
-		for (std::weak_ptr<BaseObject> wpObj : m_wpObjList)
+		for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
 		{
-			std::shared_ptr<BaseObject> spObj = wpObj.lock();
+			std::shared_ptr<ModelObject> spObj = wpObj.lock();
 			if (spObj)
 			{
 				std::list<Collider::CollisionResult> retBumpList;
@@ -211,50 +214,51 @@ void Mouse::UpdateCollision()
 	}
 
 	// Ray : Event
+	if (InputManager::GetInstance().IsPress("LClick"))
 	{
-		if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+		// マウス情報
+		POINT mousePos = {};
+		GetCursorPos(&mousePos);
+
+		// カメラ情報
+		const std::shared_ptr<GameCamera> spCamera = m_wpCamera.lock();
+		if (spCamera)
 		{
-			// マウス情報
-			POINT mousePos = {};
-			GetCursorPos(&mousePos);
+			// レイの方向
+			Math::Vector3 rayDir = Math::Vector3::Zero;
+			float range = 0.0f;
 
-			// カメラ情報
-			const std::shared_ptr<GameCamera> spCamera = m_wpCamera.lock();
-			if (spCamera)
+			// カメラ座標
+			Math::Vector3 cameraPos = spCamera->GetPos();
+
+			// カメラからマウス座標へのレイ情報を作成
+			spCamera->WorkCamera()->GenerateRayInfoFromClient(
+				mousePos, cameraPos, rayDir, range);
+
+			for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
 			{
-				Math::Vector3 rayDir = Math::Vector3::Zero;
-				float range = 1.0f;
-
-				Math::Vector3 cameraPos = spCamera->GetPos();
-
-				// 3D座標に変換
-				spCamera->WorkCamera()->GenerateRayInfoFromClient(
-					mousePos, cameraPos, rayDir, range);
-
-				for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
+				std::shared_ptr<ModelObject> spObj = wpObj.lock();
+				if (spObj)
 				{
-					std::shared_ptr<ModelObject> spObj = wpObj.lock();
-					if (spObj)
+					// レイ情報を当たり判定に設定
+					Collider::RayInfo rayInfo;
+					rayInfo.m_type = Collider::Type::Event;
+					rayInfo.m_pos = cameraPos;
+					rayInfo.m_dir = rayDir;
+					rayInfo.m_dir.Normalize();
+					rayInfo.m_range = 30.0f;
+
+					std::list<Collider::CollisionResult> retRayList;
+					spObj->Intersects(rayInfo, &retRayList);
+
+					for (auto& ret : retRayList)
 					{
-						Math::Vector3 endRayPos = cameraPos + rayDir * range;
-
-						Collider::RayInfo rayInfo
-						(
-							Collider::Type::Event,
-							cameraPos,
-							endRayPos);
-
-						std::list<Collider::CollisionResult> retRayList;
-						spObj->Intersects(rayInfo, &retRayList);
-
-						for (auto& ret : retRayList)
+						// CT制限
+						if (m_coolTime <= 0)
 						{
 							m_maskedModel = spObj->GetModel();
-							if (m_coolTime <= 0)
-							{
-								m_isMasked = true;
-								m_coolTime = 60.0f * 5;
-							}
+							m_isMasked = true;
+							m_coolTime = 60.0f * 3;
 						}
 					}
 				}
@@ -269,9 +273,9 @@ void Mouse::UpdateCollision()
 		sphereInfo.m_sphere.Radius = 3.0f;
 		sphereInfo.m_type = Collider::Type::Goal;
 
-		for (std::weak_ptr<BaseObject> wpObj : m_wpObjList)
+		for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
 		{
-			std::shared_ptr<BaseObject> spObj = wpObj.lock();
+			std::shared_ptr<ModelObject> spObj = wpObj.lock();
 			if (spObj)
 			{
 				std::list<Collider::CollisionResult> retBumpList;
@@ -310,19 +314,21 @@ void Mouse::ActionIdle::Enter(Mouse& owner)
 void Mouse::ActionIdle::Update(Mouse& owner)
 {
 	Math::Vector3 vec = Math::Vector3::Zero;
-	if (GetAsyncKeyState('W')) { vec = Math::Vector3::Backward; }
-	if (GetAsyncKeyState('S')) { vec = Math::Vector3::Forward; }
-	if (GetAsyncKeyState('A')) { vec = Math::Vector3::Left; }
-	if (GetAsyncKeyState('D')) { vec = Math::Vector3::Right; }
+	if (InputManager::GetInstance().IsHold("Up")) { vec = Math::Vector3::Backward; }
+	if (InputManager::GetInstance().IsHold("Down")) { vec = Math::Vector3::Forward; }
+	if (InputManager::GetInstance().IsHold("Left")) { vec = Math::Vector3::Left; }
+	if (InputManager::GetInstance().IsHold("Right")) { vec = Math::Vector3::Right; }
 
 	if (vec.LengthSquared() > 0.0f)
 	{
 		owner.ChangeActionState(std::make_shared<ActionWalk>());
+		return;
 	}
 
 	if (owner.m_isMasked)
 	{
 		owner.ChangeActionState(std::make_shared<ActionMasked>());
+		return;
 	}
 }
 
@@ -343,26 +349,26 @@ void Mouse::ActionWalk::Enter(Mouse& owner)
 
 void Mouse::ActionWalk::Update(Mouse& owner)
 {
-	auto time = ServiceLocator::Get<Time_VRR>();
+	auto time = ServiceLocator::Get<Time>();
 	float speed = owner.m_speed * time->DeltaTime();
 
 	Math::Vector3 move = Math::Vector3::Zero;
-	if (GetAsyncKeyState('W'))
+	if (InputManager::GetInstance().IsHold("Up"))
 	{
 		Math::Vector3 vec = Math::Vector3::Backward;
 		move += vec;
 	}
-	if (GetAsyncKeyState('S'))
+	if (InputManager::GetInstance().IsHold("Down"))
 	{
 		Math::Vector3 vec = Math::Vector3::Forward;
 		move += vec;
 	}
-	if (GetAsyncKeyState('A'))
+	if (InputManager::GetInstance().IsHold("Left"))
 	{
 		Math::Vector3 vec = Math::Vector3::Left;
 		move += vec;
 	}
-	if (GetAsyncKeyState('D'))
+	if (InputManager::GetInstance().IsHold("Right"))
 	{
 		Math::Vector3 vec = Math::Vector3::Right;
 		move += vec;
@@ -371,6 +377,7 @@ void Mouse::ActionWalk::Update(Mouse& owner)
 	if (owner.m_isMasked)
 	{
 		owner.ChangeActionState(std::make_shared<ActionMasked>());
+		return;
 	}
 
 	if (move.LengthSquared() == 0)
@@ -386,10 +393,10 @@ void Mouse::ActionWalk::Update(Mouse& owner)
 	}
 
 	move.Normalize();
-	move *= speed;
+	move *= owner.m_speed;
+	move *= time->DeltaTime();
 
-	owner.m_pos.x += move.x;
-	owner.m_pos.z += move.z;
+	owner.m_pos += move;
 
 	owner.UpdateRotate(move);
 }
@@ -412,7 +419,7 @@ void Mouse::ActionMasked::Update(Mouse& owner)
 {
 	owner.m_upCollider->SetEnable(Collider::Type::Sight, false);
 
-	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
+	if (InputManager::GetInstance().IsPress("RClick"))
 	{
 		owner.m_isMasked = false;
 		owner.m_spModel = owner.m_spOriginalModel;
@@ -421,6 +428,7 @@ void Mouse::ActionMasked::Update(Mouse& owner)
 	if (!owner.m_isMasked)
 	{
 		owner.ChangeActionState(std::make_shared<ActionIdle>());
+		return;
 	}
 }
 

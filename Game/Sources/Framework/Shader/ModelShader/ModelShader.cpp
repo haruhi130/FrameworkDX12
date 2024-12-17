@@ -71,7 +71,7 @@ void ModelShader::BeginShadow(int w,int h)
 	auto handle = GraphicsDevice::GetInstance().GetDSVHeap()->GetCPUHandle(
 		GraphicsDevice::GetInstance().GetLightDepthStencil()->GetDSVNumber());
 
-	// レンダーターゲット変更(PixelShaderを使用しないのでrtvHはnullptr)
+	// レンダーターゲット変更(PixelShaderを使用しない)
 	GraphicsDevice::GetInstance().GetCmdList()->OMSetRenderTargets(0, nullptr, false, &handle);
 
 	// シャドウマップ用の深度バッファクリア

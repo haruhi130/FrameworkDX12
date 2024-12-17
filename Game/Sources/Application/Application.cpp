@@ -35,7 +35,7 @@ bool Application::Init(int width, int height)
 	(void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-	
+
 	// Setup Dear ImGui style
 	ImGui::StyleColorsClassic();
 
@@ -48,7 +48,7 @@ bool Application::Init(int width, int height)
 		GraphicsDevice::GetInstance().GetImGuiHeap()->GetHeap().Get(),
 		GraphicsDevice::GetInstance().GetImGuiHeap()->GetHeap()->GetCPUDescriptorHandleForHeapStart(),
 		GraphicsDevice::GetInstance().GetImGuiHeap()->GetHeap()->GetGPUDescriptorHandleForHeapStart()
-		);
+	);
 
 #include "../imgui/ja_glyph_ranges.h"
 	ImFontConfig config;
@@ -71,9 +71,33 @@ bool Application::Init(int width, int height)
 		return false;
 	};
 
-	if(!EffekseerManager::GetInstance().Init(width,height))
+	//===============================================
+	// Effekseer初期化
+	if (!EffekseerManager::GetInstance().Init(width, height))
 	{
 		return false;
+	}
+
+	//===============================================
+	// 入力管理初期化
+	{
+		// 入力デバイス登録
+		InputCollector* keyboadCollector = new InputCollector();
+		InputManager::GetInstance().AddDevice("Windows", keyboadCollector);
+
+		// ボタン登録
+		keyboadCollector->AddButton("Up", new InputButtonForWindows({ 'W',VK_UP }));
+		keyboadCollector->AddButton("Left", new InputButtonForWindows({ 'A',VK_LEFT }));
+		keyboadCollector->AddButton("Down", new InputButtonForWindows({ 'S',VK_DOWN }));
+		keyboadCollector->AddButton("Right", new InputButtonForWindows({ 'D' ,VK_RIGHT }));
+
+		keyboadCollector->AddButton("LClick", new InputButtonForWindows({ VK_LBUTTON }));
+		keyboadCollector->AddButton("RClick", new InputButtonForWindows({ VK_RBUTTON }));
+
+		keyboadCollector->AddButton("Return", new InputButtonForWindows({ VK_RETURN }));
+
+		keyboadCollector->AddButton("Escape", new InputButtonForWindows({ VK_ESCAPE }));
+		keyboadCollector->AddButton("Alt", new InputButtonForWindows({ VK_MENU }));
 	}
 
 	//===============================================
@@ -86,7 +110,7 @@ bool Application::Init(int width, int height)
 void Application::Execute()
 {
 	// 可変フレームレート対応
-	ServiceLocator::Add(std::make_shared<Time_VRR>());
+	ServiceLocator::Add(std::make_shared<Time>());
 
 	// ゲーム初期化
 	if (!Init())
@@ -96,8 +120,8 @@ void Application::Execute()
 	}
 
 	// 時間管理
-	std::shared_ptr<Time> spTime = ServiceLocator::Get<Time>();
-	if (spTime != nullptr) { spTime->Start(); }
+	auto spTime = ServiceLocator::Get<Time>();
+	if (spTime) { spTime->Start(); }
 
 	// 音再生
 	auto bgm = AudioManager::GetInstance().Play("Assets/Sounds/Under_line.wav", true);
@@ -114,7 +138,7 @@ void Application::Execute()
 		}
 
 		// 終了
-		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+		if (InputManager::GetInstance().IsRelease("Escape"))
 		{
 			break;
 		}
@@ -142,14 +166,14 @@ void Application::Execute()
 		Draw();
 
 		PostDraw();
-		
+
 		DrawSprite();
 
 		//=============================================
 		// ImGui処理
 		//ImGuiUpdate();
 
-		// 時間管理
+		// サービス管理更新
 		ServiceLocator::Update();
 
 		//=============================================
@@ -174,6 +198,9 @@ void Application::Terminate()
 
 void Application::PreUpdate()
 {
+	// 入力状況の更新
+	InputManager::GetInstance().Update();
+
 	SceneManager::GetInstance().PreUpdate();
 }
 

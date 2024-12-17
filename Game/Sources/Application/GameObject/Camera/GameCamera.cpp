@@ -1,40 +1,42 @@
 #include "GameCamera.h"
 
+void GameCamera::Update()
+{
+	///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
+	// Debug
+	if (InputManager::GetInstance().GetButtonState("Alt"))
+	{
+		m_isValid = false;
+	}
+	else
+	{
+		m_isValid = true;
+	}
+	///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
+}
+
 void GameCamera::PostUpdate()
 {
 	if (!m_spCamera) return;
 
-	if (GetAsyncKeyState(VK_F1) & 0x8000)
+	Math::Matrix target = Math::Matrix::Identity;
+	if (!m_wpTarget.expired())
 	{
-		m_isValid = false;
-		ShowCursor(true);
+		target = Math::Matrix::CreateTranslation(m_wpTarget.lock()->GetPos());
 	}
-
-	if (GetAsyncKeyState(VK_F2) & 0x8000)
-	{
-		m_isValid = true;
-	}
-
 	if (m_isValid)
 	{
-		Math::Matrix target = Math::Matrix::Identity;
-		if (!m_wpTarget.expired())
-		{
-			target = Math::Matrix::CreateTranslation(m_wpTarget.lock()->GetPos());
-		}
-
 		UpdateRotateByMouse();
-
-		m_mRot = GetRotationMatrix();
-
-		m_localPos = Math::Matrix::CreateTranslation(m_local);
-
-		m_mWorld = m_localPos * m_mRot * target;
-
-		UpdateCollision();
-
-		m_spCamera->SetCameraMatrix(m_mWorld);
 	}
+	m_mRot = GetRotationMatrix();
+
+	m_localPos = Math::Matrix::CreateTranslation(m_local);
+
+	m_mWorld = m_localPos * m_mRot * target;
+
+	UpdateCollision();
+
+	m_spCamera->SetCameraMatrix(m_mWorld);
 }
 
 void GameCamera::PreDraw()

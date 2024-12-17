@@ -11,7 +11,7 @@ void Cheese::DrawShadow()
 {
 	if (!m_spModel) { return; }
 
-	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
+	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld,false);
 }
 
 void Cheese::Update()

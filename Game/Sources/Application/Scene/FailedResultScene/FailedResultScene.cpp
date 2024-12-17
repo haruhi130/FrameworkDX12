@@ -5,11 +5,14 @@
 
 void FailedResultScene::Event()
 {
+	///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
+	// Debug
 	// ƒV[ƒ“Ø‚è‘Ö‚¦
 	if (GetAsyncKeyState('P') & 0x8000)
 	{
 		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Title);
 	}
+	///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 }
 
 void FailedResultScene::Init()

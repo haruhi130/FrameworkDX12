@@ -2,11 +2,11 @@
 
 #include "../ModelObject.h"
 
-class Cheese : public ModelObject
+class TeaSet : public ModelObject
 {
 public:
-	Cheese() { Init(); }
-	~Cheese()override{}
+	TeaSet() { Init(); }
+	~TeaSet()override{}
 
 	void Draw()override;
 	void DrawShadow()override;

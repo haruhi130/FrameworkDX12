@@ -12,11 +12,14 @@
 #include "../../GameObject/ModelObject/Box/Box.h"
 #include "../../GameObject/ModelObject/Meat/Meat.h"
 #include "../../GameObject/ModelObject/RiceBall/RiceBall.h"
+#include "../../GameObject/ModelObject/TeaSet/TeaSet.h"
 
 #include "../../GameObject/SpriteObject/SpriteObject.h"
 
 void GameScene::Event()
 {
+	///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
+	// Debug
 	// シーン切り替え
 	if (GetAsyncKeyState('O') & 0x8000)
 	{
@@ -27,6 +30,7 @@ void GameScene::Event()
 	{
 		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Failed);
 	}
+	///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 }
 
 void GameScene::Init()
@@ -70,7 +74,7 @@ void GameScene::Init()
 	m_objList.push_back(box);
 
 	// チーズ(ゴール)
-	std::shared_ptr<Cheese> cheese = std::make_shared<Cheese>();
+	std::shared_ptr<TeaSet> cheese = std::make_shared<TeaSet>();
 	m_objList.push_back(cheese);
 
 	// 台座(ゴール用)

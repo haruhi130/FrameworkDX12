@@ -5,7 +5,7 @@ class ModelShader : public ShaderBase
 {
 public:
 	// ƒ{[ƒ“Å‘å”
-	static const int maxBoneBufferSize = 256;
+	static const int maxBoneBufferSize = 128;
 
 	// ‰Šú‰»
 	bool Init() override;

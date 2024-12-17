@@ -29,7 +29,7 @@ cbuffer cbObject : register(b1)
 // スキンメッシュボーン
 cbuffer cbBones : register(b2)
 {
-    row_major float4x4 g_mBones[256];
+    row_major float4x4 g_mBones[128];
 }
 
 // マテリアル色

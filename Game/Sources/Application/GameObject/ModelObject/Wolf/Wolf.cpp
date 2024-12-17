@@ -181,7 +181,22 @@ void Wolf::UpdateCollision()
 					// sightAngle“à‚©”»’è
 					if (betweenAng <= m_sightAngle && betweenAng > -m_sightAngle)
 					{
-						isHit = true;
+						// ŠÔ‚ÉáŠQ•¨‚ª‚È‚¢‚©”»’è
+						Collider::RayInfo rayInfo;
+						rayInfo.m_dir = targetDir - nowDir;
+						rayInfo.m_dir.Normalize();
+						rayInfo.m_pos = m_pos;
+						rayInfo.m_range = sphereInfo.m_sphere.Radius;
+						rayInfo.m_type = Collider::Type::Bump;
+
+						if (spObj->Intersects(rayInfo, nullptr))
+						{
+							isHit = false;
+						}
+						else
+						{
+							isHit = true;
+						}
 					}
 				}
 
@@ -310,7 +325,7 @@ void Wolf::ActionWalk::Update(Wolf& owner)
 	vec.z = -0.5f * owner.m_r;
 	vec.Normalize();
 
-	auto time = ServiceLocator::Get<Time_VRR>();
+	auto time = ServiceLocator::Get<Time>();
 	float spd = 4.0f * time->DeltaTime();
 
 	vec *= spd;

@@ -193,6 +193,9 @@
     <Filter Include="Framework\Effekseer">
       <UniqueIdentifier>{7b840324-eac8-495b-b1aa-cdf07c07d227}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\GameObject\ModelObject\TeaSet">
+      <UniqueIdentifier>{0dd477fc-ba78-4971-ad8f-9350be2e8d6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -370,6 +373,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Framework\Effekseer\EffekseerManager.cpp">
       <Filter>Framework\Effekseer</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\TeaSet\TeaSet.cpp">
+      <Filter>Application\GameObject\ModelObject\TeaSet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -602,6 +608,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Effekseer\EffekseerManager.h">
       <Filter>Framework\Effekseer</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\TeaSet\TeaSet.h">
+      <Filter>Application\GameObject\ModelObject\TeaSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

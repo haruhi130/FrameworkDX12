@@ -12,14 +12,10 @@ struct CollisionMeshResult
 };
 
 // レイの当たり判定
-//bool PolygonsIntersect(const KdPolygon& poly, const DirectX::XMVECTOR& rayPos, const DirectX::XMVECTOR& rayDir, float rayRange,
-//	const DirectX::XMMATRIX& matrix, CollisionMeshResult* pResult = nullptr);
 bool MeshIntersect(const Mesh& mesh, const DirectX::XMVECTOR& rayPos, const DirectX::XMVECTOR& rayDir, float rayRange,
 	const DirectX::XMMATRIX& matrix, CollisionMeshResult* pResult = nullptr);
 
 // スフィアの当たり判定
-//bool PolygonsIntersect(const KdPolygon& poly, const DirectX::BoundingSphere& sphere,
-//	const DirectX::XMMATRIX& matrix, CollisionMeshResult* pResult = nullptr);
 bool MeshIntersect(const Mesh& mesh, const DirectX::BoundingSphere& sphere,
 	const DirectX::XMMATRIX& matrix, CollisionMeshResult* pResult = nullptr);
 

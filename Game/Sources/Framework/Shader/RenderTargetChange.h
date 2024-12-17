@@ -6,7 +6,7 @@ struct RenderTargetChange
 	bool CreateRenderTarget();
 
 	// レンダーターゲット変更
-	bool ChangeRenderTarget() const;
+	void ChangeRenderTarget() const;
 	// レンダーターゲットを戻す
 	void UndoRenderTarget() const;
 

@@ -22,7 +22,7 @@ namespace ConstantBufferData
 	// スキンメッシュ用構造体
 	struct BoneInfo
 	{
-		Math::Matrix mBones[256];
+		Math::Matrix mBones[128];
 	};
 
 	// モデルマテリアル情報

@@ -16,32 +16,20 @@ public:
 	{
 		if (service == nullptr) { return; }
 
-		// 型名を数値データに変換
-		size_t classID = typeid(type).hash_code();
-
 		// クラスIDをキーにしてサービスを覚える
-		m_services[classID] = service;
+		m_services[typeid(type).hash_code()] = service;
 	}
 
 	// 型指定してサービスを取得
 	template<class type>
 	static std::shared_ptr<type> Get()
 	{
-		size_t classID = typeid(type).hash_code();
-
-		if (m_services.find(classID) == m_services.end())
+		if (m_services.find(typeid(type).hash_code()) == m_services.end())
 		{
-			// 指定されたサービスがなかった場合
 			return nullptr;
 		}
 
-		// 指定されたサービスを取得
-		std::shared_ptr<Service> spService = m_services[classID];
-
-		// 指定された型にダウンキャスト
-		std::shared_ptr<type> spDcService = std::static_pointer_cast<type>(spService);
-
-		return spDcService;
+		return std::static_pointer_cast<type>(m_services[typeid(type).hash_code()]);
 	}
 
 	// サービスの破棄
@@ -64,5 +52,4 @@ public:
 private:
 	// サービス一覧リスト
 	static inline std::unordered_map<size_t, std::shared_ptr<Service>> m_services;
-
 };

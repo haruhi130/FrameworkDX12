@@ -10,6 +10,8 @@
 
 #include "Audio/Audio.h"
 
+#include "Input/Input.h"
+
 #include "Heap/BaseHeap.h"
 #include "Heap/RTVHeap/RTVHeap.h"
 #include "Heap/CBVSRVUAVHeap/CBVSRVUAVHeap.h"

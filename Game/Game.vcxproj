@@ -212,6 +212,7 @@
     <ClCompile Include="Sources\Application\GameObject\ModelObject\RiceBall\RiceBall.cpp" />
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Sky\Sky.cpp" />
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Stage\Stage.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\TeaSet\TeaSet.cpp" />
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Wolf\Wolf.cpp" />
     <ClCompile Include="Sources\Application\GameObject\SpriteObject\SpriteObject.cpp" />
     <ClCompile Include="Sources\Application\Scene\BaseScene\BaseScene.cpp" />
@@ -290,6 +291,7 @@
     <ClInclude Include="Sources\Application\GameObject\ModelObject\RiceBall\RiceBall.h" />
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Sky\Sky.h" />
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Stage\Stage.h" />
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\TeaSet\TeaSet.h" />
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Wolf\Wolf.h" />
     <ClInclude Include="Sources\Application\GameObject\SpriteObject\SpriteObject.h" />
     <ClInclude Include="Sources\Application\Scene\BaseScene\BaseScene.h" />
