@@ -28,4 +28,6 @@ protected:
 	virtual void Init();
 
 	std::list<std::shared_ptr<BaseObject>> m_objList;
+
+	std::shared_ptr<SoundInstance> m_bgm = nullptr;
 };

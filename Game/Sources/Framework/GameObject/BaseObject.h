@@ -19,6 +19,20 @@ public:
 
 	virtual void ImGuiUpdate(){}
 
+	// 回転設定
+	virtual void SetRotationX(float rotX)
+	{ m_mWorld *= Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(rotX)); }
+
+	virtual void SetRotationY(float rotY)
+	{ m_mWorld *= Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(rotY)); }
+
+	virtual void SetRotationZ(float rotZ)
+	{ m_mWorld *= Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(rotZ)); }
+	
+	// スケール設定
+	virtual void SetScale(float scale)
+	{ m_mWorld *= Math::Matrix::CreateScale(scale); }
+	
 	// 座標設定
 	virtual void SetPos(const Math::Vector3& pos)
 	{ m_mWorld.Translation(pos); }
@@ -49,7 +63,7 @@ protected:
 	bool m_isExpired = false;
 
 	// 行列
-	Math::Matrix m_mWorld;
+	Math::Matrix m_mWorld = Math::Matrix::Identity;
 
 	// 当たり判定クラス
 	std::unique_ptr<Collider> m_upCollider = nullptr;

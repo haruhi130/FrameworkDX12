@@ -16,11 +16,6 @@ void Mouse::Update()
 		m_coolTime = 0.0f;
 	}
 
-	if (GetAsyncKeyState('N') & 0x8000)
-	{
-		auto effect = EffekseerManager::GetInstance().Play("Heal.efk", m_pos, false);
-	}
-
 	// ステート更新
 	if (m_currentAction)
 	{
@@ -46,22 +41,6 @@ void Mouse::PostUpdate()
 	}
 }
 
-void Mouse::Draw()
-{
-	if (!m_spModel) { return; }
-
-	// モデル描画
-	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
-}
-
-void Mouse::DrawShadow()
-{
-	if (!m_spModel) { return; }
-
-	// モデル描画
-	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld, false);
-}
-
 void Mouse::ImGuiUpdate()
 {
 	ImGui::Begin(u8"MouseCT");
@@ -84,9 +63,13 @@ void Mouse::Init()
 
 	m_speed = 3.0f;
 
+	m_pos = { 0,0,10 };
+
+	m_scale = 0.5f;
+
 	// 初期計算
-	Math::Matrix mScale = Math::Matrix::CreateScale(0.5f);
-	Math::Matrix mTrans = Math::Matrix::CreateTranslation(0, 0, -20);
+	Math::Matrix mScale = Math::Matrix::CreateScale(m_scale);
+	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_pos);
 	m_mWorld = mScale * mTrans;
 
 	// アニメーション設定
@@ -104,7 +87,7 @@ void Mouse::Init()
 
 void Mouse::UpdateMatrix()
 {
-	Math::Matrix mScale = Math::Matrix::CreateScale(0.5f);
+	Math::Matrix mScale = Math::Matrix::CreateScale(m_scale);
 	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_rot.y));
 	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_pos);
 	m_mWorld = mScale * mRot * mTrans;
@@ -250,8 +233,8 @@ void Mouse::UpdateCollision()
 
 					std::list<Collider::CollisionResult> retRayList;
 					spObj->Intersects(rayInfo, &retRayList);
-
-					for (auto& ret : retRayList)
+					
+					for(auto& ret : retRayList)
 					{
 						// CT制限
 						if (m_coolTime <= 0)
@@ -269,7 +252,7 @@ void Mouse::UpdateCollision()
 	// Sphere : Goal
 	{
 		Collider::SphereInfo sphereInfo;
-		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 0.8f, 0);
+		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 0.5f, 0);
 		sphereInfo.m_sphere.Radius = 3.0f;
 		sphereInfo.m_type = Collider::Type::Goal;
 
@@ -279,11 +262,12 @@ void Mouse::UpdateCollision()
 			if (spObj)
 			{
 				std::list<Collider::CollisionResult> retBumpList;
-				spObj->Intersects(sphereInfo, &retBumpList);
-
-				for (auto& ret : retBumpList)
+				if (spObj->Intersects(sphereInfo, &retBumpList))
 				{
-					SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Clear);
+					for (auto& ret : retBumpList)
+					{
+						//SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Clear);
+					}
 				}
 			}
 		}
@@ -412,7 +396,7 @@ void Mouse::ActionMasked::Enter(Mouse& owner)
 		owner.m_spEffect = EffekseerManager::GetInstance().Play("SmokeBomb.efk", owner.m_pos, false);
 	}
 
-	owner.m_spModel.swap(owner.m_maskedModel);
+	owner.m_spModel = owner.m_maskedModel;
 }
 
 void Mouse::ActionMasked::Update(Mouse& owner)

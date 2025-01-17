@@ -115,12 +115,6 @@
     <Filter Include="Framework\Heap\ImGuiHeap">
       <UniqueIdentifier>{439abdb6-25a3-464a-a270-6a3dcbfbce8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Libraries">
-      <UniqueIdentifier>{6804815c-99a4-407c-8d37-0061f66e43af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Libraries\imgui">
-      <UniqueIdentifier>{310a191f-b5d0-43d9-af7d-3311cf4c8ed5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Shader\ModelShader">
       <UniqueIdentifier>{40ae619a-d9b7-4523-9be7-086db89c3fe3}</UniqueIdentifier>
     </Filter>
@@ -154,9 +148,6 @@
     <Filter Include="Application\GameObject\ModelObject\Stage">
       <UniqueIdentifier>{d6b56fd9-f890-4294-838f-c9588c669ffc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\GameObject\ModelObject\Wolf">
-      <UniqueIdentifier>{f85823e9-ab9b-4895-ba44-8e0e5c1593ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\GameObject\ModelObject\Sky">
       <UniqueIdentifier>{9ef125b7-0734-4675-96b1-4feb6143703c}</UniqueIdentifier>
     </Filter>
@@ -187,14 +178,23 @@
     <Filter Include="Application\Scene\ResultScene">
       <UniqueIdentifier>{0b2586c8-a08e-4566-ae7f-0b09d9c404ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Libraries\tinygltf">
-      <UniqueIdentifier>{9d4fbbf3-3369-4c6e-b062-d96a461e9c29}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Effekseer">
       <UniqueIdentifier>{7b840324-eac8-495b-b1aa-cdf07c07d227}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\GameObject\ModelObject\TeaSet">
-      <UniqueIdentifier>{0dd477fc-ba78-4971-ad8f-9350be2e8d6d}</UniqueIdentifier>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{01637bf0-5e22-406c-bd9a-d7f82b8923ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\imgui">
+      <UniqueIdentifier>{dbe7149b-0504-49da-ada3-1df9a225d11a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\BullTank">
+      <UniqueIdentifier>{f85823e9-ab9b-4895-ba44-8e0e5c1593ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Trex">
+      <UniqueIdentifier>{a4029873-b9f9-4079-999d-4b3fd71abfcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\CirclePedestal">
+      <UniqueIdentifier>{2549d1d5-6120-4210-a29d-ce4f7d1a4f0e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -290,27 +290,6 @@
     <ClCompile Include="Sources\Framework\Heap\ImGuiHeap\ImGuiHeap.cpp">
       <Filter>Framework\Heap\ImGuiHeap</Filter>
     </ClCompile>
-    <ClCompile Include="..\Libraries\imgui\imgui.cpp">
-      <Filter>Libraries\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Libraries\imgui\imgui_demo.cpp">
-      <Filter>Libraries\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Libraries\imgui\imgui_draw.cpp">
-      <Filter>Libraries\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Libraries\imgui\imgui_impl_dx12.cpp">
-      <Filter>Libraries\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Libraries\imgui\imgui_impl_win32.cpp">
-      <Filter>Libraries\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Libraries\imgui\imgui_tables.cpp">
-      <Filter>Libraries\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Libraries\imgui\imgui_widgets.cpp">
-      <Filter>Libraries\imgui</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Framework\Shader\ModelShader\ModelShader.cpp">
       <Filter>Framework\Shader\ModelShader</Filter>
     </ClCompile>
@@ -344,9 +323,6 @@
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Stage\Stage.cpp">
       <Filter>Application\GameObject\ModelObject\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Application\GameObject\ModelObject\Wolf\Wolf.cpp">
-      <Filter>Application\GameObject\ModelObject\Wolf</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Sky\Sky.cpp">
       <Filter>Application\GameObject\ModelObject\Sky</Filter>
     </ClCompile>
@@ -374,8 +350,35 @@
     <ClCompile Include="Sources\Framework\Effekseer\EffekseerManager.cpp">
       <Filter>Framework\Effekseer</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Application\GameObject\ModelObject\TeaSet\TeaSet.cpp">
-      <Filter>Application\GameObject\ModelObject\TeaSet</Filter>
+    <ClCompile Include="..\Libraries\imgui\imgui.cpp">
+      <Filter>Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_demo.cpp">
+      <Filter>Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_draw.cpp">
+      <Filter>Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_impl_dx12.cpp">
+      <Filter>Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_impl_win32.cpp">
+      <Filter>Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_tables.cpp">
+      <Filter>Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_widgets.cpp">
+      <Filter>Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\BullTank\BullTank.cpp">
+      <Filter>Application\GameObject\ModelObject\BullTank</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Trex\Trex.cpp">
+      <Filter>Application\GameObject\ModelObject\Trex</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\CirclePedestal\CirclePedestal.cpp">
+      <Filter>Application\GameObject\ModelObject\CirclePedestal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -498,33 +501,6 @@
     <ClInclude Include="Sources\Framework\Heap\ImGuiHeap\ImGuiHeap.h">
       <Filter>Framework\Heap\ImGuiHeap</Filter>
     </ClInclude>
-    <ClInclude Include="..\Libraries\imgui\imconfig.h">
-      <Filter>Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Libraries\imgui\imgui.h">
-      <Filter>Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Libraries\imgui\imgui_impl_dx12.h">
-      <Filter>Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Libraries\imgui\imgui_impl_win32.h">
-      <Filter>Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Libraries\imgui\imgui_internal.h">
-      <Filter>Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Libraries\imgui\imstb_rectpack.h">
-      <Filter>Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Libraries\imgui\imstb_textedit.h">
-      <Filter>Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Libraries\imgui\imstb_truetype.h">
-      <Filter>Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Libraries\imgui\ja_glyph_ranges.h">
-      <Filter>Libraries\imgui</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Framework\Shader\ModelShader\ModelShader.h">
       <Filter>Framework\Shader\ModelShader</Filter>
     </ClInclude>
@@ -558,9 +534,6 @@
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Stage\Stage.h">
       <Filter>Application\GameObject\ModelObject\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Application\GameObject\ModelObject\Wolf\Wolf.h">
-      <Filter>Application\GameObject\ModelObject\Wolf</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Sky\Sky.h">
       <Filter>Application\GameObject\ModelObject\Sky</Filter>
     </ClInclude>
@@ -588,29 +561,47 @@
     <ClInclude Include="Sources\Application\GameObject\ModelObject\RiceBall\RiceBall.h">
       <Filter>Application\GameObject\ModelObject\RiceBall</Filter>
     </ClInclude>
-    <ClInclude Include="..\Libraries\tinygltf\json.hpp">
-      <Filter>Libraries\tinygltf</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Libraries\tinygltf\stb_image.h">
-      <Filter>Libraries\tinygltf</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Libraries\tinygltf\stb_image_write.h">
-      <Filter>Libraries\tinygltf</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Libraries\tinygltf\tiny_gltf.h">
-      <Filter>Libraries\tinygltf</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Libraries\strconv.h">
-      <Filter>Libraries</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Framework\Shader\SpriteShader\SpriteShader.h">
       <Filter>Framework\Shader\SpriteShader</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Framework\Effekseer\EffekseerManager.h">
       <Filter>Framework\Effekseer</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Application\GameObject\ModelObject\TeaSet\TeaSet.h">
-      <Filter>Application\GameObject\ModelObject\TeaSet</Filter>
+    <ClInclude Include="..\Libraries\imgui\imconfig.h">
+      <Filter>Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imgui.h">
+      <Filter>Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imgui_impl_dx12.h">
+      <Filter>Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imgui_impl_win32.h">
+      <Filter>Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imgui_internal.h">
+      <Filter>Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imstb_rectpack.h">
+      <Filter>Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imstb_textedit.h">
+      <Filter>Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imstb_truetype.h">
+      <Filter>Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\ja_glyph_ranges.h">
+      <Filter>Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\BullTank\BullTank.h">
+      <Filter>Application\GameObject\ModelObject\BullTank</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Trex\Trex.h">
+      <Filter>Application\GameObject\ModelObject\Trex</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\CirclePedestal\CirclePedestal.h">
+      <Filter>Application\GameObject\ModelObject\CirclePedestal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

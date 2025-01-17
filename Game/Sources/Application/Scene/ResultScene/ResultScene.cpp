@@ -5,10 +5,11 @@
 
 void ResultScene::Event()
 {
+	m_bgm->SetVolume(SceneManager::GetInstance().GetBGMVolume());
+	
 	///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
-	// Debug
 	// ƒV[ƒ“Ø‚è‘Ö‚¦
-	if (GetAsyncKeyState('P') & 0x8000)
+	if (InputManager::GetInstance().IsPress("LClick"))
 	{
 		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Title);
 	}
@@ -31,4 +32,7 @@ void ResultScene::Init()
 	sprite->SetRectangle({ 0,0,475,78 });
 	sprite->SetTexture("Assets/Textures/clear.png");
 	m_objList.push_back(sprite);
+
+	AudioManager::GetInstance().StopAllSound();
+	m_bgm = AudioManager::GetInstance().Play("Assets/Sounds/Under_line.wav", true);
 }

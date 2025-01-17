@@ -10,10 +10,8 @@ void Sky::Update()
 		targetMat = Math::Matrix::CreateTranslation(m_wpTarget.lock()->GetPos());
 	}
 
-	m_mLocal = Math::Matrix::CreateTranslation(m_pos);
-
-	Math::Matrix mScale = Math::Matrix::CreateScale(100);
-	m_mWorld = m_mLocal * mScale * targetMat;
+	Math::Matrix mScale = Math::Matrix::CreateScale(m_scale);
+	m_mWorld = mScale * targetMat;
 }
 
 void Sky::Draw()
@@ -30,8 +28,5 @@ void Sky::Init()
 		m_spModel->SetModelData(Assets::GetInstance().m_modelDatas.GetData("Assets/Models/SkySphere/SkySphere.gltf"));
 	}
 
-	m_mLocal = Math::Matrix::CreateTranslation(m_pos);
-
-	Math::Matrix mScale = Math::Matrix::CreateScale(200);
-	m_mWorld = mScale;
+	m_scale = 100.0f;
 }

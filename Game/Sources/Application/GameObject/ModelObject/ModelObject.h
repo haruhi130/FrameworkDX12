@@ -8,13 +8,19 @@ public:
 
 	virtual void Update()override{}
 	virtual void PostUpdate()override{}
-	virtual void Draw()override{}
-	virtual void DrawShadow()override{}
+	virtual void Draw()override;
+	virtual void DrawShadow()override;
 
 	virtual void ImGuiUpdate()override{}
 
 	virtual const std::shared_ptr<ModelWork>& GetModel() const
 	{ return m_spModel; }
+
+	void SetScale(float scale)override
+	{
+		m_scale = scale;
+		m_mWorld *= Math::Matrix::CreateScale(m_scale);
+	}
 
 protected:
 	virtual void Init()override{}
@@ -25,6 +31,8 @@ protected:
 
 	std::shared_ptr<ModelWork> m_spModel = nullptr;
 	std::shared_ptr<Animator> m_spAnimator = nullptr;
+
+	float m_scale = 1.0f;
 
 	Math::Vector3 m_pos;
 };

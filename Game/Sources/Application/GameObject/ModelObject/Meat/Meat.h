@@ -8,9 +8,6 @@ public:
 	Meat() { Init(); }
 	~Meat()override{}
 
-	void Draw()override;
-	void DrawShadow()override;
-
 private:
 	void Init()override;
 

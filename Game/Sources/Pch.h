@@ -70,6 +70,9 @@
 #pragma comment(lib,"DirectXTex.lib")
 #include <DirectXTex.h>
 
+// Json11
+#include "json11Custom/json11.hpp"
+
 //==============================================
 // ImGui
 //==============================================

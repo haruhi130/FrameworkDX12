@@ -12,10 +12,10 @@ public:
 	void Update() override
 	{
 		auto now = std::chrono::system_clock::now();
-		m_deltaTime = std::chrono::duration_cast<std::chrono::microseconds>
+		auto count = std::chrono::duration_cast<std::chrono::microseconds>
 			(now - m_prevTime).count();
 
-		m_deltaTime /= 1000000.0f;
+		m_deltaTime = count / 1000000.0f;
 		m_prevTime = now;
 	}
 

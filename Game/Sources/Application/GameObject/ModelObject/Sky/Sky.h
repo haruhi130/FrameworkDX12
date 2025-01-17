@@ -21,6 +21,4 @@ private:
 	void Init()override;
 
 	std::weak_ptr<ModelObject> m_wpTarget;
-
-	Math::Matrix m_mLocal;
 };

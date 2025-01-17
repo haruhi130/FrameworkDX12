@@ -93,7 +93,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>..\Libraries\Effekseer\include;..\Libraries\tinygltf;..\Libraries\imgui;..\Libraries\DirectXTK12\Inc;..\Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\json11Custom;..\Libraries\Effekseer\include;..\Libraries\tinygltf;..\Libraries\imgui;..\Libraries\DirectXTK12\Inc;..\Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
@@ -121,7 +121,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>..\Libraries\Effekseer\include;..\Libraries\tinygltf;..\Libraries\imgui;..\Libraries\DirectXTK12\Inc;..\Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\json11Custom;..\Libraries\Effekseer\include;..\Libraries\tinygltf;..\Libraries\imgui;..\Libraries\DirectXTK12\Inc;..\Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
@@ -148,7 +148,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>..\Libraries\Effekseer\include;..\Libraries\tinygltf;..\Libraries\imgui;..\Libraries\DirectXTK12\Inc;..\Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\json11Custom;..\Libraries\Effekseer\include;..\Libraries\tinygltf;..\Libraries\imgui;..\Libraries\DirectXTK12\Inc;..\Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
@@ -176,7 +176,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>..\Libraries\Effekseer\include;..\Libraries\tinygltf;..\Libraries\imgui;..\Libraries\DirectXTK12\Inc;..\Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\json11Custom;..\Libraries\Effekseer\include;..\Libraries\tinygltf;..\Libraries\imgui;..\Libraries\DirectXTK12\Inc;..\Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
@@ -204,7 +204,9 @@
     <ClCompile Include="Sources\Application\Application.cpp" />
     <ClCompile Include="Sources\Application\GameObject\Camera\GameCamera.cpp" />
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Box\Box.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\BullTank\BullTank.cpp" />
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Cheese\Cheese.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\CirclePedestal\CirclePedestal.cpp" />
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Meat\Meat.cpp" />
     <ClCompile Include="Sources\Application\GameObject\ModelObject\ModelObject.cpp" />
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Mouse\Mouse.cpp" />
@@ -212,8 +214,7 @@
     <ClCompile Include="Sources\Application\GameObject\ModelObject\RiceBall\RiceBall.cpp" />
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Sky\Sky.cpp" />
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Stage\Stage.cpp" />
-    <ClCompile Include="Sources\Application\GameObject\ModelObject\TeaSet\TeaSet.cpp" />
-    <ClCompile Include="Sources\Application\GameObject\ModelObject\Wolf\Wolf.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Trex\Trex.cpp" />
     <ClCompile Include="Sources\Application\GameObject\SpriteObject\SpriteObject.cpp" />
     <ClCompile Include="Sources\Application\Scene\BaseScene\BaseScene.cpp" />
     <ClCompile Include="Sources\Application\Scene\FailedResultScene\FailedResultScene.cpp" />
@@ -275,15 +276,12 @@
     <ClInclude Include="..\Libraries\imgui\imstb_textedit.h" />
     <ClInclude Include="..\Libraries\imgui\imstb_truetype.h" />
     <ClInclude Include="..\Libraries\imgui\ja_glyph_ranges.h" />
-    <ClInclude Include="..\Libraries\strconv.h" />
-    <ClInclude Include="..\Libraries\tinygltf\json.hpp" />
-    <ClInclude Include="..\Libraries\tinygltf\stb_image.h" />
-    <ClInclude Include="..\Libraries\tinygltf\stb_image_write.h" />
-    <ClInclude Include="..\Libraries\tinygltf\tiny_gltf.h" />
     <ClInclude Include="Sources\Application\Application.h" />
     <ClInclude Include="Sources\Application\GameObject\Camera\GameCamera.h" />
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Box\Box.h" />
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\BullTank\BullTank.h" />
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Cheese\Cheese.h" />
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\CirclePedestal\CirclePedestal.h" />
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Meat\Meat.h" />
     <ClInclude Include="Sources\Application\GameObject\ModelObject\ModelObject.h" />
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Mouse\Mouse.h" />
@@ -291,8 +289,7 @@
     <ClInclude Include="Sources\Application\GameObject\ModelObject\RiceBall\RiceBall.h" />
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Sky\Sky.h" />
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Stage\Stage.h" />
-    <ClInclude Include="Sources\Application\GameObject\ModelObject\TeaSet\TeaSet.h" />
-    <ClInclude Include="Sources\Application\GameObject\ModelObject\Wolf\Wolf.h" />
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Trex\Trex.h" />
     <ClInclude Include="Sources\Application\GameObject\SpriteObject\SpriteObject.h" />
     <ClInclude Include="Sources\Application\Scene\BaseScene\BaseScene.h" />
     <ClInclude Include="Sources\Application\Scene\FailedResultScene\FailedResultScene.h" />

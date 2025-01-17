@@ -1,20 +1,5 @@
 #include "GameCamera.h"
 
-void GameCamera::Update()
-{
-	///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
-	// Debug
-	if (InputManager::GetInstance().GetButtonState("Alt"))
-	{
-		m_isValid = false;
-	}
-	else
-	{
-		m_isValid = true;
-	}
-	///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
-}
-
 void GameCamera::PostUpdate()
 {
 	if (!m_spCamera) return;
@@ -24,10 +9,9 @@ void GameCamera::PostUpdate()
 	{
 		target = Math::Matrix::CreateTranslation(m_wpTarget.lock()->GetPos());
 	}
-	if (m_isValid)
-	{
-		UpdateRotateByMouse();
-	}
+
+	UpdateRotateByMouse();
+
 	m_mRot = GetRotationMatrix();
 
 	m_localPos = Math::Matrix::CreateTranslation(m_local);
@@ -99,7 +83,7 @@ void GameCamera::UpdateCollision()
 	rayInfo.m_dir.Normalize();
 
 	rayInfo.m_range = (GetPos() - rayInfo.m_pos).Length();
-	rayInfo.m_type = Collider::Type::Ground;
+	rayInfo.m_type = Collider::Type::Ground | Collider::Type::Bump;
 
 	for (std::weak_ptr<BaseObject> wpObj : m_wpHitObjList)
 	{

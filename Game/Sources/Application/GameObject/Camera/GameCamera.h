@@ -6,7 +6,6 @@ public:
 	GameCamera() { Init(); }
 	~GameCamera()override{}
 
-	void Update()override;
 	void PostUpdate()override;
 	void PreDraw()override;
 
@@ -60,8 +59,6 @@ private:
 	Math::Matrix m_localPos;
 
 	POINT m_mousePos = {};
-
-	bool m_isValid = true;
 
 	Math::Vector3 v;
 

@@ -82,22 +82,22 @@ bool Application::Init(int width, int height)
 	// 入力管理初期化
 	{
 		// 入力デバイス登録
-		InputCollector* keyboadCollector = new InputCollector();
-		InputManager::GetInstance().AddDevice("Windows", keyboadCollector);
+		InputCollector* keyboardCollector = new InputCollector();
+		InputManager::GetInstance().AddDevice("Windows", keyboardCollector);
 
 		// ボタン登録
-		keyboadCollector->AddButton("Up", new InputButtonForWindows({ 'W',VK_UP }));
-		keyboadCollector->AddButton("Left", new InputButtonForWindows({ 'A',VK_LEFT }));
-		keyboadCollector->AddButton("Down", new InputButtonForWindows({ 'S',VK_DOWN }));
-		keyboadCollector->AddButton("Right", new InputButtonForWindows({ 'D' ,VK_RIGHT }));
+		keyboardCollector->AddButton("Up", new InputButtonForWindows({ 'W',VK_UP }));
+		keyboardCollector->AddButton("Left", new InputButtonForWindows({ 'A',VK_LEFT }));
+		keyboardCollector->AddButton("Down", new InputButtonForWindows({ 'S',VK_DOWN }));
+		keyboardCollector->AddButton("Right", new InputButtonForWindows({ 'D' ,VK_RIGHT }));
 
-		keyboadCollector->AddButton("LClick", new InputButtonForWindows({ VK_LBUTTON }));
-		keyboadCollector->AddButton("RClick", new InputButtonForWindows({ VK_RBUTTON }));
+		keyboardCollector->AddButton("LClick", new InputButtonForWindows({ VK_LBUTTON }));
+		keyboardCollector->AddButton("RClick", new InputButtonForWindows({ VK_RBUTTON }));
 
-		keyboadCollector->AddButton("Return", new InputButtonForWindows({ VK_RETURN }));
+		keyboardCollector->AddButton("Return", new InputButtonForWindows({ VK_RETURN }));
 
-		keyboadCollector->AddButton("Escape", new InputButtonForWindows({ VK_ESCAPE }));
-		keyboadCollector->AddButton("Alt", new InputButtonForWindows({ VK_MENU }));
+		keyboardCollector->AddButton("Escape", new InputButtonForWindows({ VK_ESCAPE }));
+		keyboardCollector->AddButton("Alt", new InputButtonForWindows({ VK_MENU }));
 	}
 
 	//===============================================
@@ -122,10 +122,6 @@ void Application::Execute()
 	// 時間管理
 	auto spTime = ServiceLocator::Get<Time>();
 	if (spTime) { spTime->Start(); }
-
-	// 音再生
-	auto bgm = AudioManager::GetInstance().Play("Assets/Sounds/Under_line.wav", true);
-	bgm->SetVolume(SceneManager::GetInstance().GetBGMVolume());
 
 	//===============================================
 	// メインゲームループ
@@ -171,7 +167,7 @@ void Application::Execute()
 
 		//=============================================
 		// ImGui処理
-		//ImGuiUpdate();
+		ImGuiUpdate();
 
 		// サービス管理更新
 		ServiceLocator::Update();

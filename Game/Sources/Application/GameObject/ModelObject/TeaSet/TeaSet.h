@@ -8,9 +8,6 @@ public:
 	TeaSet() { Init(); }
 	~TeaSet()override{}
 
-	void Draw()override;
-	void DrawShadow()override;
-
 	void Update()override;
 
 private:
