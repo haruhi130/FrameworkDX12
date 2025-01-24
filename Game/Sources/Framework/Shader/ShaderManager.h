@@ -25,7 +25,7 @@ public:
 	// 陰影の有無を設定・転送
 	void SetIsUseLight(bool isUseLight);
 	// 平行光の方向と色を設定
-	void SetDirectionalLight(const Math::Vector3& dir, const Math::Vector3& color);
+	void SetDirectionalLight(const Math::Vector3& dir, const Math::Vector3& color = {1,1,1});
 	// 環境光の強さを設定
 	void SetAmbientLight(float pow);
 

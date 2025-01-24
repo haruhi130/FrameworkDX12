@@ -13,14 +13,15 @@ namespace ConstantBufferData
 		Math::Vector3 CamPos;
 	};
 
-	// スキンメッシュ判別
 	struct ObjectInfo
 	{
 		int IsSkinMesh = 0;
+
+		int IsDitherEnable = 0;
 	};
 
 	// スキンメッシュ用構造体
-	struct BoneInfo
+	struct SkinMeshInfo
 	{
 		Math::Matrix mBones[128];
 	};
@@ -51,7 +52,7 @@ namespace ConstantBufferData
 	struct LightInfo
 	{
 		float IsUseLight = 0.0f;
-		Math::Vector3 DirectionalLightDir = { -0.5f,-1,-1 };
+		Math::Vector3 DirectionalLightDir = { -1,-1,-1 };
 		Math::Vector3 DirectionalLightColor = { 1,1,1 };
 		float AmbientLightPower = 1.0f;
 

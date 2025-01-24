@@ -62,7 +62,7 @@ void ModelShader::Begin(int w, int h)
 	m_spShadowTex->Set(m_cbvCount + 4);
 }
 
-void ModelShader::BeginShadow(int w,int h)
+void ModelShader::BeginShadow(int w, int h)
 {
 	// DescriptorHeap設定
 	GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->SetHeap();
@@ -78,7 +78,7 @@ void ModelShader::BeginShadow(int w,int h)
 	GraphicsDevice::GetInstance().GetLightDepthStencil()->ClearBuffer();
 
 	// ルートシグネチャとパイプライン設定
-	ShaderBase::Begin(m_spRootSignature, m_spPipelineShadow,w,h);
+	ShaderBase::Begin(m_spRootSignature, m_spPipelineShadow, w, h);
 
 	// ライト情報転送
 	ShaderManager::GetInstance().WriteLightParams();
@@ -116,6 +116,13 @@ void ModelShader::DrawModel(const ModelData& modelData, const Math::Matrix& mWor
 	// ライトを使用するか
 	ShaderManager::GetInstance().SetIsUseLight(isUseLight);
 
+	// オブジェクト情報
+	if (m_dirtyCBObj)
+	{
+		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
+			->BindAndAttachData(1, m_cbObject);
+	}
+
 	// ノード取得
 	auto& nodes = modelData.GetNodes();
 
@@ -123,6 +130,11 @@ void ModelShader::DrawModel(const ModelData& modelData, const Math::Matrix& mWor
 	for (auto& nodeIdx : modelData.GetDrawMeshNodeIndices())
 	{
 		DrawMesh(nodes[nodeIdx].spMesh.get(), nodes[nodeIdx].mWorld * mWorld, modelData.GetMaterials());
+	}
+
+	if (m_dirtyCBObj)
+	{
+		ResetCBObject();
 	}
 }
 
@@ -141,19 +153,19 @@ void ModelShader::DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld, bo
 		modelWork.CalcNodeMatrices();
 	}
 
-	// スキンメッシュか判別
+	// スキンメッシュ描画
+	if (data->IsSkinMesh())
 	{
-		ConstantBufferData::ObjectInfo obj;
+		m_cbObject.IsSkinMesh = data->IsSkinMesh();
+		DrawSkinMesh(modelWork);
+		m_dirtyCBObj = true;
+	}
 
-		obj.IsSkinMesh = data->IsSkinMesh();
+	// オブジェクト情報
+	if (m_dirtyCBObj)
+	{
 		GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-			->BindAndAttachData(1, obj);
-
-		// スキンメッシュ描画
-		if (data->IsSkinMesh())
-		{
-			DrawSkinMesh(modelWork);
-		}
+			->BindAndAttachData(1, m_cbObject);
 	}
 
 	// ノード取得
@@ -165,6 +177,11 @@ void ModelShader::DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld, bo
 	{
 		DrawMesh(dataNodes[nodeIdx].spMesh.get(), workNodes[nodeIdx].mWorld * mWorld, data->GetMaterials());
 	}
+
+	if (m_dirtyCBObj)
+	{
+		ResetCBObject();
+	}
 }
 
 void ModelShader::DrawSkinMesh(ModelWork& modelWork)
@@ -174,7 +191,6 @@ void ModelShader::DrawSkinMesh(ModelWork& modelWork)
 	auto& workNodes = modelWork.GetNodes();
 	auto& dataNodes = data->GetNodes();
 
-	ConstantBufferData::BoneInfo bone;
 	for (auto&& nodeIdx : data->GetBoneNodeIndices())
 	{
 		if (nodeIdx >= maxBoneBufferSize)
@@ -186,11 +202,12 @@ void ModelShader::DrawSkinMesh(ModelWork& modelWork)
 		auto& dataNode = dataNodes[nodeIdx];
 		auto& workNode = workNodes[nodeIdx];
 
-		bone.mBones[dataNode.BoneIdx] = dataNode.mBoneInverseWorld * workNode.mWorld;
+		m_cbSkinMesh.mBones[dataNode.BoneIdx] = dataNode.mBoneInverseWorld * workNode.mWorld;
 	}
+
 	// シェーダーへ計算したボーンを設定
 	GraphicsDevice::GetInstance().GetConstantBufferAllocator()
-		->BindAndAttachData(2, bone);
+		->BindAndAttachData(2, m_cbSkinMesh);
 }
 
 void ModelShader::SetMaterial(const Material& material)

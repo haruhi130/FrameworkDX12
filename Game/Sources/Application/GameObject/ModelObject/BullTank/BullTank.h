@@ -19,6 +19,39 @@ public:
 	void RegistHitObjList(const std::shared_ptr<ModelObject>& obj)
 	{ m_wpObjList.push_back(obj); }
 
+	void SetPos(const Math::Vector3& pos)override
+	{
+		m_mWorld.Translation(pos);
+	}
+
+	void SetRotationY(float rotY)override
+	{
+		m_rot.y = rotY;
+		m_mWorld *= Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(rotY));
+	}
+
+	void SetSightAngle(float angle)
+	{ m_sightAngle = angle; }
+
+	void SetMovePosition(const Math::Vector3& start, const Math::Vector3& end)
+	{
+		m_startPos = start;
+		m_endPos = end;
+		m_isMove = true;
+		ChangeActionState(std::make_shared<ActionWalk>());
+	}
+
+	void SetSpeed(float speed)
+	{
+		m_speed = speed;
+	}
+
+	void SetTarget(const std::shared_ptr<ModelObject>& target)
+	{
+		if (!target)return;
+		m_wpTarget = target;
+	}
+
 private:
 	void Init()override;
 
@@ -29,22 +62,38 @@ private:
 	// Hit対象オブジェクトリスト
 	std::list<std::weak_ptr<ModelObject>> m_wpObjList;
 
+	// 接地判定
+	bool m_isGround = false;
+
+	// 重力
+	float m_gravity = 0.0f;
+
+	// 視認時間
+	float m_sightTime = 0.0f;
+
 	// 視界内判定
 	bool m_isSight = false;
 
 	// 視界角度
 	float m_sightAngle = 45.0f;
 
-	// 重力
-	float m_gravity = 0.0f;
-
-	// 接地判定
-	bool m_isGround = false;
-
-	float m_sightTime = 0.0f;
-
 	// 回転情報格納
 	Math::Vector3 m_rot = {};
+
+	// 動き
+	Math::Vector3 m_startPos;
+	Math::Vector3 m_endPos;
+
+	float m_progress = 0.0f;
+	float m_speed = 1.0f;
+
+	bool m_isRevers = false;
+
+	bool m_isMove = false;
+
+	std::weak_ptr<ModelObject> m_wpTarget;
+
+	std::shared_ptr<SoundInstance> m_spSound = nullptr;
 
 /////////////////////////////////////////////////
 // ステートパターン管理
@@ -75,6 +124,17 @@ private:
 	{
 	public:
 		~ActionWalk()override {}
+
+		void Enter(BullTank& owner)	override;
+		void Update(BullTank& owner) override;
+		void Exit(BullTank& owner)	override;
+	};
+
+	// 発見状態
+	class ActionSight : public ActionStateBase
+	{
+	public:
+		~ActionSight()override {}
 
 		void Enter(BullTank& owner)	override;
 		void Update(BullTank& owner) override;

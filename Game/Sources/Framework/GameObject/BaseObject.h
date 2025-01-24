@@ -32,6 +32,9 @@ public:
 	// スケール設定
 	virtual void SetScale(float scale)
 	{ m_mWorld *= Math::Matrix::CreateScale(scale); }
+
+	virtual void SetScale(const Math::Vector3& scale)
+	{ m_mWorld *= Math::Matrix::CreateScale(scale); }
 	
 	// 座標設定
 	virtual void SetPos(const Math::Vector3& pos)

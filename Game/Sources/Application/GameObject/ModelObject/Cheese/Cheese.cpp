@@ -1,16 +1,34 @@
 #include "Cheese.h"
 #include "../../../Scene/SceneManager.h"
 
+void Cheese::Draw()
+{
+	if (!SceneManager::GetInstance().GetGoalFlg())
+	{
+		if (!m_spModel) { return; }
+		ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
+	}
+}
+
 void Cheese::Update()
 {
+	if (SceneManager::GetInstance().GetGoalFlg())
+	{
+		m_spSound->Stop();
+		EffekseerManager::GetInstance().StopEffect("Shine.efk");
+	}
+
 	if (!EffekseerManager::GetInstance().IsPlaying("Shine.efk"))
 	{
 		auto effect = EffekseerManager::GetInstance().Play("Shine.efk", GetPos());
 	}
 
-	m_se->SetPos(GetPos());
-	m_se->SetVolume(SceneManager::GetInstance().GetSEVolume());
-	m_se->SetCurveDistanceScaler();
+	if (m_spSound->IsPlaying())
+	{
+		m_spSound->SetPos(GetPos());
+		m_spSound->SetVolume(SceneManager::GetInstance().GetSEVolume());
+		m_spSound->SetCurveDistanceScaler();
+	}
 }
 
 void Cheese::Init()
@@ -22,8 +40,7 @@ void Cheese::Init()
 	}
 
 	m_upCollider = std::make_unique<Collider>();
-	m_upCollider->RegisterCollisionShape("Cheese", m_spModel, Collider::Type::Goal|Collider::Type::Bump);
+	m_upCollider->RegisterCollisionShape("Cheese", m_spModel, Collider::Type::Bump|Collider::Type::Goal);
 
-	m_se = AudioManager::GetInstance().Play3D("Assets/Sounds/get.wav",GetPos(), true);
-	m_se->SetVolume(SceneManager::GetInstance().GetSEVolume());
+	m_spSound = AudioManager::GetInstance().Play3D("Assets/Sounds/get.wav",GetPos(), true);
 }

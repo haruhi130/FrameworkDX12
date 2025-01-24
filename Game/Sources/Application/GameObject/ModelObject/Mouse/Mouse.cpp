@@ -2,19 +2,27 @@
 #include "../../Camera/GameCamera.h"
 #include "../../../Scene/SceneManager.h"
 
+void Mouse::Draw()
+{
+	if (!m_spModel) { return; }
+	ShaderManager::GetInstance().m_modelShader.SetDitherEnable();
+	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
+}
+
+void Mouse::DrawShadow()
+{
+	if (!m_spModel) { return; }
+	ShaderManager::GetInstance().m_modelShader.SetDitherEnable();
+	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld, false);
+}
+
 void Mouse::Update()
 {
 	if (!m_spModel) { return; }
 
 	// 重力処理
-	m_pos.y -= m_gravity;
+	m_mWorld._42 -= m_gravity;
 	m_gravity += 0.005f;
-
-	--m_coolTime;
-	if (m_coolTime <= 0)
-	{
-		m_coolTime = 0.0f;
-	}
 
 	// ステート更新
 	if (m_currentAction)
@@ -44,8 +52,10 @@ void Mouse::PostUpdate()
 void Mouse::ImGuiUpdate()
 {
 	ImGui::Begin(u8"MouseCT");
+	ImGui::SetWindowPos(ImVec2(0, 300));
 	ImGui::SetWindowSize(ImVec2(0, 100));
 	ImGui::LabelText("MouseCT", "CT : %.2f", m_coolTime);
+	ImGui::LabelText("pos", "%.2f,%.2f,%.2f", GetPos().x, GetPos().y, GetPos().z);
 
 	ImGui::End();
 }
@@ -61,16 +71,7 @@ void Mouse::Init()
 		m_spModel = m_spOriginalModel;
 	}
 
-	m_speed = 3.0f;
-
-	m_pos = { 0,0,10 };
-
-	m_scale = 0.5f;
-
-	// 初期計算
-	Math::Matrix mScale = Math::Matrix::CreateScale(m_scale);
-	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_pos);
-	m_mWorld = mScale * mTrans;
+	m_speed = 5.0f;
 
 	// アニメーション設定
 	if (!m_spAnimator)
@@ -82,14 +83,14 @@ void Mouse::Init()
 	ChangeActionState(std::make_shared<ActionIdle>());
 
 	m_upCollider = std::make_unique<Collider>();
-	m_upCollider->RegisterCollisionShape("Mouse", m_spOriginalModel, Collider::Type::Sight | Collider::Type::Bump);
+	m_upCollider->RegisterCollisionShape("Mouse", m_spOriginalModel, Collider::Type::Bump | Collider::Type::Sight);
 }
 
 void Mouse::UpdateMatrix()
 {
 	Math::Matrix mScale = Math::Matrix::CreateScale(m_scale);
 	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_rot.y));
-	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_pos);
+	Math::Matrix mTrans = Math::Matrix::CreateTranslation(GetPos());
 	m_mWorld = mScale * mRot * mTrans;
 }
 
@@ -126,15 +127,17 @@ void Mouse::UpdateRotate(Math::Vector3& moveVec)
 
 void Mouse::UpdateCollision()
 {
+	Math::Vector3 pos = GetPos();
+
 	// Ray : Ground
 	{
 		Collider::RayInfo rayInfo;
-		rayInfo.m_pos = m_pos;
-		rayInfo.m_pos.y += 0.3f;
+		rayInfo.m_pos = pos;
+		rayInfo.m_pos.y += 0.5f;
 
 		rayInfo.m_dir = Math::Vector3::Down;
 		rayInfo.m_dir.Normalize();
-		rayInfo.m_range = m_gravity + 0.3f;
+		rayInfo.m_range = m_gravity + 0.5f;
 
 		rayInfo.m_type = Collider::Type::Ground;
 
@@ -162,8 +165,7 @@ void Mouse::UpdateCollision()
 
 				if (isHit)
 				{
-					m_pos = hitPos;
-					SetPos(m_pos);
+					SetPos(hitPos);
 					m_gravity = 0.0f;
 					m_isGround = true;
 				}
@@ -174,8 +176,8 @@ void Mouse::UpdateCollision()
 	// Sphere : Bump
 	{
 		Collider::SphereInfo sphereInfo;
-		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 0.8f, 0);
-		sphereInfo.m_sphere.Radius = 0.6f;
+		sphereInfo.m_sphere.Center = pos + Math::Vector3(0, 0.8f, 0);
+		sphereInfo.m_sphere.Radius = 0.8f;
 		sphereInfo.m_type = Collider::Type::Bump;
 
 		for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
@@ -188,18 +190,19 @@ void Mouse::UpdateCollision()
 
 				for (auto& ret : retBumpList)
 				{
-					Math::Vector3 newPos = m_pos + (ret.m_hitDir * ret.m_overlapDistance);
-					m_pos = newPos;
-					SetPos(m_pos);
+					Math::Vector3 newPos = Math::Vector3::Zero;
+					newPos = (ret.m_hitDir * ret.m_overlapDistance);
+					pos += newPos;
+					SetPos(pos);
 				}
 			}
 		}
 	}
 
 	// Ray : Event
-	if (InputManager::GetInstance().IsPress("LClick"))
+	if (InputManager::GetInstance().IsPress("LClick") && m_coolTime <= 0)
 	{
-		// マウス情報
+		// マウス座標取得
 		POINT mousePos = {};
 		GetCursorPos(&mousePos);
 
@@ -207,42 +210,41 @@ void Mouse::UpdateCollision()
 		const std::shared_ptr<GameCamera> spCamera = m_wpCamera.lock();
 		if (spCamera)
 		{
-			// レイの方向
+			//--------------------------------------------------------------
+			// 2D座標から3D座標に変換
+			// レイ情報に必要な変数の初期化
 			Math::Vector3 rayDir = Math::Vector3::Zero;
 			float range = 0.0f;
 
-			// カメラ座標
+			// カメラ座標取得
 			Math::Vector3 cameraPos = spCamera->GetPos();
 
-			// カメラからマウス座標へのレイ情報を作成
+			// マウス座標(2D)からカメラ(3D)へのレイ情報を作成
 			spCamera->WorkCamera()->GenerateRayInfoFromClient(
 				mousePos, cameraPos, rayDir, range);
+
+			//--------------------------------------------------------------
+			// レイ情報を当たり判定に設定
+			Collider::RayInfo rayInfo;
+			rayInfo.m_type = Collider::Type::Event;
+			rayInfo.m_pos = cameraPos;
+			rayInfo.m_dir = rayDir;
+			rayInfo.m_dir.Normalize();
+			rayInfo.m_range = 20.0f;
 
 			for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
 			{
 				std::shared_ptr<ModelObject> spObj = wpObj.lock();
 				if (spObj)
 				{
-					// レイ情報を当たり判定に設定
-					Collider::RayInfo rayInfo;
-					rayInfo.m_type = Collider::Type::Event;
-					rayInfo.m_pos = cameraPos;
-					rayInfo.m_dir = rayDir;
-					rayInfo.m_dir.Normalize();
-					rayInfo.m_range = 30.0f;
-
 					std::list<Collider::CollisionResult> retRayList;
 					spObj->Intersects(rayInfo, &retRayList);
-					
-					for(auto& ret : retRayList)
+
+					for (auto& ret : retRayList)
 					{
-						// CT制限
-						if (m_coolTime <= 0)
-						{
-							m_maskedModel = spObj->GetModel();
-							m_isMasked = true;
-							m_coolTime = 60.0f * 3;
-						}
+						m_maskedModel = spObj->GetModel();
+						m_isMasked = true;
+						m_coolTime = 60.0f * 3;
 					}
 				}
 			}
@@ -252,7 +254,7 @@ void Mouse::UpdateCollision()
 	// Sphere : Goal
 	{
 		Collider::SphereInfo sphereInfo;
-		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 0.5f, 0);
+		sphereInfo.m_sphere.Center = pos + Math::Vector3(0, 0.5f, 0);
 		sphereInfo.m_sphere.Radius = 3.0f;
 		sphereInfo.m_type = Collider::Type::Goal;
 
@@ -266,7 +268,7 @@ void Mouse::UpdateCollision()
 				{
 					for (auto& ret : retBumpList)
 					{
-						//SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Clear);
+						SceneManager::GetInstance().SetGoalFlg(true);
 					}
 				}
 			}
@@ -297,6 +299,12 @@ void Mouse::ActionIdle::Enter(Mouse& owner)
 
 void Mouse::ActionIdle::Update(Mouse& owner)
 {
+	--owner.m_coolTime;
+	if (owner.m_coolTime <= 0)
+	{
+		owner.m_coolTime = 0.0f;
+	}
+
 	Math::Vector3 vec = Math::Vector3::Zero;
 	if (InputManager::GetInstance().IsHold("Up")) { vec = Math::Vector3::Backward; }
 	if (InputManager::GetInstance().IsHold("Down")) { vec = Math::Vector3::Forward; }
@@ -333,6 +341,12 @@ void Mouse::ActionWalk::Enter(Mouse& owner)
 
 void Mouse::ActionWalk::Update(Mouse& owner)
 {
+	--owner.m_coolTime;
+	if (owner.m_coolTime <= 0)
+	{
+		owner.m_coolTime = 0.0f;
+	}
+
 	auto time = ServiceLocator::Get<Time>();
 	float speed = owner.m_speed * time->DeltaTime();
 
@@ -380,7 +394,11 @@ void Mouse::ActionWalk::Update(Mouse& owner)
 	move *= owner.m_speed;
 	move *= time->DeltaTime();
 
-	owner.m_pos += move;
+	Math::Vector3 pos = owner.GetPos();
+
+	pos += move;
+
+	owner.SetPos(pos);
 
 	owner.UpdateRotate(move);
 }
@@ -393,7 +411,9 @@ void Mouse::ActionMasked::Enter(Mouse& owner)
 {
 	if (!EffekseerManager::GetInstance().IsPlaying("SmokeBomb.efk"))
 	{
-		owner.m_spEffect = EffekseerManager::GetInstance().Play("SmokeBomb.efk", owner.m_pos, false);
+		auto smokeSound = AudioManager::GetInstance().Play("Assets/Sounds/smoke.wav");
+		smokeSound->SetVolume(SceneManager::GetInstance().GetSEVolume());
+		owner.m_spEffect = EffekseerManager::GetInstance().Play("SmokeBomb.efk", owner.GetPos(), false);
 	}
 
 	owner.m_spModel = owner.m_maskedModel;

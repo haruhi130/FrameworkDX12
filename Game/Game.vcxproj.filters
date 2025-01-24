@@ -196,6 +196,9 @@
     <Filter Include="Application\GameObject\ModelObject\CirclePedestal">
       <UniqueIdentifier>{2549d1d5-6120-4210-a29d-ce4f7d1a4f0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\GameObject\ModelObject\BookShelf">
+      <UniqueIdentifier>{36c0fa12-1b23-4ac5-a600-a410e8c2b94d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -379,6 +382,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Application\GameObject\ModelObject\CirclePedestal\CirclePedestal.cpp">
       <Filter>Application\GameObject\ModelObject\CirclePedestal</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\BookShelf\BookShelf.cpp">
+      <Filter>Application\GameObject\ModelObject\BookShelf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -602,6 +608,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Application\GameObject\ModelObject\CirclePedestal\CirclePedestal.h">
       <Filter>Application\GameObject\ModelObject\CirclePedestal</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\BookShelf\BookShelf.h">
+      <Filter>Application\GameObject\ModelObject\BookShelf</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -30,8 +30,8 @@ void TitleScene::Init()
 	// Press Click
 	sprite = std::make_shared<SpriteObject>();
 	sprite->SetPos({ 0,-200 });
-	sprite->SetRectangle({ 0,0,420,78 });
-	sprite->SetTexture("Assets/Textures/press.png");
+	sprite->SetRectangle({ 0,0,128,128 });
+	sprite->SetTexture("Assets/Textures/T_Mouse_Left_Key_White.png");
 	m_objList.push_back(sprite);
 
 	AudioManager::GetInstance().StopAllSound();

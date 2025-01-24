@@ -17,9 +17,14 @@ inline std::string GetDirFromPath(const std::string& path)
 	return (pos == std::string::npos) ? std::string() : path.substr(0, pos + 1);
 }
 
+inline float EaseInOutSine(float Progress)
+{
+	return float(-(std::cos(M_PI * Progress) - 1.0f) / 2.0f);
+}
+
 // 画面サイズ
 constexpr int window_width = 1280;
 constexpr int window_height = 720;
 
 // シャドウマップ解像度
-constexpr int shadow_difinition = 2048;
+constexpr int shadow_definition = 2048;

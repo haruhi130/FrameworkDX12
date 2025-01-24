@@ -33,6 +33,12 @@ void ResultScene::Init()
 	sprite->SetTexture("Assets/Textures/clear.png");
 	m_objList.push_back(sprite);
 
+	sprite = std::make_shared<SpriteObject>();
+	sprite->SetPos({ 0,-200 });
+	sprite->SetRectangle({ 0,0,128,128 });
+	sprite->SetTexture("Assets/Textures/T_Mouse_Left_Key_White.png");
+	m_objList.push_back(sprite);
+
 	AudioManager::GetInstance().StopAllSound();
-	m_bgm = AudioManager::GetInstance().Play("Assets/Sounds/Under_line.wav", true);
+	m_bgm = AudioManager::GetInstance().Play("Assets/Sounds/Result.wav", true);
 }

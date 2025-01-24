@@ -63,14 +63,14 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 	}
 
 	m_upLightDepthStencil = std::make_unique<DepthStencil>();
-	if (!m_upLightDepthStencil->Create(Math::Vector2(shadow_difinition, shadow_difinition)))
+	if (!m_upLightDepthStencil->Create(Math::Vector2(shadow_definition, shadow_definition)))
 	{
 		assert(0 && "LightDepthStencilçÏê¨é∏îs");
 		return false;
 	}
 
 	m_upCBVSRVUAVHeap = std::make_unique<CBVSRVUAVHeap>();
-	if (!m_upCBVSRVUAVHeap->Create(HeapType::CBVSRVUAV, Math::Vector3(500)))
+	if (!m_upCBVSRVUAVHeap->Create(HeapType::CBVSRVUAV, Math::Vector3(1000)))
 	{
 		assert(0 && "CBVSRVUAVÉqÅ[ÉvçÏê¨é∏îs");
 		return false;

@@ -9,5 +9,5 @@ void Box::Init()
 	}
 
 	m_upCollider = std::make_unique<Collider>();
-	m_upCollider->RegisterCollisionShape("Box", m_spModel, Collider::Type::Event | Collider::Type::Ground | Collider::Type::Bump);
+	m_upCollider->RegisterCollisionShape("Box", m_spModel, Collider::Type::Ground | Collider::Type::Bump | Collider::Type::Event);
 }

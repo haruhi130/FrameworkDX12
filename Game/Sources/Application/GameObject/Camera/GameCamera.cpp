@@ -102,7 +102,7 @@ void GameCamera::UpdateCollision()
 				if (lap < ret.m_overlapDistance)
 				{
 					lap = ret.m_overlapDistance;
-					hitPos = ret.m_hitPos;
+					hitPos += ret.m_hitPos + (Math::Vector3(0,0.1f,0.1f) * ret.m_overlapDistance);
 					isHit = true;
 				}
 			}

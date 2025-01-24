@@ -203,6 +203,7 @@
     <ClCompile Include="..\Libraries\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Sources\Application\Application.cpp" />
     <ClCompile Include="Sources\Application\GameObject\Camera\GameCamera.cpp" />
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\BookShelf\BookShelf.cpp" />
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Box\Box.cpp" />
     <ClCompile Include="Sources\Application\GameObject\ModelObject\BullTank\BullTank.cpp" />
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Cheese\Cheese.cpp" />
@@ -278,6 +279,7 @@
     <ClInclude Include="..\Libraries\imgui\ja_glyph_ranges.h" />
     <ClInclude Include="Sources\Application\Application.h" />
     <ClInclude Include="Sources\Application\GameObject\Camera\GameCamera.h" />
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\BookShelf\BookShelf.h" />
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Box\Box.h" />
     <ClInclude Include="Sources\Application\GameObject\ModelObject\BullTank\BullTank.h" />
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Cheese\Cheese.h" />

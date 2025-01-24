@@ -10,6 +10,7 @@ public:
 
 	void Update()override;
 	void Draw()override;
+	void DrawShadow()override;
 
 	void SetTarget(const std::shared_ptr<ModelObject>& target)
 	{

@@ -10,8 +10,10 @@ struct VSOutput
     float3 wN       : TEXCOORD2;    // ワールド法線
     float3 wT       : TEXCOORD3;    // ワールド接線
     float3 wB       : TEXCOORD4;    // ワールド従法線
+    
     float4 tPos     : TPOS;         // ライトカメラ座標
     float4 pos      : Position;     // 標準座標
+    float3 wvPos    : TEXCOORD5;
 };
 
 // ワールド変換行列
@@ -20,10 +22,12 @@ cbuffer cbWorld : register(b0)
     row_major float4x4 g_mWorld;
 }
 
-// スキンメッシュ判別
+// オブジェクト情報
 cbuffer cbObject : register(b1)
 {
     int g_isSkinMeshObj;
+    
+    int g_isDitherEnable;
 }
 
 // スキンメッシュボーン

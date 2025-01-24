@@ -10,6 +10,9 @@ public:
 	Mouse() { Init(); }
 	~Mouse()override{}
 
+	void Draw()override;
+	void DrawShadow()override;
+
 	void Update()override;
 	void PostUpdate()override;
 

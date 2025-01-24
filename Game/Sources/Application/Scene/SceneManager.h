@@ -37,6 +37,12 @@ public:
 	float GetSEVolume() const
 	{ return m_seVolume; }
 
+	void SetGoalFlg(bool isGoalFlg)
+	{ m_isGoalFlg = isGoalFlg; }
+
+	bool GetGoalFlg() const
+	{ return m_isGoalFlg; }
+
 private:
 
 	void Init() { ChangeScene(m_currentSceneType); }
@@ -48,7 +54,9 @@ private:
 	SceneType m_nextSceneType = m_currentSceneType;
 
 	float m_bgmVolume = 15.0f;
-	float m_seVolume = 15.0f;
+	float m_seVolume = 30.0f;
+
+	bool m_isGoalFlg = false;
 
 	SceneManager() { Init(); }
 	~SceneManager(){}

@@ -15,6 +15,15 @@ SamplerState g_ssCL : register(s3); // Clamp : Linear
 
 SamplerComparisonState g_ssCmp : register(s4); // 補間用比較機能付き
 
+// bayerMatrix
+static const int bayerMatrix[4][4] =
+{
+    {  0, 8, 2,10 },
+    { 12, 4,14, 6 },
+    {  3,11, 1, 9 },
+    { 15, 7,13, 5 }
+};
+
 float BlinnPhong(float3 lightDir, float3 vCam, float3 normal, float specPower)
 {
     float3 H = normalize(-lightDir + vCam);
@@ -38,6 +47,29 @@ float4 main(VSOutput In) : SV_TARGET
     
     // カメラへの方向
     float3 vCam = normalize(g_camPos - In.wPos);
+    
+    // AlphaDither
+    if(g_isDitherEnable)
+    {
+        // ピクセル算出
+        int x = (int) fmod(In.svPos.x, 5.0);
+        int y = (int) fmod(In.svPos.y, 5.0);
+        
+        // bayerMatrixから0～1のしきい値を算出
+        float dither = bayerMatrix[y][x] / 16.0;
+        
+        // AlphaDitherを行うカメラからの距離
+        float ditherDist = 0.6f;
+        
+        // ditherDist分のピクセルが対象
+        float range = max(0, In.wvPos.z - ditherDist);
+        
+        // 割合算出
+        float rate = 1 - min(1, range);
+        
+        // 0未満ならピクセル破棄
+        clip(dither - 1 * rate);
+    }
     
     // 法線マップから法線べクトルを取得
     float3 vNormal = g_normalTex.Sample(g_ssWL, In.uv).rgb;

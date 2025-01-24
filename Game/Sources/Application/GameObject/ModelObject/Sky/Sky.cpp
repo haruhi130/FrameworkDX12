@@ -20,6 +20,11 @@ void Sky::Draw()
 	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld, false);
 }
 
+void Sky::DrawShadow()
+{
+	return;
+}
+
 void Sky::Init()
 {
 	if (!m_spModel)
@@ -27,6 +32,4 @@ void Sky::Init()
 		m_spModel = std::make_shared<ModelWork>();
 		m_spModel->SetModelData(Assets::GetInstance().m_modelDatas.GetData("Assets/Models/SkySphere/SkySphere.gltf"));
 	}
-
-	m_scale = 100.0f;
 }

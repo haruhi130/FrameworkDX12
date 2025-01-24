@@ -6,18 +6,17 @@ void BullTank::Update()
 	if (!m_spModel) { return; }
 
 	// 重力処理
-	m_pos.y -= m_gravity;
+	m_mWorld._42 -= m_gravity;
 	m_gravity += 0.005f;
 
-	if (m_sightTime <= 0)
-	{
-		m_sightTime = 0.0f;
-	}
+	m_sightTime = std::clamp(m_sightTime, 0.0f, 60.0f * 3);
 
 	if (m_sightTime >= 60.0f * 3)
 	{
 		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Failed);
 	}
+
+	m_sightAngle = std::clamp(m_sightAngle, 0.1f, 90.0f);
 
 	// ステート更新
 	if (m_currentAction)
@@ -47,10 +46,13 @@ void BullTank::OnHit(bool isHit)
 
 void BullTank::ImGuiUpdate()
 {
-	ImGui::Begin(u8"Wolf視界");
-	ImGui::SetWindowSize(ImVec2(100, 100), ImGuiCond_::ImGuiCond_FirstUseEver);
+	ImGui::Begin(u8"BullTank");
+	ImGui::SetWindowPos(ImVec2(0, 0));
+	ImGui::SetWindowSize(ImVec2(200, 300));
 	ImGui::Checkbox(u8"有効", &m_isSight);
-	ImGui::LabelText("sightTime", "ST : %f", m_sightTime);
+	ImGui::LabelText("sightTime", "ST : %.2f", m_sightTime);
+	ImGui::LabelText("pos", "%.2f,%.2f,%.2f", GetPos().x, GetPos().y, GetPos().z);
+	ImGui::LabelText("scale", "%.2f", m_scale);
 
 	ImGui::End();
 }
@@ -64,30 +66,24 @@ void BullTank::Init()
 			GetData("Assets/Models/BullTank/BullTank.gltf"));
 	}
 
-	m_pos = { -5,0,13 };
-
-	// 初期計算
-	Math::Matrix mScale = Math::Matrix::CreateScale(200.0f);
-	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(0));
-	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_pos);
-	m_mWorld = mScale * mRot * mTrans;
-
 	if (!m_spAnimator)
 	{
 		m_spAnimator = std::make_shared<Animator>();
 	}
 
 	// ステート設定「待機」
-	ChangeActionState(std::make_shared<ActionWalk>());
+	ChangeActionState(std::make_shared<ActionIdle>());
+
+	m_upCollider = std::make_unique<Collider>();
+	m_upCollider->RegisterCollisionShape("BullTank", m_spModel, Collider::Type::Bump);
 }
 
 void BullTank::UpdateMatrix()
 {
-	Math::Matrix mScale = Math::Matrix::CreateScale(200.0f);
-	Math::Matrix mRot = Math::Matrix::Identity;
-	mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(0));
-	
-	Math::Matrix mTrans = Math::Matrix::CreateTranslation(m_pos);
+	Math::Matrix mScale = Math::Matrix::CreateScale(m_scale);
+	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_rot.y));
+
+	Math::Matrix mTrans = Math::Matrix::CreateTranslation(GetPos());
 	m_mWorld = mScale * mRot * mTrans;
 }
 
@@ -115,82 +111,24 @@ void BullTank::UpdateRotate(Math::Vector3& moveVec)
 		betweenAng += 360;
 	}
 
-	float rotAng = std::clamp(betweenAng, -36.0f, 36.0f);
+	float rotAng = std::clamp(betweenAng, -180.0f, 180.0f);
 
 	m_rot.y += rotAng;
 }
 
 void BullTank::UpdateCollision()
 {
-	// Sphere : Sight
-	{
-		// 視界範囲となる球判定を作成
-		Collider::SphereInfo sphereInfo;
-		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 1.5f, 0);
-		sphereInfo.m_sphere.Radius = 5.0f;
-		sphereInfo.m_type = Collider::Type::Sight;
-
-		for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
-		{
-			std::shared_ptr<ModelObject> spObj = wpObj.lock();
-			if (spObj)
-			{
-				std::list<Collider::CollisionResult> retSightList;
-				spObj->Intersects(sphereInfo, &retSightList);
-
-				bool isHit = false;
-
-				for (auto& ret : retSightList)
-				{
-					// 視界角度内に範囲を制限
-					// 向いている方向
-					Math::Vector3 nowDir = GetMatrix().Backward();
-					nowDir.Normalize();
-					float nowAng = DirectX::XMConvertToDegrees(atan2(nowDir.x, nowDir.z));
-
-					// ターゲットの位置
-					Math::Vector3 targetDir = ret.m_hitDir;
-					targetDir.Normalize();
-					float targetAng = DirectX::XMConvertToDegrees(atan2(targetDir.x, targetDir.z));
-
-					// 角度計算
-					float betweenAng = targetAng - nowAng;
-
-					// sightAngle内か判定
-					if (betweenAng <= m_sightAngle && betweenAng > -m_sightAngle)
-					{
-						// 間に障害物がないか判定
-						Collider::RayInfo rayInfo;
-						rayInfo.m_dir = targetDir - nowDir;
-						rayInfo.m_dir.Normalize();
-						rayInfo.m_pos = m_pos;
-						rayInfo.m_range = sphereInfo.m_sphere.Radius;
-						rayInfo.m_type = Collider::Type::Bump;
-
-						if (spObj->Intersects(rayInfo, nullptr))
-						{
-							isHit = false;
-						}
-						else
-						{
-							isHit = true;
-						}
-					}
-				}
-
-				OnHit(isHit);
-			}
-		}
-	}
+	Math::Vector3 pos = GetPos();
 
 	// Ray : Ground
 	{
 		Collider::RayInfo rayInfo;
-		rayInfo.m_pos = m_pos;
-		rayInfo.m_pos.y += 0.3f;
+		rayInfo.m_pos = pos;
+		rayInfo.m_pos.y += 1.0f;
 
 		rayInfo.m_dir = Math::Vector3::Down;
-		rayInfo.m_range = m_gravity + 0.3f;
+		rayInfo.m_dir.Normalize();
+		rayInfo.m_range = m_gravity + 1.0f;
 
 		rayInfo.m_type = Collider::Type::Ground;
 
@@ -218,8 +156,7 @@ void BullTank::UpdateCollision()
 
 				if (isHit)
 				{
-					m_pos = hitPos;
-					SetPos(m_pos);
+					SetPos(hitPos);
 					m_gravity = 0.0f;
 					m_isGround = true;
 				}
@@ -227,30 +164,88 @@ void BullTank::UpdateCollision()
 		}
 	}
 
-	// Sphere : Bump
+	Math::Vector3 hitPos = Math::Vector3::Zero;
+	Math::Vector3 hitDir = Math::Vector3::Zero;
+	bool isHit = false;
+
+	// Sphere : Sight
 	{
-		Collider::SphereInfo sphereInfo;
-		sphereInfo.m_sphere.Center = m_pos + Math::Vector3(0, 1.6f, 0);
-		sphereInfo.m_sphere.Radius = 1.6f;
-		sphereInfo.m_type = Collider::Type::Bump;
+		Collider::SphereInfo sphereSight;
+		sphereSight.m_sphere.Center = pos + Math::Vector3(0, 1.5f, 0);
+		sphereSight.m_sphere.Radius = 5.0f;
+		sphereSight.m_type = Collider::Type::Sight;
+
+		std::list<Collider::CollisionResult> retSphereSightList;
 
 		for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
 		{
 			std::shared_ptr<ModelObject> spObj = wpObj.lock();
 			if (spObj)
 			{
-				std::list<Collider::CollisionResult> retBumpList;
-				spObj->Intersects(sphereInfo, &retBumpList);
-
-				for (auto& ret : retBumpList)
+				if(spObj->Intersects(sphereSight, &retSphereSightList))
 				{
-					Math::Vector3 newPos = m_pos + (ret.m_hitDir * ret.m_overlapDistance);
-					m_pos = newPos;
-					SetPos(m_pos);
+					for (auto&& retSphereSight : retSphereSightList)
+					{
+						hitPos	= retSphereSight.m_hitPos;
+						hitDir	= retSphereSight.m_hitDir;
+					}
+
+					// 視界角度内に範囲を制限
+					// 向いている方向
+					Math::Vector3 nowDir = GetMatrix().Backward();
+					nowDir.Normalize();
+					float nowAng = DirectX::XMConvertToDegrees(atan2(nowDir.x, nowDir.z));
+
+					// ターゲットの位置
+					hitDir.Normalize();
+					float targetAng = DirectX::XMConvertToDegrees(atan2(hitDir.x, hitDir.z));
+
+					// 角度計算
+					float betweenAng = targetAng - nowAng;
+					
+					if (-m_sightAngle <= betweenAng && betweenAng <= m_sightAngle)
+					{
+						isHit = true;
+					}
+					else
+					{
+						isHit = false;
+					}
 				}
 			}
 		}
 	}
+
+	if(isHit)
+	{
+		Collider::RayInfo raySight;
+		raySight.m_pos = pos + Math::Vector3(0,1.5f,0);
+		raySight.m_dir = hitPos - raySight.m_pos;
+		raySight.m_range = raySight.m_dir.Length();
+		raySight.m_dir.Normalize();
+
+		raySight.m_type = Collider::Type::Ground | Collider::Type::Sight;
+
+		for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
+		{
+			std::shared_ptr<ModelObject> spObj = wpObj.lock();
+			if (spObj)
+			{
+				std::list<Collider::CollisionResult> retRaySightList;
+				if (spObj->Intersects(raySight, &retRaySightList))
+				{
+					isHit = false;
+					break;
+				}
+				else
+				{
+					isHit = true;
+				}
+			}
+		}
+	}
+
+	OnHit(isHit);
 }
 
 void BullTank::ChangeActionState(std::shared_ptr<ActionStateBase> nextState)
@@ -267,10 +262,12 @@ void BullTank::ActionIdle::Enter(BullTank& owner)
 
 void BullTank::ActionIdle::Update(BullTank& owner)
 {
-	++owner.m_sightTime;
-	if (!owner.m_isSight)
+	--owner.m_sightTime;
+
+	if (owner.m_isSight)
 	{
-		owner.ChangeActionState(std::make_shared<ActionWalk>());
+		owner.ChangeActionState(std::make_shared<ActionSight>());
+		return;
 	}
 }
 
@@ -280,23 +277,84 @@ void BullTank::ActionIdle::Exit(BullTank& owner)
 
 void BullTank::ActionWalk::Enter(BullTank& owner)
 {
-	owner.m_spAnimator->SetAnimation(owner.m_spModel->GetModelData()->GetAnimation("Idle"));
+	owner.m_spAnimator->SetAnimation(owner.m_spModel->GetModelData()->GetAnimation("Walk"));
 }
 
 void BullTank::ActionWalk::Update(BullTank& owner)
 {
-	if (owner.m_isSight)
-	{
-		owner.ChangeActionState(std::make_shared<ActionIdle>());
-	}
-
 	--owner.m_sightTime;
 
-	Math::Vector3 vec = Math::Vector3::Zero;
-	
-	owner.UpdateRotate(vec);
+	if (owner.m_isSight)
+	{
+		owner.ChangeActionState(std::make_shared<ActionSight>());
+		return;
+	}
+
+	auto time = ServiceLocator::Get<Time>();
+	float speed = (1.0f / (60.0f * owner.m_speed)) * time->DeltaTime();
+	Math::Vector3 rot = Math::Vector3::Zero;
+	owner.m_progress += speed * (owner.m_isRevers * -2 + 1);
+	if (owner.m_progress > 1.0f)
+	{
+		rot = owner.GetMatrix().Forward();
+		owner.m_isRevers = true;
+	}
+	if (owner.m_progress <= 0.0f)
+	{
+		rot = owner.GetMatrix().Forward();
+		owner.m_isRevers = false;
+	}
+	float progress = std::clamp(owner.m_progress, 0.0f, 1.0f);
+	Math::Vector3 towardEndVec = owner.m_endPos - owner.m_startPos;
+
+	Math::Vector3 vec = owner.m_startPos + towardEndVec * EaseInOutSine(progress);
+
+	owner.SetPos(vec);
+
+	owner.UpdateRotate(rot);
 }
 
 void BullTank::ActionWalk::Exit(BullTank& owner)
+{
+}
+
+void BullTank::ActionSight::Enter(BullTank& owner)
+{
+	if (owner.m_sightTime <= 0)
+	{
+		if (!owner.m_spSound)
+		{
+			owner.m_spSound = AudioManager::GetInstance().Play("Assets/Sounds/busted.wav");
+		}
+		if (!owner.m_spSound->IsPlaying())
+		{
+			owner.m_spSound->Play();
+		}
+
+		owner.m_spSound->SetVolume(SceneManager::GetInstance().GetSEVolume());
+	}
+	owner.m_spAnimator->SetAnimation(owner.m_spModel->GetModelData()->GetAnimation("Idle"));
+}
+
+void BullTank::ActionSight::Update(BullTank& owner)
+{
+	++owner.m_sightTime;
+
+	if (!owner.m_isSight)
+	{
+		if (owner.m_isMove)
+		{
+			owner.ChangeActionState(std::make_shared<ActionWalk>());
+			return;
+		}
+		else
+		{
+			owner.ChangeActionState(std::make_shared<ActionIdle>());
+			return;
+		}
+	}
+}
+
+void BullTank::ActionSight::Exit(BullTank& owner)
 {
 }

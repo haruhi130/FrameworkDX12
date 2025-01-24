@@ -85,4 +85,3 @@ void ShaderManager::WriteLightParams()
 	WriteCBShadowArea(m_shadowProj, m_dirLightHeight);
 	WriteCBLight();
 }
-
