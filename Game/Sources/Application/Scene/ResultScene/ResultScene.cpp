@@ -12,6 +12,7 @@ void ResultScene::Event()
 	if (InputManager::GetInstance().IsPress("LClick"))
 	{
 		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Title);
+		SceneManager::GetInstance().SetGoalFlg(false);
 	}
 	///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 }

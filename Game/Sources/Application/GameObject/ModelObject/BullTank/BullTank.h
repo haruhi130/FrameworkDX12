@@ -30,26 +30,19 @@ public:
 		m_mWorld *= Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(rotY));
 	}
 
-	void SetSightAngle(float angle)
-	{ m_sightAngle = angle; }
-
-	void SetMovePosition(const Math::Vector3& start, const Math::Vector3& end)
+	void SetSightInfo(float range = 5.0f,float angle = 45.0f)
 	{
+		m_sightRange = range;
+		m_sightAngle = angle; 
+	}
+
+	void SetMovePosition(const Math::Vector3& start, const Math::Vector3& end,float speed)
+	{
+		m_speed = speed;
 		m_startPos = start;
 		m_endPos = end;
 		m_isMove = true;
 		ChangeActionState(std::make_shared<ActionWalk>());
-	}
-
-	void SetSpeed(float speed)
-	{
-		m_speed = speed;
-	}
-
-	void SetTarget(const std::shared_ptr<ModelObject>& target)
-	{
-		if (!target)return;
-		m_wpTarget = target;
 	}
 
 private:
@@ -68,31 +61,27 @@ private:
 	// d—Í
 	float m_gravity = 0.0f;
 
-	// ‹”FŠÔ
-	float m_sightTime = 0.0f;
-
 	// ‹ŠE“à”»’è
 	bool m_isSight = false;
-
+	// ‹”FŠÔ
+	float m_sightTime = 0.0f;
+	// ‹ŠE”ÍˆÍ
+	float m_sightRange = 5.0f;
 	// ‹ŠEŠp“x
 	float m_sightAngle = 45.0f;
 
 	// ‰ñ“]î•ñŠi”[
 	Math::Vector3 m_rot = {};
 
-	// “®‚«
+	// ˆÚ“®—p•Ï”
 	Math::Vector3 m_startPos;
 	Math::Vector3 m_endPos;
-
 	float m_progress = 0.0f;
 	float m_speed = 1.0f;
-
 	bool m_isRevers = false;
-
 	bool m_isMove = false;
 
-	std::weak_ptr<ModelObject> m_wpTarget;
-
+	// SEİ’è
 	std::shared_ptr<SoundInstance> m_spSound = nullptr;
 
 /////////////////////////////////////////////////

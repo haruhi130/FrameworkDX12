@@ -82,6 +82,34 @@ void ShaderManager::WriteCBShadowArea(const Math::Matrix& proj, float dirLightHe
 
 void ShaderManager::WriteLightParams()
 {
+
+
 	WriteCBShadowArea(m_shadowProj, m_dirLightHeight);
 	WriteCBLight();
+}
+
+void ShaderManager::WriteCBPointLight(const std::list<ConstantBufferData::PointLight>& pointLights)
+{
+	m_cbLight.PointLightNum = pointLights.size();
+
+	UINT index = 0;
+	for (const ConstantBufferData::PointLight& pointLight : pointLights)
+	{
+		m_cbLight.PointLights[index] = pointLight;
+		++index;
+	}
+
+	WriteCBLight();
+}
+
+void ShaderManager::AddPointLight(const Math::Vector3& pos, const Math::Vector3& color, float radius, float isBright)
+{
+	ConstantBufferData::PointLight& pointLight = m_cbLight.PointLights[m_cbLight.PointLightNum];
+
+	pointLight.Pos = pos;
+	pointLight.Color = color;
+	pointLight.Radius = radius;
+	pointLight.IsBright = isBright;
+
+	++m_cbLight.PointLightNum;
 }

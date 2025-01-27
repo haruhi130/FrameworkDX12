@@ -167,7 +167,7 @@ void Application::Execute()
 
 		//=============================================
 		// ImGui処理
-		ImGuiUpdate();
+		//ImGuiUpdate();
 
 		// サービス管理更新
 		ServiceLocator::Update();

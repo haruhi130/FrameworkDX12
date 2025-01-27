@@ -18,6 +18,8 @@ namespace ConstantBufferData
 		int IsSkinMesh = 0;
 
 		int IsDitherEnable = 0;
+
+		int blank[2] = { 0,0 };
 	};
 
 	// スキンメッシュ用構造体
@@ -33,6 +35,8 @@ namespace ConstantBufferData
 		Math::Vector3 Emissive;
 		float Metallic = 0.0f;
 		float Roughness = 1.0f;
+
+		float blank[3] = { 0,0,0 };
 	};
 
 	// 2D描画用構造体
@@ -48,6 +52,19 @@ namespace ConstantBufferData
 		Math::Matrix mProj;
 	};
 
+	// ポイントライト
+	struct PointLight
+	{
+		PointLight() {}
+		PointLight(const Math::Vector3& color, float radius, const Math::Vector3& pos, int isBright)
+			:Color(color), Radius(radius), Pos(pos), IsBright(isBright) {}
+
+		Math::Vector3 Color;
+		float Radius = 0.0f;
+		Math::Vector3 Pos;
+		int IsBright = 0;
+	};
+
 	// ライト
 	struct LightInfo
 	{
@@ -58,5 +75,12 @@ namespace ConstantBufferData
 
 		// ライトカメラ
 		Math::Matrix DirLight_mVP;
+
+		static const int MaxPointLightNum = 100;
+
+		int PointLightNum = 0;
+		int blank[2] = { 0,0 };
+
+		std::array<PointLight, MaxPointLightNum> PointLights;
 	};
 }

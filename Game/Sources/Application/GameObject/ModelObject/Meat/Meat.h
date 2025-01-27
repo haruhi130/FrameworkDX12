@@ -6,9 +6,8 @@ class Meat : public ModelObject
 {
 public:
 	Meat() { Init(); }
-	~Meat()override{}
+	~Meat()override {}
 
 private:
 	void Init()override;
-
 };

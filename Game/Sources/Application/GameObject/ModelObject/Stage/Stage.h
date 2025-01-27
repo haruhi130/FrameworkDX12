@@ -8,6 +8,8 @@ public:
 	Stage() { Init(); }
 	~Stage()override{}
 
+	void DrawShadow()override;
+
 private:
 	void Init()override;
 

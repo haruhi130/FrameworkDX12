@@ -59,7 +59,7 @@ float4 main(VSOutput In) : SV_TARGET
         float dither = bayerMatrix[y][x] / 16.0;
         
         // AlphaDitherを行うカメラからの距離
-        float ditherDist = 0.6f;
+        float ditherDist = 1.1f;
         
         // ditherDist分のピクセルが対象
         float range = max(0, In.wvPos.z - ditherDist);

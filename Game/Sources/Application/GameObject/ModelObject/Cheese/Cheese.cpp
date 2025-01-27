@@ -14,6 +14,7 @@ void Cheese::Update()
 {
 	if (SceneManager::GetInstance().GetGoalFlg())
 	{
+		m_upCollider->SetEnableAll(false);
 		m_spSound->Stop();
 		EffekseerManager::GetInstance().StopEffect("Shine.efk");
 	}
@@ -42,5 +43,5 @@ void Cheese::Init()
 	m_upCollider = std::make_unique<Collider>();
 	m_upCollider->RegisterCollisionShape("Cheese", m_spModel, Collider::Type::Bump|Collider::Type::Goal);
 
-	m_spSound = AudioManager::GetInstance().Play3D("Assets/Sounds/get.wav",GetPos(), true);
+	m_spSound = AudioManager::GetInstance().Play3D("Assets/Sounds/Shine.wav",GetPos(), true);
 }

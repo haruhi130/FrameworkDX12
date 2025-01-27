@@ -12,6 +12,7 @@ void FailedResultScene::Event()
 	if (InputManager::GetInstance().IsPress("LClick"))
 	{
 		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Title);
+		SceneManager::GetInstance().SetGoalFlg(false);
 	}
 	///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 }
@@ -40,5 +41,5 @@ void FailedResultScene::Init()
 	m_objList.push_back(sprite);
 
 	AudioManager::GetInstance().StopAllSound();
-	m_bgm = AudioManager::GetInstance().Play("Assets/Sounds/GameBGM.wav", true);
+	m_bgm = AudioManager::GetInstance().Play("Assets/Sounds/Failed.wav", true);
 }

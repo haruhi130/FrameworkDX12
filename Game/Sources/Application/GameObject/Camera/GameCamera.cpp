@@ -44,7 +44,7 @@ void GameCamera::Init()
 	m_mWorld = Math::Matrix::Identity;
 
 	m_vec = {};
-	m_local = { 0.5f,1.5f,-3.0f };
+	m_local = { 0.5f,1.7f,-3.3f };
 
 	m_localPos = Math::Matrix::CreateTranslation(m_local);
 

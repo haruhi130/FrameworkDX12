@@ -38,6 +38,9 @@ public:
 	
 	void WriteLightParams();
 
+	void WriteCBPointLight(const std::list<ConstantBufferData::PointLight>& pointLights);
+	void AddPointLight(const Math::Vector3& pos, const Math::Vector3& color, float radius, float isBright);
+
 	//-------------------------------------------------
 	// シェーダー
 	//-------------------------------------------------
@@ -54,8 +57,10 @@ private:
 
 	// 影描画範囲
 	Math::Matrix m_shadowProj;
-	// ライトの疑似高さ
+	// 平行光源の高さ
 	float m_dirLightHeight = 0.0f;
+
+	std::list<ConstantBufferData::PointLight> m_pointLights;
 
 public:
 	static ShaderManager& GetInstance()

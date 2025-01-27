@@ -199,6 +199,18 @@
     <Filter Include="Application\GameObject\ModelObject\BookShelf">
       <UniqueIdentifier>{36c0fa12-1b23-4ac5-a600-a410e8c2b94d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\GameObject\ModelObject\EggNest">
+      <UniqueIdentifier>{02e8bd8e-b20c-447c-903c-e267a2cfaf10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Bench">
+      <UniqueIdentifier>{0f34fbaa-e3e9-44a0-a09f-901b4e82ecc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Dumpling">
+      <UniqueIdentifier>{9bc19903-8a42-44e1-9583-ba7cbed7cf1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Bamboo">
+      <UniqueIdentifier>{35e4addd-0a5c-45b1-acd2-9aa89e42cf94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\main.cpp" />
@@ -385,6 +397,18 @@
     </ClCompile>
     <ClCompile Include="Sources\Application\GameObject\ModelObject\BookShelf\BookShelf.cpp">
       <Filter>Application\GameObject\ModelObject\BookShelf</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\EggNest\EggNest.cpp">
+      <Filter>Application\GameObject\ModelObject\EggNest</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Bench\Bench.cpp">
+      <Filter>Application\GameObject\ModelObject\Bench</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Dumpling\Dumpling.cpp">
+      <Filter>Application\GameObject\ModelObject\Dumpling</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Bamboo\Bamboo.cpp">
+      <Filter>Application\GameObject\ModelObject\Bamboo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -611,6 +635,18 @@
     </ClInclude>
     <ClInclude Include="Sources\Application\GameObject\ModelObject\BookShelf\BookShelf.h">
       <Filter>Application\GameObject\ModelObject\BookShelf</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\EggNest\EggNest.h">
+      <Filter>Application\GameObject\ModelObject\EggNest</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Bench\Bench.h">
+      <Filter>Application\GameObject\ModelObject\Bench</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Dumpling\Dumpling.h">
+      <Filter>Application\GameObject\ModelObject\Dumpling</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Bamboo\Bamboo.h">
+      <Filter>Application\GameObject\ModelObject\Bamboo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

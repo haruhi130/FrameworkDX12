@@ -70,7 +70,7 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 	}
 
 	m_upCBVSRVUAVHeap = std::make_unique<CBVSRVUAVHeap>();
-	if (!m_upCBVSRVUAVHeap->Create(HeapType::CBVSRVUAV, Math::Vector3(1000)))
+	if (!m_upCBVSRVUAVHeap->Create(HeapType::CBVSRVUAV, Math::Vector3(3000)))
 	{
 		assert(0 && "CBVSRVUAVÉqÅ[ÉvçÏê¨é∏îs");
 		return false;

@@ -71,7 +71,7 @@ void Mouse::Init()
 		m_spModel = m_spOriginalModel;
 	}
 
-	m_speed = 5.0f;
+	m_speed = 3.0f;
 
 	// アニメーション設定
 	if (!m_spAnimator)
@@ -269,6 +269,8 @@ void Mouse::UpdateCollision()
 					for (auto& ret : retBumpList)
 					{
 						SceneManager::GetInstance().SetGoalFlg(true);
+						m_spSound = AudioManager::GetInstance().Play("Assets/Sounds/Get.wav");
+						m_spSound->SetVolume(SceneManager::GetInstance().GetSEVolume());
 					}
 				}
 			}
@@ -348,7 +350,6 @@ void Mouse::ActionWalk::Update(Mouse& owner)
 	}
 
 	auto time = ServiceLocator::Get<Time>();
-	float speed = owner.m_speed * time->DeltaTime();
 
 	Math::Vector3 move = Math::Vector3::Zero;
 	if (InputManager::GetInstance().IsHold("Up"))

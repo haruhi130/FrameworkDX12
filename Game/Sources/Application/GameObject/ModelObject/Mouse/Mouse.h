@@ -59,6 +59,7 @@ private:
 	std::shared_ptr<ModelWork> m_spOriginalModel;
 
 	std::shared_ptr<EffekseerObject> m_spEffect = nullptr;
+	std::shared_ptr<SoundInstance> m_spSound = nullptr;
 
 /////////////////////////////////////////////////
 // ステートパターン管理

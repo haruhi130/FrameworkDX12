@@ -1,5 +1,9 @@
 #include "Stage.h"
 
+void Stage::DrawShadow()
+{
+}
+
 void Stage::Init()
 {
 	if (!m_spModel)
