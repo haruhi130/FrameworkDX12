@@ -35,14 +35,14 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 		return false;
 	}
 
-	if (!CreateSwapChain(hWnd,width,height))
+	if (!CreateSwapChain(hWnd, width, height))
 	{
 		assert(0 && "スワップチェーン作成失敗");
 		return false;
 	}
 
 	m_upRTVHeap = std::make_unique<RTVHeap>();
-	if (!m_upRTVHeap->Create(HeapType::RTV,500))
+	if (!m_upRTVHeap->Create(HeapType::RTV, 500))
 	{
 		assert(0 && "RTVヒープ作成失敗");
 		return false;
@@ -70,7 +70,7 @@ bool GraphicsDevice::Init(HWND hWnd, int width, int height)
 	}
 
 	m_upCBVSRVUAVHeap = std::make_unique<CBVSRVUAVHeap>();
-	if (!m_upCBVSRVUAVHeap->Create(HeapType::CBVSRVUAV, Math::Vector3(3000)))
+	if (!m_upCBVSRVUAVHeap->Create(HeapType::CBVSRVUAV, Math::Vector3(5000)))
 	{
 		assert(0 && "CBVSRVUAVヒープ作成失敗");
 		return false;
@@ -122,7 +122,7 @@ void GraphicsDevice::ScreenFlip()
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 
 	m_cpCmdList->Close();
-	ID3D12CommandList* cmdLists[] = { m_cpCmdList.Get()};
+	ID3D12CommandList* cmdLists[] = { m_cpCmdList.Get() };
 	m_cpCmdQueue->ExecuteCommandLists(1, cmdLists);
 
 	WaitForCommandQueue();
@@ -342,7 +342,7 @@ bool GraphicsDevice::CreateSwapChain(HWND hWnd, int width, int height)
 	swapChainDesc.SampleDesc.Quality = 0;
 
 	ComPtr<IDXGISwapChain1> pSwapChain = nullptr;
-	
+
 	// スワップチェーン作成
 	auto result = m_cpDxgiFactory->CreateSwapChainForHwnd(m_cpCmdQueue.Get(), hWnd, &swapChainDesc,
 		nullptr, nullptr, pSwapChain.ReleaseAndGetAddressOf());

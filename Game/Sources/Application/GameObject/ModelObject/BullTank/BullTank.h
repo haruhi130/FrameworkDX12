@@ -66,7 +66,7 @@ private:
 	// Ž‹”FŽžŠÔ
 	float m_sightTime = 0.0f;
 	// Ž‹ŠE”ÍˆÍ
-	float m_sightRange = 5.0f;
+	float m_sightRange = 6.0f;
 	// Ž‹ŠEŠp“x
 	float m_sightAngle = 45.0f;
 

@@ -197,6 +197,8 @@ void Application::PreUpdate()
 	// “ü—Íó‹µ‚ÌXV
 	InputManager::GetInstance().Update();
 
+	ShaderManager::GetInstance().PreUpdate();
+
 	SceneManager::GetInstance().PreUpdate();
 }
 

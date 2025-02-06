@@ -144,9 +144,9 @@
 			"extensions":{
 				"KHR_materials_specular":{
 					"specularColorFactor":[
-						0.237135764977738,
-						0.237135764977738,
-						0.237135764977738
+						0,
+						0,
+						0
 					]
 				},
 				"KHR_materials_ior":{

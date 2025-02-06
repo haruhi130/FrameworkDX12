@@ -16,6 +16,8 @@ public:
 
 	void ImGuiUpdate();
 
+	virtual void ResourceLoad(){}
+
 	const std::list<std::shared_ptr<BaseObject>>& GetObjList() 
 	{ return m_objList; }
 

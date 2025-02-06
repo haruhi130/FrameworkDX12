@@ -8,8 +8,11 @@ public:
 	GameScene() { Init(); }
 	~GameScene()override{}
 
-private:
+	void ResourceLoad()override;
 
+private:
 	void Event()override;
 	void Init()override;
+
+	bool m_isOnce = false;
 };

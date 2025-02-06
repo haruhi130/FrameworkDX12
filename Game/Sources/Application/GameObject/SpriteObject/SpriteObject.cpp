@@ -2,12 +2,28 @@
 
 void SpriteObject::Update()
 {
+	if (m_isAlphaFluct)
+	{
+		m_alpha += m_fluctValue;
+		if (m_alpha > 1.0f)
+		{
+			m_fluctValue *= -1.0f;
+		}
+		if (m_alpha < 0.5f)
+		{
+			m_fluctValue *= -1.0f;
+		}
+	}
 }
 
 void SpriteObject::DrawSprite()
 {
+	if (!m_spTex) { return; }
+
+	Math::Color color = { 1.0f,1.0f,1.0f,m_alpha };
+
 	ShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mWorld);
-	ShaderManager::GetInstance().m_spriteShader.DrawTexture(m_spTex.get(),m_spMesh.get());
+	ShaderManager::GetInstance().m_spriteShader.DrawTexture(m_spTex.get(),m_spMesh.get(),color);
 }
 
 void SpriteObject::Init()

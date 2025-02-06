@@ -11,5 +11,5 @@ float4 main(VSOutput In) : SV_TARGET
 	// AlphaƒeƒXƒg
     if (color.a < 0.1f) discard;
 	
-	return color * g_color;
+	return color * g_Color;
 }

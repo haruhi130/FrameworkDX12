@@ -41,6 +41,17 @@ void BullTank::PostUpdate()
 	if (!m_spModel) { return; }
 	if (!m_spAnimator) { return; }
 
+	auto vec = GetMatrix().Forward();
+	vec.Normalize();
+	if (m_isSight)
+	{
+	ShaderManager::GetInstance().AddSpotLight({ 1,0,0 },m_sightRange, GetPos() + Math::Vector3(0, 1.5, 0), DirectX::XMConvertToRadians(m_sightAngle * 2), vec);
+	}
+	else
+	{
+		ShaderManager::GetInstance().AddSpotLight({ 1,1,1 }, m_sightRange, GetPos() + Math::Vector3(0, 1.5, 0), DirectX::XMConvertToRadians(m_sightAngle * 2), vec);
+	}
+
 	m_spAnimator->ProgressTime(m_spModel->WorkNodes());
 	m_spModel->CalcNodeMatrices();
 }
@@ -110,11 +121,11 @@ void BullTank::UpdateRotate(Math::Vector3& moveVec)
 	float betweenAng = targetAng - nowAng;
 	if (betweenAng > 180)
 	{
-		betweenAng -= 360;
+		betweenAng -= 90;
 	}
 	else if (betweenAng < -180)
 	{
-		betweenAng += 360;
+		betweenAng += 90;
 	}
 
 	float rotAng = std::clamp(betweenAng, -180.0f, 180.0f);
@@ -271,6 +282,11 @@ void BullTank::ActionIdle::Update(BullTank& owner)
 {
 	--owner.m_sightTime;
 
+	if (owner.m_sightTime <= 0.0f && owner.m_isMove)
+	{
+		owner.ChangeActionState(std::make_shared<ActionWalk>());
+	}
+
 	if (owner.m_isSight)
 	{
 		owner.ChangeActionState(std::make_shared<ActionSight>());
@@ -284,6 +300,7 @@ void BullTank::ActionIdle::Exit(BullTank& owner)
 
 void BullTank::ActionWalk::Enter(BullTank& owner)
 {
+	owner.m_spAnimator->ResetAdvanceTime();
 	owner.m_spAnimator->SetAnimation(owner.m_spModel->GetModelData()->GetAnimation("Walk"));
 }
 
@@ -300,16 +317,16 @@ void BullTank::ActionWalk::Update(BullTank& owner)
 	auto time = ServiceLocator::Get<Time>();
 	float speed = (1.0f / (60.0f * owner.m_speed));
 	speed *= time->DeltaTime();
-	Math::Vector3 rot = owner.GetMatrix().Backward();
+	Math::Vector3 rot = Math::Vector3::Zero;
 	owner.m_progress += speed * (owner.m_isRevers * -2 + 1);
-	if (owner.m_progress > 1.0f)
+	if (owner.m_progress > 1.1f)
 	{
-		rot *= -1;
+		rot = owner.m_endPos - owner.m_startPos;
 		owner.m_isRevers = true;
 	}
-	if (owner.m_progress <= 0.0f)
+	if (owner.m_progress <= -0.1f)
 	{
-		rot *= -1;
+		rot = owner.m_startPos - owner.m_endPos;
 		owner.m_isRevers = false;
 	}
 	float progress = std::clamp(owner.m_progress, 0.0f, 1.0f);
@@ -319,6 +336,7 @@ void BullTank::ActionWalk::Update(BullTank& owner)
 
 	owner.SetPos(vec);
 
+	rot.Normalize();
 	owner.UpdateRotate(rot);
 }
 
@@ -350,16 +368,8 @@ void BullTank::ActionSight::Update(BullTank& owner)
 
 	if (!owner.m_isSight)
 	{
-		if (owner.m_isMove)
-		{
-			owner.ChangeActionState(std::make_shared<ActionWalk>());
-			return;
-		}
-		else
-		{
-			owner.ChangeActionState(std::make_shared<ActionIdle>());
-			return;
-		}
+		owner.ChangeActionState(std::make_shared<ActionIdle>());
+		return;
 	}
 }
 

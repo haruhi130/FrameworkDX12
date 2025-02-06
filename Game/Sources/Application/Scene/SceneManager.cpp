@@ -8,6 +8,7 @@
 
 void SceneManager::PreUpdate()
 {
+	if (m_isLoading) { return; }
 	if (m_currentSceneType != m_nextSceneType)
 	{
 		ChangeScene(m_nextSceneType);
@@ -17,21 +18,25 @@ void SceneManager::PreUpdate()
 
 void SceneManager::Update()
 {
+	if (m_isLoading) { return; }
 	m_currentScene->Update();
 }
 
 void SceneManager::PostUpdate()
 {
+	if (m_isLoading) { return; }
 	m_currentScene->PostUpdate();
 }
 
 void SceneManager::PreDraw()
 {
+	if (m_isLoading) { return; }
 	m_currentScene->PreDraw();
 }
 
 void SceneManager::Draw()
 {
+	if (m_isLoading) { return; }
 	m_currentScene->Draw();
 }
 
@@ -42,6 +47,7 @@ void SceneManager::DrawSprite()
 
 void SceneManager::ImGuiUpdate()
 {
+	if (m_isLoading) { return; }
 	m_currentScene->ImGuiUpdate();
 }
 
@@ -57,6 +63,7 @@ void SceneManager::AddObject(const std::shared_ptr<BaseObject>& obj)
 
 void SceneManager::ChangeScene(SceneType type)
 {
+	SetIsLoading(true);
 	switch (type)
 	{
 	case SceneType::Title:

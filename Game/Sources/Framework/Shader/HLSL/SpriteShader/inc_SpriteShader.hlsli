@@ -7,7 +7,7 @@ struct VSOutput
 cbuffer cbSprite :register(b0)
 {
     row_major float4x4 g_mTransform;
-    float4 g_color;
+    float4 g_Color;
 };
 
 cbuffer cbProjection : register(b1)

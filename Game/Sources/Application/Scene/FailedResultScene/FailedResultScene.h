@@ -8,6 +8,8 @@ public:
 	FailedResultScene() { Init(); }
 	~FailedResultScene()override {}
 
+	void ResourceLoad()override;
+
 private:
 
 	void Event()override;

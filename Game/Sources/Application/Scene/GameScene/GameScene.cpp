@@ -6,9 +6,10 @@
 #include "../../GameObject/ModelObject/Bamboo/Bamboo.h"
 #include "../../GameObject/ModelObject/Bench/Bench.h"
 #include "../../GameObject/ModelObject/BookShelf/BookShelf.h"
-#include "../../GameObject/ModelObject/Box/Box.h"
 #include "../../GameObject/ModelObject/BullTank/BullTank.h"
 #include "../../GameObject/ModelObject/Cheese/Cheese.h"
+#include "../../GameObject/ModelObject/Clear/Clear.h"
+#include "../../GameObject/ModelObject/Cow/Cow.h"
 #include "../../GameObject/ModelObject/Dumpling/Dumpling.h"
 #include "../../GameObject/ModelObject/CirclePedestal/CirclePedestal.h"
 #include "../../GameObject/ModelObject/EggNest/EggNest.h"
@@ -21,26 +22,14 @@
 #include "../../GameObject/ModelObject/Trex/Trex.h"
 
 #include "../../GameObject/SpriteObject/SpriteObject.h"
+#include "../../GameObject/SpriteObject/Loading/Loading.h"
 
-void GameScene::Event()
-{
-	m_bgm->SetVolume(SceneManager::GetInstance().GetBGMVolume());
-
-	if (SceneManager::GetInstance().GetGoalFlg())
-	{
-		/*if (!EffekseerManager::GetInstance().IsPlaying(""))
-		{
-			auto goalPosEffect = EffekseerManager::GetInstance().Play("", { 0,0,-38 });
-		}*/
-	}
-}
-
-void GameScene::Init()
+void GameScene::ResourceLoad()
 {
 	ShowCursor(false);
 
-	ShaderManager::GetInstance().SetDirectionalLight({ -1.0f,-1.0f,-0.5f });
-	ShaderManager::GetInstance().SetAmbientLight(0.8f);
+	ShaderManager::GetInstance().SetDirectionalLight({ 1.0f,-1.0f,1.0f });
+	ShaderManager::GetInstance().SetAmbientLight(0.7f);
 
 	AudioManager::GetInstance().StopAllSound();
 
@@ -71,7 +60,7 @@ void GameScene::Init()
 	// スーツ牛
 	std::shared_ptr<BullTank> bullTank = std::make_shared<BullTank>();
 	bullTank->SetScale(200.0f);
-	bullTank->SetPos({ -5,0,33 });
+	bullTank->SetMovePosition({ -8,0,33 }, { -8, 0, 15 }, 0.1f);
 	m_objList.push_back(bullTank);
 	bullTank->RegistHitObjList(stage);
 	bullTank->RegistHitObjList(mouse);
@@ -101,13 +90,6 @@ void GameScene::Init()
 	camera->RegistHitObjList(circlePedestal);
 	mouse->RegistHitObjList(circlePedestal);
 
-	//// 箱
-	//std::shared_ptr<Box> box = std::make_shared<Box>();
-	//box->SetPos({ -9,0,15 });
-	//m_objList.push_back(box);
-	//camera->RegistHitObjList(box);
-	//mouse->RegistHitObjList(box);
-
 	// 肉
 	for (int i = 0; i < 2; i++)
 	{
@@ -136,7 +118,7 @@ void GameScene::Init()
 	// 卵
 	std::shared_ptr<EggNest> egg = std::make_shared<EggNest>();
 	egg->SetScale(5);
-	egg->SetPos({0,0.5f,-3});
+	egg->SetPos({ 0,0.5f,-3 });
 	m_objList.push_back(egg);
 	camera->RegistHitObjList(egg);
 	mouse->RegistHitObjList(egg);
@@ -152,11 +134,20 @@ void GameScene::Init()
 	for (int i = 0; i < 2; i++)
 	{
 		std::shared_ptr<Bamboo> bamboo = std::make_shared<Bamboo>();
-		bamboo->SetPos({ 13.5f,0,-10.0f + (5 * i)});
+		bamboo->SetPos({ 13.5f,0,-10.0f + (5 * i) });
 		m_objList.push_back(bamboo);
 		camera->RegistHitObjList(bamboo);
 		mouse->RegistHitObjList(bamboo);
 	}
+
+	// 牛像
+	std::shared_ptr<Cow> cow = std::make_shared<Cow>();
+	cow->SetScale(2);
+	cow->SetRotationY(-90);
+	cow->SetPos({ 0,0,14.4f });
+	m_objList.push_back(cow);
+	camera->RegistHitObjList(cow);
+	mouse->RegistHitObjList(cow);
 
 	// 台座肉用
 	std::shared_ptr<Pedestal> pedestal = std::make_shared<Pedestal>();
@@ -206,6 +197,18 @@ void GameScene::Init()
 		mouse->RegistHitObjList(shelf);
 	}
 
+	// 本棚
+	for (int i = 0; i < 4; i++)
+	{
+		std::shared_ptr<BookShelf> shelf = std::make_shared<BookShelf>();
+		shelf->SetScale(3);
+		shelf->SetRotationY(90);
+		shelf->SetPos({ 14,0,18 + (4.5f * i) });
+		m_objList.push_back(shelf);
+		camera->RegistHitObjList(shelf);
+		mouse->RegistHitObjList(shelf);
+	}
+
 	// ベンチ
 	for (int i = 0; i < 3; i++)
 	{
@@ -217,10 +220,22 @@ void GameScene::Init()
 		mouse->RegistHitObjList(bench);
 	}
 
+	// ベンチ
+	for (int i = 0; i < 3; i++)
+	{
+		std::shared_ptr<Bench> bench = std::make_shared<Bench>();
+		bench->SetRotationY(90);
+		bench->SetPos({ -13.0f,0,16.0f + (7.0f * i) });
+		m_objList.push_back(bench);
+		camera->RegistHitObjList(bench);
+		mouse->RegistHitObjList(bench);
+	}
+
 	//---------------------------------------------
 	bullTank = std::make_shared<BullTank>();
 	bullTank->SetScale(200.0f);
-	bullTank->SetPos({ 5, 0, 33 });
+	bullTank->SetRotationY(180);
+	bullTank->SetMovePosition({ 8,0,15 }, { 8,0,33 }, 0.1f);
 	m_objList.push_back(bullTank);
 	bullTank->RegistHitObjList(stage);
 	bullTank->RegistHitObjList(mouse);
@@ -264,6 +279,11 @@ void GameScene::Init()
 	camera->RegistHitObjList(bullTank);
 	mouse->RegistHitObjList(bullTank);
 
+	std::shared_ptr<Clear> clear = std::make_shared<Clear>();
+	clear->SetPos({ 0,0.1f,-37 });
+	m_objList.push_back(clear);
+	mouse->RegistHitObjList(clear);
+
 	// カーソル画像
 	std::shared_ptr<SpriteObject> sprite = std::make_shared<SpriteObject>();
 	sprite->SetPos({ 0,0 });
@@ -280,4 +300,44 @@ void GameScene::Init()
 
 	// 音再生
 	m_bgm = AudioManager::GetInstance().Play("Assets/Sounds/GameBGM.wav", true);
+
+	SceneManager::GetInstance().SetIsLoading(false);
+}
+
+void GameScene::Event()
+{
+	m_bgm->SetVolume(SceneManager::GetInstance().GetBGMVolume());
+
+	if (SceneManager::GetInstance().GetGoalFlg())
+	{
+		if (!m_isOnce)
+		{
+			m_bgm->Stop();
+			m_bgm = AudioManager::GetInstance().Play("Assets/Sounds/Game_Stole.wav", true);
+			m_isOnce = true;
+		}
+
+		ShaderManager::GetInstance().SetDirectionalLight({ 1.0f,-1.0f,1.0f }, { 1,0,0 });
+	}
+
+	if (GetAsyncKeyState('O'))
+	{
+		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Clear);
+	}
+	if (GetAsyncKeyState('P'))
+	{
+		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Failed);
+	}
+}
+
+void GameScene::Init()
+{
+	std::shared_ptr<Loading> load = std::make_shared<Loading>();
+	load->SetPos({ 0,0 });
+	load->SetRectangle({ 0,0,1280,720 });
+	load->SetTexture("Assets/Textures/Loading.png");
+	m_objList.push_back(load);
+
+	std::thread t(&GameScene::ResourceLoad,this);
+	t.detach();
 }

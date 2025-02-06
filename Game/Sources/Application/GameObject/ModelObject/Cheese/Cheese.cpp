@@ -44,4 +44,5 @@ void Cheese::Init()
 	m_upCollider->RegisterCollisionShape("Cheese", m_spModel, Collider::Type::Bump|Collider::Type::Goal);
 
 	m_spSound = AudioManager::GetInstance().Play3D("Assets/Sounds/Shine.wav",GetPos(), true);
+	m_spSound->SetVolume(0);
 }

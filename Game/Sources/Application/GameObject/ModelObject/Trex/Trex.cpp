@@ -1,5 +1,11 @@
 #include "Trex.h"
 
+void Trex::Update()
+{
+	auto pos = GetPos() + Math::Vector3(0, 8, 0);
+	ShaderManager::GetInstance().AddPointLight({ 1,1,1 }, 10, pos, 1);
+}
+
 void Trex::Init()
 {
 	if (!m_spModel)

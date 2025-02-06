@@ -98,8 +98,6 @@ void Mouse::UpdateRotate(Math::Vector3& moveVec)
 {
 	if (moveVec.LengthSquared() == 0.0f) { return; }
 
-	auto time = ServiceLocator::Get<Time>();
-
 	Math::Vector3 targetDir = moveVec;
 	targetDir.Normalize();
 	float targetAng = atan2(targetDir.x, targetDir.z);
@@ -276,6 +274,33 @@ void Mouse::UpdateCollision()
 			}
 		}
 	}
+
+	// Sphere : Clear
+	{
+		Collider::SphereInfo sphereInfo;
+		sphereInfo.m_sphere.Center = pos + Math::Vector3(0, 0.5f, 0);
+		sphereInfo.m_sphere.Radius = 3.0f;
+		sphereInfo.m_type = Collider::Type::Clear;
+
+		for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
+		{
+			std::shared_ptr<ModelObject> spObj = wpObj.lock();
+			if (spObj)
+			{
+				std::list<Collider::CollisionResult> retBumpList;
+				if (spObj->Intersects(sphereInfo, &retBumpList))
+				{
+					for (auto& ret : retBumpList)
+					{
+						if (SceneManager::GetInstance().GetGoalFlg())
+						{
+							SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Clear);
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -392,16 +417,12 @@ void Mouse::ActionWalk::Update(Mouse& owner)
 	}
 
 	move.Normalize();
-	move *= owner.m_speed;
-	move *= time->DeltaTime();
-
+	owner.UpdateRotate(move);
+	
 	Math::Vector3 pos = owner.GetPos();
-
-	pos += move;
+	pos += (move * owner.m_speed) * time->DeltaTime();
 
 	owner.SetPos(pos);
-
-	owner.UpdateRotate(move);
 }
 
 void Mouse::ActionWalk::Exit(Mouse& owner)

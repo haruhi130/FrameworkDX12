@@ -10,6 +10,8 @@ public:
 	// シェーダー初期化
 	bool Init();
 
+	void PreUpdate();
+
 	//-------------------------------------------------
 	// カメラ設定
 	// カメラ情報を設定
@@ -37,9 +39,16 @@ public:
 	void WriteCBShadowArea(const Math::Matrix& proj, float dirLightHeight);
 	
 	void WriteLightParams();
+	
+	void WritePointLight(const std::list<ConstantBufferData::PointLight>& pointLights);
 
-	void WriteCBPointLight(const std::list<ConstantBufferData::PointLight>& pointLights);
-	void AddPointLight(const Math::Vector3& pos, const Math::Vector3& color, float radius, float isBright);
+	void WriteSpotLight(const std::list<ConstantBufferData::SpotLight>& spotLights);
+
+	void AddPointLight(const Math::Vector3& color, float radius, const Math::Vector3& pos, bool isBright);
+	void AddPointLight(const ConstantBufferData::PointLight& pointLight);
+
+	void AddSpotLight(const Math::Vector3& color, float range, const Math::Vector3& pos, float angle, const Math::Vector3& dir,bool isEnable = true);
+	void AddSpotLight(const ConstantBufferData::SpotLight& spotLight);
 
 	//-------------------------------------------------
 	// シェーダー
@@ -60,7 +69,10 @@ private:
 	// 平行光源の高さ
 	float m_dirLightHeight = 0.0f;
 
+	// ポイントライトリスト
 	std::list<ConstantBufferData::PointLight> m_pointLights;
+	// スポットライトリスト
+	std::list<ConstantBufferData::SpotLight> m_spotLights;
 
 public:
 	static ShaderManager& GetInstance()

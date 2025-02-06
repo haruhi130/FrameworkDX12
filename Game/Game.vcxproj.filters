@@ -166,9 +166,6 @@
     <Filter Include="Application\Scene\FailedResultScene">
       <UniqueIdentifier>{45d0a506-9fd0-460e-ac1b-799b8c39a935}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\GameObject\ModelObject\Box">
-      <UniqueIdentifier>{92daba65-71c2-4eaa-a7db-24ba4f1f57dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\GameObject\ModelObject\Meat">
       <UniqueIdentifier>{93e46b80-2c86-47ab-b5c0-6d829b2fa8b9}</UniqueIdentifier>
     </Filter>
@@ -210,6 +207,15 @@
     </Filter>
     <Filter Include="Application\GameObject\ModelObject\Bamboo">
       <UniqueIdentifier>{35e4addd-0a5c-45b1-acd2-9aa89e42cf94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Clear">
+      <UniqueIdentifier>{e920eb89-6874-4008-9737-243b8da828a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\ModelObject\Cow">
+      <UniqueIdentifier>{203117e1-0373-423f-ba31-ec733350a2a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObject\SpriteObject\Loading">
+      <UniqueIdentifier>{91fc48d4-59a1-4c81-8765-541cd1876e1f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -353,9 +359,6 @@
     <ClCompile Include="Sources\Application\Scene\FailedResultScene\FailedResultScene.cpp">
       <Filter>Application\Scene\FailedResultScene</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Application\GameObject\ModelObject\Box\Box.cpp">
-      <Filter>Application\GameObject\ModelObject\Box</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Meat\Meat.cpp">
       <Filter>Application\GameObject\ModelObject\Meat</Filter>
     </ClCompile>
@@ -409,6 +412,15 @@
     </ClCompile>
     <ClCompile Include="Sources\Application\GameObject\ModelObject\Bamboo\Bamboo.cpp">
       <Filter>Application\GameObject\ModelObject\Bamboo</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Clear\Clear.cpp">
+      <Filter>Application\GameObject\ModelObject\Clear</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\ModelObject\Cow\Cow.cpp">
+      <Filter>Application\GameObject\ModelObject\Cow</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Application\GameObject\SpriteObject\Loading\Loading.cpp">
+      <Filter>Application\GameObject\SpriteObject\Loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -582,9 +594,6 @@
     <ClInclude Include="Sources\Application\Scene\FailedResultScene\FailedResultScene.h">
       <Filter>Application\Scene\FailedResultScene</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Application\GameObject\ModelObject\Box\Box.h">
-      <Filter>Application\GameObject\ModelObject\Box</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Meat\Meat.h">
       <Filter>Application\GameObject\ModelObject\Meat</Filter>
     </ClInclude>
@@ -647,6 +656,15 @@
     </ClInclude>
     <ClInclude Include="Sources\Application\GameObject\ModelObject\Bamboo\Bamboo.h">
       <Filter>Application\GameObject\ModelObject\Bamboo</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Clear\Clear.h">
+      <Filter>Application\GameObject\ModelObject\Clear</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\ModelObject\Cow\Cow.h">
+      <Filter>Application\GameObject\ModelObject\Cow</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application\GameObject\SpriteObject\Loading\Loading.h">
+      <Filter>Application\GameObject\SpriteObject\Loading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

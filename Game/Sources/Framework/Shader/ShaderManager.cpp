@@ -17,11 +17,17 @@ bool ShaderManager::Init()
 	}
 
 	// âeï`âÊîÕàÕê›íË
-	SetDirLightShadowArea({ 40.0f,40.0f }, 30.0f);
+	SetDirLightShadowArea({ 50.0f,50.0f }, 50.0f);
 
 	WriteCBShadowArea(m_shadowProj, m_dirLightHeight);
 
 	return true;
+}
+
+void ShaderManager::PreUpdate()
+{
+	m_pointLights.clear();
+	m_spotLights.clear();
 }
 
 void ShaderManager::SetCamera(const Math::Matrix& view, const Math::Matrix& proj)
@@ -47,6 +53,7 @@ void ShaderManager::SetIsUseLight(bool isUseLight)
 void ShaderManager::SetDirectionalLight(const Math::Vector3& dir, const Math::Vector3& color)
 {
 	m_cbLight.DirectionalLightDir = dir;
+	m_cbLight.DirectionalLightDir.Normalize();
 	m_cbLight.DirectionalLightColor = color;
 }
 
@@ -57,9 +64,57 @@ void ShaderManager::SetAmbientLight(float pow)
 
 void ShaderManager::SetDirLightShadowArea(const Math::Vector2& area, float height)
 {
-	m_shadowProj = DirectX::XMMatrixOrthographicLH(area.x, area.x, 1.0f, height * 2.0f);
+	m_shadowProj = DirectX::XMMatrixOrthographicLH(area.x, area.x, 0.0f, height * 2.0f);
 
 	m_dirLightHeight = height;
+}
+
+void ShaderManager::WritePointLight(const std::list<ConstantBufferData::PointLight>& pointLights)
+{
+	m_cbLight.PointLight_Num = int(pointLights.size());
+
+	UINT index = 0;
+	for (auto& pointLight : pointLights)
+	{
+		m_cbLight.PointLights[index] = pointLight;
+		++index;
+	}
+
+	WriteCBLight();
+}
+
+void ShaderManager::WriteSpotLight(const std::list<ConstantBufferData::SpotLight>& spotLights)
+{
+	m_cbLight.SpotLight_Num = int(spotLights.size());
+
+	UINT index = 0;
+	for (auto& spotLight : spotLights)
+	{
+		m_cbLight.SpotLights[index] = spotLight;
+		++index;
+	}
+
+	WriteCBLight();
+}
+
+void ShaderManager::AddPointLight(const Math::Vector3& color, float radius, const Math::Vector3& pos, bool isBright)
+{
+	m_pointLights.push_back(ConstantBufferData::PointLight(color, radius, pos, isBright));
+}
+
+void ShaderManager::AddPointLight(const ConstantBufferData::PointLight& pointLight)
+{
+	m_pointLights.push_back(pointLight);
+}
+
+void ShaderManager::AddSpotLight(const Math::Vector3& color, float range, const Math::Vector3& pos, float angle, const Math::Vector3& dir, bool isEnable)
+{
+	m_spotLights.push_back(ConstantBufferData::SpotLight(isEnable, color, range, pos, angle, dir));
+}
+
+void ShaderManager::AddSpotLight(const ConstantBufferData::SpotLight& spotLight)
+{
+	m_spotLights.push_back(spotLight);
 }
 
 void ShaderManager::WriteCBLight() const
@@ -82,34 +137,16 @@ void ShaderManager::WriteCBShadowArea(const Math::Matrix& proj, float dirLightHe
 
 void ShaderManager::WriteLightParams()
 {
+	if (m_pointLights.size())
+	{
+		WritePointLight(m_pointLights);
+	}
 
+	if (m_spotLights.size())
+	{
+		WriteSpotLight(m_spotLights);
+	}
 
 	WriteCBShadowArea(m_shadowProj, m_dirLightHeight);
 	WriteCBLight();
-}
-
-void ShaderManager::WriteCBPointLight(const std::list<ConstantBufferData::PointLight>& pointLights)
-{
-	m_cbLight.PointLightNum = pointLights.size();
-
-	UINT index = 0;
-	for (const ConstantBufferData::PointLight& pointLight : pointLights)
-	{
-		m_cbLight.PointLights[index] = pointLight;
-		++index;
-	}
-
-	WriteCBLight();
-}
-
-void ShaderManager::AddPointLight(const Math::Vector3& pos, const Math::Vector3& color, float radius, float isBright)
-{
-	ConstantBufferData::PointLight& pointLight = m_cbLight.PointLights[m_cbLight.PointLightNum];
-
-	pointLight.Pos = pos;
-	pointLight.Color = color;
-	pointLight.Radius = radius;
-	pointLight.IsBright = isBright;
-
-	++m_cbLight.PointLightNum;
 }

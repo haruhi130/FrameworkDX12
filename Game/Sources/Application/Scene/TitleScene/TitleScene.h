@@ -8,6 +8,8 @@ public:
 	TitleScene() { Init(); }
 	~TitleScene()override {}
 
+	void ResourceLoad()override;
+
 private:
 
 	void Event()override;

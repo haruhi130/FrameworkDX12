@@ -6,7 +6,7 @@ float4 pos : POSITION,float2 uv : TEXCOORD,float3 normal : NORMAL,
 float4 color : COLOR,float3 tangent :TANGENT,uint4 skinIndex : SKININDEX,float4 skinWeight : SKINWEIGHT)
 {
     // スキンメッシュ処理
-    if (g_isSkinMeshObj)
+    if (g_IsSkinMeshObj)
     {
         row_major float4x4 mBones = 0;
         [unroll]
@@ -22,20 +22,19 @@ float4 color : COLOR,float3 tangent :TANGENT,uint4 skinIndex : SKININDEX,float4 
     VSOutput Out;
     
     // 座標変換
-    Out.pos = mul(pos, g_mWorld);
-    Out.wPos = Out.pos.xyz;
-    Out.svPos = mul(Out.pos, g_mView);
+    Out.Pos = mul(pos, g_mWorld);
+    Out.wPos = Out.Pos.xyz;
+    Out.svPos = mul(Out.Pos, g_mView);
     Out.wvPos = Out.svPos.xyz;
     Out.svPos = mul(Out.svPos, g_mProj);
-    Out.tPos = mul(Out.pos,g_DL_mVP);
     
     // UV座標
-    Out.uv = uv;
+    Out.UV = uv;
     
-    Out.tangent = tangent;
+    Out.Tangent = tangent;
     
     // 頂点色
-    Out.color = color;
+    Out.Color = color;
     
     // 法線
     Out.wN = normalize(mul(normal, (float3x3) g_mWorld));
@@ -50,7 +49,7 @@ float4 Shadow(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOOR
 , uint4 skinIndex : SKININDEX, float4 skinWeight : SKINWEIGHT) : SV_Position
 {
     // スキンメッシュ処理
-    if (g_isSkinMeshObj)
+    if (g_IsSkinMeshObj)
     {
         row_major float4x4 mBones = 0;
         [unroll]

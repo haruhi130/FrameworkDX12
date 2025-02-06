@@ -12161,8 +12161,7 @@
 				"baseColorTexture":{
 					"index":5
 				},
-				"metallicFactor":0,
-				"roughnessFactor":0
+				"metallicFactor":0
 			}
 		}
 	],
@@ -12427,8 +12426,8 @@
 		},
 		{
 			"mimeType":"image/png",
-			"name":"BullTank_Suit_Base",
-			"uri":"BullTank_Suit_Base.png"
+			"name":"T_BullTank_BuiltIn_Bodyguard_BC.png",
+			"uri":"T_BullTank_BuiltIn_Bodyguard_BC_png.png"
 		},
 		{
 			"mimeType":"image/png",

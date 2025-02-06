@@ -8,6 +8,8 @@ public:
 	ResultScene() { Init(); }
 	~ResultScene()override {}
 
+	void ResourceLoad()override;
+
 private:
 
 	void Event()override;

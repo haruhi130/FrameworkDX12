@@ -4,12 +4,12 @@ class SpriteObject : public BaseObject
 {
 public:
 	SpriteObject() { Init(); }
-	~SpriteObject()override{}
+	virtual ~SpriteObject()override{}
 
-	void Update()override;
-	void DrawSprite()override;
+	virtual void Update()override;
+	virtual void DrawSprite()override;
 
-	void SetTexture(std::string name)
+	virtual void SetTexture(std::string name)
 	{ 
 		if (!m_spTex)
 		{
@@ -24,22 +24,31 @@ public:
 		m_spMesh->Create(*m_spTex, m_pos, &m_rect);
 	}
 
-	void SetPos(Math::Vector2 pos)
+	virtual void SetPos(Math::Vector2 pos)
 	{
 		m_pos = pos;
 	}
 
-	void SetRectangle(Math::Rectangle rect)
+	virtual void SetRectangle(Math::Rectangle rect)
 	{
 		m_rect = rect;
 	}
 
-private:
-	void Init()override;
+	virtual void SetAlphaFluct(bool isAlphaFluct = true)
+	{
+		m_isAlphaFluct = isAlphaFluct;
+	}
+
+protected:
+	virtual void Init()override;
 
 	std::shared_ptr<Texture> m_spTex = nullptr;
 	std::shared_ptr<Mesh> m_spMesh = nullptr;
 
 	Math::Vector2 m_pos;
 	Math::Rectangle m_rect;
+
+	bool m_isAlphaFluct = false;
+	float m_alpha = 1.0f;
+	float m_fluctValue = 0.01f;
 };
