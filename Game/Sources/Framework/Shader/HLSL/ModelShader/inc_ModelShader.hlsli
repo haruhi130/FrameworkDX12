@@ -24,15 +24,19 @@ cbuffer cbWorld : register(b0)
 // オブジェクト情報
 cbuffer cbObject : register(b1)
 {
-    int g_IsSkinMeshObj;
+    int g_IsSkinMeshObj;    // スキンメッシュ判別
     
-    int g_IsDitherEnable;
+    int g_IsDitherEnable;   // アルファディザ有効
+    
+    int g_LimLightEnable;   // リムライト有効
+    float g_LimLightLevel;  // リムライトの乗数(強さ)
+    float3 g_LimLightColor; // リムライトの色
 }
 
-// スキンメッシュボーン
+// ボーン情報
 cbuffer cbBones : register(b2)
 {
-    row_major float4x4 g_mBones[128];
+    row_major float4x4 g_mBones[300];
 }
 
 // マテリアル色

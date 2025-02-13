@@ -77,7 +77,7 @@ std::shared_ptr<SoundInstance3D> AudioManager::Play3D
 
 	if (!spSoundData) { return nullptr; }
 
-	std::shared_ptr<SoundInstance3D> spInstance = std::make_shared<SoundInstance3D>(spSoundData,m_listener);
+	std::shared_ptr<SoundInstance3D> spInstance = std::make_shared<SoundInstance3D>(spSoundData, m_listener);
 
 	if (!spInstance->CreateInstance()) { return nullptr; }
 
@@ -145,6 +145,20 @@ void AudioManager::LoadSoundAssets(std::initializer_list<std::string_view>& file
 	}
 }
 
+void AudioManager::LoadSoundAsset(const std::string_view& fileName)
+{
+	auto itFound = m_omSounds.find(fileName.data());
+
+	if (itFound != m_omSounds.end()) { return; }
+
+	auto newSound = std::make_shared<SoundEffect>();
+	if (!newSound->Load(fileName, m_upAudioEngine))
+	{
+		assert(0 && "サウンドアセット読み込み失敗");
+	}
+	m_omSounds.emplace(fileName, newSound);
+}
+
 void AudioManager::Release()
 {
 	StopAllSound();
@@ -186,7 +200,7 @@ std::shared_ptr<SoundEffect> AudioManager::GetSound(std::string_view fileName)
 // 
 // ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
 SoundInstance::SoundInstance(const std::shared_ptr<SoundEffect>& spSoundEffect)
-:m_spSoundData(spSoundEffect){}
+	:m_spSoundData(spSoundEffect) {}
 
 bool SoundInstance::CreateInstance()
 {
@@ -248,7 +262,7 @@ bool SoundInstance::IsStopped()
 bool SoundInstance::IsLooped()
 {
 	if (!m_upInstance) { return false; }
-	
+
 	return m_upInstance->IsLooped();
 }
 
@@ -258,13 +272,13 @@ bool SoundInstance::IsLooped()
 // 
 // ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
 SoundInstance3D::SoundInstance3D(const std::shared_ptr<SoundEffect>& spSoundEffect, const DirectX::AudioListener& ownerListener)
-:SoundInstance(spSoundEffect),m_ownerListener(ownerListener){}
+	:SoundInstance(spSoundEffect), m_ownerListener(ownerListener) {}
 
 bool SoundInstance3D::CreateInstance()
 {
 	if (!m_spSoundData) { return false; }
 
-	DirectX::SOUND_EFFECT_INSTANCE_FLAGS flags = DirectX::SoundEffectInstance_Default | 
+	DirectX::SOUND_EFFECT_INSTANCE_FLAGS flags = DirectX::SoundEffectInstance_Default |
 		DirectX::SoundEffectInstance_Use3D | DirectX::SoundEffectInstance_ReverbUseFilters;
 
 	m_upInstance = (m_spSoundData->CreateInstance(flags));

@@ -9,7 +9,7 @@ public:
 	virtual void Update()override;
 	virtual void DrawSprite()override;
 
-	virtual void SetTexture(std::string name)
+	virtual void SetTexture(const std::string& name)
 	{ 
 		if (!m_spTex)
 		{
@@ -21,22 +21,24 @@ public:
 		{
 			m_spMesh = std::make_shared<Mesh>();
 		}
-		m_spMesh->Create(*m_spTex, m_pos, &m_rect);
+		m_spMesh->Create(*m_spTex, 0,0, &m_rect);
 	}
 
-	virtual void SetPos(Math::Vector2 pos)
+	virtual void SetPos(const Math::Vector2& pos)
 	{
 		m_pos = pos;
+		m_mWorld.Translation({ m_pos.x,m_pos.y,0 });
 	}
 
-	virtual void SetRectangle(Math::Rectangle rect)
+	virtual void SetRectangle(const Math::Rectangle& rect)
 	{
 		m_rect = rect;
 	}
 
-	virtual void SetAlphaFluct(bool isAlphaFluct = true)
+	virtual void SetAlphaFluct(bool isAlphaFluct = true, float fluctValue = 0.01f)
 	{
 		m_isAlphaFluct = isAlphaFluct;
+		m_fluctValue = fluctValue;
 	}
 
 protected:

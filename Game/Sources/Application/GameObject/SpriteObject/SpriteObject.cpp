@@ -2,6 +2,8 @@
 
 void SpriteObject::Update()
 {
+	if (!m_spTex) { return; }
+
 	if (m_isAlphaFluct)
 	{
 		m_alpha += m_fluctValue;
@@ -23,7 +25,7 @@ void SpriteObject::DrawSprite()
 	Math::Color color = { 1.0f,1.0f,1.0f,m_alpha };
 
 	ShaderManager::GetInstance().m_spriteShader.SetMatrix(m_mWorld);
-	ShaderManager::GetInstance().m_spriteShader.DrawTexture(m_spTex.get(),m_spMesh.get(),color);
+	ShaderManager::GetInstance().m_spriteShader.DrawTexture(m_spTex.get(), m_spMesh.get(), color);
 }
 
 void SpriteObject::Init()

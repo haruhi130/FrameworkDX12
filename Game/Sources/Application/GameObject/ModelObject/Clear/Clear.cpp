@@ -3,13 +3,12 @@
 
 void Clear::Update()
 {
-	if (SceneManager::GetInstance().GetGoalFlg())
+	if (!SceneManager::GetInstance().GetGoalFlg()) { return; }
+
+	if (!EffekseerManager::GetInstance().IsPlaying("Heal.efk"))
 	{
-		if (!EffekseerManager::GetInstance().IsPlaying("Heal.efk"))
-		{
-			m_spEffect = EffekseerManager::GetInstance().Play("Heal.efk", m_pos);
-			m_spEffect->SetScale(0.5f);
-		}
+		m_spEffect = EffekseerManager::GetInstance().Play("Heal.efk", m_pos);
+		m_spEffect->SetScale(0.25f);
 	}
 }
 

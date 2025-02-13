@@ -5,7 +5,7 @@ class ModelShader : public ShaderBase
 {
 public:
 	// ボーン最大数
-	static const int maxBoneBufferSize = 128;
+	static const int maxBoneBufferSize = 300;
 
 	// 初期化
 	bool Init() override;
@@ -21,12 +21,30 @@ public:
 	void DrawModel(const ModelData& modelData, const Math::Matrix& mWorld = Math::Matrix::Identity,bool isUseLight = true);
 	void DrawModel(ModelWork& modelWork, const Math::Matrix& mWorld = Math::Matrix::Identity, bool isUseLight = true);
 
+	// アルファディザ設定
 	void SetDitherEnable(bool isEnable = true)
 	{
 		m_cbObject.IsDitherEnable = isEnable;
 		m_dirtyCBObj = true;
 	}
 
+	// リムライト設定
+	void SetLimLightEnable(bool isEnable)
+	{
+		m_cbObject.LimLightEnable = isEnable;
+		m_dirtyCBObj = true;
+	}
+
+	// リムライトの強さ・色設定
+	void SetLimLight(float level = 1.0f,const Math::Vector3& color = {1.0f,1.0f,1.0f})
+	{
+		m_cbObject.LimLightLevel = level;
+		m_cbObject.LimLightColor = color;
+
+		m_dirtyCBObj = true;
+	}
+
+	// 定数バッファを初期状態にリセット
 	void ResetCBObject()
 	{
 		m_cbObject = ConstantBufferData::ObjectInfo();

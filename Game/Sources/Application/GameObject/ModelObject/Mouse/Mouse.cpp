@@ -5,6 +5,7 @@
 void Mouse::Draw()
 {
 	if (!m_spModel) { return; }
+
 	ShaderManager::GetInstance().m_modelShader.SetDitherEnable();
 	ShaderManager::GetInstance().m_modelShader.DrawModel(*m_spModel, m_mWorld);
 }
@@ -49,17 +50,6 @@ void Mouse::PostUpdate()
 	}
 }
 
-void Mouse::ImGuiUpdate()
-{
-	ImGui::Begin(u8"MouseCT");
-	ImGui::SetWindowPos(ImVec2(0, 300));
-	ImGui::SetWindowSize(ImVec2(0, 100));
-	ImGui::LabelText("MouseCT", "CT : %.2f", m_coolTime);
-	ImGui::LabelText("pos", "%.2f,%.2f,%.2f", GetPos().x, GetPos().y, GetPos().z);
-
-	ImGui::End();
-}
-
 void Mouse::Init()
 {
 	// ƒ‚ƒfƒ‹“Ç‚Ýž‚Ý
@@ -89,7 +79,7 @@ void Mouse::Init()
 void Mouse::UpdateMatrix()
 {
 	Math::Matrix mScale = Math::Matrix::CreateScale(m_scale);
-	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_rot.y));
+	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_rotateVec.y));
 	Math::Matrix mTrans = Math::Matrix::CreateTranslation(GetPos());
 	m_mWorld = mScale * mRot * mTrans;
 }
@@ -109,18 +99,18 @@ void Mouse::UpdateRotate(Math::Vector3& moveVec)
 	nowAng = DirectX::XMConvertToDegrees(nowAng);
 
 	float betweenAng = targetAng - nowAng;
-	if (betweenAng > 180)
+	if (betweenAng > 180.0f)
 	{
-		betweenAng -= 360;
+		betweenAng -= 360.0f;
 	}
-	else if (betweenAng < -180)
+	else if (betweenAng < -180.0f)
 	{
-		betweenAng += 360;
+		betweenAng += 360.0f;
 	}
 
 	float rotAng = std::clamp(betweenAng, -36.0f, 36.0f);
 
-	m_rot.y += rotAng;
+	m_rotateVec.y += rotAng;
 }
 
 void Mouse::UpdateCollision()
@@ -228,7 +218,7 @@ void Mouse::UpdateCollision()
 			rayInfo.m_pos = cameraPos;
 			rayInfo.m_dir = rayDir;
 			rayInfo.m_dir.Normalize();
-			rayInfo.m_range = 20.0f;
+			rayInfo.m_range = 10.0f;
 
 			for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
 			{
@@ -279,7 +269,7 @@ void Mouse::UpdateCollision()
 	{
 		Collider::SphereInfo sphereInfo;
 		sphereInfo.m_sphere.Center = pos + Math::Vector3(0, 0.5f, 0);
-		sphereInfo.m_sphere.Radius = 3.0f;
+		sphereInfo.m_sphere.Radius = 0.5f;
 		sphereInfo.m_type = Collider::Type::Clear;
 
 		for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)

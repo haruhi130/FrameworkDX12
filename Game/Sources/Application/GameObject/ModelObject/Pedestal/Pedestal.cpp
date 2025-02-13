@@ -1,5 +1,13 @@
 #include "Pedestal.h"
 
+void Pedestal::Update()
+{
+	if (!m_spModel) { return; }
+
+	ShaderManager::GetInstance().AddPointLight({ 1.0f,1.0f,0.8f }, 8, GetPos() + Math::Vector3(0, 5
+		, 0), true);
+}
+
 void Pedestal::Init()
 {
 	if (!m_spModel)

@@ -49,6 +49,14 @@ public:
 		}
 	}
 
+	static void Init()
+	{
+		for (auto&& sv : m_services)
+		{
+			sv.second->Start();
+		}
+	}
+
 private:
 	// サービス一覧リスト
 	static inline std::unordered_map<size_t, std::shared_ptr<Service>> m_services;

@@ -8,6 +8,8 @@ public:
 	Pedestal() { Init(); }
 	~Pedestal()override{}
 
+	void Update()override;
+
 private:
 	void Init()override;
 

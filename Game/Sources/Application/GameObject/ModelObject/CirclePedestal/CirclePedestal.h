@@ -8,6 +8,8 @@ public:
 	CirclePedestal() { Init(); }
 	~CirclePedestal()override {}
 
+	void Update()override;
+
 private:
 	void Init()override;
 

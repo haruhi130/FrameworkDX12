@@ -120,8 +120,7 @@ void Application::Execute()
 	}
 
 	// 時間管理
-	auto spTime = ServiceLocator::Get<Time>();
-	if (spTime) { spTime->Start(); }
+	ServiceLocator::Init();
 
 	//===============================================
 	// メインゲームループ
@@ -167,7 +166,7 @@ void Application::Execute()
 
 		//=============================================
 		// ImGui処理
-		//ImGuiUpdate();
+		ImGuiUpdate();
 
 		// サービス管理更新
 		ServiceLocator::Update();

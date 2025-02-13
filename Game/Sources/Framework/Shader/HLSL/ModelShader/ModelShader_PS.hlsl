@@ -59,7 +59,7 @@ float4 main(VSOutput In) : SV_TARGET
         float dither = bayerMatrix[y][x] / 16.0;
         
         // AlphaDitherを行うカメラからの距離
-        float ditherDist = 1.3f;
+        float ditherDist = 0.5f;
         
         // ditherDist分のピクセルが対象
         float range = max(0, In.wvPos.z - ditherDist);
@@ -173,7 +173,7 @@ float4 main(VSOutput In) : SV_TARGET
         {
             // 反射した光の強さ
             float spec = BlinnPhong(g_DL_Dir, vCam, vNormal, specPower);
-        
+            
             // 光の色 * 反射光の強さ * 材質の反射色 * 調整値 * 影
             outColor += (g_DL_Color * spec) * baseSpecular * baseColor.a * 0.5f * shadow;
         }
@@ -260,7 +260,7 @@ float4 main(VSOutput In) : SV_TARGET
                             
                                 lightDiffuse *= atte;
                             
-                                //lightDiffuse /= 3.14159265358979f;
+                                lightDiffuse /= 3.14159265358979f;
                             
                                 outColor += (g_SpotLights[i].Color * lightDiffuse) * baseDiffuse * baseColor.a;
                             }
@@ -285,6 +285,14 @@ float4 main(VSOutput In) : SV_TARGET
         // Ambient
         toBright = saturate(toBright);
         outColor += baseColor.rgb * toBright;
+        
+        // LimLight
+        if(g_LimLightEnable)
+        {
+            float limPow = dot(normalize(In.wPos - g_CamPos), vNormal);
+            limPow = 1 - abs(limPow);
+            outColor.rgb += g_LimLightColor * pow(limPow, g_LimLightLevel);
+        }
     }
     else
     {

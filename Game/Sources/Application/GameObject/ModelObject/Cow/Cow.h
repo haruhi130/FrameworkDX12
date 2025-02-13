@@ -8,6 +8,8 @@ public:
 	Cow() { Init(); }
 	~Cow()override{}
 
+	void Update()override;
+
 private:
 	void Init()override;
 };

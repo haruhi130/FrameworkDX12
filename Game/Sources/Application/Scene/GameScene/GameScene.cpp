@@ -28,8 +28,8 @@ void GameScene::ResourceLoad()
 {
 	ShowCursor(false);
 
-	ShaderManager::GetInstance().SetDirectionalLight({ 1.0f,-1.0f,1.0f });
-	ShaderManager::GetInstance().SetAmbientLight(0.7f);
+	ShaderManager::GetInstance().SetDirectionalLight({ 0.0f,-1.0f,1.0f });
+	ShaderManager::GetInstance().SetAmbientLight(0.3f);
 
 	AudioManager::GetInstance().StopAllSound();
 
@@ -56,17 +56,6 @@ void GameScene::ResourceLoad()
 	m_objList.push_back(stage);
 	camera->RegistHitObjList(stage);
 	mouse->RegistHitObjList(stage);
-
-	// スーツ牛
-	std::shared_ptr<BullTank> bullTank = std::make_shared<BullTank>();
-	bullTank->SetScale(200.0f);
-	bullTank->SetMovePosition({ -8,0,33 }, { -8, 0, 15 }, 0.1f);
-	m_objList.push_back(bullTank);
-	bullTank->RegistHitObjList(stage);
-	bullTank->RegistHitObjList(mouse);
-
-	camera->RegistHitObjList(bullTank);
-	mouse->RegistHitObjList(bullTank);
 
 	// 恐竜骨格
 	std::shared_ptr<Trex> rex = std::make_shared<Trex>();
@@ -231,14 +220,26 @@ void GameScene::ResourceLoad()
 		mouse->RegistHitObjList(bench);
 	}
 
+	// スーツ牛
+	std::shared_ptr<BullTank> bullTank = std::make_shared<BullTank>();
+	bullTank->SetScale(200.0f);
+	bullTank->SetRotationY(0);
+	bullTank->SetMovePosition({ -8,0,33 }, { -8, 0, 15 }, 0.1f);
+	m_objList.push_back(bullTank);
+	bullTank->RegistHitObjList(mouse);
+	bullTank->RegistHitObjList(stage);
+
+	camera->RegistHitObjList(bullTank);
+	mouse->RegistHitObjList(bullTank);
+
 	//---------------------------------------------
 	bullTank = std::make_shared<BullTank>();
 	bullTank->SetScale(200.0f);
 	bullTank->SetRotationY(180);
 	bullTank->SetMovePosition({ 8,0,15 }, { 8,0,33 }, 0.1f);
 	m_objList.push_back(bullTank);
-	bullTank->RegistHitObjList(stage);
 	bullTank->RegistHitObjList(mouse);
+	bullTank->RegistHitObjList(stage);
 
 	camera->RegistHitObjList(bullTank);
 	mouse->RegistHitObjList(bullTank);
@@ -249,8 +250,8 @@ void GameScene::ResourceLoad()
 	bullTank->SetRotationY(-90);
 	bullTank->SetMovePosition({ -5,0,-19 }, { 5,0,-19 }, 0.1f);
 	m_objList.push_back(bullTank);
-	bullTank->RegistHitObjList(stage);
 	bullTank->RegistHitObjList(mouse);
+	bullTank->RegistHitObjList(stage);
 
 	camera->RegistHitObjList(bullTank);
 	mouse->RegistHitObjList(bullTank);
@@ -261,8 +262,8 @@ void GameScene::ResourceLoad()
 	bullTank->SetRotationY(90);
 	bullTank->SetMovePosition({ 5,0,6 }, { -5,0,6 }, 0.1f);
 	m_objList.push_back(bullTank);
-	bullTank->RegistHitObjList(stage);
 	bullTank->RegistHitObjList(mouse);
+	bullTank->RegistHitObjList(stage);
 
 	camera->RegistHitObjList(bullTank);
 	mouse->RegistHitObjList(bullTank);
@@ -273,20 +274,19 @@ void GameScene::ResourceLoad()
 	bullTank->SetRotationY(-90);
 	bullTank->SetMovePosition({ -5,0,-11 }, { 5,0,-11 }, 0.1f);
 	m_objList.push_back(bullTank);
-	bullTank->RegistHitObjList(stage);
 	bullTank->RegistHitObjList(mouse);
+	bullTank->RegistHitObjList(stage);
 
 	camera->RegistHitObjList(bullTank);
 	mouse->RegistHitObjList(bullTank);
 
 	std::shared_ptr<Clear> clear = std::make_shared<Clear>();
-	clear->SetPos({ 0,0.1f,-37 });
+	clear->SetPos({ -13.0f,0.1f,-38.5f });
 	m_objList.push_back(clear);
 	mouse->RegistHitObjList(clear);
 
 	// カーソル画像
 	std::shared_ptr<SpriteObject> sprite = std::make_shared<SpriteObject>();
-	sprite->SetPos({ 0,0 });
 	sprite->SetRectangle({ 0,0,32,32 });
 	sprite->SetTexture("Assets/Textures/mark.png");
 	m_objList.push_back(sprite);
@@ -299,6 +299,7 @@ void GameScene::ResourceLoad()
 	m_objList.push_back(sprite);
 
 	// 音再生
+	AudioManager::GetInstance().StopAllSound();
 	m_bgm = AudioManager::GetInstance().Play("Assets/Sounds/GameBGM.wav", true);
 
 	SceneManager::GetInstance().SetIsLoading(false);
@@ -317,27 +318,23 @@ void GameScene::Event()
 			m_isOnce = true;
 		}
 
-		ShaderManager::GetInstance().SetDirectionalLight({ 1.0f,-1.0f,1.0f }, { 1,0,0 });
-	}
-
-	if (GetAsyncKeyState('O'))
-	{
-		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Clear);
-	}
-	if (GetAsyncKeyState('P'))
-	{
-		SceneManager::GetInstance().SetNextScene(SceneManager::SceneType::Failed);
+		ShaderManager::GetInstance().SetDirectionalLight({ 0.0f,-1.0f,1.0f }, { 1,0,0 });
 	}
 }
 
 void GameScene::Init()
 {
 	std::shared_ptr<Loading> load = std::make_shared<Loading>();
-	load->SetPos({ 0,0 });
 	load->SetRectangle({ 0,0,1280,720 });
-	load->SetTexture("Assets/Textures/Loading.png");
+	load->SetTexture("Assets/Textures/BackFrame.png");
 	m_objList.push_back(load);
 
-	std::thread t(&GameScene::ResourceLoad,this);
-	t.detach();
+	load = std::make_shared<Loading>();
+	load->SetRectangle({ 0,0,128,128 });
+	load->SetTexture("Assets/Textures/reload.png");
+	load->SetRotation(true);
+	m_objList.push_back(load);
+
+	std::thread thread(&GameScene::ResourceLoad,this);
+	thread.detach();
 }

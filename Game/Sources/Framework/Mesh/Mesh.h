@@ -47,7 +47,7 @@ public:
 		const std::vector<MeshFace>& faces, const std::vector<MeshSubset>& subsets, bool isSkinMesh);
 
 	// 画像用メッシュ作成
-	void Create(const Texture& tex ,const Math::Vector2& pos, const Math::Rectangle* rect = nullptr, const Math::Vector2& pivot = { 0.5f,0.5f });
+	void Create(const Texture& tex ,int x,int y, const Math::Rectangle* rect = nullptr, const Math::Vector2& pivot = { 0.5f,0.5f });
 
 	// サブセット描画
 	void DrawSubset(int subsetNo)const;

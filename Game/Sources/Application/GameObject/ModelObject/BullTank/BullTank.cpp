@@ -20,8 +20,8 @@ void BullTank::Update()
 
 	if (SceneManager::GetInstance().GetGoalFlg())
 	{
-		m_sightRange = 8.0f;
-		m_sightAngle = 60.0f;
+		SetSightInfo(8.0f, 60.0f);
+		SetSpeed(0.075f);
 	}
 
 	// ステート更新
@@ -45,11 +45,11 @@ void BullTank::PostUpdate()
 	vec.Normalize();
 	if (m_isSight)
 	{
-	ShaderManager::GetInstance().AddSpotLight({ 1,0,0 },m_sightRange, GetPos() + Math::Vector3(0, 1.5, 0), DirectX::XMConvertToRadians(m_sightAngle * 2), vec);
+		ShaderManager::GetInstance().AddSpotLight({ 1,0,0 }, m_sightRange, GetPos() + Math::Vector3(0, 1.5, 0),m_sightAngle * 2, vec);
 	}
 	else
 	{
-		ShaderManager::GetInstance().AddSpotLight({ 1,1,1 }, m_sightRange, GetPos() + Math::Vector3(0, 1.5, 0), DirectX::XMConvertToRadians(m_sightAngle * 2), vec);
+		ShaderManager::GetInstance().AddSpotLight({ 0.8f,0.8f,1.0f }, m_sightRange, GetPos() + Math::Vector3(0, 1.5, 0), m_sightAngle * 2, vec);
 	}
 
 	m_spAnimator->ProgressTime(m_spModel->WorkNodes());
@@ -59,19 +59,6 @@ void BullTank::PostUpdate()
 void BullTank::OnHit(bool isHit)
 {
 	m_isSight = isHit;
-}
-
-void BullTank::ImGuiUpdate()
-{
-	ImGui::Begin(u8"BullTank");
-	ImGui::SetWindowPos(ImVec2(0, 0));
-	ImGui::SetWindowSize(ImVec2(200, 300));
-	ImGui::Checkbox(u8"有効", &m_isSight);
-	ImGui::LabelText("sightTime", "ST : %.2f", m_sightTime);
-	ImGui::LabelText("pos", "%.2f,%.2f,%.2f", GetPos().x, GetPos().y, GetPos().z);
-	ImGui::LabelText("scale", "%.2f", m_scale);
-
-	ImGui::End();
 }
 
 void BullTank::Init()
@@ -98,7 +85,7 @@ void BullTank::Init()
 void BullTank::UpdateMatrix()
 {
 	Math::Matrix mScale = Math::Matrix::CreateScale(m_scale);
-	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_rot.y));
+	Math::Matrix mRot = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_rotateVec.y));
 
 	Math::Matrix mTrans = Math::Matrix::CreateTranslation(GetPos());
 	m_mWorld = mScale * mRot * mTrans;
@@ -130,7 +117,7 @@ void BullTank::UpdateRotate(Math::Vector3& moveVec)
 
 	float rotAng = std::clamp(betweenAng, -180.0f, 180.0f);
 
-	m_rot.y += rotAng;
+	m_rotateVec.y += rotAng;
 }
 
 void BullTank::UpdateCollision()
@@ -199,36 +186,34 @@ void BullTank::UpdateCollision()
 			std::shared_ptr<ModelObject> spObj = wpObj.lock();
 			if (spObj)
 			{
-				if (spObj->Intersects(sphereSight, &retSphereSightList))
+				spObj->Intersects(sphereSight, &retSphereSightList);
+				for (auto& retSphereSight : retSphereSightList)
 				{
-					for (auto&& retSphereSight : retSphereSightList)
-					{
-						hitPos = retSphereSight.m_hitPos;
-						hitDir = retSphereSight.m_hitDir;
-					}
+					hitPos = retSphereSight.m_hitPos;
+					hitDir = retSphereSight.m_hitDir;
+				}
 
-					// 視界角度内に範囲を制限
-					// 向いている方向
-					Math::Vector3 nowDir = GetMatrix().Backward();
-					nowDir.Normalize();
-					float nowAng = DirectX::XMConvertToDegrees(atan2(nowDir.x, nowDir.z));
+				// 視界角度内に範囲を制限
+				// 向いている方向
+				Math::Vector3 nowDir = GetMatrix().Backward();
+				nowDir.Normalize();
+				float nowAng = DirectX::XMConvertToDegrees(atan2(nowDir.x, nowDir.z));
 
-					// ターゲットの位置
-					hitDir.Normalize();
-					float targetAng = DirectX::XMConvertToDegrees(atan2(hitDir.x, hitDir.z));
+				// ターゲットの位置
+				hitDir.Normalize();
+				float targetAng = DirectX::XMConvertToDegrees(atan2(hitDir.x, hitDir.z));
 
-					// 角度計算
-					float betweenAng = targetAng - nowAng;
+				// 角度計算
+				float betweenAng = targetAng - nowAng;
 
-					if (-m_sightAngle <= betweenAng && betweenAng <= m_sightAngle)
-					{
-						isHit = true;
-						continue;
-					}
-					else
-					{
-						isHit = false;
-					}
+				// 視野角内であるか
+				if (-m_sightAngle <= betweenAng && betweenAng <= m_sightAngle)
+				{
+					isHit = true;
+				}
+				else
+				{
+					isHit = false;
 				}
 			}
 		}
@@ -250,6 +235,8 @@ void BullTank::UpdateCollision()
 			if (spObj)
 			{
 				std::list<Collider::CollisionResult> retRaySightList;
+
+				// 障害物が遮っていればfalse
 				if (spObj->Intersects(raySight, &retRaySightList))
 				{
 					isHit = false;

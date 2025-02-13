@@ -44,11 +44,11 @@ void GameCamera::Init()
 	m_mWorld = Math::Matrix::Identity;
 
 	m_vec = {};
-	m_local = { 0.5f,1.7f,-3.3f };
+	m_local = { 0.5f,1.5f,-2.3f };
 
 	m_localPos = Math::Matrix::CreateTranslation(m_local);
 
-	m_mousePos = { 640,360 };
+	m_mousePos = { window_width / 2,window_height / 2 };
 
 	EffekseerManager::GetInstance().SetCamera(m_spCamera);
 }

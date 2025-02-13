@@ -12,8 +12,6 @@ public:
 	virtual void Draw()override;
 	virtual void DrawShadow()override;
 
-	virtual void ImGuiUpdate()override{}
-
 	virtual const std::shared_ptr<ModelWork>& GetModel() const
 	{ return m_spModel; }
 

@@ -24,8 +24,6 @@ public:
 	void SetCamera(const std::shared_ptr<GameCamera>& camera)
 	{ m_wpCamera = camera; }
 
-	void ImGuiUpdate()override;
-
 private:
 	void Init()override;
 
@@ -42,8 +40,8 @@ private:
 	// ˆÚ“®‘¬“x
 	float m_speed = 0.0f;
 
-	// ‰ñ“]î•ñŠi”[
-	Math::Vector3 m_rot = {};
+	// ‰ñ“]î•ñ
+	Math::Vector3 m_rotateVec = {};
 
 	// d—Í
 	float m_gravity = 0.0f;

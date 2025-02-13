@@ -1,5 +1,13 @@
 #include "Cow.h"
 
+void Cow::Update()
+{
+	if (!m_spModel) { return; }
+
+	ShaderManager::GetInstance().AddSpotLight({ 1.0f,1.0f,0.8f }, 18, GetPos() + Math::Vector3(0, 15, 0),
+		90, Math::Vector3::Down);
+}
+
 void Cow::Init()
 {
 	if (!m_spModel)

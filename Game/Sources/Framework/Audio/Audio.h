@@ -44,6 +44,8 @@ public:
 	// サウンドアセットの一括読み込み
 	void LoadSoundAssets(std::initializer_list<std::string_view>& fileNames);
 
+	void LoadSoundAsset(const std::string_view& fileName);
+
 	// 解放
 	void Release();
 

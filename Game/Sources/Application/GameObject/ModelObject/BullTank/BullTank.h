@@ -13,8 +13,6 @@ public:
 
 	void OnHit(bool isHit);
 
-	void ImGuiUpdate()override;
-
 	// Õ“Ë‘ÎÛ‚ğ“o˜^
 	void RegistHitObjList(const std::shared_ptr<ModelObject>& obj)
 	{ m_wpObjList.push_back(obj); }
@@ -26,7 +24,7 @@ public:
 
 	void SetRotationY(float rotY)override
 	{
-		m_rot.y = rotY;
+		m_rotateVec.y = rotY;
 		m_mWorld *= Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(rotY));
 	}
 
@@ -43,6 +41,11 @@ public:
 		m_endPos = end;
 		m_isMove = true;
 		ChangeActionState(std::make_shared<ActionWalk>());
+	}
+
+	void SetSpeed(float speed)
+	{
+		m_speed = speed;
 	}
 
 private:
@@ -66,12 +69,12 @@ private:
 	// ‹”FŠÔ
 	float m_sightTime = 0.0f;
 	// ‹ŠE”ÍˆÍ
-	float m_sightRange = 6.0f;
+	float m_sightRange = 5.0f;
 	// ‹ŠEŠp“x
 	float m_sightAngle = 45.0f;
 
-	// ‰ñ“]î•ñŠi”[
-	Math::Vector3 m_rot = {};
+	// ‰ñ“]î•ñ
+	Math::Vector3 m_rotateVec = {};
 
 	// ˆÚ“®—p•Ï”
 	Math::Vector3 m_startPos;

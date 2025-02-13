@@ -94,7 +94,7 @@ void Mesh::Create(const std::vector<MeshVertex>& vertices,
 	m_isSkinMesh = isSkinMesh;
 }
 
-void Mesh::Create(const Texture& tex, const Math::Vector2& pos, const Math::Rectangle* rect, const Math::Vector2& pivot)
+void Mesh::Create(const Texture& tex,int x, int y, const Math::Rectangle* rect, const Math::Vector2& pivot)
 {
 	Math::Vector2 uvMin = { 0,0 };
 	Math::Vector2 uvMax = { 1,1 };
@@ -108,12 +108,12 @@ void Mesh::Create(const Texture& tex, const Math::Vector2& pos, const Math::Rect
 		uvMax.y = (rect->y + rect->height) / (float)tex.GetInfo().Height;
 	}
 
-	float x1 = (float)pos.x;
-	float y1 = (float)pos.y;
+	float x1 = (float)x;
+	float y1 = (float)y;
 	int w = (int)tex.GetInfo().Width;
 	int h = (int)tex.GetInfo().Height;
-	float x2 = (float)(pos.x + w);
-	float y2 = (float)(pos.y + h);
+	float x2 = (float)(x + w);
+	float y2 = (float)(y + h);
 
 	x1 -= pivot.x * w;
 	x2 -= pivot.x * w;

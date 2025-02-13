@@ -1,10 +1,6 @@
-//=====================================================
-//
-// シェーダーに共通で渡す情報
-//
-//=====================================================
-
+//////////////////////////////////
 // カメラ
+//////////////////////////////////
 cbuffer cbCamera : register(b4)
 {
     row_major float4x4 g_mView;     // ビュー変換行列
@@ -13,6 +9,11 @@ cbuffer cbCamera : register(b4)
     float3             g_CamPos;    // カメラ座標
 }
 
+//////////////////////////////////
+// ライト
+//////////////////////////////////
+
+// ポイントライト
 struct PointLightInfo
 {
     float3 Color;
@@ -21,6 +22,7 @@ struct PointLightInfo
     float IsBright;
 };
 
+// スポットライト
 struct SpotLightInfo
 {
     int IsEnable;
@@ -31,7 +33,7 @@ struct SpotLightInfo
     float3 Dir;
 };
 
-// ライト
+// ライト情報
 cbuffer cbLight : register(b5)
 {
     // ライトの使用判別

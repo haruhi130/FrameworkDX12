@@ -3,7 +3,7 @@
 // シェーダーへ転送する定数バッファデータ群
 namespace ConstantBufferData
 {
-	// カメラ用構造体
+	// カメラ情報
 	struct CameraInfo
 	{
 		Math::Matrix mView;
@@ -14,19 +14,27 @@ namespace ConstantBufferData
 		float blank = 0.0f;
 	};
 
+	// オブジェクト個別情報
 	struct ObjectInfo
 	{
+		// スキンメッシュか
 		int IsSkinMesh = 0;
 
+		// アルファディザ有効
 		int IsDitherEnable = 0;
 
-		float blank[2] = { 0.0f,0.0f };
+		// リムライト情報
+		int				LimLightEnable = 0;
+		float			LimLightLevel = 1;
+		Math::Vector3	LimLightColor = { 1,1,1 };
+
+		float blank = 0.0f;
 	};
 
-	// スキンメッシュ用構造体
+	// ボーン情報
 	struct SkinMeshInfo
 	{
-		Math::Matrix mBones[128];
+		Math::Matrix mBones[300];
 	};
 
 	// モデルマテリアル情報
@@ -40,7 +48,7 @@ namespace ConstantBufferData
 		float blank[3] = { 0.0f,0.0f,0.0f };
 	};
 
-	// 2D描画用構造体
+	// 2D描画情報
 	struct SpriteInfo
 	{
 		Math::Matrix mTransform;
@@ -81,22 +89,33 @@ namespace ConstantBufferData
 		Math::Vector3 Dir;		// 光の方向
 	};
 
-	// ライト
+	// ライト情報
 	struct LightInfo
 	{
+		// ライトに影響するか
 		int IsUseLight = 0;
+
+		// 平行光情報
 		Math::Vector3 DirectionalLightDir = { -1,-1,-1 };
 		Math::Vector3 DirectionalLightColor = { 1,1,1 };
+		
+		// 環境光の強さ
 		float AmbientLightPower = 1.0f;
 
-		// ライトカメラ
+		// 影生成用ライトカメラ
 		Math::Matrix DirLight_mVP;
 
+		//----------------------------------------
+		// 点光
+		//----------------------------------------
 		static const int MaxPointLightNum = 100;
 		int PointLight_Num = 0;
 		float blank[3] = { 0.0f,0.0f,0.0f };
 		std::array<PointLight,MaxPointLightNum> PointLights;
 	
+		//----------------------------------------
+		// 集中光
+		//----------------------------------------
 		static const int MaxSpotLightNum = 100;
 		int SpotLight_Num = 0;
 		float blank2[3] = { 0.0f,0.0f,0.0f };
