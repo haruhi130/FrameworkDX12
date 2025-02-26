@@ -109,9 +109,6 @@
     <Filter Include="Application\GameObject\Camera">
       <UniqueIdentifier>{6de25e56-a0c1-4477-808d-4ac59cf98a43}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\Polygon">
-      <UniqueIdentifier>{9c0e5c3e-2c23-437a-97b3-e73a32857e51}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Heap\ImGuiHeap">
       <UniqueIdentifier>{439abdb6-25a3-464a-a270-6a3dcbfbce8c}</UniqueIdentifier>
     </Filter>
@@ -304,9 +301,6 @@
     </ClCompile>
     <ClCompile Include="Sources\Application\GameObject\Camera\GameCamera.cpp">
       <Filter>Application\GameObject\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Framework\Polygon\Polygon.cpp">
-      <Filter>Framework\Polygon</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Framework\Heap\ImGuiHeap\ImGuiHeap.cpp">
       <Filter>Framework\Heap\ImGuiHeap</Filter>
@@ -536,9 +530,6 @@
     </ClInclude>
     <ClInclude Include="Sources\Application\GameObject\Camera\GameCamera.h">
       <Filter>Application\GameObject\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Framework\Polygon\Polygon.h">
-      <Filter>Framework\Polygon</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Framework\Heap\ImGuiHeap\ImGuiHeap.h">
       <Filter>Framework\Heap\ImGuiHeap</Filter>

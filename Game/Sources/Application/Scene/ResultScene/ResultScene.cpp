@@ -6,8 +6,6 @@
 
 void ResultScene::ResourceLoad()
 {
-	ShowCursor(true);
-
 	// îwåi
 	std::shared_ptr<SpriteObject> sprite = std::make_shared<SpriteObject>();
 	sprite->SetRectangle({ 0,0,1280,720 });
@@ -57,6 +55,8 @@ void ResultScene::Event()
 
 void ResultScene::Init()
 {
+	ShowCursor(true);
+
 	std::shared_ptr<Loading> load = std::make_shared<Loading>();
 	load->SetRectangle({ 0,0,1280,720 });
 	load->SetTexture("Assets/Textures/BackFrame.png");

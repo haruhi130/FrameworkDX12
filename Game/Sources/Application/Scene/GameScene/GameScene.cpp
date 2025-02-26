@@ -26,8 +26,6 @@
 
 void GameScene::ResourceLoad()
 {
-	ShowCursor(false);
-
 	ShaderManager::GetInstance().SetDirectionalLight({ 0.0f,-1.0f,1.0f });
 	ShaderManager::GetInstance().SetAmbientLight(0.3f);
 
@@ -203,17 +201,6 @@ void GameScene::ResourceLoad()
 	{
 		std::shared_ptr<Bench> bench = std::make_shared<Bench>();
 		bench->SetRotationY(90);
-		bench->SetPos({ 13.0f,0,-34.5f + (7.0f * i) });
-		m_objList.push_back(bench);
-		camera->RegistHitObjList(bench);
-		mouse->RegistHitObjList(bench);
-	}
-
-	// ƒxƒ“ƒ`
-	for (int i = 0; i < 3; i++)
-	{
-		std::shared_ptr<Bench> bench = std::make_shared<Bench>();
-		bench->SetRotationY(90);
 		bench->SetPos({ -13.0f,0,16.0f + (7.0f * i) });
 		m_objList.push_back(bench);
 		camera->RegistHitObjList(bench);
@@ -324,6 +311,8 @@ void GameScene::Event()
 
 void GameScene::Init()
 {
+	ShowCursor(false);
+
 	std::shared_ptr<Loading> load = std::make_shared<Loading>();
 	load->SetRectangle({ 0,0,1280,720 });
 	load->SetTexture("Assets/Textures/BackFrame.png");

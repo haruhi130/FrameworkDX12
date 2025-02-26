@@ -20,7 +20,12 @@
 		},
 		{
 			"mesh":1,
-			"name":"Cube.001"
+			"name":"COL",
+			"scale":[
+				0.7822049856185913,
+				1.1841349601745605,
+				0.25151848793029785
+			]
 		}
 	],
 	"materials":[
@@ -53,7 +58,7 @@
 			]
 		},
 		{
-			"name":"Cube.002",
+			"name":"\u7acb\u65b9\u4f53",
 			"primitives":[
 				{
 					"attributes":{
@@ -61,8 +66,7 @@
 						"TEXCOORD_0":5,
 						"NORMAL":6
 					},
-					"indices":3,
-					"material":0
+					"indices":7
 				}
 			]
 		}
@@ -118,30 +122,36 @@
 		{
 			"bufferView":4,
 			"componentType":5126,
-			"count":1083,
+			"count":24,
 			"max":[
-				0.7822054624557495,
-				2.369184970855713,
-				0.25
+				1,
+				2,
+				1
 			],
 			"min":[
-				-0.7822050452232361,
-				0.0009140472393482924,
-				-0.2530367076396942
+				-1,
+				0,
+				-1
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":5,
 			"componentType":5126,
-			"count":1083,
+			"count":24,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":6,
 			"componentType":5126,
-			"count":1083,
+			"count":24,
 			"type":"VEC3"
+		},
+		{
+			"bufferView":7,
+			"componentType":5123,
+			"count":36,
+			"type":"SCALAR"
 		}
 	],
 	"bufferViews":[
@@ -171,21 +181,27 @@
 		},
 		{
 			"buffer":0,
-			"byteLength":12996,
+			"byteLength":288,
 			"byteOffset":39660,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":8664,
-			"byteOffset":52656,
+			"byteLength":192,
+			"byteOffset":39948,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":12996,
-			"byteOffset":61320,
+			"byteLength":288,
+			"byteOffset":40140,
 			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":72,
+			"byteOffset":40428,
+			"target":34963
 		}
 	],
 	"samplers":[
@@ -196,7 +212,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":74316,
+			"byteLength":40500,
 			"uri":"BookShelf.bin"
 		}
 	]

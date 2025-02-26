@@ -9,7 +9,8 @@
 			"name":"Scene",
 			"nodes":[
 				0,
-				1
+				1,
+				2
 			]
 		}
 	],
@@ -30,6 +31,15 @@
 				1.5,
 				1.5,
 				1.5
+			]
+		},
+		{
+			"mesh":2,
+			"name":"COL",
+			"scale":[
+				1,
+				5.149641990661621,
+				1
 			]
 		}
 	],
@@ -72,6 +82,19 @@
 					},
 					"indices":3,
 					"material":0
+				}
+			]
+		},
+		{
+			"name":"\u7acb\u65b9\u4f53",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":7,
+						"TEXCOORD_0":8,
+						"NORMAL":9
+					},
+					"indices":10
 				}
 			]
 		}
@@ -151,6 +174,40 @@
 			"componentType":5126,
 			"count":437,
 			"type":"VEC3"
+		},
+		{
+			"bufferView":7,
+			"componentType":5126,
+			"count":24,
+			"max":[
+				1.7144829034805298,
+				2,
+				1.7144829034805298
+			],
+			"min":[
+				-1.7144829034805298,
+				0,
+				-1.7144829034805298
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":8,
+			"componentType":5126,
+			"count":24,
+			"type":"VEC2"
+		},
+		{
+			"bufferView":9,
+			"componentType":5126,
+			"count":24,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":10,
+			"componentType":5123,
+			"count":36,
+			"type":"SCALAR"
 		}
 	],
 	"bufferViews":[
@@ -195,6 +252,30 @@
 			"byteLength":5244,
 			"byteOffset":24824,
 			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":288,
+			"byteOffset":30068,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":192,
+			"byteOffset":30356,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":288,
+			"byteOffset":30548,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":72,
+			"byteOffset":30836,
+			"target":34963
 		}
 	],
 	"samplers":[
@@ -205,7 +286,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":30068,
+			"byteLength":30908,
 			"uri":"Bamboo_03.bin"
 		}
 	]

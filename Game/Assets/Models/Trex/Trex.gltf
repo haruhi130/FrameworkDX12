@@ -12,7 +12,8 @@
 		{
 			"name":"Scene",
 			"nodes":[
-				0
+				0,
+				1
 			]
 		}
 	],
@@ -20,6 +21,26 @@
 		{
 			"mesh":0,
 			"name":"polySurface147"
+		},
+		{
+			"mesh":1,
+			"name":"COL",
+			"rotation":[
+				-0.156061589717865,
+				0.0007426427910104394,
+				0.03353762999176979,
+				0.9871776103973389
+			],
+			"scale":[
+				1.0004810094833374,
+				1.024189829826355,
+				5.0529465675354
+			],
+			"translation":[
+				0,
+				3.380038261413574,
+				0
+			]
 		}
 	],
 	"materials":[
@@ -61,6 +82,19 @@
 					},
 					"indices":3,
 					"material":0
+				}
+			]
+		},
+		{
+			"name":"\u7403",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":4,
+						"TEXCOORD_0":5,
+						"NORMAL":6
+					},
+					"indices":7
 				}
 			]
 		}
@@ -121,6 +155,40 @@
 			"componentType":5123,
 			"count":34734,
 			"type":"SCALAR"
+		},
+		{
+			"bufferView":4,
+			"componentType":5126,
+			"count":1984,
+			"max":[
+				1.4476532936096191,
+				0.9807852506637573,
+				0.9999993443489075
+			],
+			"min":[
+				-2.670670747756958,
+				-3.3967580795288086,
+				-1
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":5,
+			"componentType":5126,
+			"count":1984,
+			"type":"VEC2"
+		},
+		{
+			"bufferView":6,
+			"componentType":5126,
+			"count":1984,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":7,
+			"componentType":5123,
+			"count":2880,
+			"type":"SCALAR"
 		}
 	],
 	"bufferViews":[
@@ -147,6 +215,30 @@
 			"byteLength":69468,
 			"byteOffset":537824,
 			"target":34963
+		},
+		{
+			"buffer":0,
+			"byteLength":23808,
+			"byteOffset":607292,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":15872,
+			"byteOffset":631100,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":23808,
+			"byteOffset":646972,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":5760,
+			"byteOffset":670780,
+			"target":34963
 		}
 	],
 	"samplers":[
@@ -157,7 +249,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":607292,
+			"byteLength":676540,
 			"uri":"Trex.bin"
 		}
 	]

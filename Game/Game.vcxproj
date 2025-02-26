@@ -249,7 +249,6 @@
     <ClCompile Include="Sources\Framework\Mesh\Mesh.cpp" />
     <ClCompile Include="Sources\Framework\Model\GLTFLoader.cpp" />
     <ClCompile Include="Sources\Framework\Model\Model.cpp" />
-    <ClCompile Include="Sources\Framework\Polygon\Polygon.cpp" />
     <ClCompile Include="Sources\Framework\Shader\ModelShader\ModelShader.cpp" />
     <ClCompile Include="Sources\Framework\Shader\Pipeline\Pipeline.cpp" />
     <ClCompile Include="Sources\Framework\Shader\PostProcessShader\PostProcessShader.cpp" />
@@ -336,7 +335,6 @@
     <ClInclude Include="Sources\Framework\Mesh\MeshData\MeshData.h" />
     <ClInclude Include="Sources\Framework\Model\GLTFLoader.h" />
     <ClInclude Include="Sources\Framework\Model\Model.h" />
-    <ClInclude Include="Sources\Framework\Polygon\Polygon.h" />
     <ClInclude Include="Sources\Framework\Shader\ModelShader\ModelShader.h" />
     <ClInclude Include="Sources\Framework\Shader\Pipeline\Pipeline.h" />
     <ClInclude Include="Sources\Framework\Shader\PostProcessShader\PostProcessShader.h" />

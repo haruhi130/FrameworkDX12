@@ -164,8 +164,8 @@ void Mouse::UpdateCollision()
 	// Sphere : Bump
 	{
 		Collider::SphereInfo sphereInfo;
-		sphereInfo.m_sphere.Center = pos + Math::Vector3(0, 0.8f, 0);
-		sphereInfo.m_sphere.Radius = 0.8f;
+		sphereInfo.m_sphere.Center = pos + Math::Vector3(0, 0.7f, 0);
+		sphereInfo.m_sphere.Radius = 0.7f;
 		sphereInfo.m_type = Collider::Type::Bump;
 
 		for (std::weak_ptr<ModelObject> wpObj : m_wpObjList)
