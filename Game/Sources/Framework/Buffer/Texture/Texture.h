@@ -5,38 +5,66 @@ class Texture : public Buffer
 public:
 	~Texture()override {}
 
-	// テクスチャロード
+	/// <summary>
+	/// ファイルパスからテクスチャを読み込み
+	/// </summary>
+	/// <param name="fileName">ファイルパス</param>
+	/// <returns>読み込みに成功したらtrue</returns>
 	bool Load(std::string_view fileName);
 
-	// レンダーターゲット用リソース作成
-	bool CreateResource();
+	/// <summary>
+	/// マルチパスレンダリングに使用するリソース作成
+	/// </summary>
+	/// <returns>リソース作成に成功したらtrue</returns>
+	bool CreateMultiPassResource();
 
-	// レンダーターゲット用板ポリ作成
+	/// <summary>
+	/// レンダーターゲットに使用する板ポリ作成
+	/// </summary>
+	/// <returns>板ポリ作成に成功したらtrue</returns>
 	bool CreateRenderTarget();
 	
 	// 深度テクスチャ作成
+	
+	/// <summary>
+	/// 深度バッファからSRV作成
+	/// </summary>
+	/// <returns>作成に成功したらtrue</returns>
 	bool CreateDepthSRV();
+	/// <summary>
+	/// 光源深度バッファからSRV作成
+	/// </summary>
+	/// <returns>作成に成功したらtrue</returns>
 	bool CreateLightDepthSRV();
 
-	// シェーダーリソースとして設定
-	void Set(int index) const;
+	/// <summary>
+	/// シェーダーリソースとしてセット
+	/// </summary>
+	/// <param name="index">使用するインデックス番号</param>
+	void SetToShader(int index) const;
 
+	/// <summary>
+	/// 板ポリを頂点バッファとインデックスバッファにセット
+	/// </summary>
 	void SetToDevice() const
 	{
 		GraphicsDevice::GetInstance().GetCmdList()->IASetVertexBuffers(0, 1, &m_VBV);
 		GraphicsDevice::GetInstance().GetCmdList()->IASetIndexBuffer(&m_IBV);
 	}
 
-	// SRV番号取得
+	/// <summary>
+	/// SRV番号を取得
+	/// </summary>
+	/// <returns>SRV番号</returns>
 	inline int GetSRVNumber() const
-	{
-		return m_SRVNumber;
-	}
+	{ return m_SRVNumber; }
 
+	/// <summary>
+	/// テクスチャのリソースデスク情報を取得
+	/// </summary>
+	/// <returns>リソースデスク情報</returns>
 	inline const D3D12_RESOURCE_DESC& GetInfo() const
-	{
-		return m_desc;
-	}
+	{ return m_desc; }
 
 private:
 	int m_SRVNumber = 0;

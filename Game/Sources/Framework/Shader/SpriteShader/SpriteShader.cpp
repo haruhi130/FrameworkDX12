@@ -39,7 +39,7 @@ void SpriteShader::DrawTexture(const Texture* tex, const Mesh* mesh, const Math:
 	if (tex == nullptr) { return; }
 
 	// 画像をシェーダーにセット
-	tex->Set(m_cbvCount);
+	tex->SetToShader(m_cbvCount);
 
 	// 色情報転送
 	m_cbSprite.Color = color;

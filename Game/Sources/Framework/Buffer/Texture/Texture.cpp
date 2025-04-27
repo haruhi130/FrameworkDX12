@@ -56,7 +56,7 @@ bool Texture::Load(std::string_view fileName)
 	return true;
 }
 
-bool Texture::CreateResource()
+bool Texture::CreateMultiPassResource()
 {
 	D3D12_HEAP_PROPERTIES heapProp = {};
 	heapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
@@ -163,7 +163,7 @@ bool Texture::CreateLightDepthSRV()
 	return true;
 }
 
-void Texture::Set(int index) const
+void Texture::SetToShader(int index) const
 {
 	GraphicsDevice::GetInstance().GetCmdList()->SetGraphicsRootDescriptorTable(
 		index, GraphicsDevice::GetInstance().GetCBVSRVUAVHeap()->GetGPUHandle(m_SRVNumber));

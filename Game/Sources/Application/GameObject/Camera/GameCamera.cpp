@@ -20,12 +20,12 @@ void GameCamera::PostUpdate()
 
 	UpdateCollision();
 
-	m_spCamera->SetCameraMatrix(m_mWorld);
+	m_spCamera->SetViewMatrix(m_mWorld);
 }
 
 void GameCamera::PreDraw()
 {
-	m_spCamera->Set();
+	m_spCamera->SetToShader();
 }
 
 void GameCamera::SetTarget(const std::shared_ptr<BaseObject>& target)

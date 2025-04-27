@@ -19,40 +19,63 @@ public:
 
 	virtual void ImGuiUpdate(){}
 
-	// 回転設定
+	/// <summary>
+	/// 回転行列をセット
+	/// </summary>
+	/// <param name="rotX">X軸回転角度</param>
 	virtual void SetRotationX(float rotX)
 	{ m_mWorld *= Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(rotX)); }
-
+	/// <param name="rotY">Y軸回転角度</param>
 	virtual void SetRotationY(float rotY)
 	{ m_mWorld *= Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(rotY)); }
-
+	/// <param name="rotZ">Z軸回転角度</param>
 	virtual void SetRotationZ(float rotZ)
 	{ m_mWorld *= Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(rotZ)); }
 	
-	// スケール設定
+	/// <summary>
+	/// 拡縮行列をセット
+	/// </summary>
+	/// <param name="scale">拡縮数値</param>
 	virtual void SetScale(float scale)
 	{ m_mWorld *= Math::Matrix::CreateScale(scale); }
 
 	virtual void SetScale(const Math::Vector3& scale)
 	{ m_mWorld *= Math::Matrix::CreateScale(scale); }
 	
-	// 座標設定
+	/// <summary>
+	/// 座標行列をセット
+	/// </summary>
+	/// <param name="pos">座標</param>
 	virtual void SetPos(const Math::Vector3& pos)
 	{ m_mWorld.Translation(pos); }
 
-	// 座標取得
+	/// <summary>
+	/// 行列から座標を取得
+	/// </summary>
+	/// <returns>座標</returns>
 	inline virtual Math::Vector3 GetPos() const 
 	{ return m_mWorld.Translation(); }
 
-	// 行列取得
+	/// <summary>
+	/// 行列を取得
+	/// </summary>
+	/// <returns>行列</returns>
 	inline const Math::Matrix& GetMatrix() const 
 	{ return m_mWorld; }
 
-	// オブジェクトが有効か
+	/// <summary>
+	/// オブジェクトが存在しているか判別
+	/// </summary>
+	/// <returns>存在しているならtrue</returns>
 	inline virtual bool IsExpired() const 
 	{ return m_isExpired; }
 
-	// 当たり判定
+	/// <summary>
+	/// 衝突判定実行
+	/// </summary>
+	/// <param name="target">判定を行う情報</param>
+	/// <param name="pResults">詳細情報格納リスト</param>
+	/// <returns>衝突していたらtrue</returns>
 	bool Intersects(const Collider::SphereInfo& target, std::list<Collider::CollisionResult>* pResults);
 	bool Intersects(const Collider::RayInfo& target, std::list<Collider::CollisionResult>* pResults);
 
@@ -65,9 +88,8 @@ protected:
 	// 存在消滅フラグ
 	bool m_isExpired = false;
 
-	// 行列
 	Math::Matrix m_mWorld = Math::Matrix::Identity;
 
-	// 当たり判定クラス
+	// 当たり判定
 	std::unique_ptr<Collider> m_upCollider = nullptr;
 };

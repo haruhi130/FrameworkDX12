@@ -842,8 +842,8 @@ enum ImGuiItemFlagsPrivate_
 
     // Controlled by widget code
     ImGuiItemFlags_Inputable                = 1 << 20, // false     // [WIP] Auto-activate input mode when tab focused. Currently only used and supported by a few items before it becomes a generic feature.
-    ImGuiItemFlags_HasSelectionUserData     = 1 << 21, // false     // Set by SetNextItemSelectionUserData()
-    ImGuiItemFlags_IsMultiSelect            = 1 << 22, // false     // Set by SetNextItemSelectionUserData()
+    ImGuiItemFlags_HasSelectionUserData     = 1 << 21, // false     // SetToShader by SetNextItemSelectionUserData()
+    ImGuiItemFlags_IsMultiSelect            = 1 << 22, // false     // SetToShader by SetNextItemSelectionUserData()
 
     ImGuiItemFlags_Default_                 = ImGuiItemFlags_AutoClosePopups,    // Please don't change, use PushItemFlag() instead.
 
@@ -859,14 +859,14 @@ enum ImGuiItemStatusFlags_
     ImGuiItemStatusFlags_HoveredRect        = 1 << 0,   // Mouse position is within item rectangle (does NOT mean that the window is in correct z-order and can be hovered!, this is only one part of the most-common IsItemHovered test)
     ImGuiItemStatusFlags_HasDisplayRect     = 1 << 1,   // g.LastItemData.DisplayRect is valid
     ImGuiItemStatusFlags_Edited             = 1 << 2,   // Value exposed by item was edited in the current frame (should match the bool return value of most widgets)
-    ImGuiItemStatusFlags_ToggledSelection   = 1 << 3,   // Set when Selectable(), TreeNode() reports toggling a selection. We can't report "Selected", only state changes, in order to easily handle clipping with less issues.
-    ImGuiItemStatusFlags_ToggledOpen        = 1 << 4,   // Set when TreeNode() reports toggling their open state.
-    ImGuiItemStatusFlags_HasDeactivated     = 1 << 5,   // Set if the widget/group is able to provide data for the ImGuiItemStatusFlags_Deactivated flag.
+    ImGuiItemStatusFlags_ToggledSelection   = 1 << 3,   // SetToShader when Selectable(), TreeNode() reports toggling a selection. We can't report "Selected", only state changes, in order to easily handle clipping with less issues.
+    ImGuiItemStatusFlags_ToggledOpen        = 1 << 4,   // SetToShader when TreeNode() reports toggling their open state.
+    ImGuiItemStatusFlags_HasDeactivated     = 1 << 5,   // SetToShader if the widget/group is able to provide data for the ImGuiItemStatusFlags_Deactivated flag.
     ImGuiItemStatusFlags_Deactivated        = 1 << 6,   // Only valid if ImGuiItemStatusFlags_HasDeactivated is set.
     ImGuiItemStatusFlags_HoveredWindow      = 1 << 7,   // Override the HoveredWindow test to allow cross-window hover testing.
-    ImGuiItemStatusFlags_Visible            = 1 << 8,   // [WIP] Set when item is overlapping the current clipping rectangle (Used internally. Please don't use yet: API/system will change as we refactor Itemadd()).
+    ImGuiItemStatusFlags_Visible            = 1 << 8,   // [WIP] SetToShader when item is overlapping the current clipping rectangle (Used internally. Please don't use yet: API/system will change as we refactor Itemadd()).
     ImGuiItemStatusFlags_HasClipRect        = 1 << 9,   // g.LastItemData.ClipRect is valid.
-    ImGuiItemStatusFlags_HasShortcut        = 1 << 10,  // g.LastItemData.Shortcut valid. Set by SetNextItemShortcut() -> ItemAdd().
+    ImGuiItemStatusFlags_HasShortcut        = 1 << 10,  // g.LastItemData.Shortcut valid. SetToShader by SetNextItemShortcut() -> ItemAdd().
 
     // Additional status + semantic for ImGuiTestEngine
 #ifdef IMGUI_ENABLE_TEST_ENGINE
@@ -943,7 +943,7 @@ enum ImGuiSelectableFlagsPrivate_
     ImGuiSelectableFlags_SelectOnClick          = 1 << 22,  // Override button behavior to react on Click (default is Click+Release)
     ImGuiSelectableFlags_SelectOnRelease        = 1 << 23,  // Override button behavior to react on Release (default is Click+Release)
     ImGuiSelectableFlags_SpanAvailWidth         = 1 << 24,  // Span all avail width even if we declared less for layout purpose. FIXME: We may be able to remove this (added in 6251d379, 2bcafc86 for menus)
-    ImGuiSelectableFlags_SetNavIdOnHover        = 1 << 25,  // Set Nav/Focus ID on mouse hover (used by MenuItem)
+    ImGuiSelectableFlags_SetNavIdOnHover        = 1 << 25,  // SetToShader Nav/Focus ID on mouse hover (used by MenuItem)
     ImGuiSelectableFlags_NoPadWithHalfSpacing   = 1 << 26,  // Disable padding each side with ItemSpacing * 0.5f
     ImGuiSelectableFlags_NoSetKeyOwner          = 1 << 27,  // Don't set key/input owner on the initial click (note: mouse buttons are keys! often, the key in question will be ImGuiKey_MouseLeft!)
 };
@@ -1217,15 +1217,15 @@ struct ImGuiNextItemData
     ImGuiNextItemDataFlags      Flags;
     ImGuiItemFlags              ItemFlags;          // Currently only tested/used for ImGuiItemFlags_AllowOverlap and ImGuiItemFlags_HasSelectionUserData.
     // Non-flags members are NOT cleared by ItemAdd() meaning they are still valid during NavProcessItem()
-    ImGuiID                     FocusScopeId;       // Set by SetNextItemSelectionUserData()
-    ImGuiSelectionUserData      SelectionUserData;  // Set by SetNextItemSelectionUserData() (note that NULL/0 is a valid value, we use -1 == ImGuiSelectionUserData_Invalid to mark invalid values)
-    float                       Width;              // Set by SetNextItemWidth()
-    ImGuiKeyChord               Shortcut;           // Set by SetNextItemShortcut()
-    ImGuiInputFlags             ShortcutFlags;      // Set by SetNextItemShortcut()
-    bool                        OpenVal;            // Set by SetNextItemOpen()
-    ImU8                        OpenCond;           // Set by SetNextItemOpen()
+    ImGuiID                     FocusScopeId;       // SetToShader by SetNextItemSelectionUserData()
+    ImGuiSelectionUserData      SelectionUserData;  // SetToShader by SetNextItemSelectionUserData() (note that NULL/0 is a valid value, we use -1 == ImGuiSelectionUserData_Invalid to mark invalid values)
+    float                       Width;              // SetToShader by SetNextItemWidth()
+    ImGuiKeyChord               Shortcut;           // SetToShader by SetNextItemShortcut()
+    ImGuiInputFlags             ShortcutFlags;      // SetToShader by SetNextItemShortcut()
+    bool                        OpenVal;            // SetToShader by SetNextItemOpen()
+    ImU8                        OpenCond;           // SetToShader by SetNextItemOpen()
     ImGuiDataTypeStorage        RefVal;             // Not exposed yet, for ImGuiInputTextFlags_ParseEmptyAsRefVal
-    ImGuiID                     StorageId;          // Set by SetNextItemStorageID()
+    ImGuiID                     StorageId;          // SetToShader by SetNextItemStorageID()
 
     ImGuiNextItemData()         { memset(this, 0, sizeof(*this)); SelectionUserData = -1; }
     inline void ClearFlags()    { Flags = ImGuiNextItemDataFlags_None; ItemFlags = ImGuiItemFlags_None; } // Also cleared manually by ItemAdd()!
@@ -1315,14 +1315,14 @@ enum ImGuiPopupPositionPolicy
 // Storage for popup stacks (g.OpenPopupStack and g.BeginPopupStack)
 struct ImGuiPopupData
 {
-    ImGuiID             PopupId;        // Set on OpenPopup()
+    ImGuiID             PopupId;        // SetToShader on OpenPopup()
     ImGuiWindow*        Window;         // Resolved on BeginPopup() - may stay unresolved if user never calls OpenPopup()
-    ImGuiWindow*        RestoreNavWindow;// Set on OpenPopup(), a NavWindow that will be restored on popup close
+    ImGuiWindow*        RestoreNavWindow;// SetToShader on OpenPopup(), a NavWindow that will be restored on popup close
     int                 ParentNavLayer; // Resolved on BeginPopup(). Actually a ImGuiNavLayer type (declared down below), initialized to -1 which is not part of an enum, but serves well-enough as "not any of layers" value
-    int                 OpenFrameCount; // Set on OpenPopup()
-    ImGuiID             OpenParentId;   // Set on OpenPopup(), we need this to differentiate multiple menu sets from each others (e.g. inside menu bar vs loose menu items)
-    ImVec2              OpenPopupPos;   // Set on OpenPopup(), preferred popup position (typically == OpenMousePos when using mouse)
-    ImVec2              OpenMousePos;   // Set on OpenPopup(), copy of mouse position at the time of opening popup
+    int                 OpenFrameCount; // SetToShader on OpenPopup()
+    ImGuiID             OpenParentId;   // SetToShader on OpenPopup(), we need this to differentiate multiple menu sets from each others (e.g. inside menu bar vs loose menu items)
+    ImVec2              OpenPopupPos;   // SetToShader on OpenPopup(), preferred popup position (typically == OpenMousePos when using mouse)
+    ImVec2              OpenMousePos;   // SetToShader on OpenPopup(), copy of mouse position at the time of opening popup
 
     ImGuiPopupData()    { memset(this, 0, sizeof(*this)); ParentNavLayer = OpenFrameCount = -1; }
 };
@@ -1443,8 +1443,8 @@ struct ImGuiKeyOwnerData
 {
     ImGuiID     OwnerCurr;
     ImGuiID     OwnerNext;
-    bool        LockThisFrame;      // Reading this key requires explicit owner id (until end of frame). Set by ImGuiInputFlags_LockThisFrame.
-    bool        LockUntilRelease;   // Reading this key requires explicit owner id (until key is released). Set by ImGuiInputFlags_LockUntilRelease. When this is true LockThisFrame is always true as well.
+    bool        LockThisFrame;      // Reading this key requires explicit owner id (until end of frame). SetToShader by ImGuiInputFlags_LockThisFrame.
+    bool        LockUntilRelease;   // Reading this key requires explicit owner id (until key is released). SetToShader by ImGuiInputFlags_LockUntilRelease. When this is true LockThisFrame is always true as well.
 
     ImGuiKeyOwnerData()             { OwnerCurr = OwnerNext = ImGuiKeyOwner_NoOwner; LockThisFrame = LockUntilRelease = false; }
 };
@@ -1629,7 +1629,7 @@ struct IMGUI_API ImGuiTypingSelectRequest
     ImGuiTypingSelectFlags  Flags;              // Flags passed to GetTypingSelectRequest()
     int                     SearchBufferLen;
     const char*             SearchBuffer;       // Search buffer contents (use full string. unless SingleCharMode is set, in which case use SingleCharSize).
-    bool                    SelectRequest;      // Set when buffer was modified this frame, requesting a selection.
+    bool                    SelectRequest;      // SetToShader when buffer was modified this frame, requesting a selection.
     bool                    SingleCharMode;     // Notify when buffer contains same character repeated, to implement special mode. In this situation it preferred to not display any on-screen search indication.
     ImS8                    SingleCharSize;     // Length in bytes of first letter codepoint (1 for ascii, 2-4 for UTF-8). If (SearchBufferLen==RepeatCharSize) only 1 letter has been input.
 };
@@ -1724,7 +1724,7 @@ struct ImGuiBoxSelectState
     ImGuiWindow*            Window;
 
     // Temporary/Transient data
-    bool                    UnclipMode;         // (Temp/Transient, here in hot area). Set/cleared by the BeginMultiSelect()/EndMultiSelect() owning active box-select.
+    bool                    UnclipMode;         // (Temp/Transient, here in hot area). SetToShader/cleared by the BeginMultiSelect()/EndMultiSelect() owning active box-select.
     ImRect                  UnclipRect;         // Rectangle where ItemAdd() clipping may be temporarily disabled. Need support by multi-select supporting widgets.
     ImRect                  BoxSelectRectPrev;  // Selection rectangle in absolute coordinates (derived every frame from BoxSelectStartPosRel and MousePos)
     ImRect                  BoxSelectRectCurr;
@@ -1752,12 +1752,12 @@ struct IMGUI_API ImGuiMultiSelectTempData
     ImGuiID                 BoxSelectId;
     ImGuiKeyChord           KeyMods;
     ImS8                    LoopRequestSetAll;  // -1: no operation, 0: clear all, 1: select all.
-    bool                    IsEndIO;            // Set when switching IO from BeginMultiSelect() to EndMultiSelect() state.
-    bool                    IsFocused;          // Set if currently focusing the selection scope (any item of the selection). May be used if you have custom shortcut associated to selection.
-    bool                    IsKeyboardSetRange; // Set by BeginMultiSelect() when using Shift+Navigation. Because scrolling may be affected we can't afford a frame of lag with Shift+Navigation.
+    bool                    IsEndIO;            // SetToShader when switching IO from BeginMultiSelect() to EndMultiSelect() state.
+    bool                    IsFocused;          // SetToShader if currently focusing the selection scope (any item of the selection). May be used if you have custom shortcut associated to selection.
+    bool                    IsKeyboardSetRange; // SetToShader by BeginMultiSelect() when using Shift+Navigation. Because scrolling may be affected we can't afford a frame of lag with Shift+Navigation.
     bool                    NavIdPassedBy;
-    bool                    RangeSrcPassedBy;   // Set by the item that matches RangeSrcItem.
-    bool                    RangeDstPassedBy;   // Set by the item that matches NavJustMovedToId when IsSetRange is set.
+    bool                    RangeSrcPassedBy;   // SetToShader by the item that matches RangeSrcItem.
+    bool                    RangeDstPassedBy;   // SetToShader by the item that matches NavJustMovedToId when IsSetRange is set.
 
     ImGuiMultiSelectTempData()  { Clear(); }
     void Clear()            { size_t io_sz = sizeof(IO); ClearIO(); memset((void*)(&IO + 1), 0, sizeof(*this) - io_sz); } // Zero-clear except IO as we preserve IO.Requests[] buffer allocation.
@@ -1770,7 +1770,7 @@ struct IMGUI_API ImGuiMultiSelectState
     ImGuiWindow*            Window;
     ImGuiID                 ID;
     int                     LastFrameActive;    // Last used frame-count, for GC.
-    int                     LastSelectionSize;  // Set by BeginMultiSelect() based on optional info provided by user. May be -1 if unknown.
+    int                     LastSelectionSize;  // SetToShader by BeginMultiSelect() based on optional info provided by user. May be -1 if unknown.
     ImS8                    RangeSelected;      // -1 (don't have) or true/false
     ImS8                    NavIdSelected;      // -1 (don't have) or true/false
     ImGuiSelectionUserData  RangeSrcItem;       //
@@ -1837,8 +1837,8 @@ struct ImGuiWindowSettings
     ImVec2ih    Size;
     bool        Collapsed;
     bool        IsChild;
-    bool        WantApply;      // Set when loaded from .ini data (to enable merging/loading .ini data into an already running context)
-    bool        WantDelete;     // Set to invalidate/delete the settings entry
+    bool        WantApply;      // SetToShader when loaded from .ini data (to enable merging/loading .ini data into an already running context)
+    bool        WantDelete;     // SetToShader to invalidate/delete the settings entry
 
     ImGuiWindowSettings()       { memset(this, 0, sizeof(*this)); }
     char* GetName()             { return (char*)(this + 1); }
@@ -2005,9 +2005,9 @@ struct ImGuiContext
     int                     FrameCount;
     int                     FrameCountEnded;
     int                     FrameCountRendered;
-    bool                    WithinFrameScope;                   // Set by NewFrame(), cleared by EndFrame()
-    bool                    WithinFrameScopeWithImplicitWindow; // Set by NewFrame(), cleared by EndFrame() when the implicit debug window has been pushed
-    bool                    WithinEndChild;                     // Set within EndChild()
+    bool                    WithinFrameScope;                   // SetToShader by NewFrame(), cleared by EndFrame()
+    bool                    WithinFrameScopeWithImplicitWindow; // SetToShader by NewFrame(), cleared by EndFrame() when the implicit debug window has been pushed
+    bool                    WithinEndChild;                     // SetToShader within EndChild()
     bool                    GcCompactAll;                       // Request full GC
     bool                    TestEngineHookItems;                // Will call test engine hooks: ImGuiTestEngineHook_ItemAdd(), ImGuiTestEngineHook_ItemInfo(), ImGuiTestEngineHook_Log()
     void*                   TestEngine;                         // Test engine user data
@@ -2027,7 +2027,7 @@ struct ImGuiContext
     ImGuiStorage            WindowsById;                        // Map window's ImGuiID to ImGuiWindow*
     int                     WindowsActiveCount;                 // Number of unique windows submitted by frame
     ImVec2                  WindowsHoverPadding;                // Padding around resizable windows for which hovering on counts as hovering the window == ImMax(style.TouchExtraPadding, WINDOWS_HOVER_PADDING).
-    ImGuiID                 DebugBreakInWindow;                 // Set to break in Begin() call.
+    ImGuiID                 DebugBreakInWindow;                 // SetToShader to break in Begin() call.
     ImGuiWindow*            CurrentWindow;                      // Window being drawn into
     ImGuiWindow*            HoveredWindow;                      // Window the mouse is hovering. Will typically catch mouse inputs.
     ImGuiWindow*            HoveredWindowUnderMovingWindow;     // Hovered window ignoring MovingWindow. Only set if MovingWindow is set.
@@ -2042,7 +2042,7 @@ struct ImGuiContext
     ImVec2                  WheelingAxisAvg;
 
     // Item/widgets state and tracking information
-    ImGuiID                 DebugDrawIdConflicts;               // Set when we detect multiple items with the same identifier
+    ImGuiID                 DebugDrawIdConflicts;               // SetToShader when we detect multiple items with the same identifier
     ImGuiID                 DebugHookIdInfo;                    // Will call core hooks: DebugHookIdInfo() from GetID functions, used by ID Stack Tool [next HoveredId/ActiveId to not pull in an extra cache-line]
     ImGuiID                 HoveredId;                          // Hovered widget, filled during the frame
     ImGuiID                 HoveredIdPreviousFrame;
@@ -2055,7 +2055,7 @@ struct ImGuiContext
     ImGuiID                 ActiveId;                           // Active widget
     ImGuiID                 ActiveIdIsAlive;                    // Active widget has been seen this frame (we can't use a bool as the ActiveId may change within the frame)
     float                   ActiveIdTimer;
-    bool                    ActiveIdIsJustActivated;            // Set at the time of activation for one frame
+    bool                    ActiveIdIsJustActivated;            // SetToShader at the time of activation for one frame
     bool                    ActiveIdAllowOverlap;               // Active widget allows another widget to steal active id (generally for overlapping widgets, but not always)
     bool                    ActiveIdNoClearOnFocusLoss;         // Disable losing active id if the active id window gets unfocused.
     bool                    ActiveIdHasBeenPressedBefore;       // Track whether the active id led to a press (this is to allow changing between PressOnClick and PressOnRelease without pressing twice). Used by range_select branch.
@@ -2085,7 +2085,7 @@ struct ImGuiContext
     ImGuiKeyRoutingTable    KeysRoutingTable;
     ImU32                   ActiveIdUsingNavDirMask;            // Active widget will want to read those nav move requests (e.g. can activate a button and move away from it)
     bool                    ActiveIdUsingAllKeyboardKeys;       // Active widget will want to read all keyboard keys inputs. (this is a shortcut for not taking ownership of 100+ keys, frequently used by drag operations)
-    ImGuiKeyChord           DebugBreakInShortcutRouting;        // Set to break in SetShortcutRouting()/Shortcut() calls.
+    ImGuiKeyChord           DebugBreakInShortcutRouting;        // SetToShader to break in SetShortcutRouting()/Shortcut() calls.
     //ImU32                 ActiveIdUsingNavInputMask;          // [OBSOLETE] Since (IMGUI_VERSION_NUM >= 18804) : 'g.ActiveIdUsingNavInputMask |= (1 << ImGuiNavInput_Cancel);' becomes --> 'SetKeyOwner(ImGuiKey_Escape, g.ActiveId) and/or SetKeyOwner(ImGuiKey_NavGamepadCancel, g.ActiveId);'
 
     // Next window/item data
@@ -2124,7 +2124,7 @@ struct ImGuiContext
     ImVector<ImGuiFocusScopeData> NavFocusRoute;                // Reversed copy focus scope stack for NavId (should contains NavFocusScopeId). This essentially follow the window->ParentWindowForFocusRoute chain.
     ImGuiID                 NavHighlightActivatedId;
     float                   NavHighlightActivatedTimer;
-    ImGuiID                 NavNextActivateId;                  // Set by ActivateItem(), queued until next frame.
+    ImGuiID                 NavNextActivateId;                  // SetToShader by ActivateItem(), queued until next frame.
     ImGuiActivateFlags      NavNextActivateFlags;
     ImGuiInputSource        NavInputSource;                     // Keyboard or Gamepad mode? THIS CAN ONLY BE ImGuiInputSource_Keyboard or ImGuiInputSource_Mouse
     ImGuiSelectionUserData  NavLastValidSelectionUserData;      // Last valid data passed to SetNextItemSelectionUser(), or -1. For current window. Not reset when focusing an item that doesn't have selection data.
@@ -2183,8 +2183,8 @@ struct ImGuiContext
 
     // Drag and Drop
     bool                    DragDropActive;
-    bool                    DragDropWithinSource;               // Set when within a BeginDragDropXXX/EndDragDropXXX block for a drag source.
-    bool                    DragDropWithinTarget;               // Set when within a BeginDragDropXXX/EndDragDropXXX block for a drag target.
+    bool                    DragDropWithinSource;               // SetToShader when within a BeginDragDropXXX/EndDragDropXXX block for a drag source.
+    bool                    DragDropWithinTarget;               // SetToShader when within a BeginDragDropXXX/EndDragDropXXX block for a drag target.
     ImGuiDragDropFlags      DragDropSourceFlags;
     int                     DragDropSourceFrameCount;
     int                     DragDropMouseButton;
@@ -2197,7 +2197,7 @@ struct ImGuiContext
     ImGuiID                 DragDropAcceptIdCurr;               // Target item id (set at the time of accepting the payload)
     ImGuiID                 DragDropAcceptIdPrev;               // Target item id from previous frame (we need to store this to allow for overlapping drag and drop targets)
     int                     DragDropAcceptFrameCount;           // Last time a target expressed a desire to accept the source
-    ImGuiID                 DragDropHoldJustPressedId;          // Set when holding a payload just made ButtonBehavior() return a press.
+    ImGuiID                 DragDropHoldJustPressedId;          // SetToShader when holding a payload just made ButtonBehavior() return a press.
     ImVector<unsigned char> DragDropPayloadBufHeap;             // We don't expose the ImVector<> directly, ImGuiPayload only holds pointer+size
     unsigned char           DragDropPayloadBufLocal[16];        // Local buffer for small payloads
 
@@ -2207,7 +2207,7 @@ struct ImGuiContext
 
     // Tables
     ImGuiTable*                     CurrentTable;
-    ImGuiID                         DebugBreakInTable;          // Set to break in BeginTable() call.
+    ImGuiID                         DebugBreakInTable;          // SetToShader to break in BeginTable() call.
     int                             TablesTempDataStacked;      // Temporary table data size (because we leave previous instances undestructed, we generally don't use TablesTempData.Size)
     ImVector<ImGuiTableTempData>    TablesTempData;             // Temporary table data (buffers reused/shared across instances, support nesting)
     ImPool<ImGuiTable>              Tables;                     // Persistent table data
@@ -2249,7 +2249,7 @@ struct ImGuiContext
     int                     BeginMenuDepth;
     int                     BeginComboDepth;
     ImGuiColorEditFlags     ColorEditOptions;                   // Store user options for color edit widgets
-    ImGuiID                 ColorEditCurrentID;                 // Set temporarily while inside of the parent-most ColorEdit4/ColorPicker4 (because they call each others).
+    ImGuiID                 ColorEditCurrentID;                 // SetToShader temporarily while inside of the parent-most ColorEdit4/ColorPicker4 (because they call each others).
     ImGuiID                 ColorEditSavedID;                   // ID we are saving/restoring HS for
     float                   ColorEditSavedHue;                  // Backup of last Hue associated to LastColor, so we can restore Hue in lossy RGB<>HSV round trips
     float                   ColorEditSavedSat;                  // Backup of last Saturation associated to LastColor, so we can restore Saturation in lossy RGB<>HSV round trips
@@ -2571,9 +2571,9 @@ struct IMGUI_API ImGuiWindowTempData
     ImGuiNavLayer           NavLayerCurrent;        // Current layer, 0..31 (we currently only use 0..1)
     short                   NavLayersActiveMask;    // Which layers have been written to (result from previous frame)
     short                   NavLayersActiveMaskNext;// Which layers have been written to (accumulator for current frame)
-    bool                    NavIsScrollPushableX;   // Set when current work location may be scrolled horizontally when moving left / right. This is generally always true UNLESS within a column.
+    bool                    NavIsScrollPushableX;   // SetToShader when current work location may be scrolled horizontally when moving left / right. This is generally always true UNLESS within a column.
     bool                    NavHideHighlightOneFrame;
-    bool                    NavWindowHasScrollY;    // Set per window when scrolling can be used (== ScrollMax.y > 0.0f)
+    bool                    NavWindowHasScrollY;    // SetToShader per window when scrolling can be used (== ScrollMax.y > 0.0f)
 
     // Miscellaneous
     bool                    MenuBarAppending;       // FIXME: Remove this
@@ -2604,7 +2604,7 @@ struct IMGUI_API ImGuiWindow
     char*                   Name;                               // Window name, owned by the window.
     ImGuiID                 ID;                                 // == ImHashStr(Name)
     ImGuiWindowFlags        Flags;                              // See enum ImGuiWindowFlags_
-    ImGuiChildFlags         ChildFlags;                         // Set when window is a child window. See enum ImGuiChildFlags_
+    ImGuiChildFlags         ChildFlags;                         // SetToShader when window is a child window. See enum ImGuiChildFlags_
     ImGuiViewportP*         Viewport;                           // Always set in Begin(). Inactive windows may have a NULL value here if their viewport was discarded.
     ImVec2                  Pos;                                // Position (always rounded-up to nearest pixel)
     ImVec2                  Size;                               // Current size (==SizeFull or collapsed title bar size)
@@ -2630,18 +2630,18 @@ struct IMGUI_API ImGuiWindow
     ImVec2                  ScrollTargetEdgeSnapDist;           // 0.0f = no snapping, >0.0f snapping threshold
     ImVec2                  ScrollbarSizes;                     // Size taken by each scrollbars on their smaller axis. Pay attention! ScrollbarSizes.x == width of the vertical scrollbar, ScrollbarSizes.y = height of the horizontal scrollbar.
     bool                    ScrollbarX, ScrollbarY;             // Are scrollbars visible?
-    bool                    Active;                             // Set to true on Begin(), unless Collapsed
+    bool                    Active;                             // SetToShader to true on Begin(), unless Collapsed
     bool                    WasActive;
-    bool                    WriteAccessed;                      // Set to true when any widget access the current window
-    bool                    Collapsed;                          // Set when collapsing window to become only title-bar
+    bool                    WriteAccessed;                      // SetToShader to true when any widget access the current window
+    bool                    Collapsed;                          // SetToShader when collapsing window to become only title-bar
     bool                    WantCollapseToggle;
-    bool                    SkipItems;                          // Set when items can safely be all clipped (e.g. window not visible or collapsed)
+    bool                    SkipItems;                          // SetToShader when items can safely be all clipped (e.g. window not visible or collapsed)
     bool                    SkipRefresh;                        // [EXPERIMENTAL] Reuse previous frame drawn contents, Begin() returns false.
-    bool                    Appearing;                          // Set during the frame where the window is appearing (or re-appearing)
+    bool                    Appearing;                          // SetToShader during the frame where the window is appearing (or re-appearing)
     bool                    Hidden;                             // Do not display (== HiddenFrames*** > 0)
-    bool                    IsFallbackWindow;                   // Set on the "Debug##Default" window.
-    bool                    IsExplicitChild;                    // Set when passed _ChildWindow, left to false by BeginDocked()
-    bool                    HasCloseButton;                     // Set when the window has a close button (p_open != NULL)
+    bool                    IsFallbackWindow;                   // SetToShader on the "Debug##Default" window.
+    bool                    IsExplicitChild;                    // SetToShader when passed _ChildWindow, left to false by BeginDocked()
+    bool                    HasCloseButton;                     // SetToShader when the window has a close button (p_open != NULL)
     signed char             ResizeBorderHovered;                // Current border being hovered for resize (-1: none, otherwise 0-3)
     signed char             ResizeBorderHeld;                   // Current border being held for resize (-1: none, otherwise 0-3)
     short                   BeginCount;                         // Number of Begin() during the current frame (generally 0 or 1, 1+ if appending via multiple Begin/End pairs)
@@ -2693,7 +2693,7 @@ struct IMGUI_API ImGuiWindow
     ImGuiWindow*            RootWindowPopupTree;                // Point to ourself or first ancestor that is not a child window. Cross through popups parent<>child.
     ImGuiWindow*            RootWindowForTitleBarHighlight;     // Point to ourself or first ancestor which will display TitleBgActive color when this window is active.
     ImGuiWindow*            RootWindowForNav;                   // Point to ourself or first ancestor which doesn't have the NavFlattened flag.
-    ImGuiWindow*            ParentWindowForFocusRoute;          // Set to manual link a window to its logical parent so that Shortcut() chain are honoerd (e.g. Tool linked to Document)
+    ImGuiWindow*            ParentWindowForFocusRoute;          // SetToShader to manual link a window to its logical parent so that Shortcut() chain are honoerd (e.g. Tool linked to Document)
 
     ImGuiWindow*            NavLastChildNavWindow;              // When going to the menu bar, we remember the child window we came from. (This could probably be made implicit if we kept g.Windows sorted by last focused including child window.)
     ImGuiID                 NavLastIds[ImGuiNavLayer_COUNT];    // Last known NavId for this window, per layer (0/1)
@@ -2703,7 +2703,7 @@ struct IMGUI_API ImGuiWindow
 
     int                     MemoryDrawListIdxCapacity;          // Backup of last idx/vtx count, so when waking up the window we can preallocate and avoid iterative alloc/copy
     int                     MemoryDrawListVtxCapacity;
-    bool                    MemoryCompacted;                    // Set when window extraneous data have been garbage collected
+    bool                    MemoryCompacted;                    // SetToShader when window extraneous data have been garbage collected
 
 public:
     ImGuiWindow(ImGuiContext* context, const char* name);
@@ -2790,7 +2790,7 @@ struct IMGUI_API ImGuiTabBar
     ImS8                BeginCount;
     bool                WantLayout;
     bool                VisibleTabWasSubmitted;
-    bool                TabsAddedNew;           // Set to true when a new tab item or button has been added to the tab bar during last frame
+    bool                TabsAddedNew;           // SetToShader to true when a new tab item or button has been added to the tab bar during last frame
     ImS16               TabsActiveCount;        // Number of tabs submitted this frame.
     ImS16               LastTabItemIdx;         // Index of last BeginTabItem() tab for use by EndTabItem()
     float               ItemSpacingY;
@@ -2955,8 +2955,8 @@ struct IMGUI_API ImGuiTable
     float                       ResizedColumnNextWidth;
     float                       ResizeLockMinContentsX2;    // Lock minimum contents width while resizing down in order to not create feedback loops. But we allow growing the table.
     float                       RefScale;                   // Reference scale to be able to rescale columns on font/dpi changes.
-    float                       AngledHeadersHeight;        // Set by TableAngledHeadersRow(), used in TableUpdateLayout()
-    float                       AngledHeadersSlope;         // Set by TableAngledHeadersRow(), used in TableUpdateLayout()
+    float                       AngledHeadersHeight;        // SetToShader by TableAngledHeadersRow(), used in TableUpdateLayout()
+    float                       AngledHeadersSlope;         // SetToShader by TableAngledHeadersRow(), used in TableUpdateLayout()
     ImRect                      OuterRect;                  // Note: for non-scrolling table, OuterRect.Max.y is often FLT_MAX until EndTable(), unless a height has been specified in BeginTable().
     ImRect                      InnerRect;                  // InnerRect but without decoration. As with OuterRect, for non-scrolling tables, InnerRect.Max.y is
     ImRect                      WorkRect;
@@ -3002,20 +3002,20 @@ struct IMGUI_API ImGuiTable
     ImGuiTableDrawChannelIdx    DummyDrawChannel;           // Redirect non-visible columns here.
     ImGuiTableDrawChannelIdx    Bg2DrawChannelCurrent;      // For Selectable() and other widgets drawing across columns after the freezing line. Index within DrawSplitter.Channels[]
     ImGuiTableDrawChannelIdx    Bg2DrawChannelUnfrozen;
-    bool                        IsLayoutLocked;             // Set by TableUpdateLayout() which is called when beginning the first row.
-    bool                        IsInsideRow;                // Set when inside TableBeginRow()/TableEndRow().
+    bool                        IsLayoutLocked;             // SetToShader by TableUpdateLayout() which is called when beginning the first row.
+    bool                        IsInsideRow;                // SetToShader when inside TableBeginRow()/TableEndRow().
     bool                        IsInitializing;
     bool                        IsSortSpecsDirty;
-    bool                        IsUsingHeaders;             // Set when the first row had the ImGuiTableRowFlags_Headers flag.
-    bool                        IsContextPopupOpen;         // Set when default context menu is open (also see: ContextPopupColumn, InstanceInteracted).
+    bool                        IsUsingHeaders;             // SetToShader when the first row had the ImGuiTableRowFlags_Headers flag.
+    bool                        IsContextPopupOpen;         // SetToShader when default context menu is open (also see: ContextPopupColumn, InstanceInteracted).
     bool                        DisableDefaultContextMenu;  // Disable default context menu contents. You may submit your own using TableBeginContextMenuPopup()/EndPopup()
     bool                        IsSettingsRequestLoad;
-    bool                        IsSettingsDirty;            // Set when table settings have changed and needs to be reported into ImGuiTableSetttings data.
-    bool                        IsDefaultDisplayOrder;      // Set when display order is unchanged from default (DisplayOrder contains 0...Count-1)
+    bool                        IsSettingsDirty;            // SetToShader when table settings have changed and needs to be reported into ImGuiTableSetttings data.
+    bool                        IsDefaultDisplayOrder;      // SetToShader when display order is unchanged from default (DisplayOrder contains 0...Count-1)
     bool                        IsResetAllRequest;
     bool                        IsResetDisplayOrderRequest;
-    bool                        IsUnfrozenRows;             // Set when we got past the frozen row.
-    bool                        IsDefaultSizingPolicy;      // Set if user didn't explicitly set a sizing policy in BeginTable()
+    bool                        IsUnfrozenRows;             // SetToShader when we got past the frozen row.
+    bool                        IsDefaultSizingPolicy;      // SetToShader if user didn't explicitly set a sizing policy in BeginTable()
     bool                        IsActiveIdAliveBeforeTable;
     bool                        IsActiveIdInTable;
     bool                        HasScrollbarYCurr;          // Whether ANY instance of this table had a vertical scrollbar during the current frame.
@@ -3081,12 +3081,12 @@ struct ImGuiTableColumnSettings
 // This is designed to be stored in a single ImChunkStream (1 header followed by N ImGuiTableColumnSettings, etc.)
 struct ImGuiTableSettings
 {
-    ImGuiID                     ID;                     // Set to 0 to invalidate/delete the setting
+    ImGuiID                     ID;                     // SetToShader to 0 to invalidate/delete the setting
     ImGuiTableFlags             SaveFlags;              // Indicate data we want to save using the Resizable/Reorderable/Sortable/Hideable flags (could be using its own flags..)
     float                       RefScale;               // Reference scale to be able to rescale columns on font/dpi changes.
     ImGuiTableColumnIdx         ColumnsCount;
     ImGuiTableColumnIdx         ColumnsCountMax;        // Maximum number of columns this settings instance can store, we can recycle a settings instance with lower number of columns but not higher
-    bool                        WantApply;              // Set when loaded from .ini data (to enable merging/loading .ini data into an already running context)
+    bool                        WantApply;              // SetToShader when loaded from .ini data (to enable merging/loading .ini data into an already running context)
 
     ImGuiTableSettings()        { memset(this, 0, sizeof(*this)); }
     ImGuiTableColumnSettings*   GetColumnSettings()     { return (ImGuiTableColumnSettings*)(this + 1); }
@@ -3337,12 +3337,12 @@ namespace ImGui
     //   - for ownership registration happening as a result of a down/press event, the SetKeyOwner() call may be done once (common case).
     //   - for ownership registration happening ahead of a down/press event, the SetKeyOwner() call needs to be made every frame (happens if e.g. claiming ownership on hover).
     // - SetItemKeyOwner() is a shortcut for common simple case. A custom widget will probably want to call SetKeyOwner() multiple times directly based on its interaction state.
-    // - This is marked experimental because not all widgets are fully honoring the Set/Test idioms. We will need to move forward step by step.
+    // - This is marked experimental because not all widgets are fully honoring the SetToShader/Test idioms. We will need to move forward step by step.
     //   Please open a GitHub Issue to submit your usage scenario or if there's a use case you need solved.
     IMGUI_API ImGuiID       GetKeyOwner(ImGuiKey key);
     IMGUI_API void          SetKeyOwner(ImGuiKey key, ImGuiID owner_id, ImGuiInputFlags flags = 0);
     IMGUI_API void          SetKeyOwnersForKeyChord(ImGuiKeyChord key, ImGuiID owner_id, ImGuiInputFlags flags = 0);
-    IMGUI_API void          SetItemKeyOwner(ImGuiKey key, ImGuiInputFlags flags);       // Set key owner to last item if it is hovered or active. Equivalent to 'if (IsItemHovered() || IsItemActive()) { SetKeyOwner(key, GetItemID());'.
+    IMGUI_API void          SetItemKeyOwner(ImGuiKey key, ImGuiInputFlags flags);       // SetToShader key owner to last item if it is hovered or active. Equivalent to 'if (IsItemHovered() || IsItemActive()) { SetKeyOwner(key, GetItemID());'.
     IMGUI_API bool          TestKeyOwner(ImGuiKey key, ImGuiID owner_id);               // Test that key is either not owned, either owned by 'owner_id'
     inline ImGuiKeyOwnerData* GetKeyOwnerData(ImGuiContext* ctx, ImGuiKey key)          { if (key & ImGuiMod_Mask_) key = ConvertSingleModFlagToKey(key); IM_ASSERT(IsNamedKey(key)); return &ctx->KeysOwnerData[key - ImGuiKey_NamedKey_BEGIN]; }
 
@@ -3362,7 +3362,7 @@ namespace ImGui
     IMGUI_API bool          IsMouseDoubleClicked(ImGuiMouseButton button, ImGuiID owner_id);
 
     // Shortcut Testing & Routing
-    // - Set Shortcut() and SetNextItemShortcut() in imgui.h
+    // - SetToShader Shortcut() and SetNextItemShortcut() in imgui.h
     // - When a policy (except for ImGuiInputFlags_RouteAlways *) is set, Shortcut() will register itself with SetShortcutRouting(),
     //   allowing the system to decide where to route the input among other route-aware calls.
     //   (* using ImGuiInputFlags_RouteAlways is roughly equivalent to calling IsKeyChordPressed(key) and bypassing route registration and check)

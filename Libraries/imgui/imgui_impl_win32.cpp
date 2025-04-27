@@ -170,7 +170,7 @@ static bool ImGui_ImplWin32_InitEx(void* hwnd, bool platform_has_own_dc)
     bd->LastMouseCursor = ImGuiMouseCursor_COUNT;
     ImGui_ImplWin32_UpdateKeyboardCodePage();
 
-    // Set platform dependent data in viewport
+    // SetToShader platform dependent data in viewport
     ImGuiViewport* main_viewport = ImGui::GetMainViewport();
     main_viewport->PlatformHandle = main_viewport->PlatformHandleRaw = (void*)bd->hWnd;
     IM_UNUSED(platform_has_own_dc); // Used in 'docking' branch
@@ -308,7 +308,7 @@ static void ImGui_ImplWin32_UpdateMouseData()
     const bool is_app_focused = (focused_window == bd->hWnd);
     if (is_app_focused)
     {
-        // (Optional) Set OS mouse position from Dear ImGui if requested (rarely used, only when ImGuiConfigFlags_NavEnableSetMousePos is enabled by user)
+        // (Optional) SetToShader OS mouse position from Dear ImGui if requested (rarely used, only when ImGuiConfigFlags_NavEnableSetMousePos is enabled by user)
         if (io.WantSetMousePos)
         {
             POINT pos = { (int)io.MousePos.x, (int)io.MousePos.y };

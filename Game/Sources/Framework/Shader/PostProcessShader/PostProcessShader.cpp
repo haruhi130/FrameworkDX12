@@ -34,7 +34,7 @@ void PostProcessShader::Begin(int w, int h)
 	ShaderBase::Begin(m_spRootSignature, m_spPipeline, w, h);
 
 	// 変更したレンダーターゲット先に書き込んだ画像をシェーダーにセット
-	m_RTChange.m_spRTTexture->Set(m_cbvCount);
+	m_RTChange.m_spRTTexture->SetToShader(m_cbvCount);
 }
 
 void PostProcessShader::PreDraw()

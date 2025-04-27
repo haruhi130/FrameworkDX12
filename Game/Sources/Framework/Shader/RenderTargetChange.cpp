@@ -7,7 +7,7 @@ bool RenderTargetChange::CreateRenderTarget()
 	{
 		m_spRTTexture = std::make_shared<Texture>();
 	}
-	if (!m_spRTTexture->CreateResource())
+	if (!m_spRTTexture->CreateMultiPassResource())
 	{
 		return false;
 	}

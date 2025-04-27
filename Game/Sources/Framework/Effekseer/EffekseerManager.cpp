@@ -130,7 +130,7 @@ void EffekseerManager::SetPos(const std::string& name, const Math::Vector3& pos)
 	if (it == m_omEffects.end()) { return; }
 
 	Effekseer::Vector3D efkPos = ConvertToEfkVec3D(pos);
-	
+
 	m_pEfkManager->SetLocation(it->second->GetHandle(), efkPos);
 }
 
@@ -142,7 +142,7 @@ void EffekseerManager::SetRotation(const std::string& name, const Math::Vector3&
 
 	Effekseer::Vector3D efkAxis = ConvertToEfkVec3D(axis);
 
-	m_pEfkManager->SetRotation(it->second->GetHandle(), efkAxis,angle);
+	m_pEfkManager->SetRotation(it->second->GetHandle(), efkAxis, angle);
 }
 
 void EffekseerManager::SetMatrix(const std::string& name, const Math::Matrix& mWorld)
@@ -315,7 +315,7 @@ void EffekseerManager::UpdateEfkCameraMatrix()
 	if (!spCamera) { return; }
 
 	// ƒJƒƒ‰‚©‚çView,Proj‚ðŽæ“¾‚µÝ’è
-	Math::Matrix mView = spCamera->GetCameraMatrix().Invert();
+	Math::Matrix mView = spCamera->GetViewMatrix().Invert();
 	Math::Matrix mProj = spCamera->GetProjMatrix();
 	Effekseer::Matrix44 mEfkView;
 	Effekseer::Matrix44 mEfkProj;

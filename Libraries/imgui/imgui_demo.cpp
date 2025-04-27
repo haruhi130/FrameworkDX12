@@ -1386,7 +1386,7 @@ static void ShowDemoWindowWidgets(ImGuiDemoWindowData* demo_data)
                 if (ImGui::Selectable(items[n], is_selected))
                     item_selected_idx = n;
 
-                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                // SetToShader the initial focus when opening the combo (scrolling + keyboard navigation focus)
                 if (is_selected)
                     ImGui::SetItemDefaultFocus();
             }
@@ -1443,7 +1443,7 @@ static void ShowDemoWindowWidgets(ImGuiDemoWindowData* demo_data)
                 if (item_highlight && ImGui::IsItemHovered())
                     item_highlighted_idx = n;
 
-                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                // SetToShader the initial focus when opening the combo (scrolling + keyboard navigation focus)
                 if (is_selected)
                     ImGui::SetItemDefaultFocus();
             }
@@ -1462,7 +1462,7 @@ static void ShowDemoWindowWidgets(ImGuiDemoWindowData* demo_data)
                 if (ImGui::Selectable(items[n], is_selected, flags))
                     item_selected_idx = n;
 
-                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                // SetToShader the initial focus when opening the combo (scrolling + keyboard navigation focus)
                 if (is_selected)
                     ImGui::SetItemDefaultFocus();
             }
@@ -2559,7 +2559,7 @@ static void ShowDemoWindowWidgets(ImGuiDemoWindowData* demo_data)
                 // Our buttons are both drag sources and drag targets here!
                 if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
                 {
-                    // Set payload to carry the index of our item (could be anything)
+                    // SetToShader payload to carry the index of our item (could be anything)
                     ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
 
                     // Display preview (could be anything, e.g. when dragging an image we could decide to display
@@ -9476,7 +9476,7 @@ static void ShowExampleAppCustomRendering(bool* p_open)
             // Here we demonstrate that this can be replaced by simple offsetting + custom drawing + PushClipRect/PopClipRect() calls.
             // To use a child window instead we could use, e.g:
             //      ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));      // Disable padding
-            //      ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(50, 50, 50, 255));  // Set a background color
+            //      ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(50, 50, 50, 255));  // SetToShader a background color
             //      ImGui::BeginChild("canvas", ImVec2(0.0f, 0.0f), ImGuiChildFlags_Borders, ImGuiWindowFlags_NoMove);
             //      ImGui::PopStyleColor();
             //      ImGui::PopStyleVar();
@@ -9627,9 +9627,9 @@ struct MyDocument
 {
     char        Name[32];   // Document title
     int         UID;        // Unique ID (necessary as we can change title)
-    bool        Open;       // Set when open (we keep an array of all available documents to simplify demo code!)
+    bool        Open;       // SetToShader when open (we keep an array of all available documents to simplify demo code!)
     bool        OpenPrev;   // Copy of Open from last update.
-    bool        Dirty;      // Set when the document has been modified
+    bool        Dirty;      // SetToShader when the document has been modified
     ImVec4      Color;      // An arbitrary variable associated to the document
 
     MyDocument(int uid, const char* name, bool open = true, const ImVec4& color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f))
@@ -10311,7 +10311,7 @@ struct ExampleAssetsBrowser
 
                     // Manipulate scroll to that we will land at the same Y location of currently hovered item.
                     // - Calculate next frame position of item under mouse
-                    // - Set new scroll position to be used in next ImGui::BeginChild() call.
+                    // - SetToShader new scroll position to be used in next ImGui::BeginChild() call.
                     float hovered_item_rel_pos_y = ((float)(hovered_item_idx / LayoutColumnCount) + fmodf(hovered_item_ny, 1.0f)) * LayoutItemStep.y;
                     hovered_item_rel_pos_y += ImGui::GetStyle().WindowPadding.y;
                     float mouse_local_y = io.MousePos.y - ImGui::GetWindowPos().y;

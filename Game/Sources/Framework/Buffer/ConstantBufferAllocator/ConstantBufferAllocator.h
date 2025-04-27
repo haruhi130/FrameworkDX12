@@ -5,13 +5,22 @@ class ConstantBufferAllocator : public Buffer
 public:
 	~ConstantBufferAllocator()override{}
 
-	// 定数バッファアロケーター作成
+	/// <summary>
+	/// 定数バッファアロケータ作成
+	/// </summary>
+	/// <param name="pHeap">CBVSRVUAVHeapのポインタ/param>
 	void Create(CBVSRVUAVHeap* pHeap);
 
-	// 使用しているバッファ番号を初期化
+	/// <summary>
+	/// 現在使用しているバッファ番号を初期化
+	/// </summary>
 	void ResetCurrentUseNumber();
 
-	// 定数バッファにデータをバインド
+	/// <summary>
+	/// 定数バッファにデータをバインド
+	/// </summary>
+	/// <param name="descIndex">レジスタ番号</param>
+	/// <param name="data">バインドデータ</param>
 	template<typename type>
 	void BindAndAttachData(int descIndex, const type& data);
 
@@ -33,7 +42,7 @@ inline void ConstantBufferAllocator::BindAndAttachData(int descIndex, const type
 	// 使用数を計算
 	int useValue = sizeAligned / 0x100;
 
-	// 使用済みの番号と使用予定の容量がヒープ容量を超えていたらreturn
+	// 使用済みの番号と使用予定の容量がヒープ容量を超えている場合return
 	if (m_currentNumber + useValue > (int)m_pHeap->GetUseCount().x)
 	{
 		assert(0 && "使用できるヒープ容量をオーバー");

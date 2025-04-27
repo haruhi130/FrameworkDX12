@@ -21,11 +21,20 @@ public:
 	{
 		SphereInfo() {}
 
-		// BoundingSphereを直接指定
+		/// <summary>
+		/// BoundingSphereを直接指定
+		/// </summary>
+		/// <param name="type">衝突タイプ</param>
+		/// <param name="sphere">スフィア情報</param>
 		SphereInfo(UINT type, const DirectX::BoundingSphere sphere)
 			:m_type(type), m_sphere(sphere) {}
 
-		// 座標と半径からBoundingSphereを指定
+		/// <summary>
+		/// 座標と半径からBoundingSphereを指定
+		/// </summary>
+		/// <param name="type">衝突タイプ</param>
+		/// <param name="pos">スフィア座標</param>
+		/// <param name="radius">スフィア半径</param>
 		SphereInfo(UINT type, const Math::Vector3& pos, float radius)
 			:m_type(type)
 		{
@@ -43,11 +52,22 @@ public:
 	{
 		RayInfo() {}
 
-		// レイの情報を全て指定
+		/// <summary>
+		/// レイ情報を全て指定して作成
+		/// </summary>
+		/// <param name="type">衝突タイプ</param>
+		/// <param name="pos">レイ座標</param>
+		/// <param name="dir">レイ方向</param>
+		/// <param name="range">レイの長さ</param>
 		RayInfo(UINT type, const Math::Vector3& pos, const Math::Vector3& dir, float range)
 			:m_type(type), m_pos(pos), m_dir(dir), m_range(range) {}
 
-		// 開始地点と終了地点からレイの情報を作成
+		/// <summary>
+		/// 開始地点と終了地点からレイの情報を作成
+		/// </summary>
+		/// <param name="type">衝突タイプ</param>
+		/// <param name="start">レイ開始地点</param>
+		/// <param name="end">レイ終了地点</param>
 		RayInfo(UINT type, const Math::Vector3& start, const Math::Vector3& end)
 			:m_type(type), m_pos(start)
 		{
@@ -58,7 +78,7 @@ public:
 
 		Math::Vector3 m_pos;	// レイの発射位置
 		Math::Vector3 m_dir;	// レイの方向
-		float m_range = 0.0f;	// レイの限界距離
+		float m_range = 0.0f;	// レイの距離
 
 		UINT m_type = 0;
 	};
@@ -74,22 +94,47 @@ public:
 	Collider() {}
 	~Collider() {}
 
-	// 衝突判定形状登録
-	void RegisterCollisionShape(std::string_view name, std::unique_ptr<CollisionShape> spShape);
+	/// <summary>
+	/// 衝突判定形状登録
+	/// </summary>	
+	// CollisionShapeから形状登録
+	void RegisterCollisionShape(std::string_view name, std::unique_ptr<CollisionShape> upShape);
+	// スフィア情報を形状登録
 	void RegisterCollisionShape(std::string_view name, const DirectX::BoundingSphere& sphere, UINT type);
+	// スフィア情報を指定して形状登録
 	void RegisterCollisionShape(std::string_view name, const Math::Vector3& localPos, float radius, UINT type);
+	// 全体モデル情報のスマートポインタから形状登録
 	void RegisterCollisionShape(std::string_view name, const std::shared_ptr<ModelData>& model, UINT type);
+	// 全体モデル情報の生ポインタから形状登録
 	void RegisterCollisionShape(std::string_view name, ModelData* model, UINT type);
+	// 単一モデル情報のスマートポインタから形状登録
 	void RegisterCollisionShape(std::string_view name, const std::shared_ptr<ModelWork>& model, UINT type);
+	// 単一モデル情報の生ポインタから形状登録
 	void RegisterCollisionShape(std::string_view name, ModelWork* model, UINT type);
 
-	// 衝突判定実行
+	/// <summary>
+	/// 衝突判定実行
+	/// </summary>
+	/// <param name="targetShape">判定する情報</param>
+	/// <param name="ownerMat">判定するオブジェクトの行列</param>
+	/// <param name="pResults">詳細情報格納リスト</param>
+	/// <returns>衝突していたらtrue</returns>
 	bool Intersects(const SphereInfo& targetShape, const Math::Matrix& ownerMat, std::list<Collider::CollisionResult>* pResults) const;
 	bool Intersects(const RayInfo& targetShape, const Math::Matrix& ownerMat, std::list<Collider::CollisionResult>* pResults) const;
 
-	// 衝突判定の有効/無効の設定
+	/// <summary>
+	/// 衝突判定の有効化/無効化
+	/// </summary>
+	/// <param name="name">登録した名前</param>
+	/// <param name="isEnable">判定の有効化/無効化</param>
 	void SetEnable(std::string_view name, bool isEnable);
+	/// <param name="name">衝突判定タイプ</param>
+	/// <param name="name">判定の有効化/無効化</param>
 	void SetEnable(int type, bool isEnable);
+	/// <summary>
+	/// 全ての衝突判定の有効化/無効化
+	/// </summary>
+	/// <param name="isEnable">判定の有効化/無効化</param>
 	void SetEnableAll(bool isEnable);
 
 private:
@@ -105,11 +150,26 @@ public:
 
 	virtual ~CollisionShape() {}
 
-	UINT GetType()const { return m_type; }
+	/// <summary>
+	///	衝突判定のタイプ取得
+	/// </summary>
+	/// <returns>衝突判定のタイプ</returns>
+	UINT GetType() const { return m_type; }
 
+	/// <summary>
+	/// 衝突判定の計算
+	/// </summary>
+	/// <param name="target">衝突判定を行う形状</param>
+	/// <param name="world">行列</param>
+	/// <param name="pResult">詳細情報の格納リスト</param>
+	/// <returns>衝突していたらtrue</returns>
 	virtual bool Intersects(const DirectX::BoundingSphere& target, const Math::Matrix& world, Collider::CollisionResult* pResult) = 0;
 	virtual bool Intersects(const Collider::RayInfo& target, const Math::Matrix& world, Collider::CollisionResult* pResult) = 0;
 
+	/// <summary>
+	/// 衝突判定の有効化/無効化
+	/// </summary>
+	/// <param name="isEnable">判定の有効化/無効化</param>
 	void SetEnable(bool isEnable) { m_isEnable = isEnable; }
 
 protected:

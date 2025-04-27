@@ -171,7 +171,7 @@ CODE
    - Particularly useful to use Dear ImGui on a console system (e.g. PlayStation, Switch, Xbox) without a mouse!
    - Download controller mapping PNG/PSD at http://dearimgui.com/controls_sheets
    - Backend support: backend needs to:
-      - Set 'io.BackendFlags |= ImGuiBackendFlags_HasGamepad' + call io.AddKeyEvent/AddKeyAnalogEvent() with ImGuiKey_Gamepad_XXX keys.
+      - SetToShader 'io.BackendFlags |= ImGuiBackendFlags_HasGamepad' + call io.AddKeyEvent/AddKeyAnalogEvent() with ImGuiKey_Gamepad_XXX keys.
       - For analog values (0.0f to 1.0f), backend is responsible to handling a dead-zone and rescaling inputs accordingly.
         Backend code will probably need to transform your raw inputs (such as e.g. remapping your 0.2..0.9 raw input range to 0.0..1.0 imgui range, etc.).
       - BEFORE 1.87, BACKENDS USED TO WRITE TO io.NavInputs[]. This is now obsolete. Please call io functions instead!
@@ -277,7 +277,7 @@ CODE
      // Application init: create a dear imgui context, setup some options, load fonts
      ImGui::CreateContext();
      ImGuiIO& io = ImGui::GetIO();
-     // TODO: Set optional io.ConfigFlags values, e.g. 'io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard' to enable keyboard controls.
+     // TODO: SetToShader optional io.ConfigFlags values, e.g. 'io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard' to enable keyboard controls.
      // TODO: Fill optional fields of the io structure later.
      // TODO: Load TTF/OTF fonts if you don't want to use the default font.
 
@@ -312,7 +312,7 @@ CODE
      // Application init: create a dear imgui context, setup some options, load fonts
      ImGui::CreateContext();
      ImGuiIO& io = ImGui::GetIO();
-     // TODO: Set optional io.ConfigFlags values, e.g. 'io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard' to enable keyboard controls.
+     // TODO: SetToShader optional io.ConfigFlags values, e.g. 'io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard' to enable keyboard controls.
      // TODO: Fill optional fields of the io structure later.
      // TODO: Load TTF/OTF fonts if you don't want to use the default font.
 
@@ -1267,17 +1267,17 @@ ImGuiStyle::ImGuiStyle()
     Alpha                       = 1.0f;             // Global alpha applies to everything in Dear ImGui.
     DisabledAlpha               = 0.60f;            // Additional alpha multiplier applied by BeginDisabled(). Multiply over current value of Alpha.
     WindowPadding               = ImVec2(8,8);      // Padding within a window
-    WindowRounding              = 0.0f;             // Radius of window corners rounding. Set to 0.0f to have rectangular windows. Large values tend to lead to variety of artifacts and are not recommended.
+    WindowRounding              = 0.0f;             // Radius of window corners rounding. SetToShader to 0.0f to have rectangular windows. Large values tend to lead to variety of artifacts and are not recommended.
     WindowBorderSize            = 1.0f;             // Thickness of border around windows. Generally set to 0.0f or 1.0f. Other values not well tested.
     WindowMinSize               = ImVec2(32,32);    // Minimum window size
     WindowTitleAlign            = ImVec2(0.0f,0.5f);// Alignment for title bar text
     WindowMenuButtonPosition    = ImGuiDir_Left;    // Position of the collapsing/docking button in the title bar (left/right). Defaults to ImGuiDir_Left.
-    ChildRounding               = 0.0f;             // Radius of child window corners rounding. Set to 0.0f to have rectangular child windows
+    ChildRounding               = 0.0f;             // Radius of child window corners rounding. SetToShader to 0.0f to have rectangular child windows
     ChildBorderSize             = 1.0f;             // Thickness of border around child windows. Generally set to 0.0f or 1.0f. Other values not well tested.
-    PopupRounding               = 0.0f;             // Radius of popup window corners rounding. Set to 0.0f to have rectangular child windows
+    PopupRounding               = 0.0f;             // Radius of popup window corners rounding. SetToShader to 0.0f to have rectangular child windows
     PopupBorderSize             = 1.0f;             // Thickness of border around popup or tooltip windows. Generally set to 0.0f or 1.0f. Other values not well tested.
     FramePadding                = ImVec2(4,3);      // Padding within a framed rectangle (used by most widgets)
-    FrameRounding               = 0.0f;             // Radius of frame corners rounding. Set to 0.0f to have rectangular frames (used by most widgets).
+    FrameRounding               = 0.0f;             // Radius of frame corners rounding. SetToShader to 0.0f to have rectangular frames (used by most widgets).
     FrameBorderSize             = 0.0f;             // Thickness of border around frames. Generally set to 0.0f or 1.0f. Other values not well tested.
     ItemSpacing                 = ImVec2(8,4);      // Horizontal and vertical spacing between widgets/lines
     ItemInnerSpacing            = ImVec2(4,4);      // Horizontal and vertical spacing between within elements of a composed widget (e.g. a slider and its label)
@@ -1288,11 +1288,11 @@ ImGuiStyle::ImGuiStyle()
     ScrollbarSize               = 14.0f;            // Width of the vertical scrollbar, Height of the horizontal scrollbar
     ScrollbarRounding           = 9.0f;             // Radius of grab corners rounding for scrollbar
     GrabMinSize                 = 12.0f;            // Minimum width/height of a grab box for slider/scrollbar
-    GrabRounding                = 0.0f;             // Radius of grabs corners rounding. Set to 0.0f to have rectangular slider grabs.
+    GrabRounding                = 0.0f;             // Radius of grabs corners rounding. SetToShader to 0.0f to have rectangular slider grabs.
     LogSliderDeadzone           = 4.0f;             // The size in pixels of the dead-zone around zero on logarithmic sliders that cross zero.
-    TabRounding                 = 4.0f;             // Radius of upper corners of a tab. Set to 0.0f to have rectangular tabs.
+    TabRounding                 = 4.0f;             // Radius of upper corners of a tab. SetToShader to 0.0f to have rectangular tabs.
     TabBorderSize               = 0.0f;             // Thickness of border around tabs.
-    TabMinWidthForCloseButton   = 0.0f;             // Minimum width for close button to appear on an unselected tab when hovered. Set to 0.0f to always show when hovering, set to FLT_MAX to never show close button unless selected.
+    TabMinWidthForCloseButton   = 0.0f;             // Minimum width for close button to appear on an unselected tab when hovered. SetToShader to 0.0f to always show when hovering, set to FLT_MAX to never show close button unless selected.
     TabBarBorderSize            = 1.0f;             // Thickness of tab-bar separator, which takes on the tab active color to denote focus.
     TabBarOverlineSize          = 2.0f;             // Thickness of tab-bar overline, which highlights the selected tab-bar.
     TableAngledHeadersAngle     = 35.0f * (IM_PI / 180.0f); // Angle of angled headers (supported values range from -50 degrees to +50 degrees).
@@ -1383,7 +1383,7 @@ ImGuiIO::ImGuiIO()
     // Miscellaneous options
     MouseDrawCursor = false;
 #ifdef __APPLE__
-    ConfigMacOSXBehaviors = true;  // Set Mac OS X style defaults based on __APPLE__ compile time flag
+    ConfigMacOSXBehaviors = true;  // SetToShader Mac OS X style defaults based on __APPLE__ compile time flag
 #else
     ConfigMacOSXBehaviors = false;
 #endif
@@ -1650,7 +1650,7 @@ void ImGuiIO::SetKeyEventNativeData(ImGuiKey key, int native_keycode, int native
 #endif
 }
 
-// Set master flag for accepting key/mouse/text events (default to true). Useful if you have native dialog boxes that are interrupting your application loop/refresh, and you want to disable events being queued while your app is frozen.
+// SetToShader master flag for accepting key/mouse/text events (default to true). Useful if you have native dialog boxes that are interrupting your application loop/refresh, and you want to disable events being queued while your app is frozen.
 void ImGuiIO::SetAppAcceptingEvents(bool accepting_events)
 {
     AppAcceptingEvents = accepting_events;
@@ -2638,7 +2638,7 @@ void* ImGuiStorage::GetVoidPtr(ImGuiID key) const
     return it->val_p;
 }
 
-// References are only valid until a new value is added to the storage. Calling a Set***() function or a Get***Ref() function invalidates the pointer.
+// References are only valid until a new value is added to the storage. Calling a SetToShader***() function or a Get***Ref() function invalidates the pointer.
 int* ImGuiStorage::GetIntRef(ImGuiID key, int default_val)
 {
     ImGuiStoragePair* it = ImLowerBound(Data.Data, Data.Data + Data.Size, key);
@@ -2926,7 +2926,7 @@ static void ImGuiListClipper_SortAndFuseRanges(ImVector<ImGuiListClipperRange>& 
 
 static void ImGuiListClipper_SeekCursorAndSetupPrevLine(float pos_y, float line_height)
 {
-    // Set cursor position and a few other things so that SetScrollHereY() and Columns() can work when seeking cursor.
+    // SetToShader cursor position and a few other things so that SetScrollHereY() and Columns() can work when seeking cursor.
     // FIXME: It is problematic that we have to do that here, because custom/equivalent end-user code would stumble on the same issue.
     // The clipper should probably have a final step to display the last item in a regular manner, maybe with an opt-out flag for data sets which may have costly seek?
     ImGuiContext& g = *GImGui;
@@ -4072,7 +4072,7 @@ void ImGui::SetActiveID(ImGuiID id, ImGuiWindow* window)
             InputTextDeactivateHook(g.ActiveId);
     }
 
-    // Set active id
+    // SetToShader active id
     g.ActiveIdIsJustActivated = (g.ActiveId != id);
     if (g.ActiveIdIsJustActivated)
     {
@@ -4575,7 +4575,7 @@ ImDrawListSharedData* ImGui::GetDrawListSharedData()
 
 void ImGui::StartMouseMovingWindow(ImGuiWindow* window)
 {
-    // Set ActiveId even if the _NoMove flag is set. Without it, dragging away from a window with _NoMove would activate hover on other windows.
+    // SetToShader ActiveId even if the _NoMove flag is set. Without it, dragging away from a window with _NoMove would activate hover on other windows.
     // We _also_ call this when clicking in a window empty space when io.ConfigWindowsMoveFromTitleBarOnly is set, but clear g.MovingWindow afterward.
     // This is because we want ActiveId to be set even when the window is not permitted to move.
     ImGuiContext& g = *GImGui;
@@ -5712,7 +5712,7 @@ bool ImGui::BeginChildEx(const char* name, ImGuiID id, const ImVec2& size_arg, I
     if (child_flags & ImGuiChildFlags_AutoResizeY)
         child_flags &= ~ImGuiChildFlags_ResizeY;
 
-    // Set window flags
+    // SetToShader window flags
     window_flags |= ImGuiWindowFlags_ChildWindow | ImGuiWindowFlags_NoTitleBar;
     window_flags |= (parent_window->Flags & ImGuiWindowFlags_NoMove); // Inherit the NoMove flag
     if (child_flags & (ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize))
@@ -5755,7 +5755,7 @@ bool ImGui::BeginChildEx(const char* name, ImGuiID id, const ImVec2& size_arg, I
     else
         ImFormatStringToTempBuffer(&temp_window_name, NULL, "%s/%08X", parent_window->Name, id);
 
-    // Set style
+    // SetToShader style
     const float backup_border_size = g.Style.ChildBorderSize;
     if ((child_flags & ImGuiChildFlags_Borders) == 0)
         g.Style.ChildBorderSize = 0.0f;
@@ -5774,7 +5774,7 @@ bool ImGui::BeginChildEx(const char* name, ImGuiID id, const ImVec2& size_arg, I
     ImGuiWindow* child_window = g.CurrentWindow;
     child_window->ChildId = id;
 
-    // Set the cursor to handle case where the user called SetNextWindowPos()+BeginChild() manually.
+    // SetToShader the cursor to handle case where the user called SetNextWindowPos()+BeginChild() manually.
     // While this is not really documented/defined, it seems that the expected thing to do.
     if (child_window->BeginCount == 1)
         parent_window->DC.CursorPos = child_window->Pos;
@@ -7971,7 +7971,7 @@ void ImGui::SetWindowPos(ImGuiWindow* window, const ImVec2& pos, ImGuiCond cond)
     window->SetWindowPosAllowFlags &= ~(ImGuiCond_Once | ImGuiCond_FirstUseEver | ImGuiCond_Appearing);
     window->SetWindowPosVal = ImVec2(FLT_MAX, FLT_MAX);
 
-    // Set
+    // SetToShader
     const ImVec2 old_pos = window->Pos;
     window->Pos = ImTrunc(pos);
     ImVec2 offset = window->Pos - old_pos;
@@ -8017,7 +8017,7 @@ void ImGui::SetWindowSize(ImGuiWindow* window, const ImVec2& size, ImGuiCond con
     if ((window->Flags & ImGuiWindowFlags_ChildWindow) == 0 || window->Appearing || (window->ChildFlags & ImGuiChildFlags_AlwaysAutoResize) != 0)
         window->AutoFitFramesY = (size.y <= 0.0f) ? 2 : 0;
 
-    // Set
+    // SetToShader
     ImVec2 old_size = window->SizeFull;
     if (size.x <= 0.0f)
         window->AutoFitOnlyGrows = false;
@@ -8049,7 +8049,7 @@ void ImGui::SetWindowCollapsed(ImGuiWindow* window, bool collapsed, ImGuiCond co
         return;
     window->SetWindowCollapsedAllowFlags &= ~(ImGuiCond_Once | ImGuiCond_FirstUseEver | ImGuiCond_Appearing);
 
-    // Set
+    // SetToShader
     window->Collapsed = collapsed;
 }
 
@@ -10387,7 +10387,7 @@ bool ImGui::ItemAdd(const ImRect& bb, ImGuiID id, const ImRect* nav_bb_arg, ImGu
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
 
-    // Set item data
+    // SetToShader item data
     // (DisplayRect is left untouched, made valid when ImGuiItemStatusFlags_HasDisplayRect is set)
     g.LastItemData.ID = id;
     g.LastItemData.Rect = bb;
@@ -12433,7 +12433,7 @@ static void ImGui::NavUpdate()
     io.WantSetMousePos = false;
     //if (g.NavScoringDebugCount > 0) IMGUI_DEBUG_LOG_NAV("[nav] NavScoringDebugCount %d for '%s' layer %d (Init:%d, Move:%d)\n", g.NavScoringDebugCount, g.NavWindow ? g.NavWindow->Name : "NULL", g.NavLayer, g.NavInitRequest || g.NavInitResultId != 0, g.NavMoveRequest);
 
-    // Set input source based on which keys are last pressed (as some features differs when used with Gamepad vs Keyboard)
+    // SetToShader input source based on which keys are last pressed (as some features differs when used with Gamepad vs Keyboard)
     // FIXME-NAV: Now that keys are separated maybe we can get rid of NavInputSource?
     const bool nav_gamepad_active = (io.ConfigFlags & ImGuiConfigFlags_NavEnableGamepad) != 0 && (io.BackendFlags & ImGuiBackendFlags_HasGamepad) != 0;
     const ImGuiKey nav_gamepad_keys_to_change_source[] = { ImGuiKey_GamepadFaceRight, ImGuiKey_GamepadFaceLeft, ImGuiKey_GamepadFaceUp, ImGuiKey_GamepadFaceDown, ImGuiKey_GamepadDpadRight, ImGuiKey_GamepadDpadLeft, ImGuiKey_GamepadDpadUp, ImGuiKey_GamepadDpadDown };
@@ -12480,7 +12480,7 @@ static void ImGui::NavUpdate()
     // Update CTRL+TAB and Windowing features (hold Square to move/resize/etc.)
     NavUpdateWindowing();
 
-    // Set output flags for user application
+    // SetToShader output flags for user application
     io.NavActive = (nav_keyboard_active || nav_gamepad_active) && g.NavWindow && !(g.NavWindow->Flags & ImGuiWindowFlags_NoNavInputs);
     io.NavVisible = (io.NavActive && g.NavId != 0 && !g.NavDisableHighlight) || (g.NavWindowingTarget != NULL);
 
@@ -14102,7 +14102,7 @@ void ImGui::LoadIniSettingsFromDisk(const char* ini_filename)
 }
 
 // Zero-tolerance, no error reporting, cheap .ini parsing
-// Set ini_size==0 to let us use strlen(ini_data). Do not call this function with a 0 if your buffer is actually empty!
+// SetToShader ini_size==0 to let us use strlen(ini_data). Do not call this function with a 0 if your buffer is actually empty!
 void ImGui::LoadIniSettingsFromMemory(const char* ini_data, size_t ini_size)
 {
     ImGuiContext& g = *GImGui;

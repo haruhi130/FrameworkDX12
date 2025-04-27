@@ -17,10 +17,10 @@ namespace ConstantBufferData
 	// オブジェクト個別情報
 	struct ObjectInfo
 	{
-		// スキンメッシュか
+		// 描画するオブジェクトがスキンメッシュか判別
 		int IsSkinMesh = 0;
 
-		// アルファディザ有効
+		// アルファディザを行うか判別
 		int IsDitherEnable = 0;
 
 		// リムライト情報
@@ -28,6 +28,7 @@ namespace ConstantBufferData
 		float			LimLightLevel = 1;
 		Math::Vector3	LimLightColor = { 1,1,1 };
 
+		// パッキング規約
 		float blank = 0.0f;
 	};
 
@@ -45,6 +46,7 @@ namespace ConstantBufferData
 		float Metallic = 0.0f;
 		float Roughness = 1.0f;
 
+		// パッキング規約
 		float blank[3] = { 0.0f,0.0f,0.0f };
 	};
 
@@ -110,7 +112,10 @@ namespace ConstantBufferData
 		//----------------------------------------
 		static const int MaxPointLightNum = 100;
 		int PointLight_Num = 0;
+
+		// パッキング規約
 		float blank[3] = { 0.0f,0.0f,0.0f };
+
 		std::array<PointLight,MaxPointLightNum> PointLights;
 	
 		//----------------------------------------
@@ -118,7 +123,10 @@ namespace ConstantBufferData
 		//----------------------------------------
 		static const int MaxSpotLightNum = 100;
 		int SpotLight_Num = 0;
+
+		// パッキング規約
 		float blank2[3] = { 0.0f,0.0f,0.0f };
+
 		std::array<SpotLight, MaxSpotLightNum> SpotLights;
 	};
 }

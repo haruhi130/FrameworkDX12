@@ -59,7 +59,7 @@ void ModelShader::Begin(int w, int h)
 	ShaderManager::GetInstance().WriteCBLight();
 
 	// 影用DepthTextureをシェーダーにセット
-	m_spShadowTex->Set(m_cbvCount + 4);
+	m_spShadowTex->SetToShader(m_cbvCount + 4);
 }
 
 void ModelShader::BeginShadow(int w, int h)
@@ -225,18 +225,18 @@ void ModelShader::SetMaterial(const Material& material)
 	// マテリアル画像を設定
 	if (material.spBaseColorTex != nullptr)
 	{
-		material.spBaseColorTex->Set(m_cbvCount);
+		material.spBaseColorTex->SetToShader(m_cbvCount);
 	}
 	if (material.spEmissiveTex != nullptr)
 	{
-		material.spEmissiveTex->Set(m_cbvCount + 1);
+		material.spEmissiveTex->SetToShader(m_cbvCount + 1);
 	}
 	if (material.spMetallicRoughnessTex != nullptr)
 	{
-		material.spMetallicRoughnessTex->Set(m_cbvCount + 2);
+		material.spMetallicRoughnessTex->SetToShader(m_cbvCount + 2);
 	}
 	if (material.spNormalTex != nullptr)
 	{
-		material.spNormalTex->Set(m_cbvCount + 3);
+		material.spNormalTex->SetToShader(m_cbvCount + 3);
 	}
 }

@@ -12,13 +12,23 @@ class DepthStencil : public Buffer
 public:
 	~DepthStencil()override{}
 
-	// 深度テクスチャ作成
+	/// <summary>
+	/// 深度テクスチャ作成
+	/// </summary>
+	/// <param name="resolution">解像度</param>
+	/// <param name="format">深度テクスチャフォーマット</param>
+	/// <returns></returns>
 	bool Create(const Math::Vector2& resolution, DepthStencilFormat format = DepthStencilFormat::DepthHighQuality);
 
-	// 深度バッファデータ初期化
+	/// <summary>
+	/// 深度バッファに書き込まれているデータ初期化
+	/// </summary>
 	void ClearBuffer() const;
 
-	// DSV番号取得
+	/// <summary>
+	/// DSV番号取得
+	/// </summary>
+	/// <returns>DSV番号</returns>
 	inline UINT GetDSVNumber() const
 	{ return m_DSVNumber; }
 

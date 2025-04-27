@@ -1,12 +1,11 @@
 #include "Camera.h"
 
-void Camera::Set() const
+void Camera::SetToShader() const
 {
 	ShaderManager::GetInstance().SetCamera(m_mView,m_mProj);
 }
 
-// 射影行列の設定：各種パラメータから射影行列を生成して保持する
-void Camera::SetProjectionMatrix(float fov, float minRange, float maxRange, float aspectRatio)
+void Camera::SetProjMatrix(float fov, float minRange, float maxRange, float aspectRatio)
 {
 	float aspect = aspectRatio;
 
@@ -19,11 +18,10 @@ void Camera::SetProjectionMatrix(float fov, float minRange, float maxRange, floa
 	
 	m_mProj = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(fov), aspect, minRange, maxRange);
 
-	SetProjectionMatrix(m_mProj);
+	SetProjMatrix(m_mProj);
 }
 
-// 射影行列の設定：既存の射影行列をコピーする
-void Camera::SetProjectionMatrix(const DirectX::SimpleMath::Matrix& rProj)
+void Camera::SetProjMatrix(const DirectX::SimpleMath::Matrix& rProj)
 {
 	m_mProj = rProj;
 }
@@ -37,12 +35,7 @@ void Camera::GenerateRayInfoFromClient(const POINT& clientPos, Math::Vector3& ra
 	GraphicsDevice::GetInstance().ClientToWorld(clientPos, 0.0f, rayPos, m_mView, m_mProj);
 	GraphicsDevice::GetInstance().ClientToWorld(clientPos, 1.0f, farPos, m_mView, m_mProj);
 
-	// レイ方向
 	rayDir = farPos - rayPos;
-
-	// レイ判定距離
 	rayRange = rayDir.Length();
-
-	// 正規化
 	rayDir.Normalize();
 }
