@@ -88,6 +88,7 @@ protected:
 	// 存在消滅フラグ
 	bool m_isExpired = false;
 
+	// ワールド行列
 	Math::Matrix m_mWorld = Math::Matrix::Identity;
 
 	// 当たり判定

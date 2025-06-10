@@ -238,8 +238,6 @@
     <ClCompile Include="Sources\Framework\Collider\Collision.cpp" />
     <ClCompile Include="Sources\Framework\Effekseer\EffekseerManager.cpp" />
     <ClCompile Include="Sources\Framework\GameObject\BaseObject.cpp" />
-    <ClCompile Include="Sources\Framework\GameObject\Component.cpp" />
-    <ClCompile Include="Sources\Framework\GameObject\GameObject.cpp" />
     <ClCompile Include="Sources\Framework\Graphics\GraphicsDevice.cpp" />
     <ClCompile Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.cpp" />
     <ClCompile Include="Sources\Framework\Heap\DSVHeap\DSVHeap.cpp" />
@@ -322,8 +320,6 @@
     <ClInclude Include="Sources\Framework\Effekseer\EffekseerManager.h" />
     <ClInclude Include="Sources\Framework\Framework.h" />
     <ClInclude Include="Sources\Framework\GameObject\BaseObject.h" />
-    <ClInclude Include="Sources\Framework\GameObject\Component.h" />
-    <ClInclude Include="Sources\Framework\GameObject\GameObject.h" />
     <ClInclude Include="Sources\Framework\Graphics\GraphicsDevice.h" />
     <ClInclude Include="Sources\Framework\Heap\BaseHeap.h" />
     <ClInclude Include="Sources\Framework\Heap\CBVSRVUAVHeap\CBVSRVUAVHeap.h" />
@@ -349,7 +345,6 @@
     <ClInclude Include="Sources\System\Animation\Animation.h" />
     <ClInclude Include="Sources\System\DataStorage\DataStorage.h" />
     <ClInclude Include="Sources\System\Easing\Easing.h" />
-    <ClInclude Include="Sources\System\Input\InputSystem.h" />
     <ClInclude Include="Sources\System\Service\Service.h" />
     <ClInclude Include="Sources\System\System.h" />
     <ClInclude Include="Sources\System\Utility\Utility.h" />

@@ -11,73 +11,135 @@ class DepthStencil;
 class GraphicsDevice
 {
 public:
-	// 初期化
+	/// <summary>
+	/// 描画関係の初期化
+	/// </summary>
+	/// <param name="hWnd">ウィンドウハンドル</param>
+	/// <param name="width">画面横幅</param>
+	/// <param name="height">画面縦幅</param>
+	/// <returns>初期化に成功したらtrue</returns>
 	bool Init(HWND hWnd, int width, int height);
 
-	// 描画前準備
+	/// <summary>
+	/// 描画前処理
+	/// </summary>
 	void Prepare();
 
-	// スワップチェーン入れ替え
+	/// <summary>
+	/// スワップチェーン切替
+	/// </summary>
 	void ScreenFlip();
 
-	// GPU処理の完了を確認
+	/// <summary>
+	/// コマンドキュー待機
+	/// </summary>
 	void WaitForCommandQueue();
 
-	// デバッグ用
+	/// <summary>
+	/// デバッグレイヤー有効化
+	/// </summary>
 	void EnableDebugLayer();
 
-	// スクリーン座標から3D座標への変換
+	/// <summary>
+	/// スクリーン座標からワールド座標への変換
+	/// </summary>
+	/// <param name="screenPos">マウス座標</param>
+	/// <param name="projZ">奥行き情報</param>
+	/// <param name="dst">結果格納</param>
+	/// <param name="mCam">ビュー行列</param>
+	/// <param name="mProj">プロジェクション行列</param>
 	void ClientToWorld(const POINT& screenPos, float projZ, Math::Vector3& dst, const Math::Matrix& mCam, const Math::Matrix& mProj);
 
-	// リソースバリア切り替え
+	/// <summary>
+	/// リソースバリア切替
+	/// </summary>
+	/// <param name="pResource">切り替えるリソース</param>
+	/// <param name="before">切替前のステート</param>
+	/// <param name="after">切替後のステート</param>
 	void SetResourceBarrier(ID3D12Resource* pResource, D3D12_RESOURCE_STATES before,
 		D3D12_RESOURCE_STATES after);
 
-	// バックバッファ色変更
+	/// <summary>
+	/// バックバッファ色変更
+	/// </summary>
+	/// <param name="col">変更色</param>
 	inline void SetBackBufferColor(const Math::Color& col)
 	{ m_clearColor = col; }
 
-	// デバイス取得
+	/// <summary>
+	/// デバイス取得
+	/// </summary>
+	/// <returns>デバイス</returns>
 	inline ID3D12Device14* GetDevice() const
 	{ return m_cpDevice.Get(); }
 
-	// コマンドリスト取得
+	/// <summary>
+	/// コマンドリスト取得
+	/// </summary>
+	/// <returns>コマンドリスト</returns>
 	inline ID3D12GraphicsCommandList10* GetCmdList() const
 	{ return m_cpCmdList.Get(); }
 
-	// コマンドキュー取得
+	/// <summary>
+	/// コマンドキュー取得
+	/// </summary>
+	/// <returns>コマンドキュー</returns>
 	inline ID3D12CommandQueue* GetCmdQueue() const
 	{ return m_cpCmdQueue.Get(); }
 
-	// バックバッファ取得
+	/// <summary>
+	/// バックバッファ取得
+	/// </summary>
+	/// <returns>バックバッファ</returns>
 	inline std::vector<ComPtr<ID3D12Resource>> GetBackBuffers()
 	{ return m_cpBackBuffers; }
 
-	// RTVヒープ取得
+	/// <summary>
+	/// RTVヒープ取得
+	/// </summary>
+	/// <returns>RTVヒープ</returns>
 	inline RTVHeap* GetRTVHeap() const
 	{ return m_upRTVHeap.get(); }
 
-	// CBVSRVUAVヒープ取得
+	/// <summary>
+	/// CBVSRVUAVヒープ取得 
+	/// </summary>
+	/// <returns>CBVSRVUAVヒープ</returns>
 	inline CBVSRVUAVHeap* GetCBVSRVUAVHeap() const
 	{ return m_upCBVSRVUAVHeap.get(); }
-
-	// DSVヒープ取得
+	
+	/// <summary>
+	/// DSVヒープ取得
+	/// </summary>
+	/// <returns> DSVヒープ</returns>
 	inline DSVHeap* GetDSVHeap() const
 	{ return m_upDSVHeap.get(); }
 
-	// ImGuiヒープ取得
+	/// <summary>
+	/// ImGuiヒープ取得
+	/// </summary>
+	/// <returns>ImGuiヒープ</returns>
 	inline ImGuiHeap* GetImGuiHeap() const
 	{ return m_upImGuiHeap.get(); }
 
-	// 定数バッファアロケーター取得
+	/// <summary>
+	/// 定数バッファアロケーター取得
+	/// </summary>
+	/// <returns>定数バッファアロケーター</returns>
 	inline ConstantBufferAllocator* GetConstantBufferAllocator() const
 	{ return m_upCBufferAllocator.get(); }
 
-	// 深度バッファ取得
+	/// <summary>
+	/// 深度バッファ取得
+	/// </summary>
+	/// <returns>深度バッファ</returns>
 	inline DepthStencil* GetDepthStencil() const
 	{ return m_upDepthStencil.get(); }
 
-	// 影用深度バッファ取得
+	/// <summary>
+	/// 影用深度バッファ取得
+	/// </summary>
+	/// <returns>影用深度バッファ</returns>
 	inline DepthStencil* GetLightDepthStencil() const
 	{ return m_upLightDepthStencil.get(); }
 
@@ -92,35 +154,63 @@ private:
 		Kind,
 	};
 
-	// ファクトリー作成
+	/// <summary>
+	/// ファクトリー作成
+	/// </summary>
+	/// <returns>成功したらtrue</returns>
 	bool CreateFactory();
 
-	// デバイス作成
+	/// <summary>
+	/// デバイス作成
+	/// </summary>
+	/// <returns>成功したらtrue</returns>
 	bool CreateDevice();
-
-	// コマンドアロケーター作成
+	
+	/// <summary>
+	/// コマンドアロケーター作成
+	/// </summary>
+	/// <returns>成功したらtrue</returns>
 	bool CreateCommandAllocator();
 
-	// コマンドリスト作成
+	/// <summary>
+	/// コマンドリスト作成
+	/// </summary>
+	/// <returns>成功したらtrue</returns>
 	bool CreateCommandList();
 
-	// コマンドキュー作成
+	/// <summary>
+	/// コマンドキュー作成
+	/// </summary>
+	/// <returns>成功したらtrue</returns>
 	bool CreateCommandQueue();
 
-	// スワップチェーン作成
+	/// <summary>
+	/// スワップチェーン作成
+	/// </summary>
+	/// <param name="hWnd">ウィンドウハンドル</param>
+	/// <param name="width">画面横幅</param>
+	/// <param name="height">画面縦幅</param>
+	/// <returns>成功したらtrue</returns>
 	bool CreateSwapChain(HWND hWnd, int width, int height);
 
-	// レンダーターゲットビュー作成
+	/// <summary>
+	/// レンダーターゲットビュー作成
+	/// </summary>
+	/// <returns>成功したらtrue</returns>
 	bool CreateRTV();
 
-	// フェンス作成
+	/// <summary>
+	/// フェンス作成
+	/// </summary>
+	/// <returns>成功したらtrue</returns>
 	bool CreateFence();
 
 	//----------------------------------------------------------------
-	// デバイス関連
+	// デバイス
 	ComPtr<IDXGIFactory7> m_cpDxgiFactory = nullptr;
 	ComPtr<ID3D12Device14> m_cpDevice = nullptr;
 
+	// DirectX12 Command
 	ComPtr<ID3D12CommandAllocator> m_cpCmdAllocator = nullptr;
 	ComPtr<ID3D12GraphicsCommandList10> m_cpCmdList = nullptr;
 	ComPtr<ID3D12CommandQueue> m_cpCmdQueue = nullptr;

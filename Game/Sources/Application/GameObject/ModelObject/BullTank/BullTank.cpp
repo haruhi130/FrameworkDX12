@@ -267,6 +267,8 @@ void BullTank::ActionIdle::Enter(BullTank& owner)
 
 void BullTank::ActionIdle::Update(BullTank& owner)
 {
+	auto time = ServiceLocator::Get<Time>();
+
 	--owner.m_sightTime;
 
 	if (owner.m_sightTime <= 0.0f && owner.m_isMove)
@@ -293,6 +295,8 @@ void BullTank::ActionWalk::Enter(BullTank& owner)
 
 void BullTank::ActionWalk::Update(BullTank& owner)
 {
+	auto time = ServiceLocator::Get<Time>();
+
 	--owner.m_sightTime;
 
 	if (owner.m_isSight)
@@ -301,7 +305,6 @@ void BullTank::ActionWalk::Update(BullTank& owner)
 		return;
 	}
 
-	auto time = ServiceLocator::Get<Time>();
 	float speed = (1.0f / (60.0f * owner.m_speed));
 	speed *= time->DeltaTime();
 	Math::Vector3 rot = Math::Vector3::Zero;
@@ -319,7 +322,8 @@ void BullTank::ActionWalk::Update(BullTank& owner)
 	float progress = std::clamp(owner.m_progress, 0.0f, 1.0f);
 	Math::Vector3 towardEndVec = owner.m_endPos - owner.m_startPos;
 
-	Math::Vector3 vec = owner.m_startPos + towardEndVec * EaseInOutSine(progress);
+	Math::Vector3 vec = Math::Vector3::Zero;
+	vec = owner.m_startPos + towardEndVec * EaseInOutSine(progress);
 
 	owner.SetPos(vec);
 
@@ -352,7 +356,7 @@ void BullTank::ActionSight::Enter(BullTank& owner)
 void BullTank::ActionSight::Update(BullTank& owner)
 {
 	++owner.m_sightTime;
-
+	
 	if (!owner.m_isSight)
 	{
 		owner.ChangeActionState(std::make_shared<ActionIdle>());

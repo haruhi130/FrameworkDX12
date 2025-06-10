@@ -118,9 +118,6 @@
     <Filter Include="Framework\Input">
       <UniqueIdentifier>{b4c164f5-37d0-4106-bec6-e41dd8d528d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="System\Input">
-      <UniqueIdentifier>{1a9675bb-2192-46ec-9b2a-a4e0d29972f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Shader\SpriteShader">
       <UniqueIdentifier>{3878d2ed-b624-470e-92a2-13f6dd282523}</UniqueIdentifier>
     </Filter>
@@ -274,12 +271,6 @@
     </ClCompile>
     <ClCompile Include="Sources\Framework\Camera\Camera.cpp">
       <Filter>Framework\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Framework\GameObject\GameObject.cpp">
-      <Filter>Framework\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Framework\GameObject\Component.cpp">
-      <Filter>Framework\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Application\Scene\SceneManager.cpp">
       <Filter>Application\Scene</Filter>
@@ -504,12 +495,6 @@
     <ClInclude Include="Sources\Framework\Time\Time.h">
       <Filter>Framework\Time</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Framework\GameObject\GameObject.h">
-      <Filter>Framework\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Framework\GameObject\Component.h">
-      <Filter>Framework\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Application\Scene\SceneManager.h">
       <Filter>Application\Scene</Filter>
     </ClInclude>
@@ -545,9 +530,6 @@
     </ClInclude>
     <ClInclude Include="Sources\Framework\Input\Input.h">
       <Filter>Framework\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\System\Input\InputSystem.h">
-      <Filter>System\Input</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Application\Scene\ResultScene\ResultScene.h">
       <Filter>Application\Scene\ResultScene</Filter>

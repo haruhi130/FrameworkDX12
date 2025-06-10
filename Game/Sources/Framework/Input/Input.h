@@ -18,23 +18,48 @@ public:
 		return instance;
 	}
 
+	/// <summary>
+	/// ボタン更新
+	/// </summary>
 	void Update();
 
-	// 全ての有効な入力装置からのボタン入力状態を取得
+	/// <summary>
+	/// 全ての有効な入力装置からのボタン入力状態を取得 
+	/// </summary>
+	/// <param name="name">取得するボタン名</param>
+	/// <returns>指定したボタンの入力状態</returns>
 	short GetButtonState(std::string_view name) const;
 
+	/// <summary>
+	/// ボタン入力状態を取得
+	/// </summary>
+	/// <param name="name">取得するボタン名</param>
+	/// <returns>指定したボタンがそれぞれの入力状態と一致していればtrue</returns>
 	bool IsFree(std::string_view name) const;
 	bool IsPress(std::string_view name) const;
 	bool IsHold(std::string_view name) const;
 	bool IsRelease(std::string_view name) const;
 
-	// 全ての有効な入力装置からの軸入力状態を取得
+	/// <summary>
+	/// 全ての有効な入力装置からの軸入力状態を取得
+	/// </summary>
+	/// <param name="name">取得する軸名</param>
+	/// <returns>指定した軸の入力状態</returns>
 	Math::Vector2 GetAxisState(std::string_view name) const;
 
-	// 入力装置の登録
+	/// <summary>
+	/// 入力装置の登録
+	/// </summary>
+	/// <param name="name">登録名</param>
+	/// <param name="pDevice">登録するデバイス</param>
 	void AddDevice(std::string_view name, InputCollector* pDevice);
 	void AddDevice(std::string_view name, std::unique_ptr<InputCollector>& upDevice);
 
+	/// <summary>
+	/// デバイス取得
+	/// </summary>
+	/// <param name="name">取得するデバイス名</param>
+	/// <returns>デバイスのスマートポインタ</returns>
 	const std::unique_ptr<InputCollector>& GetDevice(std::string_view name) const;
 	std::unique_ptr<InputCollector>& WorkDevice(std::string_view name);
 
@@ -65,27 +90,57 @@ public:
 	InputCollector(){}
 	~InputCollector(){}
 
+	/// <summary>
+	/// ボタン・軸の入力更新
+	/// </summary>
 	void Update();
 
-	// 入力検知
+	/// <summary>
+	/// 入力検知
+	/// </summary>
+	/// <returns>入力が検知されたらtrue</returns>
 	bool IsInput();
 
-	// 任意の入力状況の取得
+	/// <summary>
+	/// 入力状態の取得
+	/// </summary>
+	/// <param name="name">取得するボタン・軸名</param>
+	/// <returns>指定したボタン・軸の入力状態</returns>
 	short GetButtonState(std::string_view name)const;
 	Math::Vector2 GetAxisState(std::string_view name)const;
 
-	// 入力デバイスの状態の取得と設定
+	/// <summary>
+	/// 入力デバイスの現在のステート取得
+	/// </summary>
+	/// <returns>現在の入力デバイスのステート</returns>
 	ActiveState GetActiveState() const { return m_state; }
+	/// <summary>
+	/// 入力デバイスのステート設定
+	/// </summary>
+	/// <param name="state">設定するデバイスステート</param>
 	void SetActiveState(ActiveState state) { m_state = state; }
 
-	// アプリケーションボタンの追加:上書き
+	/// <summary>
+	/// ボタン追加・上書き
+	/// </summary>
+	/// <param name="name">追加するボタン名</param>
+	/// <param name="pButton">ボタンパラメータ</param>
 	void AddButton(std::string_view name, InputButtonBase* pButton);
 	void AddButton(std::string_view name, std::shared_ptr<InputButtonBase> spButton);
 
-	// 入力軸の追加:上書き
+	/// <summary>
+	/// 入力軸追加・上書き
+	/// </summary>
+	/// <param name="name">追加する軸名</param>
+	/// <param name="pAxis">軸パラメータ</param>
 	void AddAxis(std::string_view name, InputAxisBase* pAxis);
 	void AddAxis(std::string_view name, std::shared_ptr<InputAxisBase> spAxis);
 
+	/// <summary>
+	/// ボタン・軸取得
+	/// </summary>
+	/// <param name="name">取得するボタン・軸</param>
+	/// <returns>指定したボタン・軸のスマートポインタ</returns>
 	const std::shared_ptr<InputButtonBase> GetButton(std::string_view name) const;
 	const std::shared_ptr<InputAxisBase> GetAxis(std::string_view name) const;
 
@@ -121,7 +176,9 @@ public:
 
 	virtual void Update() = 0;
 
-	// 強制入力解除
+	/// <summary>
+	/// 強制的に入力状況を解除
+	/// </summary>
 	void NoInput() { m_state = ButtonState::Free; }
 
 	short GetState() const { return m_state; }
